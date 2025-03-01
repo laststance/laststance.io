@@ -13,8 +13,14 @@ export async function GithubFeedList() {
         <span className="ml-3">Github Feed</span>
       </h2>
       <ol className="mt-2 space-y-4 flex flex-col max-xs:max-w-[340px] h-[730px] overflow-y-scroll overflow-x-crip">
-        {githubFeedList.map(
-          (feed, i) => feed && <FeedItem key={i} feed={feed} />,
+        {githubFeedList.length > 0 ? (
+          githubFeedList.map(
+            (feed, i) => feed && <FeedItem key={i} feed={feed} />,
+          )
+        ) : (
+          <li className="text-sm text-zinc-500 dark:text-zinc-400 p-4">
+            No GitHub activity available at the moment.
+          </li>
         )}
       </ol>
     </div>

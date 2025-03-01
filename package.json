@@ -67,9 +67,11 @@
     "@argos-ci/playwright": "^4.1.0",
     "@chromatic-com/storybook": "^3.2.4",
     "@clack/prompts": "^0.9.1",
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.21.0",
     "@mdx-js/loader": "^3.1.0",
     "@next/bundle-analyzer": "15.1.6",
-    "@next/eslint-plugin-next": "15.1.6",
+    "@next/eslint-plugin-next": "15.2.0",
     "@next/mdx": "15.1.6",
     "@playwright/test": "^1.50.1",
     "@storybook/addon-essentials": "^8.2.8",
@@ -112,5 +114,10 @@
     "typescript": "^5.7.3",
     "vitest": "^3.0.4",
     "xml2js": "^0.6.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   }
 }
