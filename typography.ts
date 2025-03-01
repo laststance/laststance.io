@@ -1,6 +1,8 @@
-import { type PluginUtils } from 'tailwindcss/types/config'
-
-export default function typographyStyles({ theme }: PluginUtils) {
+export default function typographyStyles({
+  theme,
+}: {
+  theme: (path: string) => string
+}) {
   return {
     DEFAULT: {
       css: {
