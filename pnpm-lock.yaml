@@ -85,7 +85,7 @@ importers:
         version: 3.0.2
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.0.14)
+        version: 1.0.7(tailwindcss@4.0.15)
     devDependencies:
       '@argos-ci/cli':
         specifier: ^2.5.5
@@ -149,7 +149,7 @@ importers:
         version: 4.0.15
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.0.14)
+        version: 0.5.16(tailwindcss@4.0.15)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -229,8 +229,8 @@ importers:
         specifier: ^8.2.9
         version: 8.5.2(prettier@3.5.3)
       tailwindcss:
-        specifier: ^4.0.14
-        version: 4.0.14
+        specifier: ^4.0.15
+        version: 4.0.15
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
@@ -5991,9 +5991,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss@4.0.14:
-    resolution: {integrity: sha512-92YT2dpt671tFiHH/e1ok9D987N9fHD5VWoly1CdPD/Cd1HMglvZwP3nx2yTj2lbXDAHt8QssZkxTLCCTNL+xw==}
-
   tailwindcss@4.0.15:
     resolution: {integrity: sha512-6ZMg+hHdMJpjpeCCFasX7K+U615U9D+7k5/cDK/iRwl6GptF24+I/AbKgOnXhVKePzrEyIXutLv36n4cRsq3Sg==}
 
@@ -8938,13 +8935,13 @@ snapshots:
       postcss: 8.5.3
       tailwindcss: 4.0.15
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.0.14)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.0.15)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.0.14
+      tailwindcss: 4.0.15
 
   '@tanstack/react-virtual@3.11.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -13189,11 +13186,9 @@ snapshots:
 
   tailwind-merge@3.0.2: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.0.14):
+  tailwindcss-animate@1.0.7(tailwindcss@4.0.15):
     dependencies:
-      tailwindcss: 4.0.14
-
-  tailwindcss@4.0.14: {}
+      tailwindcss: 4.0.15
 
   tailwindcss@4.0.15: {}
 
