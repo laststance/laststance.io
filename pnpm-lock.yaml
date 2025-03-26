@@ -85,7 +85,7 @@ importers:
         version: 3.0.2
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.0.16)
+        version: 1.0.7(tailwindcss@4.0.17)
     devDependencies:
       '@argos-ci/cli':
         specifier: ^2.5.5
@@ -149,7 +149,7 @@ importers:
         version: 4.0.16
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.0.16)
+        version: 0.5.16(tailwindcss@4.0.17)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -229,8 +229,8 @@ importers:
         specifier: ^8.2.9
         version: 8.6.9(prettier@3.5.3)
       tailwindcss:
-        specifier: ^4.0.15
-        version: 4.0.16
+        specifier: ^4.0.17
+        version: 4.0.17
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
@@ -5879,6 +5879,9 @@ packages:
   tailwindcss@4.0.16:
     resolution: {integrity: sha512-i/SbG7ThTIcLshcFJL+je7hCv9dPis4Xl4XNeel6iZNX42pp/BZ+la+SbZIPoYE+PN8zhKbnHblpQ/lhOWwIeQ==}
 
+  tailwindcss@4.0.17:
+    resolution: {integrity: sha512-OErSiGzRa6rLiOvaipsDZvLMSpsBZ4ysB4f0VKGXUrjw2jfkJRd6kjRKV2+ZmTCNvwtvgdDam5D7w6WXsdLJZw==}
+
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
@@ -8749,13 +8752,13 @@ snapshots:
       postcss: 8.5.3
       tailwindcss: 4.0.16
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.0.16)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.0.17)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.0.16
+      tailwindcss: 4.0.17
 
   '@tanstack/react-virtual@3.13.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -12979,11 +12982,13 @@ snapshots:
 
   tailwind-merge@3.0.2: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.0.16):
+  tailwindcss-animate@1.0.7(tailwindcss@4.0.17):
     dependencies:
-      tailwindcss: 4.0.16
+      tailwindcss: 4.0.17
 
   tailwindcss@4.0.16: {}
+
+  tailwindcss@4.0.17: {}
 
   tapable@2.2.1: {}
 
