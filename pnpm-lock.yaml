@@ -85,7 +85,7 @@ importers:
         version: 3.1.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.1.1)
+        version: 1.0.7(tailwindcss@4.1.2)
     devDependencies:
       '@argos-ci/cli':
         specifier: ^2.5.5
@@ -149,7 +149,7 @@ importers:
         version: 4.1.1
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.1.1)
+        version: 0.5.16(tailwindcss@4.1.2)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -229,8 +229,8 @@ importers:
         specifier: ^8.2.9
         version: 8.6.9(prettier@3.5.3)
       tailwindcss:
-        specifier: ^4.1.1
-        version: 4.1.1
+        specifier: ^4.1.2
+        version: 4.1.2
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
@@ -6016,6 +6016,9 @@ packages:
   tailwindcss@4.1.1:
     resolution: {integrity: sha512-QNbdmeS979Efzim2g/bEvfuh+fTcIdp1y7gA+sb6OYSW74rt7Cr7M78AKdf6HqWT3d5AiTb7SwTT3sLQxr4/qw==}
 
+  tailwindcss@4.1.2:
+    resolution: {integrity: sha512-VCsK+fitIbQF7JlxXaibFhxrPq4E2hDcG8apzHUdWFMCQWD8uLdlHg4iSkZ53cgLCCcZ+FZK7vG8VjvLcnBgKw==}
+
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
@@ -8939,13 +8942,13 @@ snapshots:
       postcss: 8.5.3
       tailwindcss: 4.1.1
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.1)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.2)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.1.1
+      tailwindcss: 4.1.2
 
   '@tanstack/react-virtual@3.13.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -13191,11 +13194,13 @@ snapshots:
 
   tailwind-merge@3.1.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.1.1):
+  tailwindcss-animate@1.0.7(tailwindcss@4.1.2):
     dependencies:
-      tailwindcss: 4.1.1
+      tailwindcss: 4.1.2
 
   tailwindcss@4.1.1: {}
+
+  tailwindcss@4.1.2: {}
 
   tapable@2.2.1: {}
 
