@@ -85,7 +85,7 @@ importers:
         version: 3.2.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.1.2)
+        version: 1.0.7(tailwindcss@4.1.3)
     devDependencies:
       '@argos-ci/cli':
         specifier: ^2.5.5
@@ -149,7 +149,7 @@ importers:
         version: 4.1.3
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.1.2)
+        version: 0.5.16(tailwindcss@4.1.3)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -229,8 +229,8 @@ importers:
         specifier: ^8.2.9
         version: 8.6.9(prettier@3.5.3)
       tailwindcss:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.1.3
+        version: 4.1.3
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -6017,9 +6017,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss@4.1.2:
-    resolution: {integrity: sha512-VCsK+fitIbQF7JlxXaibFhxrPq4E2hDcG8apzHUdWFMCQWD8uLdlHg4iSkZ53cgLCCcZ+FZK7vG8VjvLcnBgKw==}
-
   tailwindcss@4.1.3:
     resolution: {integrity: sha512-2Q+rw9vy1WFXu5cIxlvsabCwhU2qUwodGq03ODhLJ0jW4ek5BUtoCsnLB0qG+m8AHgEsSJcJGDSDe06FXlP74g==}
 
@@ -8948,13 +8945,13 @@ snapshots:
       postcss: 8.5.3
       tailwindcss: 4.1.3
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.2)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.3)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.1.2
+      tailwindcss: 4.1.3
 
   '@tanstack/react-virtual@3.13.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -13200,11 +13197,9 @@ snapshots:
 
   tailwind-merge@3.2.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.1.2):
+  tailwindcss-animate@1.0.7(tailwindcss@4.1.3):
     dependencies:
-      tailwindcss: 4.1.2
-
-  tailwindcss@4.1.2: {}
+      tailwindcss: 4.1.3
 
   tailwindcss@4.1.3: {}
 
