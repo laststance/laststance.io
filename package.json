@@ -3,7 +3,7 @@
   "author": "Ryota Murakami <dojce1048@gmail.com> (https://github.com/ryota-murakami)",
   "private": true,
   "volta": {
-    "node": "22.13.1"
+    "node": "22.14.0"
   },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write"
@@ -117,6 +117,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "core-js-pure",
       "esbuild",
       "sharp"
     ]
