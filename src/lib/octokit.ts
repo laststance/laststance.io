@@ -1,20 +1,15 @@
-import process from 'node:process'
-
 import { parse } from 'node-html-parser'
 import { Octokit } from 'octokit'
 import { parseStringPromise } from 'xml2js'
 
+import { env } from '@/env.mjs'
+
 const octokit = new Octokit({
-  auth: process.env.PERSONAL_ACCESS_TOKEN || undefined,
+  auth: env.PERSONAL_ACCESS_TOKEN || undefined,
 })
 
 const getXml = async (page: number) => {
   try {
-    if (!process.env.PERSONAL_ACCESS_TOKEN) {
-      console.warn('Missing PERSONAL_ACCESS_TOKEN environment variable')
-      return { feed: { entry: [] } }
-    }
-
     const res = await octokit.request(
       `GET https://github.com/ryota-murakami.atom?page=${page}`,
       {
@@ -77,6 +72,9 @@ export const fetchGithubFeedList = async (): Promise<Array<Feed | null>> => {
           if (root.innerText.includes('dependabot')) return null
           if (root.innerText.includes('Bump')) return null
           if (root.innerText.includes('bump')) return null
+
+          // Filter private repository activity
+          if (root.innerText.includes('hayashima')) return null
 
           // Update all href attributes
           root.querySelectorAll('a').forEach((link) => {
