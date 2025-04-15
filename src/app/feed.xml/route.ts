@@ -3,12 +3,10 @@ import assert from 'assert'
 import * as cheerio from 'cheerio'
 import { Feed } from 'feed'
 
-export async function GET(req: Request) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+import { env } from '@/env.mjs'
 
-  if (!siteUrl) {
-    throw Error('Missing NEXT_PUBLIC_SITE_URL environment variable')
-  }
+export async function GET(req: Request) {
+  const siteUrl = env.NEXT_PUBLIC_SITE_URL
 
   const author = {
     name: 'Laststance.io',
