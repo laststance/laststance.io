@@ -16,6 +16,19 @@ interface KeybindsList {
 }
 
 const keybinds: KeybindsList = {
+  Raycast: {
+    'Clipboard History': '^ + D',
+    'Search Snippets': 'CMD + I',
+    'Search History (Chrome)': 'Option + 1',
+    'Search Bookmarks (Chrome)': 'Option + G',
+    'Search Bookmarks (Raindrop)': 'Option + R',
+    'Search AI Commands': 'Option + O',
+    'Define Word (Dictionary)': 'Option + E',
+    'Search Quicklinks': 'Option + Q',
+    'Summarize Webpage (AI Command)': 'Option + W',
+    'Summarize Youtube Video (AI Command)': 'Option + CMD + W',
+    Confetti: 'Option + D',
+  },
   'Move Cursor': {
     'Cursor Right': '^ + F',
     'Cursor Left': '^ + B',
@@ -138,18 +151,6 @@ const keybinds: KeybindsList = {
     'Open chrome://extensions/': 'CMD + E',
     'Open chrome://bookmarks/': 'CMD + B',
     'Duplicate tab': 'CMD + D',
-  },
-  Raycast: {
-    'Clipboard History': '^ + D',
-    'Search Snippets': 'CMD + I',
-    'Search Bookmarks (Chrome)': 'Option + G',
-    'Search Bookmarks (Raindrop)': 'Option + R',
-    'Search AI Commands': 'Option + O',
-    'Define Word (Dictionary)': 'Option + E',
-    'Search Quicklinks': 'Option + Q',
-    'Summarize Webpage (AI Command)': 'Option + W',
-    'Summarize Youtube Video (AI Command)': 'Option + CMD + W',
-    Confetti: 'Option + D',
   },
 }
 

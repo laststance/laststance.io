@@ -27,7 +27,7 @@ export default async function Home() {
               Ryota Murakami
             </a>{' '}
             who live in Tokyo. Currently working as a freelance
-            React/Node/TypeScirpt developer. Here is my invididual OSS
+            React/Node/TypeScirpt developer. Here is my independent OSS
             organization.
           </p>
           <div className="mt-6 flex gap-6">
