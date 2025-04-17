@@ -25,7 +25,7 @@ const keybinds: KeybindsList = {
     'Search AI Commands': 'Option + O',
     'Define Word (Dictionary)': 'Option + E',
     'Search Quicklinks': 'Option + Q',
-    'Summarize Webpage (AI Command)': 'Option + W',
+    'Toggle Raycast Note': 'Option + W',
     'Summarize Youtube Video (AI Command)': 'Option + CMD + W',
     Confetti: 'Option + D',
   },
