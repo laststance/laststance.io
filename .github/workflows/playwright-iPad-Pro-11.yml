@@ -24,7 +24,7 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Set build name
-        run: echo "BUILD_NAME=iPad Pro 11" >> .env
+        run: echo "BUILD_NAME='iPad Pro 11'" >> .env
       - name: Playwright tests
         run: pnpm exec playwright test --project='iPad Pro 11'
       - uses: actions/upload-artifact@v4

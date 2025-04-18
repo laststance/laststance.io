@@ -23,10 +23,10 @@ const keybinds: KeybindsList = {
     'Search Bookmarks (Chrome)': 'Option + G',
     'Search Bookmarks (Raindrop)': 'Option + R',
     'Search AI Commands': 'Option + O',
-    'Define Word (Dictionary)': 'Option + E',
+    Dictionary: 'Option + E',
     'Search Quicklinks': 'Option + Q',
-    'Summarize Webpage (AI Command)': 'Option + W',
-    'Summarize Youtube Video (AI Command)': 'Option + CMD + W',
+    'Left Half(Window Management)': '^ + H',
+    'Toggle Raycast Note': 'Option + W',
     Confetti: 'Option + D',
   },
   'Move Cursor': {
