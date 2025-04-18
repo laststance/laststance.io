@@ -24,7 +24,7 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Set build name
-        run: echo "BUILD_NAME=iPhone 14" >> .env
+        run: echo "BUILD_NAME='iPhone 14'" >> .env
       - name: Playwright tests
         run: pnpm exec playwright test --project='iPhone 14'
       - uses: actions/upload-artifact@v4
