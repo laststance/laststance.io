@@ -2,6 +2,9 @@
   "name": "laststance.io",
   "author": "Ryota Murakami <dojce1048@gmail.com> (https://github.com/ryota-murakami)",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "volta": {
     "node": "22.14.0"
   },
