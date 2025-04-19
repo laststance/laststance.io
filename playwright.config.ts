@@ -14,6 +14,7 @@ export default defineConfig({
   testDir: './e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
+  failOnFlakyTests: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -29,7 +30,7 @@ export default defineConfig({
       '@argos-ci/playwright/reporter',
       {
         // Upload to Argos on CI only.
-        uploadToArgos: !!process.env.CI,
+        uploadToArgos: !!process.env.CI && !!process.env.BUILD_NAME,
         buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
       },
     ],
