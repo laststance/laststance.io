@@ -30,7 +30,10 @@ export default defineConfig({
       '@argos-ci/playwright/reporter',
       {
         // Upload to Argos on CI only.
-        uploadToArgos: !!process.env.CI && !!process.env.BUILD_NAME,
+        uploadToArgos:
+          !!process.env.CI &&
+          !!process.env.BUILD_NAME &&
+          process.env.UPLOAD_TO_ARGOS !== 'false',
         buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
       },
     ],
