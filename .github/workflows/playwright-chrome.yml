@@ -25,6 +25,13 @@ jobs:
         run: pnpm exec playwright install --with-deps
       - name: Set build name
         run: echo "BUILD_NAME=Chrome" >> .env
+      - name: Set Argos upload flag based on actor
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            echo "UPLOAD_TO_ARGOS=false" >> .env
+          else
+            echo "UPLOAD_TO_ARGOS=true" >> .env
+          fi
       - name: Playwright tests
         run: pnpm exec playwright test --project='Chrome'
       - uses: actions/upload-artifact@v4
@@ -34,4 +41,5 @@ jobs:
           path: playwright-report/
           retention-days: 30
       - name: Upload screenshots to Argos
+        if: ${{ github.actor != 'dependabot[bot]' }}
         run: pnpm argos upload ./screenshots
