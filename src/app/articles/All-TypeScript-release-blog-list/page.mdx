@@ -3,7 +3,7 @@ import { ArticleLayout } from '@/components/ArticleLayout'
 export const article = {
   auhtor: 'Ryota Murakami',
   title: 'All TypeScript release blog list',
-  date: '2025-04-15',
+  date: '2025-04-24',
   description: 'Update continues',
 }
 
@@ -25,7 +25,14 @@ I plan to update this whenever a new version comes out.
 
 ## Announcing TypeScript 5.8
 - **Date**: 2025-02-28
-- **Summary**: This release introduces several enhancements, including granular checks for branches within return expressions to catch subtle bugs, the `--libReplacement` flag for controlling library behavior, preserved computed property names in declaration files for more predictable emits, and performance optimizations that improve program load and update times. Additionally, it enforces the use of import attributes over import assertions under `--module nodenext`, aligning with ECMAScript standards.
+- **Summary**: This release introduces several new features and improvements:
+  - **Granular Checks for Branches in Return Expressions**: TypeScript now performs more thorough checks on conditional expressions in return statements to catch subtle bugs.
+  - **Support for `require()` of ECMAScript Modules**: Node.js 22 compatibility allowing CommonJS modules to import ESM modules with the `--module nodenext` flag.
+  - **New `--module node18` Flag**: A stable flag for users fixed on Node.js 18, providing a reference that doesn't incorporate certain behaviors from `--module nodenext`.
+  - **The `--erasableSyntaxOnly` Option**: Better compatibility with Node.js 23.6's experimental TypeScript support by ensuring TypeScript syntax can be easily erased.
+  - **The `--libReplacement` Flag**: More control over TypeScript's behavior when replacing library files during compilation.
+  - **Preserved Computed Property Names**: Better handling of computed property names in declaration files for more predictable emit.
+  - **Performance Optimizations**: Improvements to program loads and updates, making builds and editor scenarios more responsive, especially for large projects.
 - **Link**: [Announcing TypeScript 5.8](https://devblogs.microsoft.com/typescript/announcing-typescript-5-8/)
 
 ## Announcing TypeScript 5.7
