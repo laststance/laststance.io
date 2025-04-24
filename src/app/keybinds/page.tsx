@@ -124,7 +124,6 @@ const keybinds: KeybindsList = {
     'Open refactor menu selected code': '^ + T',
     'Show Reference/Usage': 'CMD + U',
     'Show Context Menu': '^-c ^- c',
-    'Show quick fix options(Cursor)': 'Option + Space',
     'Toggle Terminal': '^ + \\',
     'Reload Window': '^-x ^-r',
     'Close Panel': '^-x ^-c',
