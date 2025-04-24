@@ -26,6 +26,7 @@ const keybinds: KeybindsList = {
     Dictionary: 'Option + E',
     'Search Quicklinks': 'Option + Q',
     'Left Half(Window Management)': '^ + H',
+    'Maximize(Window Management)': 'Option + M',
     'Toggle Raycast Note': 'Option + W',
     Confetti: 'Option + D',
   },
