@@ -27,7 +27,7 @@ const keybinds: KeybindsList = {
     'Search Quicklinks': 'Option + Q',
     'Left Half(Window Management)': '^ + H',
     'Maximize(Window Management)': 'Option + M',
-    'Toggle Raycast Note': 'Option + W',
+    'Toggle Raycast Note': 'Option + Space',
     Confetti: 'Option + D',
   },
   'Move Cursor': {
