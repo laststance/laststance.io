@@ -17,14 +17,15 @@ interface KeybindsList {
 
 const keybinds: KeybindsList = {
   Raycast: {
+    'Toggle Raycast': 'CMD + Space',
     'Clipboard History': '^ + D',
     'Search Snippets': 'CMD + I',
     'Search History (Chrome)': 'Option + 1',
     'Search Bookmarks (Chrome)': 'Option + G',
     'Search Bookmarks (Raindrop)': 'Option + R',
     'Search AI Commands': 'Option + O',
-    Dictionary: 'Option + E',
     'Search Quicklinks': 'Option + Q',
+    Dictionary: 'Option + E',
     'Left Half(Window Management)': '^ + H',
     'Maximize(Window Management)': 'Option + M',
     'Toggle Raycast Note': 'Option + Space',
