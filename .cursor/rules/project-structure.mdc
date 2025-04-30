@@ -1,0 +1,24 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Structure
+
+The project follows a standard Next.js App Router structure:
+
+- `src/app/` - App Router pages and layouts
+  - `page.tsx` - Homepage
+  - `layout.tsx` - Root layout with providers
+  - Various route segments (`/about`, `/articles`, etc.)
+- `src/components/` - Reusable React components
+  - `Header/` - Site header components
+  - `ui/` - UI component library (shadcn-style)
+  - `icons/` - Icon components
+- `src/lib/` - Utility functions and libraries
+- `src/hooks/` - Custom React hooks
+- `src/styles/` - Global styles and Tailwind configs
+- `src/@types/` - TypeScript type definitions
+- `src/images/` - Static images organized by type
+- `e2e/` - Playwright end-to-end tests
+- `public/` - Static assets served at root level

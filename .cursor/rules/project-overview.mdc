@@ -9,6 +9,34 @@ globs:
 alwaysApply: true
 ---
 
+# Project Overview
+
+This is the personal website and blog of Ryota Murakami (laststance.io), built with Next.js 15 and the App Router pattern. The site includes:
+
+- Personal blog with MDX-based articles
+- Project showcase
+- About page
+- Uses page (tools/setup)
+- Keybinds reference
+
+## Key Project Principles
+
+- Modern React patterns with App Router
+- Server-first approach with React Server Components
+- TypeScript for type safety
+- Tailwind for styling
+- Accessibility best practices
+- Performance optimization
+- Mobile-first design
+
+## Development Guidelines
+
+- Use pnpm for package management
+- English only for code comments and documentation
+- Follow proper TypeScript typing
+- Prefer server components when possible
+- Keep bundle size minimal
+
 # Project Guidance
 
 - Use pnpm

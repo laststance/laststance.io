@@ -1,0 +1,30 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Coding Conventions
+
+This project follows these coding conventions:
+
+- **TypeScript**: Use strict typing, avoid `any` types
+- **React Components**: 
+  - Function components with arrow functions
+  - Props interfaces named with `Props` suffix
+  - Client components marked with `.client.tsx` extension
+  - Server components are the default
+- **File Structure**:
+  - One component per file
+  - Named exports preferred over default exports
+  - Related components can be co-located in feature folders
+- **Naming**:
+  - PascalCase for components and types
+  - camelCase for variables and functions
+  - kebab-case for file names
+- **Styling**:
+  - TailwindCSS for styling with class-variance-authority when needed
+  - Use `clsx` or `tailwind-merge` for conditional classes
+- **Comments**: English only for code comments
+- **Testing**:
+  - Component tests near the components they test
+  - E2E tests in the `e2e/` directory

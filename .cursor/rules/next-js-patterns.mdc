@@ -1,0 +1,41 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Next.js App Router Patterns
+
+This project follows these Next.js App Router patterns:
+
+## Server vs Client Components
+
+- Components are Server Components by default
+- Client components are explicitly marked with `.client.tsx` suffix
+- Minimize client component usage to essential interactivity
+
+## Data Fetching
+
+- Use Server Components for data fetching when possible
+- API routes are defined in `src/app/api/` directory
+- When fetching data, use `fetch` with appropriate caching directives
+
+## Routing
+
+- File-based routing via App Router
+- `page.tsx` defines routes
+- `layout.tsx` defines nested layouts
+- `not-found.tsx` handles 404 errors
+- `error.tsx` handles other errors
+- Dynamic routes use `[param]` folder naming
+
+## SEO
+
+- Use metadata export in route segments
+- The site has a sitemap generated in `src/app/sitemap.ts`
+- OpenGraph images generated in `/api/og/` routes
+
+## Page Organization
+
+- Group related functionality in directories
+- Keep page components focused on layout and composition
+- Extract business logic to separate functions/hooks
