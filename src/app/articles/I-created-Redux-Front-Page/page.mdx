@@ -1,0 +1,45 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'I created Redux Front Page',
+  date: '2025-04-30',
+  description: '',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+
+The **[Redux Front Page](https://redux-front-page.vercel.app/)** was created to solve a long-standing issue in the Redux ecosystem — fragmented documentation.
+
+## Why I Built This
+
+Over time, Redux has grown in both features and community, but its learning resources have become scattered:
+
+- Multiple official and unofficial documentation sites  
+- Tutorials and guides spread across blogs, forums, and social media  
+- A steep learning curve due to inconsistent or outdated references  
+
+This fragmentation has made it challenging for newcomers and experienced developers alike to find reliable, up-to-date information.
+
+**Redux Front Page** addresses this by offering a centralized starting point — a curated, organized guide to all major parts of the Redux ecosystem and its documentation.
+
+## Inspired by Community Voices
+
+This initiative was sparked by valuable community feedback, especially the concerns highlighted by [Mark Erikson](https://bsky.app/profile/acemarke.dev/post/3lngz256amc27), Redux maintainer and frequent contributor to improving developer experience. His reflections on the accessibility of Redux resources resonated with many, and ultimately motivated the creation of this site.
+
+## What’s Next
+
+We're continuously refining the site to serve as a dependable hub for Redux knowledge — whether you’re just starting out or diving deep into advanced concepts.
+
+If you’ve ever felt lost navigating Redux docs, I hope this makes your journey smoother.
