@@ -44,11 +44,11 @@ const WhatNew: React.FC = () => {
         </DialogHeader>
         <ScrollArea className="mt-4 space-y-4">
           <List
-            date="2025-04-30"
+            date="2025-05-01"
             li={[
               <DialogClose asChild>
                 <Link href="/articles/I-created-Redux-Front-Page">
-                  All TypeScript release blog list
+                  I created Redux Front Page
                 </Link>
               </DialogClose>,
             ]}
