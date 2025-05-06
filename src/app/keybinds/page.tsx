@@ -129,6 +129,7 @@ const keybinds: KeybindsList = {
     'Reload Window': '^-x ^-r',
     'Close Panel': '^-x ^-c',
     'Show Highlighted Symbol Type Info': '^ +  CMD + I',
+    'Open keybinds': '^ + CMD + ,',
   },
   Git: {
     'Show Git History': '^-g  ^-h',
