@@ -26,7 +26,7 @@ const keybinds: KeybindsList = {
     'Search AI Commands': 'Option + O',
     'Search Quicklinks': 'Option + Q',
     '英語 to 日本語': 'Option + E',
-    'Left Half(Window Management)': '^ + H',
+    '日本語 to 英語': '^ + H',
     'Maximize(Window Management)': 'Option + M',
     'Toggle Raycast Note': 'Option + Space',
     Confetti: 'Option + D',
