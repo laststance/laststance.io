@@ -25,7 +25,7 @@ const keybinds: KeybindsList = {
     'Search Bookmarks (Raindrop)': 'Option + R',
     'Search AI Commands': 'Option + O',
     'Search Quicklinks': 'Option + Q',
-    Dictionary: 'Option + E',
+    '英語 to 日本語': 'Option + E',
     'Left Half(Window Management)': '^ + H',
     'Maximize(Window Management)': 'Option + M',
     'Toggle Raycast Note': 'Option + Space',
