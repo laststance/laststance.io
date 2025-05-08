@@ -1,0 +1,111 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import Image from 'next/image'
+import previewGif from './preview.gif'
+import openApiKeyImage from './open-api-key.png'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: "I've just released git-gpt-commit v0.9.0! 🎉",
+  date: '2025-05-08',
+  description: 'A commit message generation for CLI',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+<Image
+  src={previewGif}
+  alt="Preview of git-gpt-commit"
+  sizes="100vw"
+  style={{
+    width: '100%',
+    height: 'auto',
+  }}
+/>
+
+Hey everyone! I'm thrilled to announce that [git-gpt-commit v0.9.0](https://github.com/laststance/git-gpt-commit) is now available! This AI-powered Git extension makes your commit process smoother by generating meaningful commit messages using OpenAI's GPT models.
+
+## What's New in v0.9.0? ✨
+
+This release comes with several exciting new features that make git-gpt-commit even more powerful:
+
+### 🚀 Support for GPT-4o
+
+The default model has been upgraded to OpenAI's GPT-4o, offering significantly improved message quality while maintaining fast response times. Your commit messages will be more accurate and contextually appropriate than ever!
+
+### 🌐 Language Selection Command
+
+```bash
+git gpt lang
+```
+
+Choose from 12 languages for your commit messages, including English, Spanish, Japanese, French, German, Italian, Korean, Chinese (both simplified and traditional), Dutch, Russian, and Brazilian Portuguese.
+
+### 🏷️ Prefix Toggle Command
+
+```bash
+git gpt prefix
+```
+
+Easily toggle commit message prefixes (like `feat:`, `fix:`, `refactor:`, etc.) on or off based on your team's conventions. No more manual formatting!
+
+### 🔑 API Key Management
+
+```bash
+git gpt open-api-key
+```
+
+<Image
+  src={openApiKeyImage}
+  alt="OpenAI API Key Management"
+  sizes="100vw"
+  style={{
+    width: '100%',
+    height: 'auto',
+  }}
+/>
+Securely add and manage your OpenAI API key directly through the CLI.
+Previously, you had to set the API key in the `.env` file. That still working
+fine!
+
+### ⚙️ Configuration Management
+
+```bash
+git gpt config
+```
+
+View your current configuration settings in one place, making it easier to verify your preferences.
+
+## How It Works
+
+Simply stage your changes with `git add` as you normally would, then run:
+
+```bash
+git gpt commit
+```
+
+The tool analyzes your staged changes, sends them to the GPT model, and generates a contextually appropriate commit message. You can accept the suggestion or cancel the commit if you prefer to write your own message.
+
+## Installation
+
+```bash
+npm install -g @laststance/git-gpt-commit
+```
+
+## Why git-gpt-commit?
+
+I built this because while IDEs like VSCode and Cursor had AI-generated commit messages, there wasn't really a CLI tool for that—and I mostly use Git from the command line anyway. 😅
+
+Happy committing! 🚀
+
+---
+
+_Links: [GitHub](https://github.com/laststance/git-gpt-commit) | [npm](https://www.npmjs.com/package/@laststance/git-gpt-commit)_
