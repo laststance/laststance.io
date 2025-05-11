@@ -164,7 +164,7 @@ export default function Keybinds() {
       }
       intro="Cursor, WebStorm, Raycast, Chrome Keybinds.(MacOS)"
     >
-      <div className="w-full sm:w-[400px] mx-auto">
+      <div className="w-full sm:w-[400px] lg:w-[600px] mx-auto">
         {Object.keys(keybinds).map((category) => (
           <div key={category}>
             <Spacer size="h-3xs" />
