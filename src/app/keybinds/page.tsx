@@ -159,10 +159,10 @@ export default function Keybinds() {
     <SimpleLayout
       title={
         <div className="text-balance lg:text-nowrap">
-          My Editor and Raycast, Chrome Keybinds.
+          My Raycast, Cursor, WebStorm, Chrome Keybinds.
         </div>
       }
-      intro="Cursor, WebStorm, Raycast, Chrome Keybinds.(MacOS)"
+      intro="I'm always keeping this page open as my cheat sheet. 😅 (MacOS US Keyboard Layout)"
     >
       <div className="w-full sm:w-[400px] lg:w-[600px] mx-auto">
         {Object.keys(keybinds).map((category) => (
