@@ -20,7 +20,7 @@ const keybinds: KeybindsList = {
     'Toggle Raycast': 'CMD + Space',
     'Clipboard History': '^ + D',
     'Search Snippets': 'CMD + I',
-    'Search History (Chrome)': '^ + R',
+    'Search History (Chrome)': '^ + Option + R',
     'Search Quicklinks': 'Option + Q',
     'EN to JP': 'Option + E',
     'JP to EN': 'Option + W',
