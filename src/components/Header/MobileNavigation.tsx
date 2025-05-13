@@ -55,7 +55,7 @@ export function MobileNavigation(
                 <MobileNavItem href="/projects">Projects</MobileNavItem>
                 {/* @ts-expect-error There is no time for type gymnastics. */}
                 <MobileNavItem href="https://nsx.malloc.tokyo/" target="_blank">
-                  ReadList
+                  NSX
                 </MobileNavItem>
                 <MobileNavItem href="/uses">Uses</MobileNavItem>
                 <MobileNavItem href="/keybinds">Keybinds</MobileNavItem>
