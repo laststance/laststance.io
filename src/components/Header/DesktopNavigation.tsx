@@ -10,7 +10,7 @@ export function DesktopNavigation(
         <NavItem href="/articles">Articles</NavItem>
         <NavItem href="/projects">Projects</NavItem>
         <NavItem href="https://nsx.malloc.tokyo/" target="_blank">
-          ReadList
+          NSX
         </NavItem>
         <NavItem href="/uses">Uses</NavItem>
         <NavItem href="/keybinds">Keybinds</NavItem>
