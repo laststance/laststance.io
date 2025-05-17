@@ -97,8 +97,8 @@ importers:
         specifier: ^2.5.7
         version: 2.5.7
       '@argos-ci/playwright':
-        specifier: ^5.0.3
-        version: 5.0.3
+        specifier: ^5.0.4
+        version: 5.0.4
       '@chromatic-com/storybook':
         specifier: ^3.2.6
         version: 3.2.6(react@19.1.0)(storybook@8.6.12(prettier@3.5.3))
@@ -273,16 +273,12 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@argos-ci/core@3.1.1':
-    resolution: {integrity: sha512-7iE3o1XGxlfHC5AF05pzT0OxuO387sryrZt3gKGj/e+6R20DXz7J49yI8++nQ2cuT+wLhcJp8+X0ox+SGMYHmw==}
-    engines: {node: '>=18.0.0'}
-
   '@argos-ci/core@3.2.0':
     resolution: {integrity: sha512-wraH5RGFpoU7zcKV2BVi4LvY+5bWR/Ds6OVhUtq3jtd7I3qJRFVFq2IX1TfPPvBBA7wX0OqcrqgIWAQwy+vsoA==}
     engines: {node: '>=18.0.0'}
 
-  '@argos-ci/playwright@5.0.3':
-    resolution: {integrity: sha512-sqoARsgnDRrwKm1x10L3Z8+OQukk0F9OksVj9v9rvbzNI2WVCw5zbCUMY0qD4Q3Ba7vMFbl1ELUODRc2mfCbNw==}
+  '@argos-ci/playwright@5.0.4':
+    resolution: {integrity: sha512-mfbEg6RgQb4ciihozEJ+F1guA4MNphzDfefRpxQuwt+P5eczTxkhgUCO94glk4+dqWoHQDbdNf2N33sL9Zsuew==}
     engines: {node: '>=18.16.0'}
 
   '@argos-ci/util@2.3.1':
@@ -6404,9 +6400,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss@4.1.6:
-    resolution: {integrity: sha512-j0cGLTreM6u4OWzBeLBpycK0WIh8w7kSwcUsQZoGLHZ7xDTdM69lN64AgoIEEwFi0tnhs4wSykUa5YWxAzgFYg==}
-
   tailwindcss@4.1.7:
     resolution: {integrity: sha512-kr1o/ErIdNhTz8uzAYL7TpaUuzKIE6QPQ4qmSdxnoX/lo+5wmUHQA6h3L5yIqEImSRnAAURDirLu/BgiXGPAhg==}
 
@@ -7019,19 +7012,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/core@3.1.1':
-    dependencies:
-      '@argos-ci/api-client': 0.8.1
-      '@argos-ci/util': 2.3.1
-      axios: 1.9.0(debug@4.4.0)
-      convict: 6.2.4
-      debug: 4.4.0
-      fast-glob: 3.3.3
-      sharp: 0.33.5
-      tmp: 0.2.3
-    transitivePeerDependencies:
-      - supports-color
-
   '@argos-ci/core@3.2.0':
     dependencies:
       '@argos-ci/api-client': 0.8.1
@@ -7045,13 +7025,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/playwright@5.0.3':
+  '@argos-ci/playwright@5.0.4':
     dependencies:
       '@argos-ci/browser': 4.1.1
-      '@argos-ci/core': 3.1.1
+      '@argos-ci/core': 3.2.0
       '@argos-ci/util': 2.3.1
       chalk: 5.4.1
-      debug: 4.4.0
+      debug: 4.4.1
     transitivePeerDependencies:
       - supports-color
 
@@ -7999,7 +7979,7 @@ snapshots:
   '@eslint/config-array@0.20.0':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.0
+      debug: 4.4.1
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -10178,14 +10158,6 @@ snapshots:
 
   axe-core@4.10.3: {}
 
-  axios@1.9.0(debug@4.4.0):
-    dependencies:
-      follow-redirects: 1.15.9(debug@4.4.0)
-      form-data: 4.0.2
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
   axios@1.9.0(debug@4.4.1):
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.1)
@@ -11468,10 +11440,6 @@ snapshots:
       keyv: 4.5.4
 
   flatted@3.3.3: {}
-
-  follow-redirects@1.15.9(debug@4.4.0):
-    optionalDependencies:
-      debug: 4.4.0
 
   follow-redirects@1.15.9(debug@4.4.1):
     optionalDependencies:
@@ -14015,8 +13983,6 @@ snapshots:
   tailwindcss-animate@1.0.7(tailwindcss@4.1.7):
     dependencies:
       tailwindcss: 4.1.7
-
-  tailwindcss@4.1.6: {}
 
   tailwindcss@4.1.7: {}
 

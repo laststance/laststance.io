@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@argos-ci/cli": "^2.5.7",
-    "@argos-ci/playwright": "^5.0.3",
+    "@argos-ci/playwright": "^5.0.4",
     "@chromatic-com/storybook": "^3.2.6",
     "@clack/prompts": "^0.10.1",
     "@eslint/eslintrc": "^3.3.1",
