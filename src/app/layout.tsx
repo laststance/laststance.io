@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { type Metadata } from 'next'
 
 import { Layout } from '@/components/Layout'
+import { env } from '@/env.mjs'
 
 import { ProvidersClient } from './providers.client'
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     types: {
-      'application/rss+xml': `${process.env.NEXT_PUBLIC_SITE_URL}/feed.xml`,
+      'application/rss+xml': `${env.NEXT_PUBLIC_SITE_URL}/feed.xml`,
     },
   },
   description: 'A individual OSS organization for code things.',
