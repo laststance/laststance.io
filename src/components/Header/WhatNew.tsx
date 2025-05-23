@@ -43,6 +43,7 @@ const WhatNew: React.FC = () => {
           <DialogTitle>What's New?</DialogTitle>
         </DialogHeader>
         <ScrollArea className="mt-4 space-y-4">
+          <List date="2025-05-23" li={['Update Keybinds Style']} />
           <List
             date="2025-05-08"
             li={[
