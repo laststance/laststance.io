@@ -1,3 +1,4 @@
+import { KBD } from '@/components/kbd'
 import { SimpleLayout } from '@/components/SimpleLayout'
 import { Spacer } from '@/components/Spacer'
 
@@ -74,7 +75,7 @@ const keybinds: KeybindsList = {
     'Duplicate Line': 'CMD + D',
     'Insert line Above(Cursor)': '^ + CMD + Enter',
     'Insert line Below(Cursor)': 'CMD + Enter',
-    'Delete matched bracket or tag': '^-x ^-m ',
+    'Delete matched bracket or tag': '^-x ^-m',
     'Cut All Left': '^ + W',
     'Cut All Right': '^ + K',
     'Rename selected symbol': '^ + R',
@@ -89,10 +90,10 @@ const keybinds: KeybindsList = {
   },
   'Split Editor Window': {
     'Split RIght': '^-x ^-f',
-    'Split Down': '^-x  ^-n',
+    'Split Down': '^-x ^-n',
     'Split Up': '^-x ^-p',
-    'Move Focus Window Right': '^-x  ^-j',
-    'Move Focus Window Left': '^-x  ^-h',
+    'Move Focus Window Right': '^-x ^-j',
+    'Move Focus Window Left': '^-x ^-h',
   },
   'Code Jump': {
     'Go to Implementation': 'CMD + B',
@@ -180,7 +181,12 @@ export default function Keybinds() {
                         {action}
                       </td>
                       <td className="py-2 px-4 border-b border-gray-300">
-                        {shortcut}
+                        <div className="flex gap-2">
+                          {shortcut.split(' ').map((key, i) => {
+                            if (key === '+') return <span key={i}>{key}</span>
+                            return <KBD key={i} keyName={key} variant="small" />
+                          })}
+                        </div>
                       </td>
                     </tr>
                   ),
