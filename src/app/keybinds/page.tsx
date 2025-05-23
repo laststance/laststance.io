@@ -1,3 +1,4 @@
+import { KBD } from '@/components/kbd'
 import { SimpleLayout } from '@/components/SimpleLayout'
 import { Spacer } from '@/components/Spacer'
 
@@ -21,6 +22,7 @@ const keybinds: KeybindsList = {
     'Clipboard History': '^ + D',
     'Search Snippets': 'CMD + I',
     'Search History (Chrome)': '^ + CMD + R',
+    'Search Bookmark (Chrome)': '^ + CMD + E',
     'Search Quicklinks': 'Option + Q',
     'EN to JP': 'Option + E',
     'JP to EN': 'Option + W',
@@ -74,11 +76,11 @@ const keybinds: KeybindsList = {
     'Duplicate Line': 'CMD + D',
     'Insert line Above(Cursor)': '^ + CMD + Enter',
     'Insert line Below(Cursor)': 'CMD + Enter',
-    'Delete matched bracket or tag': '^-x ^-m ',
+    'Delete matched bracket or tag': '^-x ^-m',
     'Cut All Left': '^ + W',
     'Cut All Right': '^ + K',
     'Rename selected symbol': '^ + R',
-    'Wrapping selected HTML Tag': 'select children elements → ^ + S',
+    'Wrapping selected HTML Tag: select children elements ->': '^ + S',
     'Delete Pararent HTML Tag(preserve children)(WebStorm)': '^ + CMD + D',
   },
   Find: {
@@ -89,10 +91,10 @@ const keybinds: KeybindsList = {
   },
   'Split Editor Window': {
     'Split RIght': '^-x ^-f',
-    'Split Down': '^-x  ^-n',
+    'Split Down': '^-x ^-n',
     'Split Up': '^-x ^-p',
-    'Move Focus Window Right': '^-x  ^-j',
-    'Move Focus Window Left': '^-x  ^-h',
+    'Move Focus Window Right': '^-x ^-j',
+    'Move Focus Window Left': '^-x ^-h',
   },
   'Code Jump': {
     'Go to Implementation': 'CMD + B',
@@ -124,12 +126,14 @@ const keybinds: KeybindsList = {
     'Open Go to Symbol Search': 'CMD + Shift + O',
     'Open refactor menu selected code': '^ + T',
     'Show Reference/Usage': 'CMD + U',
-    'Show Context Menu': '^-c ^- c',
+    'Show Context Menu': '^-c ^-c',
     'Toggle Terminal': '^ + \\',
     'Reload Window': '^-x ^-r',
     'Open keybinds': '^ + CMD + ,',
     'ESLint  —fix': '^ + Space',
     'Format with Prettier': '^-x ^-x',
+    'Keybord Shortcut': 'Shift + CMD + ,',
+    'Open Cursor Settings': 'Shift + CMD + j',
   },
   AI: {
     'Toggle Chat Tab': 'CMD + L',
@@ -144,7 +148,7 @@ const keybinds: KeybindsList = {
     'Add or Remove caret': 'CMD + Click',
     'Clone Cursor Above': 'Option + CMD + ↑',
     'Clone Cursor Bellow': 'Option + CMD + ↓',
-    'Vertical cursor fillin': 'CMD + Shift + mouse coursor(Cursor)',
+    'Vertical cursor fillin(Cursor)': 'CMD + Shift + mouse',
   },
   Chrome: {
     'Toggle Devtools': '^ + Space',
@@ -180,7 +184,12 @@ export default function Keybinds() {
                         {action}
                       </td>
                       <td className="py-2 px-4 border-b border-gray-300">
-                        {shortcut}
+                        <div className="flex gap-2">
+                          {shortcut.split(' ').map((key, i) => {
+                            if (key === '+') return <span key={i}>{key}</span>
+                            return <KBD key={i} keyName={key} variant="small" />
+                          })}
+                        </div>
                       </td>
                     </tr>
                   ),
