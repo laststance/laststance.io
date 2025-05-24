@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { KBD } from '@/components/Kbd'
+// TODO Convert Storybook's story
+import { KBD } from '@/components/KBD'
 
 export default function KeyboardShortcutsRounded() {
   const shortcuts = [
