@@ -1,4 +1,4 @@
-import { KBD } from '@/components/kbd'
+import { KBD } from '@/components/Kbd'
 import { SimpleLayout } from '@/components/SimpleLayout'
 import { Spacer } from '@/components/Spacer'
 

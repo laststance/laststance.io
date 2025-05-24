@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { KBD } from '@/components/kbd'
+import { KBD } from '@/components/Kbd'
 
 export default function KeyboardShortcuts() {
   const shortcuts = [
