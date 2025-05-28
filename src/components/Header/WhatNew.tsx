@@ -43,6 +43,16 @@ const WhatNew: React.FC = () => {
           <DialogTitle>What's New?</DialogTitle>
         </DialogHeader>
         <ScrollArea className="mt-4 space-y-4">
+          <List
+            date="2025-05-28"
+            li={[
+              <DialogClose asChild>
+                <Link href="/articles/How-to-use-fakerseed">
+                  "How to use faker.seed()"
+                </Link>
+              </DialogClose>,
+            ]}
+          />
           <List date="2025-05-23" li={['Update Keybinds Style']} />
           <List
             date="2025-05-08"

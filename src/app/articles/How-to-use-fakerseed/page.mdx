@@ -1,0 +1,178 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'How to use faker.seed()',
+  date: '2025-05-28',
+  description: '',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+The Faker version is `v.9.8.0`.
+
+I couldn't quite understand after reading the [Official Docs](https://fakerjs.dev/api/faker#seed),  
+so I'll explain in detail how to use `faker.seed()` based on what I learned from using it.
+
+## Basic Concept of faker.seed()
+
+`faker.seed()` is a feature for generating **reproducible random data**. When you set the same seed value, the same data will be generated every time.
+
+## Basic Usage
+
+```typescript
+import { faker } from '@faker-js/faker'
+
+// Set seed (specify a number)
+faker.seed(123)
+
+// Data generated after this will be the same every time
+console.log(faker.person.firstName()) // Same name every time
+console.log(faker.location.city())    // Same city name every time
+```
+
+## Practical Example in Test Files
+
+Let's add the seed feature to the React Component.
+
+```typescript
+import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
+import { faker } from '@faker-js/faker'
+
+import { Combobox } from './Combobox'
+
+// Set seed to generate reproducible data
+faker.seed(12345) // Set a fixed number
+
+const facilityPrefixes = ['Tokyo', 'Osaka', 'Nagoya', 'Fukuoka', 'Sapporo', 'Kobe', 'Yokohama']
+const facilitySuffixes = ['Center', 'Building', 'Tower', 'Plaza', 'Park', 'Hall', 'Facility']
+
+const generateFacility = (index: number) => {
+  const prefix = faker.helpers.arrayElement(facilityPrefixes)
+  const suffix = faker.helpers.arrayElement(facilitySuffixes)
+  const name = `${prefix}${suffix}${index + 1}`
+  return { value: name, label: name }
+}
+
+// Same data is generated every time
+export const facilities = Array.from({ length: 30 }, (_, index) => 
+  generateFacility(index)
+)
+
+test('renders', () => {
+  const { getByRole } = render(<Combobox />)
+  expect(getByRole('combobox')).toBeVisible()
+})
+
+test('generates consistent facility data', () => {
+  // Since the seed is the same, the same data is generated every time
+  console.log('First facility:', facilities[0])
+  // Example: { value: 'TokyoCenter1', label: 'TokyoCenter1' }
+  
+  expect(facilities).toHaveLength(30)
+  expect(facilities[0].value).toBe('TokyoCenter1') // Same value every time
+})
+```
+
+## Detailed Usage of Seed
+
+### 1. Numeric Seed
+```typescript
+faker.seed(123)           // Single number
+faker.seed([123, 456])    // Array of multiple numbers
+```
+
+### 2. Reset Seed for Each Test
+```typescript
+describe('Combobox tests', () => {
+  beforeEach(() => {
+    faker.seed(123) // Reset seed before each test
+  })
+
+  test('test 1', () => {
+    // Starts with the same data every time
+  })
+
+  test('test 2', () => {
+    // Starts with the same data every time
+  })
+})
+```
+
+### 3. Conditional Seed Setting
+```typescript
+// Fixed seed in development, true random in production
+if (process.env.NODE_ENV === 'test') {
+  faker.seed(123)
+}
+```
+
+### 4. Dynamic Seed (Date-based)
+```typescript
+// Date-based seed (changes daily)
+const today = new Date().toDateString()
+const seed = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+faker.seed(seed)
+```
+
+## Actual Usage Patterns
+
+### Pattern 1: Fixed Data for Testing
+```typescript
+// Test-only fixtures
+export const createTestFacilities = () => {
+  faker.seed(999) // Fixed seed
+  return Array.from({ length: 10 }, (_, i) => ({
+    value: `Test Facility${i + 1}`,
+    label: `Test Facility${i + 1}`
+  }))
+}
+```
+
+### Pattern 2: Supporting Snapshot Tests
+```typescript
+test('facility list snapshot', () => {
+  faker.seed(123) // Fixed seed
+  const facilities = generateFacilities(5)
+  expect(facilities).toMatchSnapshot() // Same result every time
+})
+```
+
+### Pattern 3: Seed Value Management
+```typescript
+const SEEDS = {
+  FACILITIES: 123,
+  USERS: 456,
+  PRODUCTS: 789
+} as const
+
+// Separate seeds by purpose
+export const generateFacilities = () => {
+  faker.seed(SEEDS.FACILITIES)
+  // Generate facility data
+}
+
+export const generateUsers = () => {
+  faker.seed(SEEDS.USERS)
+  // Generate user data
+}
+```
+
+## Important Notes
+
+1. **Seed is global**: Once set, it affects all subsequent faker calls
+2. **Order matters**: Even with the same seed, changing the order of `faker` method calls will change the results
+3. **Version dependent**: If the Faker.js version changes, the same seed may produce different results
+
+Using seeds improves test reproducibility and makes debugging easier!
