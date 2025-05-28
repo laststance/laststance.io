@@ -1,0 +1,89 @@
+import { Meta, Story, Canvas, Controls, ArgTypes, Stories } from '@storybook/addon-docs'
+import * as SpacerStories from './Spacer.stories'
+
+<Meta of={SpacerStories} />
+
+# Spacer
+
+The `Spacer` component is a utility component that creates consistent spacing in your layouts. It renders an empty `div` with predefined Tailwind CSS spacing classes to help maintain visual hierarchy and proper spacing between elements.
+
+## Overview
+
+Use the Spacer component when you need to add consistent vertical or horizontal spacing between elements. It's particularly useful for:
+
+- Creating breathing room between sections
+- Maintaining consistent spacing in flexbox layouts
+- Adding space in component compositions
+- Ensuring proper visual hierarchy
+
+## Usage
+
+<Canvas of={SpacerStories.H_md} />
+
+## Size Options
+
+The Spacer component accepts a `size` prop that determines the amount of space. Available options include both height and width variants:
+
+### Height Variants
+- **h-4xs**: 16px (1rem) - Very small spacing
+- **h-3xs**: 32px (2rem) - Small spacing  
+- **h-2xs**: 48px (3rem) - Small-medium spacing
+- **h-xs**: 64px (4rem) - Medium spacing
+- **h-sm**: 80px (5rem) - Medium-large spacing
+- **h-md**: 96px (6rem) - Large spacing
+- **h-lg**: 112px (7rem) - Extra large spacing
+- **h-xl**: 128px (8rem) - 2x large spacing
+- **h-2xl**: 144px (9rem) - 3x large spacing
+- **h-3xl**: 160px (10rem) - 4x large spacing
+- **h-4xl**: 176px (11rem) - 5x large spacing
+
+### Width Variants
+- **w-4xs**: 16px (1rem) - Very small spacing
+- **w-3xs**: 32px (2rem) - Small spacing
+- **w-2xs**: 48px (3rem) - Small-medium spacing
+- **w-xs**: 64px (4rem) - Medium spacing
+- **w-sm**: 80px (5rem) - Medium-large spacing
+- **w-md**: 96px (6rem) - Large spacing
+- **w-lg**: 112px (7rem) - Extra large spacing
+- **w-xl**: 128px (8rem) - 2x large spacing
+- **w-2xl**: 144px (9rem) - 3x large spacing
+- **w-3xl**: 160px (10rem) - 4x large spacing
+- **w-4xl**: 176px (11rem) - 5x large spacing
+
+## Examples
+
+### Small Height Spacing
+<Canvas of={SpacerStories.H4xs} />
+
+### Medium Height Spacing
+<Canvas of={SpacerStories.H_md} />
+
+### Large Height Spacing
+<Canvas of={SpacerStories.H_2xl} />
+
+### Width Spacing Examples
+<Canvas of={SpacerStories.W_md} />
+
+## Best Practices
+
+- **Consistency**: Use consistent spacing throughout your application by sticking to the predefined size options
+- **Visual Hierarchy**: Use larger spacing to separate major sections and smaller spacing for related content
+- **Responsive Design**: Consider how spacing will look on different screen sizes
+- **Semantic Spacing**: Choose spacing sizes that make semantic sense for your content structure
+
+## Implementation Details
+
+The Spacer component is implemented as a simple `div` with Tailwind CSS classes applied. It maps the `size` prop to the corresponding Tailwind spacing class:
+
+```tsx
+<Spacer size="h-md" /> // Renders: <div className="h-24" />
+<Spacer size="w-xs" /> // Renders: <div className="w-16" />
+```
+
+## All Available Stories
+
+<Stories />
+
+## Component API
+
+<ArgTypes of={SpacerStories} /> 

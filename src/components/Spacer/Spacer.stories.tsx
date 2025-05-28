@@ -1,11 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { Spacer } from './Spacer'
 
 const meta: Meta<typeof Spacer> = {
   title: 'components/Spacer',
   component: Spacer,
-  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div className="grid place-content-start">
