@@ -118,8 +118,8 @@ importers:
         specifier: 15.3.3
         version: 15.3.3
       '@next/eslint-plugin-next':
-        specifier: 15.3.2
-        version: 15.3.2
+        specifier: 15.3.3
+        version: 15.3.3
       '@next/mdx':
         specifier: 15.3.3
         version: 15.3.3(@mdx-js/loader@3.1.0(acorn@8.14.1)(webpack@5.99.9(esbuild@0.25.5)))(@mdx-js/react@3.1.0(@types/react@19.1.6)(react@19.1.0))
@@ -1604,8 +1604,8 @@ packages:
   '@next/env@15.3.3':
     resolution: {integrity: sha512-OdiMrzCl2Xi0VTjiQQUK0Xh7bJHnOuET2s+3V+Y40WJBAXrJeGA3f+I8MZJ/YQ3mVGi5XGR1L66oFlgqXhQ4Vw==}
 
-  '@next/eslint-plugin-next@15.3.2':
-    resolution: {integrity: sha512-ijVRTXBgnHT33aWnDtmlG+LJD+5vhc9AKTJPquGG5NKXjpKNjc62woIhFtrAcWdBobt8kqjCoaJ0q6sDQoX7aQ==}
+  '@next/eslint-plugin-next@15.3.3':
+    resolution: {integrity: sha512-VKZJEiEdpKkfBmcokGjHu0vGDG+8CehGs90tBEy/IDoDDKGngeyIStt2MmE5FYNyU9BhgR7tybNWTAJY/30u+Q==}
 
   '@next/mdx@15.3.3':
     resolution: {integrity: sha512-kJI7E/353vsoGa2usU/P36gDSA0iVc9xqJFFiPgLrSgWlivkANTRXjrnNVmVpHZ6ETmiZP52fMuKwmT9/FSmNQ==}
@@ -8201,7 +8201,7 @@ snapshots:
 
   '@next/env@15.3.3': {}
 
-  '@next/eslint-plugin-next@15.3.2':
+  '@next/eslint-plugin-next@15.3.3':
     dependencies:
       fast-glob: 3.3.1
 
