@@ -1,0 +1,110 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Major Libraries Available in shadcn/ui Registry',
+  date: '2025-06-06',
+  description: 'A comprehensive guide to the major third-party component libraries available through the shadcn/ui registry system, including Magic UI, Aceternity UI, Origin UI, and more.',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+The [shadcn/ui](https://ui.shadcn.com/docs/components) component library provides a rich set of basic components including Accordion, Alert, Dialog etc,
+
+But what makes shadcn/ui truly powerful is its registry system. If you have a project with shadcn/ui already installed via `npx shadcn@latest init`, you can easily add components from third-party registries using commands like:
+
+```bash
+npx shadcn-ui@latest add alert --registry https://registry.example.com/components.json
+```
+
+This allows you to fetch individual components from various UI libraries distributed through the [shadcn/ui Registry](https://ui.shadcn.com/docs/registry) system.
+
+## Major Third-party Registries
+
+### 1. Magic UI
+
+- **URL**: https://magicui.design
+- **Features**: A UI library designed for design engineers, featuring components that can be copied and pasted to create magical landing pages
+- **Highlights**: 150+ free and open-source components
+
+Magic UI focuses on creating visually stunning landing pages with components that have that extra "wow" factor. Perfect for marketing sites and product showcases.
+
+### 2. Aceternity UI
+
+- **URL**: https://ui.aceternity.com
+- **Features**: Beautiful components built with Tailwind CSS and Framer Motion, constructed with Next.js and TypeScript
+- **Highlights**: Spotlight effects, mask reveal effects, animated tabs, text fade-in effects, typing effects, wave backgrounds, and more
+
+Aceternity UI excels in creating highly animated and interactive components that bring websites to life with smooth transitions and eye-catching effects.
+
+### 3. Shadcn Blocks
+
+- **URL**: https://www.shadcnblocks.com
+- **Features**: A premium collection of 631 uniquely crafted blocks and components, custom-built for shadcn/ui, Tailwind, and React
+- **Highlights**: Extensive library of pre-built page sections and layouts
+
+This is a comprehensive premium solution for developers who want ready-made blocks for rapid prototyping and development.
+
+### 4. Origin UI
+
+- **URL**: https://originui.com
+- **Features**: A more advanced component set compared to the original shadcn/ui, including components like timeline displays and rich dialogs
+- **Highlights**: Enhanced versions of standard components with additional functionality
+
+Origin UI bridges the gap between basic components and complex functionality, offering more sophisticated alternatives to standard UI elements.
+
+### 5. Cult UI
+
+- **URL**: https://cult-ui.com
+- **Features**: Components created for design engineers with bold designs and animations
+- **Highlights**: Apple OS-inspired components including Dynamic Island and Dock, along with other interesting interactive elements
+
+Cult UI brings the polished aesthetic of Apple's design language to web applications, perfect for creating premium user experiences.
+
+### 6. Kokonut UI
+
+- **URL**: https://kokonutui.com
+- **Features**: 100+ UI components built with Tailwind CSS and shadcn/ui specifically for Next.js
+- **Highlights**: Next.js-optimized components with modern design patterns
+
+A solid choice for Next.js developers looking for a comprehensive component library that integrates seamlessly with their tech stack.
+
+### 7. Neobrutalism Components
+
+- **URL**: https://neobrutalism.dev
+- **Features**: A collection of shadcn/ui-based components in the neo-brutalism style
+- **Highlights**: Bold, raw aesthetic with strong visual impact
+
+Perfect for projects that want to break away from conventional design patterns and embrace a more rebellious, artistic approach.
+
+### 8. Other Notable Libraries
+
+- **[Shadcn Form Builder](https://www.shadcn-form.com/)**: Create forms in minutes using Shadcn, react-hook-form, and zod
+- **[StyleGlide](https://www.styleglide.ai/)**: Generate color palettes and typography styles, distributed with shadcn for your project
+- **[Kibo UI](https://www.kibo-ui.com/)**: A custom registry of configurable, accessible, open-source components
+
+## Useful Resources
+
+### Discovery and Exploration
+
+- **[registry.directory](https://registry.directory/)**: A comprehensive collection of shadcn/ui registries where you can discover, preview, copy, and paste components
+- **[Awesome Shadcn UI](https://github.com/birobirobiro/awesome-shadcn-ui)**: A curated list of awesome shadcn/ui resources with 13 categories and 200+ resources
+
+These resources make it easy to discover new components and libraries that can enhance your projects.
+
+## Conclusion
+
+All of these libraries are fully compatible with the shadcn CLI and can distribute custom components, hooks, pages, and other files to any React project. The registry system makes it incredibly easy to mix and match components from different libraries, allowing developers to create unique and powerful user interfaces without starting from scratch.
+
+Whether you're building a marketing site that needs eye-catching animations (Magic UI, Aceternity UI), a complex application requiring advanced components (Origin UI), or a project with a distinctive visual style (Cult UI, Neobrutalism), there's likely a registry that fits your needs.
+
+The beauty of this ecosystem is that you can start with the basic shadcn/ui components and gradually enhance your project by selectively adding specialized components from these third-party registries as needed.
