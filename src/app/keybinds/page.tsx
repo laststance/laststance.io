@@ -68,7 +68,6 @@ const keybinds: KeybindsList = {
   },
   'Code Edit': {
     'delete single charchtar': 'Delete',
-    'delete front single charchtar': '^ + O',
     Copy: 'CMD + C',
     Paste: 'CMD + V',
     Undo: 'CMD + Z',
