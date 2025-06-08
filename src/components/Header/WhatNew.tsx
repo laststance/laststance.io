@@ -44,6 +44,16 @@ const WhatNew: React.FC = () => {
         </DialogHeader>
         <ScrollArea className="mt-4 space-y-4">
           <List
+            date="2025-06-08"
+            li={[
+              <DialogClose asChild>
+                <Link href="/articles/major-shadcn-ui-registry-libraries">
+                  Major Libraries Available in shadcn/ui Registry
+                </Link>
+              </DialogClose>,
+            ]}
+          />
+          <List
             date="2025-05-28"
             li={[
               <DialogClose asChild>
