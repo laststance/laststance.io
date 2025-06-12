@@ -202,8 +202,8 @@ importers:
         specifier: 9.0.7
         version: 9.0.7(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
       happy-dom:
-        specifier: ^17.6.3
-        version: 17.6.3
+        specifier: ^18.0.1
+        version: 18.0.1
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -233,7 +233,7 @@ importers:
         version: 5.8.3
       vitest:
         specifier: ^3.2.3
-        version: 3.2.3(@types/debug@4.1.12)(@types/node@22.15.29)(happy-dom@17.6.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(yaml@2.8.0)
+        version: 3.2.3(@types/debug@4.1.12)(@types/node@22.15.29)(happy-dom@18.0.1)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(yaml@2.8.0)
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
@@ -2453,6 +2453,9 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
+  '@types/node@20.19.0':
+    resolution: {integrity: sha512-hfrc+1tud1xcdVTABC2JiomZJEklMcXYNTVtZLAeqTVWD+qL5jkHKT+1lOtqDdGxt+mB53DTtiz673vfjU8D1Q==}
+
   '@types/node@22.15.29':
     resolution: {integrity: sha512-LNdjOkUDlU1RZb8e1kOIUpN1qQUlzGkEtbVNo53vbrwDg5om6oduhm4SiUaPW5ASTXhAiP0jInWG8Qx9fVlOeQ==}
 
@@ -2481,6 +2484,9 @@ packages:
 
   '@types/webpack-env@1.18.8':
     resolution: {integrity: sha512-G9eAoJRMLjcvN4I08wB5I7YofOb/kaJNd5uoCMX+LbKXTPCF+ZIHuqTnFaK9Jz1rgs035f9JUPUhNFtqgucy/A==}
+
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
 
   '@types/xml2js@0.4.14':
     resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
@@ -4090,8 +4096,8 @@ packages:
     resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
     engines: {node: '>=10'}
 
-  happy-dom@17.6.3:
-    resolution: {integrity: sha512-UVIHeVhxmxedbWPCfgS55Jg2rDfwf2BCKeylcPSqazLz5w3Kri7Q4xdBJubsr/+VUzFLh0VjIvh13RaDA2/Xug==}
+  happy-dom@18.0.1:
+    resolution: {integrity: sha512-qn+rKOW7KWpVTtgIUi6RVmTBZJSe2k0Db0vh1f7CWrWclkkc7/Q+FrOfkZIb2eiErLyqu5AXEzE7XthO9JVxRA==}
     engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
@@ -6317,10 +6323,6 @@ packages:
   watchpack@2.4.4:
     resolution: {integrity: sha512-c5EGNOiyxxV5qmTtAB7rbiXxi1ooX1pQKMLX/MIabJjRA0SJBQOjKF+KSVfHkr9U1cADPon0mRiVe/riyaiDUA==}
     engines: {node: '>=10.13.0'}
-
-  webidl-conversions@7.0.0:
-    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
-    engines: {node: '>=12'}
 
   webpack-bundle-analyzer@4.10.1:
     resolution: {integrity: sha512-s3P7pgexgT/HTUSYgxJyn28A+99mmLq4HsJepMPzu0R8ImJc52QNqaFYW1Z2z2uIb1/J3eYgaAWVpaC+v/1aAQ==}
@@ -8833,6 +8835,10 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
+  '@types/node@20.19.0':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/node@22.15.29':
     dependencies:
       undici-types: 6.21.0
@@ -8856,6 +8862,8 @@ snapshots:
   '@types/unist@3.0.3': {}
 
   '@types/webpack-env@1.18.8': {}
+
+  '@types/whatwg-mimetype@3.0.2': {}
 
   '@types/xml2js@0.4.14':
     dependencies:
@@ -10717,9 +10725,10 @@ snapshots:
     dependencies:
       duplexer: 0.1.2
 
-  happy-dom@17.6.3:
+  happy-dom@18.0.1:
     dependencies:
-      webidl-conversions: 7.0.0
+      '@types/node': 20.19.0
+      '@types/whatwg-mimetype': 3.0.2
       whatwg-mimetype: 3.0.0
 
   has-bigints@1.1.0: {}
@@ -13364,7 +13373,7 @@ snapshots:
       terser: 5.40.0
       yaml: 2.8.0
 
-  vitest@3.2.3(@types/debug@4.1.12)(@types/node@22.15.29)(happy-dom@17.6.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(yaml@2.8.0):
+  vitest@3.2.3(@types/debug@4.1.12)(@types/node@22.15.29)(happy-dom@18.0.1)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(yaml@2.8.0):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.3
@@ -13392,7 +13401,7 @@ snapshots:
     optionalDependencies:
       '@types/debug': 4.1.12
       '@types/node': 22.15.29
-      happy-dom: 17.6.3
+      happy-dom: 18.0.1
     transitivePeerDependencies:
       - jiti
       - less
@@ -13413,8 +13422,6 @@ snapshots:
     dependencies:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
-
-  webidl-conversions@7.0.0: {}
 
   webpack-bundle-analyzer@4.10.1:
     dependencies:
