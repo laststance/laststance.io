@@ -7,6 +7,18 @@ export default defineConfig({
     globals: true,
     include: ['src/**/*.{spec,test}.{js,jsx,ts,tsx}'],
     setupFiles: ['setupTests.ts'],
+    // Define projects for workspace configuration (replaces vitest.workspace.ts)
+    projects: [
+      {
+        test: {
+          name: 'unit',
+          environment: 'happy-dom',
+          globals: true,
+          include: ['src/**/*.{spec,test}.{js,jsx,ts,tsx}'],
+          setupFiles: ['setupTests.ts'],
+        },
+      },
+    ],
   },
   resolve: {
     alias: {

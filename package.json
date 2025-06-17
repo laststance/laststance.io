@@ -25,6 +25,8 @@
     "lint:fix": "eslint . -c eslint.config.mjs --fix",
     "test": "vitest run",
     "test:watch": "vitest watch",
+    "test:storybook": "vitest run --config vitest.storybook.config.ts",
+    "test:storybook:watch": "vitest watch --config vitest.storybook.config.ts",
     "prettier": "prettier --ignore-unknown --write .",
     "typecheck": "tsc",
     "typecheck:watch": "tsc --watch",
