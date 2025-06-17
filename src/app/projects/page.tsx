@@ -35,6 +35,15 @@ const projects = [
     logo: nextLogo,
   },
   {
+    name: 'npm-publish-tool',
+    description: 'A tool to publish npm packages.',
+    link: {
+      href: 'https://github.com/laststance/npm-publish-tool',
+      label: 'npm-publish-tool',
+    },
+    logo: npmLogo,
+  },
+  {
     name: 'prettier-husky-lint-staged-installer',
     description: 'Setup prettier fortmat staged files at precommit.',
     link: {
