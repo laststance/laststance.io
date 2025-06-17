@@ -1,5 +1,4 @@
 import { argosScreenshot } from '@argos-ci/playwright'
-// eslint-disable-next-line import/named
 import { test } from '@playwright/test'
 
 test('/articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120', async ({

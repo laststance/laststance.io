@@ -46,3 +46,4 @@ yarn-error.log*
 /playwright/.cache/
 screenshots/
 *storybook.log
+storybook-static

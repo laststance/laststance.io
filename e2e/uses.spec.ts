@@ -1,5 +1,4 @@
 import { argosScreenshot } from '@argos-ci/playwright'
-// eslint-disable-next-line import/named
 import { test } from '@playwright/test'
 
 test('/uses', async ({ page }, testInfo) => {
