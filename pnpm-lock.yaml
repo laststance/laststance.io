@@ -100,8 +100,8 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
       '@chromatic-com/storybook':
-        specifier: ^4.0.0
-        version: 4.0.0(storybook@9.0.11(@testing-library/dom@10.4.0)(prettier@3.5.3))
+        specifier: ^4.0.1
+        version: 4.0.1(storybook@9.0.11(@testing-library/dom@10.4.0)(prettier@3.5.3))
       '@clack/prompts':
         specifier: ^0.11.0
         version: 0.11.0
@@ -356,8 +356,8 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@chromatic-com/storybook@4.0.0':
-    resolution: {integrity: sha512-FfyMHK/lz/dHezWxwNZv4ReFORWVvv+bJx71NT2BSfLhOKOaoZnKJOe4QLyGxWAB7ynnedrM9V9qea3FPFj+rQ==}
+  '@chromatic-com/storybook@4.0.1':
+    resolution: {integrity: sha512-GQXe5lyZl3yLewLJQyFXEpOp2h+mfN2bPrzYaOFNCJjO4Js9deKbRHTOSaiP2FRwZqDLdQwy2+SEGeXPZ94yYw==}
     engines: {node: '>=20.0.0', yarn: '>=1.22.18'}
     peerDependencies:
       storybook: ^0.0.0-0 || ^9.0.0 || ^9.1.0-0
@@ -5423,7 +5423,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@chromatic-com/storybook@4.0.0(storybook@9.0.11(@testing-library/dom@10.4.0)(prettier@3.5.3))':
+  '@chromatic-com/storybook@4.0.1(storybook@9.0.11(@testing-library/dom@10.4.0)(prettier@3.5.3))':
     dependencies:
       '@neoconfetti/react': 1.0.0
       chromatic: 12.2.0
