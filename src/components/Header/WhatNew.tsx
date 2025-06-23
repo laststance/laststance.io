@@ -47,6 +47,11 @@ const WhatNew: React.FC = () => {
             date="2025-06-08"
             li={[
               <DialogClose asChild>
+                <Link href="/articles/What-is-the-difference-between-position-fixed-and-sticky">
+                  Interactive Demo: Position Fixed vs Sticky
+                </Link>
+              </DialogClose>,
+              <DialogClose asChild>
                 <Link href="/articles/major-shadcn-ui-registry-libraries">
                   Major Libraries Available in shadcn/ui Registry
                 </Link>
