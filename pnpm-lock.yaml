@@ -88,7 +88,7 @@ importers:
         version: 3.3.1
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.1.10)
+        version: 1.0.7(tailwindcss@4.1.11)
       zod:
         specifier: ^3.25.67
         version: 3.25.67
@@ -143,7 +143,7 @@ importers:
         version: 4.1.10
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.1.10)
+        version: 0.5.16(tailwindcss@4.1.11)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -220,8 +220,8 @@ importers:
         specifier: ^9.0.12
         version: 9.0.12(@testing-library/dom@10.4.0)(prettier@3.6.1)
       tailwindcss:
-        specifier: ^4.1.10
-        version: 4.1.10
+        specifier: ^4.1.11
+        version: 4.1.11
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -2786,8 +2786,8 @@ packages:
   electron-to-chromium@1.5.169:
     resolution: {integrity: sha512-q7SQx6mkLy0GTJK9K9OiWeaBMV4XQtBSdf6MJUzDB/H/5tFXfIiX38Lci1Kl6SsgiEhz1SQI1ejEOU5asWEhwQ==}
 
-  electron-to-chromium@1.5.173:
-    resolution: {integrity: sha512-2bFhXP2zqSfQHugjqJIDFVwa+qIxyNApenmXTp9EjaKtdPrES5Qcn9/aSFy/NaP2E+fWG/zxKu/LBvY36p5VNQ==}
+  electron-to-chromium@1.5.176:
+    resolution: {integrity: sha512-2nDK9orkm7M9ZZkjO3PjbEd3VUulQLyg5T9O3enJdFvUg46Hzd4DUvTvAuEgbdHYXyFsiG4A5sO9IzToMH1cDg==}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -4784,6 +4784,9 @@ packages:
   tailwindcss@4.1.10:
     resolution: {integrity: sha512-P3nr6WkvKV/ONsTzj6Gb57sWPMX29EPNPopo7+FcpkQaNsrNpZ1pv8QmrYI2RqEKD7mlGqLnGovlcYnBK0IqUA==}
 
+  tailwindcss@4.1.11:
+    resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
+
   tapable@2.2.2:
     resolution: {integrity: sha512-Re10+NauLTMCudc7T5WLFLAwDhQ0JWdrMK+9B2M8zR5hRExKmsRDCBA7/aV/pNJFltmBFO5BAMlQFi/vq3nKOg==}
     engines: {node: '>=6'}
@@ -6779,13 +6782,13 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.1.10
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.10)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.11)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.1.10
+      tailwindcss: 4.1.11
 
   '@tanstack/react-virtual@3.13.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -7507,7 +7510,7 @@ snapshots:
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001726
-      electron-to-chromium: 1.5.173
+      electron-to-chromium: 1.5.176
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.1)
     optional: true
@@ -7830,7 +7833,7 @@ snapshots:
 
   electron-to-chromium@1.5.169: {}
 
-  electron-to-chromium@1.5.173:
+  electron-to-chromium@1.5.176:
     optional: true
 
   emoji-regex@10.4.0: {}
@@ -10360,11 +10363,13 @@ snapshots:
 
   tailwind-merge@3.3.1: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.1.10):
+  tailwindcss-animate@1.0.7(tailwindcss@4.1.11):
     dependencies:
-      tailwindcss: 4.1.10
+      tailwindcss: 4.1.11
 
   tailwindcss@4.1.10: {}
+
+  tailwindcss@4.1.11: {}
 
   tapable@2.2.2: {}
 
