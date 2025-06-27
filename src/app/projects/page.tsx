@@ -5,7 +5,7 @@ import { Card, CardLink, CardDescription } from '@/components/Card'
 import { Container } from '@/components/Container'
 import { LinkIcon } from '@/components/icons/LinkIcon'
 import { SimpleLayout } from '@/components/SimpleLayout'
-import chromeLogo from '@/images/logos/icons8-chrome-48.png'
+// import chromeLogo from '@/images/logos/icons8-chrome-48.png'
 import nextLogo from '@/images/logos/icons8-nextjs-48.png'
 import npmLogo from '@/images/logos/icons8-npm-48.png'
 import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-building-user-interfaces-32.png'
@@ -26,13 +26,14 @@ export const metadata: Metadata = {
 
 const projects = [
   {
-    name: 'Laststance.io',
-    description: 'This website codebase',
+    name: 'eslint-config-ts-prefixer',
+    description:
+      'Ruleset of meaningful Lint rules on runtime and beautiful formatters.',
     link: {
-      href: 'https://github.com/laststance/laststance.io',
-      label: 'laststance.io',
+      href: 'https://github.com/laststance/eslint-config-ts-prefixer',
+      label: 'eslint-config-ts-prefixer',
     },
-    logo: nextLogo,
+    logo: npmLogo,
   },
   {
     name: 'npm-publish-tool',
@@ -40,6 +41,16 @@ const projects = [
     link: {
       href: 'https://github.com/laststance/npm-publish-tool',
       label: 'npm-publish-tool',
+    },
+    logo: npmLogo,
+  },
+  {
+    name: 'git-commit-gpt',
+    description:
+      "An AI-powered Git extension that generates commit messages using OpenAI's GPT-3.5-turbo-instruct.",
+    link: {
+      href: 'https://github.com/laststance/git-commit-gpt',
+      label: 'git-commit-gpt',
     },
     logo: npmLogo,
   },
@@ -72,20 +83,28 @@ const projects = [
     logo: reduxLogo,
   },
   {
-    name: 'git-commit-gpt',
-    description:
-      "An AI-powered Git extension that generates commit messages using OpenAI's GPT-3.5-turbo-instruct.",
+    name: 'Redux Front Page',
+    description: 'Solve the Redux documentation fragmentation problem.',
     link: {
-      href: 'https://github.com/laststance/git-commit-gpt',
-      label: 'git-commit-gpt',
+      href: 'https://github.com/laststance/Redux-Front-Page',
+      label: 'Redux Front Page',
     },
-    logo: npmLogo,
+    logo: reduxLogo,
   },
   {
     name: 'nsx',
     description: 'Just logging tech resources I read.',
     link: { href: 'https://github.com/laststance/nsx', label: 'nsx' },
     logo: reactLogo,
+  },
+  {
+    name: 'Laststance.io',
+    description: 'This website codebase',
+    link: {
+      href: 'https://github.com/laststance/laststance.io',
+      label: 'laststance.io',
+    },
+    logo: nextLogo,
   },
   {
     name: 'React TypeScript TodoMVC 2022',
@@ -104,15 +123,6 @@ const projects = [
       label: 'USD Query',
     },
     logo: npmLogo,
-  },
-  {
-    name: 'nsx-browser-extension',
-    description: 'Browser Extension for nsx.',
-    link: {
-      href: 'https://github.com/laststance/nsx-browser-extension',
-      label: 'nsx-browser-extension',
-    },
-    logo: chromeLogo,
   },
   {
     name: 'dotfiles',
