@@ -1,7 +1,5 @@
-import rehypePrism from '@mapbox/rehype-prism'
 import withBundleAnalyzerOriginal from '@next/bundle-analyzer'
 import nextMDX from '@next/mdx'
-import remarkGfm from 'remark-gfm'
 
 const withBundleAnalyzer = withBundleAnalyzerOriginal({
   enabled: process.env.ANALYZE === 'true',
@@ -10,14 +8,11 @@ const withBundleAnalyzer = withBundleAnalyzerOriginal({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
+  experimental: {
+    mdxRs: true,
+  },
 }
 
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    rehypePlugins: [rehypePrism],
-    remarkPlugins: [remarkGfm],
-  },
-})
+const withMDX = nextMDX({})
 
 export default withBundleAnalyzer(withMDX(nextConfig))

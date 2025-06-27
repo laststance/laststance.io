@@ -16,7 +16,7 @@
     "last 1 version"
   ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "dev:network": "next dev -H 192.168.1.4",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
