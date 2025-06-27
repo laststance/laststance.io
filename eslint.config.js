@@ -29,7 +29,6 @@ export default defineConfig([
     ],
   },
   {
-    files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}'],
     plugins: {
       '@next/next': nextNext,
     },
