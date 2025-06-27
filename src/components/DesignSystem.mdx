@@ -20,7 +20,9 @@ This design system provides a comprehensive set of design tokens, components, an
 
 Our color palette is built with CSS custom properties for seamless light and dark mode support.
 
-### Semantic Colors
+### shadcn/ui CSS Variables
+
+Complete set of CSS variables used in the shadcn/ui components with their color visualizations.
 
 <div
   style={{
@@ -32,13 +34,13 @@ Our color palette is built with CSS custom properties for seamless light and dar
 >
   <div
     style={{
-      background: 'hsl(var(--background))',
+      background: 'hsl(0 0% 100%)',
       padding: '1rem',
       border: '1px solid hsl(var(--border))',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--foreground))' }}>
+    <div style={{ color: 'hsl(240 10% 3.9%)' }}>
       <strong>Background</strong>
       <br />
       <code>hsl(var(--background))</code>
@@ -49,13 +51,13 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--foreground))',
+      background: 'hsl(240 10% 3.9%)',
       padding: '1rem',
-      border: '1px solid hsl(var(--border))',
+      border: '1px solid hsl(240 5.9% 90%)',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--background))' }}>
+    <div style={{ color: 'hsl(0 0% 100%)' }}>
       <strong>Foreground</strong>
       <br />
       <code>hsl(var(--foreground))</code>
@@ -66,13 +68,81 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--primary))',
+      background: 'hsl(0 0% 100%)',
+      padding: '1rem',
+      border: 'px solid hsl(var(--border))',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(240 10% 3.9%)' }}>
+      <strong>Card</strong>
+      <br />
+      <code>hsl(var(--card))</code>
+      <br />
+      <small>Card background color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(240 10% 3.9%)',
       padding: '1rem',
       border: '1px solid hsl(var(--border))',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--primary-foreground))' }}>
+    <div style={{ color: 'hsl(0 0% 98%)' }}>
+      <strong>Card Foreground</strong>
+      <br />
+      <code>hsl(var(--card-foreground))</code>
+      <br />
+      <small>Card text color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(0 0% 100%)',
+      padding: '1rem',
+      border: '1px solid hsl(240 5.9% 90%)',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(240 10% 3.9%)' }}>
+      <strong>Popover</strong>
+      <br />
+      <code>hsl(var(--popover))</code>
+      <br />
+      <small>Popover background color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(240 10% 3.9%)',
+      padding: '1rem',
+      border: '1px solid hsl(240 5.9% 90%)',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(0 0% 100%)' }}>
+      <strong>Popover Foreground</strong>
+      <br />
+      <code>hsl(var(--popover-foreground))</code>
+      <br />
+      <small>Popover text color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(240 5.9% 10%)',
+      padding: '1rem',
+      border: '1px solid hsl(var(--border))',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(240 4.8% 95.9)' }}>
       <strong>Primary</strong>
       <br />
       <code>hsl(var(--primary))</code>
@@ -83,13 +153,30 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--secondary))',
+      background: 'hsl(0 0% 98%)',
+      padding: '1rem',
+      border: '1px solid hsl(240 5.9% 90%)',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(240 5.9% 10%)' }}>
+      <strong>Primary Foreground</strong>
+      <br />
+      <code>hsl(var(--primary-foreground))</code>
+      <br />
+      <small>Primary text color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(240 4.8% 95.9%)',
       padding: '1rem',
       border: '1px solid hsl(var(--border))',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--secondary-foreground))' }}>
+    <div style={{ color: 'hsl(240 5.9% 10%)' }}>
       <strong>Secondary</strong>
       <br />
       <code>hsl(var(--secondary))</code>
@@ -100,13 +187,30 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--muted))',
+      background: 'hsl(240 5.9% 10%)',
       padding: '1rem',
       border: '1px solid hsl(var(--border))',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--muted-foreground))' }}>
+    <div style={{ color: 'hsl(240 4.8% 95.9%)' }}>
+      <strong>Secondary Foreground</strong>
+      <br />
+      <code>hsl(var(--secondary-foreground))</code>
+      <br />
+      <small>Secondary text color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(240 4.8% 95.9%)',
+      padding: '1rem',
+      border: '1px solid hsl(240 5.9% 90%)',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(240 3.8% 46.1%)' }}>
       <strong>Muted</strong>
       <br />
       <code>hsl(var(--muted))</code>
@@ -117,30 +221,64 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--accent))',
+      background: 'hsl(240 3.8% 46.1%)',
       padding: '1rem',
-      border: '1px solid hsl(var(--border))',
+      border: '1px solid hsl(240 5.9% 90%)',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--accent-foreground))' }}>
-      <strong>Accent</strong>
+    <div style={{ color: 'hsl(240 4.8% 95.9%)' }}>
+      <strong>Muted Foreground</strong>
       <br />
-      <code>hsl(var(--accent))</code>
+      <code>hsl(var(--muted-foreground))</code>
       <br />
-      <small>Accent color</small>
+      <small>Muted text color</small>
     </div>
   </div>
 
   <div
     style={{
-      background: 'hsl(var(--destructive))',
+      background: 'hsl(240 4.8% 95.9)',
       padding: '1rem',
       border: '1px solid hsl(var(--border))',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--destructive-foreground))' }}>
+    <div style={{ color: 'hsl(240 5.9% 10%)' }}>
+      <strong>Accent</strong>
+      <br />
+      <code>hsl(var(--accent))</code>
+      <br />
+      <small>Accent background color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(240 5.9% 10%)',
+      padding: '1rem',
+      border: '1px solid hsl(var(--border))',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(240 4.8% 95.9)' }}>
+      <strong>Accent Foreground</strong>
+      <br />
+      <code>hsl(var(--accent-foreground))</code>
+      <br />
+      <small>Accent text color</small>
+    </div>
+  </div>
+
+  <div
+    style={{
+      background: 'hsl(0 84.2% 60.2%)',
+      padding: '1rem',
+      border: '1px solid hsl(var(--border))',
+      borderRadius: '0.5rem',
+    }}
+  >
+    <div style={{ color: 'hsl(0 0% 98%)' }}>
       <strong>Destructive</strong>
       <br />
       <code>hsl(var(--destructive))</code>
@@ -151,40 +289,29 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--card))',
+      background: 'hsl(0 0% 98%)',
       padding: '1rem',
-      border: '1px solid hsl(var(--border))',
+      border: '1px solid hsl(240 5.9% 90%)',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--card-foreground))' }}>
-      <strong>Card</strong>
+    <div style={{ color: 'hsl(0 84.2% 60.2%)' }}>
+      <strong>Destructive Foreground</strong>
       <br />
-      <code>hsl(var(--card))</code>
+      <code>hsl(var(--destructive-foreground))</code>
       <br />
-      <small>Card background color</small>
+      <small>Destructive text color</small>
     </div>
   </div>
-</div>
 
-### Border & Input Colors
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-  }}
->
   <div
     style={{
-      background: 'hsl(var(--border))',
+      background: 'hsl(240 5.9% 90%)',
       padding: '1rem',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--foreground))' }}>
+    <div style={{ color: 'hsl(240 5.9% 10%)' }}>
       <strong>Border</strong>
       <br />
       <code>hsl(var(--border))</code>
@@ -195,12 +322,12 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--input))',
+      background: 'hsl(240 5.9% 90%)',
       padding: '1rem',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--foreground))' }}>
+    <div style={{ color: 'hsl(240 10% 3.9%)' }}>
       <strong>Input</strong>
       <br />
       <code>hsl(var(--input))</code>
@@ -211,12 +338,12 @@ Our color palette is built with CSS custom properties for seamless light and dar
 
   <div
     style={{
-      background: 'hsl(var(--ring))',
+      background: 'hsl(240 10% 3.9%)',
       padding: '1rem',
       borderRadius: '0.5rem',
     }}
   >
-    <div style={{ color: 'hsl(var(--background))' }}>
+    <div style={{ color: 'white' }}>
       <strong>Ring</strong>
       <br />
       <code>hsl(var(--ring))</code>
