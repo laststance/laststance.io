@@ -43,12 +43,14 @@ pnpm gen
 ```
 
 This interactive CLI tool will:
+
 1. Prompt you for a post title
 2. Prompt you for a description
 3. Generate a new MDX file with the correct frontmatter
 4. Create the appropriate directory in `src/app/articles/`
 
 The script automatically:
+
 - Uses the current date (JST timezone)
 - Creates a URL-friendly folder name based on the title
 - Sets up the proper article layout and metadata
