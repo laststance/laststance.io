@@ -1,4 +1,3 @@
-
 import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
@@ -38,7 +37,7 @@ faker.seed(123)
 
 // Data generated after this will be the same every time
 console.log(faker.person.firstName()) // Same name every time
-console.log(faker.location.city())    // Same city name every time
+console.log(faker.location.city()) // Same city name every time
 ```
 
 ## Practical Example in Test Files
@@ -66,7 +65,7 @@ const generateFacility = (index: number) => {
 }
 
 // Same data is generated every time
-export const facilities = Array.from({ length: 30 }, (_, index) => 
+export const facilities = Array.from({ length: 30 }, (_, index) =>
   generateFacility(index)
 )
 
@@ -79,7 +78,7 @@ test('generates consistent facility data', () => {
   // Since the seed is the same, the same data is generated every time
   console.log('First facility:', facilities[0])
   // Example: { value: 'TokyoCenter1', label: 'TokyoCenter1' }
-  
+
   expect(facilities).toHaveLength(30)
   expect(facilities[0].value).toBe('TokyoCenter1') // Same value every time
 })
@@ -88,12 +87,14 @@ test('generates consistent facility data', () => {
 ## Detailed Usage of Seed
 
 ### 1. Numeric Seed
+
 ```typescript
-faker.seed(123)           // Single number
-faker.seed([123, 456])    // Array of multiple numbers
+faker.seed(123) // Single number
+faker.seed([123, 456]) // Array of multiple numbers
 ```
 
 ### 2. Reset Seed for Each Test
+
 ```typescript
 describe('Combobox tests', () => {
   beforeEach(() => {
@@ -111,6 +112,7 @@ describe('Combobox tests', () => {
 ```
 
 ### 3. Conditional Seed Setting
+
 ```typescript
 // Fixed seed in development, true random in production
 if (process.env.NODE_ENV === 'test') {
@@ -119,6 +121,7 @@ if (process.env.NODE_ENV === 'test') {
 ```
 
 ### 4. Dynamic Seed (Date-based)
+
 ```typescript
 // Date-based seed (changes daily)
 const today = new Date().toDateString()
@@ -129,18 +132,20 @@ faker.seed(seed)
 ## Actual Usage Patterns
 
 ### Pattern 1: Fixed Data for Testing
+
 ```typescript
 // Test-only fixtures
 export const createTestFacilities = () => {
   faker.seed(999) // Fixed seed
   return Array.from({ length: 10 }, (_, i) => ({
     value: `Test Facility${i + 1}`,
-    label: `Test Facility${i + 1}`
+    label: `Test Facility${i + 1}`,
   }))
 }
 ```
 
 ### Pattern 2: Supporting Snapshot Tests
+
 ```typescript
 test('facility list snapshot', () => {
   faker.seed(123) // Fixed seed
@@ -150,11 +155,12 @@ test('facility list snapshot', () => {
 ```
 
 ### Pattern 3: Seed Value Management
+
 ```typescript
 const SEEDS = {
   FACILITIES: 123,
   USERS: 456,
-  PRODUCTS: 789
+  PRODUCTS: 789,
 } as const
 
 // Separate seeds by purpose

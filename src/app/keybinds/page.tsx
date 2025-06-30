@@ -1,6 +1,6 @@
-import { KBD } from '@/components/KBD'
 import { SimpleLayout } from '@/components/SimpleLayout'
-import { Spacer } from '@/components/Spacer'
+
+import KeybindsClient from './KeybindsClient'
 
 const title = 'Keybinds'
 export const metadata = {
@@ -167,36 +167,7 @@ export default function Keybinds() {
       }
       intro="I'm always keeping this page open as my cheat sheet. 😅 (MacOS US Keyboard Layout)"
     >
-      <div className="w-full sm:w-[400px] lg:w-[600px] mx-auto">
-        {Object.keys(keybinds).map((category) => (
-          <div key={category}>
-            <Spacer size="h-3xs" />
-            <h2 className="font-bold text-xl text-left pb-3 border-b border-gray-300">
-              {category}
-            </h2>
-            <table className="min-w-full border-collapse">
-              <tbody>
-                {Object.entries(keybinds[category]).map(
-                  ([action, shortcut]) => (
-                    <tr key={action}>
-                      <td className="py-2 px-4 border-b border-gray-300">
-                        {action}
-                      </td>
-                      <td className="py-2 px-4 border-b border-gray-300">
-                        <div className="flex gap-2">
-                          {shortcut.split(' ').map((key, i) => {
-                            return <KBD key={i} keyName={key} variant="small" />
-                          })}
-                        </div>
-                      </td>
-                    </tr>
-                  ),
-                )}
-              </tbody>
-            </table>
-          </div>
-        ))}
-      </div>
+      <KeybindsClient keybinds={keybinds} />
     </SimpleLayout>
   )
 }

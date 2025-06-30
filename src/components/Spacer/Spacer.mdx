@@ -1,4 +1,11 @@
-import { Meta, Story, Canvas, Controls, ArgTypes, Stories } from '@storybook/addon-docs'
+import {
+  Meta,
+  Story,
+  Canvas,
+  Controls,
+  ArgTypes,
+  Stories,
+} from '@storybook/addon-docs'
 import * as SpacerStories from './Spacer.stories'
 
 <Meta of={SpacerStories} />
@@ -25,8 +32,9 @@ Use the Spacer component when you need to add consistent vertical or horizontal 
 The Spacer component accepts a `size` prop that determines the amount of space. Available options include both height and width variants:
 
 ### Height Variants
+
 - **h-4xs**: 16px (1rem) - Very small spacing
-- **h-3xs**: 32px (2rem) - Small spacing  
+- **h-3xs**: 32px (2rem) - Small spacing
 - **h-2xs**: 48px (3rem) - Small-medium spacing
 - **h-xs**: 64px (4rem) - Medium spacing
 - **h-sm**: 80px (5rem) - Medium-large spacing
@@ -38,6 +46,7 @@ The Spacer component accepts a `size` prop that determines the amount of space. 
 - **h-4xl**: 176px (11rem) - 5x large spacing
 
 ### Width Variants
+
 - **w-4xs**: 16px (1rem) - Very small spacing
 - **w-3xs**: 32px (2rem) - Small spacing
 - **w-2xs**: 48px (3rem) - Small-medium spacing
@@ -53,15 +62,19 @@ The Spacer component accepts a `size` prop that determines the amount of space. 
 ## Examples
 
 ### Small Height Spacing
+
 <Canvas of={SpacerStories.H4xs} />
 
 ### Medium Height Spacing
+
 <Canvas of={SpacerStories.H_md} />
 
 ### Large Height Spacing
+
 <Canvas of={SpacerStories.H_2xl} />
 
 ### Width Spacing Examples
+
 <Canvas of={SpacerStories.W_md} />
 
 ## Best Practices
@@ -86,4 +99,4 @@ The Spacer component is implemented as a simple `div` with Tailwind CSS classes 
 
 ## Component API
 
-<ArgTypes of={SpacerStories} /> 
+<ArgTypes of={SpacerStories} />
