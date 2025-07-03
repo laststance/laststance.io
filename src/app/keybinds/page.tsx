@@ -24,6 +24,7 @@ const keybinds: KeybindsList = {
     'Search History (Chrome)': '^ CMD R',
     'Search Bookmark (Chrome)': '^ CMD E',
     'Search Quicklinks': 'Option Q',
+    'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
     'JP to EN': 'Option W',
     'Maximize(Window Management)': 'Option M',
