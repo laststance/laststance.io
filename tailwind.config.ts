@@ -31,6 +31,7 @@ module.exports = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      // shadcn/ui colors
       colors: {
         accent: {
           DEFAULT: 'hsl(var(--accent))',
