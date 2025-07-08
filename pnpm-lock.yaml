@@ -97,8 +97,8 @@ importers:
         specifier: ^2.5.7
         version: 2.5.7
       '@argos-ci/playwright':
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       '@chromatic-com/storybook':
         specifier: ^4.0.1
         version: 4.0.1(storybook@9.0.13(@testing-library/dom@10.4.0)(prettier@3.6.2))
@@ -246,8 +246,8 @@ packages:
     resolution: {integrity: sha512-3IHv7ANSPNO6OwWgwULlHbP9/tFV9kQDu6+nL9jysfPkGj0GgtrOsyBb+iU931c7wSMo1OD+XNujCnRzDD968w==}
     engines: {node: '>=18.0.0'}
 
-  '@argos-ci/browser@4.1.1':
-    resolution: {integrity: sha512-UyKdnprGftUjWQkb0jqJ0zGHJmcWBzdko8zRy4y+4efukVX4jjC/Px2HvWW8aqwjoR4aplouMZuzhmOkq2SCsA==}
+  '@argos-ci/browser@4.1.2':
+    resolution: {integrity: sha512-OljPFzxSNndWSwMBxKGtN3p8lSbt73z+/0CIXbBVTQOPjPMErXWjgtrFL23xqtTq5wdds3uxGv7tjVDWJbgBYg==}
     engines: {node: '>=18.0.0'}
 
   '@argos-ci/cli@2.5.7':
@@ -259,8 +259,8 @@ packages:
     resolution: {integrity: sha512-wraH5RGFpoU7zcKV2BVi4LvY+5bWR/Ds6OVhUtq3jtd7I3qJRFVFq2IX1TfPPvBBA7wX0OqcrqgIWAQwy+vsoA==}
     engines: {node: '>=18.0.0'}
 
-  '@argos-ci/playwright@5.0.4':
-    resolution: {integrity: sha512-mfbEg6RgQb4ciihozEJ+F1guA4MNphzDfefRpxQuwt+P5eczTxkhgUCO94glk4+dqWoHQDbdNf2N33sL9Zsuew==}
+  '@argos-ci/playwright@5.0.5':
+    resolution: {integrity: sha512-ZqaqptjI8rVUjD2KQzpvI1olFDiiMjgDaIyFOMWo8531cB7CMCwPXDNsFw2psUfsz3a3LP91eH2OrJopmevEkQ==}
     engines: {node: '>=18.16.0'}
 
   '@argos-ci/util@2.3.1':
@@ -359,6 +359,9 @@ packages:
 
   '@emnapi/runtime@1.4.3':
     resolution: {integrity: sha512-pBPWdu6MLKROBX05wSNKcNb++m5Er+KQ9QkB+WVM+pW2Kx9hoSrVTnu3BdkI5eBLZoKu/J6mW/B6i6bJB2ytXQ==}
+
+  '@emnapi/runtime@1.4.4':
+    resolution: {integrity: sha512-hHyapA4A3gPaDCNfiqyZUStTMqIkKRshqPIuDOXv1hcBnD4U3l8cP0T1HMCfGRxQ6V64TGCcoswChANyOAwbQg==}
 
   '@emnapi/wasi-threads@1.0.2':
     resolution: {integrity: sha512-5n3nTJblwRi8LlXkJ9eBzu+kZR8Yxcc7ubakyQTFzPMtIhFpUBRbsnc2Dv88IZDIbCDlBiWrknhB4Lsz7mg6BA==}
@@ -5105,7 +5108,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/browser@4.1.1': {}
+  '@argos-ci/browser@4.1.2': {}
 
   '@argos-ci/cli@2.5.7':
     dependencies:
@@ -5129,9 +5132,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/playwright@5.0.4':
+  '@argos-ci/playwright@5.0.5':
     dependencies:
-      '@argos-ci/browser': 4.1.1
+      '@argos-ci/browser': 4.1.2
       '@argos-ci/core': 3.2.0
       '@argos-ci/util': 2.3.1
       chalk: 5.4.1
@@ -5275,6 +5278,11 @@ snapshots:
     optional: true
 
   '@emnapi/runtime@1.4.3':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
+  '@emnapi/runtime@1.4.4':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -5588,7 +5596,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.33.5':
     dependencies:
-      '@emnapi/runtime': 1.4.3
+      '@emnapi/runtime': 1.4.4
     optional: true
 
   '@img/sharp-wasm32@0.34.2':
@@ -5705,7 +5713,7 @@ snapshots:
   '@napi-rs/wasm-runtime@0.2.11':
     dependencies:
       '@emnapi/core': 1.4.3
-      '@emnapi/runtime': 1.4.3
+      '@emnapi/runtime': 1.4.4
       '@tybys/wasm-util': 0.9.0
     optional: true
 
