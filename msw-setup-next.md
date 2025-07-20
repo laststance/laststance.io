@@ -35,15 +35,21 @@ export const handlers = [
       lastName: 'Maverick',
     })
   }),
-  
+
   // GraphQL API mocking
   graphql.query('ListMovies', () => {
     return HttpResponse.json({
       data: {
         movies: [
-          { id: '6c6dba95-e027-4fe2-acab-e8c155a7f0ff', title: 'Lord of The Rings' },
+          {
+            id: '6c6dba95-e027-4fe2-acab-e8c155a7f0ff',
+            title: 'Lord of The Rings',
+          },
           { id: 'a2ae7712-75a7-47bb-82a9-8ed668e00fe3', title: 'The Matrix' },
-          { id: '916fa462-3903-4656-9e76-3f182b37c56f', title: 'Star Wars: The Empire Strikes Back' },
+          {
+            id: '916fa462-3903-4656-9e76-3f182b37c56f',
+            title: 'Star Wars: The Empire Strikes Back',
+          },
         ],
       },
     })
@@ -151,17 +157,20 @@ export default function RootLayout({
 ## Key Features
 
 ### Server-Side Mocking
+
 - Automatic MSW server setup in Node.js runtime
 - Intercepts API calls during SSR
 - Handles server-side rendering with mocked data
 
 ### Client-Side Mocking
+
 - Service Worker setup for browser environment
 - Filters out Next.js internal requests (`_next`)
 - Suspense-based initialization
 - Uses React `use()` hook for promise handling
 
 ### Hybrid Approach
+
 - Unified handler definitions for both server and client
 - Consistent mocking across SSR and CSR
 - Environment-specific worker initialization
@@ -185,6 +194,7 @@ Based on the implementation, required dependencies include:
 ## Testing Integration
 
 The implementation includes Playwright E2E tests that verify:
+
 - Server-side mocked responses
 - Client-side mocked GraphQL responses
 - Proper isolation between test environments
@@ -206,6 +216,7 @@ The implementation includes Playwright E2E tests that verify:
 ## Usage Patterns
 
 ### HTTP API Mocking
+
 ```typescript
 http.get('/api/users', () => {
   return HttpResponse.json({ users: [] })
@@ -213,21 +224,20 @@ http.get('/api/users', () => {
 ```
 
 ### GraphQL Mocking
+
 ```typescript
 graphql.query('GetUser', () => {
   return HttpResponse.json({
-    data: { user: { id: 1, name: 'John' } }
+    data: { user: { id: 1, name: 'John' } },
   })
 })
 ```
 
 ### Error Responses
+
 ```typescript
 http.get('/api/error', () => {
-  return HttpResponse.json(
-    { error: 'Internal Server Error' },
-    { status: 500 }
-  )
+  return HttpResponse.json({ error: 'Internal Server Error' }, { status: 500 })
 })
 ```
 

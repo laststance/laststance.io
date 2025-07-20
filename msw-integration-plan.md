@@ -7,6 +7,7 @@ This document outlines a comprehensive plan for integrating Mock Service Worker 
 ## Current Project Analysis
 
 ### Architecture Overview
+
 - **Framework**: Next.js 15 with App Router and Turbopack
 - **Package Manager**: pnpm
 - **Testing**: Vitest (unit), Playwright (E2E), Storybook (component)
@@ -14,6 +15,7 @@ This document outlines a comprehensive plan for integrating Mock Service Worker 
 - **Styling**: Tailwind CSS v4
 
 ### Existing Structure
+
 ```
 src/
 ├── app/
@@ -26,6 +28,7 @@ src/
 ```
 
 ### Current Dependencies Relevant to MSW
+
 - Next.js 15.3.5 with React 19.1.0
 - Vitest for unit testing with happy-dom
 - Playwright for E2E testing
@@ -36,11 +39,13 @@ src/
 ### Phase 1: Core MSW Setup
 
 #### 1.1 Dependencies Installation
+
 ```bash
 pnpm add -D msw@latest
 ```
 
 #### 1.2 Core File Structure
+
 ```
 src/
 ├── mocks/
@@ -59,11 +64,13 @@ src/
 #### 1.3 Environment-Specific Setup
 
 **Development Environment**
+
 - Enable MSW in development mode only
 - Mock external APIs (GitHub API, any future APIs)
 - Preserve hot reloading functionality
 
 **Testing Environment**
+
 - Vitest: Server-side mocking for SSR components
 - Playwright: Full-stack mocking for E2E tests
 - Storybook: Component-level mocking for isolated development
@@ -71,7 +78,9 @@ src/
 ### Phase 2: Handler Implementation
 
 #### 2.1 GitHub API Handlers
+
 Based on current `src/lib/octokit.ts` usage:
+
 ```typescript
 // src/mocks/handlers/github.ts
 import { http, HttpResponse } from 'msw'
@@ -91,7 +100,7 @@ export const githubHandlers = [
       // ... more mock data
     ])
   }),
-  
+
   // Mock specific repository data
   http.get('https://api.github.com/repos/:owner/:repo', () => {
     return HttpResponse.json({
@@ -102,7 +111,9 @@ export const githubHandlers = [
 ```
 
 #### 2.2 Blog/Article Handlers
+
 For future dynamic content features:
+
 ```typescript
 // src/mocks/handlers/api.ts
 import { http, HttpResponse } from 'msw'
@@ -113,10 +124,10 @@ export const apiHandlers = [
     return HttpResponse.json({
       articles: [
         // Mock article data
-      ]
+      ],
     })
   }),
-  
+
   // Mock OpenGraph image generation
   http.get('/api/og', () => {
     return new HttpResponse(null, {
@@ -134,6 +145,7 @@ export const apiHandlers = [
 #### 3.1 Next.js App Router Integration
 
 **Modified Layout (`src/app/layout.tsx`)**
+
 ```typescript
 import { MSWProvider } from './msw-provider'
 // ... other imports
@@ -166,6 +178,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 **MSW Provider (`src/app/msw-provider.tsx`)**
+
 ```typescript
 'use client'
 
@@ -209,6 +222,7 @@ function MSWProviderWrapper({ children }: { children: React.ReactNode }) {
 #### 3.2 Testing Integration
 
 **Vitest Setup (`setupTests.ts`)**
+
 ```typescript
 import { beforeAll, afterEach, afterAll } from 'vitest'
 import { server } from '@/mocks/node'
@@ -224,6 +238,7 @@ afterAll(() => server.close())
 ```
 
 **Playwright Setup (`playwright.config.ts` modifications)**
+
 ```typescript
 // Add MSW setup to global setup
 webServer: [
@@ -241,6 +256,7 @@ webServer: [
 #### 3.3 Storybook Integration
 
 **Storybook Configuration**
+
 ```typescript
 // .storybook/preview.ts
 import { initialize, mswLoader } from 'msw-storybook-addon'
@@ -259,6 +275,7 @@ export const parameters = {
 ### Phase 4: Advanced Features
 
 #### 4.1 Dynamic Handler Management
+
 ```typescript
 // src/mocks/utils.ts
 export function createDynamicHandler(pattern: string, response: unknown) {
@@ -273,6 +290,7 @@ export const devHandlers = {
 ```
 
 #### 4.2 Environment-Specific Configurations
+
 ```typescript
 // src/mocks/config.ts
 export const mswConfig = {
@@ -298,6 +316,7 @@ export const mswConfig = {
 ```
 
 #### 4.3 Mock Data Management
+
 ```typescript
 // src/mocks/data/
 ├── github.json         # GitHub API mock responses
@@ -308,7 +327,9 @@ export const mswConfig = {
 ### Phase 5: Documentation and Developer Experience
 
 #### 5.1 Development Commands
+
 Update `package.json` scripts:
+
 ```json
 {
   "scripts": {
@@ -320,6 +341,7 @@ Update `package.json` scripts:
 ```
 
 #### 5.2 Documentation Updates
+
 - Update `CLAUDE.md` with MSW commands and testing strategies
 - Create MSW usage examples for common scenarios
 - Document mock data management practices
@@ -329,12 +351,14 @@ Update `package.json` scripts:
 ### Project-Specific Requirements
 
 #### Blog/Portfolio Site Needs
+
 - **GitHub API Integration**: Mock repositories for `/projects` page
 - **Static Site Generation**: Ensure MSW doesn't interfere with SSG builds
 - **MDX Content**: Mock any dynamic content loading for articles
 - **OpenGraph Images**: Mock API route `/api/og` for development
 
 #### Existing Codebase Integration Points
+
 1. **GitHub Integration (`src/lib/octokit.ts`)**
    - Mock `PERSONAL_ACCESS_TOKEN` usage
    - Handle rate limiting scenarios
@@ -351,15 +375,17 @@ Update `package.json` scripts:
 ### Technical Refinements
 
 #### Bundle Size Optimization
+
 ```typescript
 // Only import MSW in development builds
-const MSWProvider = 
-  process.env.NODE_ENV === 'development' 
-    ? require('./msw-provider').MSWProvider 
+const MSWProvider =
+  process.env.NODE_ENV === 'development'
+    ? require('./msw-provider').MSWProvider
     : ({ children }: { children: React.ReactNode }) => <>{children}</>
 ```
 
 #### TypeScript Integration
+
 ```typescript
 // src/types/msw.ts
 export interface MockApiResponse<T = unknown> {
@@ -380,6 +406,7 @@ export interface GitHubRepository {
 ```
 
 #### Environment-Specific Handlers
+
 ```typescript
 // src/mocks/environments.ts
 export const developmentHandlers = [...githubHandlers, ...apiHandlers]
@@ -390,11 +417,13 @@ export const storybookHandlers = [...apiHandlers] // UI-focused mocks
 ### Performance Considerations
 
 #### Service Worker Optimization
+
 - Lazy load MSW browser worker
 - Implement proper cleanup on hot reload
 - Handle service worker updates gracefully
 
 #### Build Process Integration
+
 - Exclude MSW from production builds completely
 - Optimize webpack configuration for development
 - Ensure compatibility with Turbopack
@@ -402,6 +431,7 @@ export const storybookHandlers = [...apiHandlers] // UI-focused mocks
 ### Security Considerations
 
 #### API Token Management
+
 ```typescript
 // Never expose real tokens in mocks
 const MOCK_GITHUB_TOKEN = 'ghp_mock_token_for_development_only'
@@ -415,21 +445,25 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
 ## Implementation Timeline (Revised)
 
 ### Week 1: Foundation & Analysis
+
 - [ ] **Day 1-2**: Install MSW and analyze existing API usage patterns
 - [ ] **Day 3-4**: Create basic structure and GitHub API handlers
 - [ ] **Day 5-7**: Implement development environment integration with proper fallbacks
 
 ### Week 2: Testing & Validation
+
 - [ ] **Day 8-10**: Configure Vitest with MSW and validate existing tests
 - [ ] **Day 11-12**: Set up Playwright E2E testing with comprehensive scenarios
 - [ ] **Day 13-14**: Integrate with Storybook and validate component isolation
 
 ### Week 3: Enhancement & Optimization
+
 - [ ] **Day 15-17**: Implement dynamic handler management and debugging tools
 - [ ] **Day 18-19**: Create comprehensive mock data fixtures with realistic data
 - [ ] **Day 20-21**: Optimize bundle size and performance impact
 
 ### Week 4: Documentation & Production Readiness
+
 - [ ] **Day 22-24**: Complete documentation updates and developer guides
 - [ ] **Day 25-26**: Conduct thorough testing across all environments and devices
 - [ ] **Day 27-28**: Final optimizations and deployment preparation
@@ -437,31 +471,32 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
 ## Risk Assessment & Mitigation
 
 ### Technical Risks
+
 1. **Bundle Size Impact**: MSW adds ~60KB gzipped
    - Mitigation: Only load in development/test environments
-   
 2. **TypeScript Compatibility**: Ensure type safety with MSW handlers
    - Mitigation: Implement strict typing for all handlers
-   
 3. **Hot Reload Interference**: MSW might interfere with Next.js hot reloading
    - Mitigation: Proper service worker lifecycle management
 
 ### Development Risks
+
 1. **Learning Curve**: Team needs to understand MSW concepts
    - Mitigation: Comprehensive documentation and examples
-   
 2. **Mock Drift**: Mock data becoming outdated
    - Mitigation: Regular review and update processes
 
 ## Success Metrics
 
 ### Technical Metrics
+
 - Zero MSW-related build failures
 - <100ms additional startup time in development
 - 100% test coverage for critical API paths
 - No production bundle impact
 
 ### Developer Experience Metrics
+
 - Reduced external API dependency during development
 - Faster test execution (no real API calls)
 - Improved Storybook component isolation
@@ -470,6 +505,7 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
 ## Validation & Monitoring Strategy
 
 ### Pre-Implementation Validation
+
 1. **Baseline Metrics Collection**
    - Current build times (dev/prod)
    - Current test execution times
@@ -482,13 +518,15 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
    describe('MSW Integration', () => {
      it('should not affect production builds', () => {
        expect(process.env.NODE_ENV === 'production').toBeTruthy()
-       expect(typeof window !== 'undefined' && 'serviceWorker' in navigator).toBeFalsy()
+       expect(
+         typeof window !== 'undefined' && 'serviceWorker' in navigator,
+       ).toBeFalsy()
      })
-     
+
      it('should properly mock GitHub API in development', async () => {
        // Test GitHub API mocking
      })
-     
+
      it('should maintain existing functionality', () => {
        // Regression tests for all existing features
      })
@@ -496,6 +534,7 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
    ```
 
 ### Post-Implementation Monitoring
+
 1. **Performance Monitoring**
    - Bundle size impact analysis
    - Development server startup time
@@ -509,6 +548,7 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
    - Confirm Playwright tests run successfully with MSW
 
 ### Quality Gates
+
 - **Zero production bundle impact**: MSW code must not appear in production builds
 - **Development performance**: <200ms additional startup time
 - **Test reliability**: 100% test pass rate with MSW integration
@@ -517,13 +557,16 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
 ## Advanced Configuration Options
 
 ### Conditional MSW Loading
+
 ```typescript
 // src/lib/msw-config.ts
 export const shouldEnableMSW = () => {
   if (typeof window === 'undefined') return false // SSR
   if (process.env.NODE_ENV === 'production') return false
   if (process.env.MSW_ENABLED === 'false') return false
-  return process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
+  return (
+    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
+  )
 }
 
 export const getMSWConfig = () => ({
@@ -534,6 +577,7 @@ export const getMSWConfig = () => ({
 ```
 
 ### Developer Tools Integration
+
 ```typescript
 // src/mocks/dev-tools.ts
 declare global {
@@ -561,6 +605,7 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
 ## Conclusion
 
 This comprehensive MSW integration will provide:
+
 1. **Reliable Development Environment**: Consistent API responses without external dependencies
 2. **Robust Testing**: Isolated, fast, and predictable tests
 3. **Enhanced Component Development**: Storybook components with realistic data
@@ -571,6 +616,7 @@ This comprehensive MSW integration will provide:
 The phased approach ensures minimal disruption to current workflows while providing immediate value through improved development and testing capabilities. The additional validation and monitoring strategies ensure long-term maintainability and reliability.
 
 ### Critical Success Factors
+
 - **Environment Isolation**: Strict separation between development and production
 - **Performance Monitoring**: Continuous validation of build and runtime performance
 - **Developer Education**: Comprehensive documentation and examples
@@ -584,6 +630,7 @@ The phased approach ensures minimal disruption to current workflows while provid
 4. **Continuous**: Create team onboarding documentation and maintain MSW knowledge base
 
 ### Implementation Checklist
+
 - [ ] Stakeholder review and approval
 - [ ] Baseline performance metrics collection
 - [ ] MSW dependency installation and basic setup
@@ -597,4 +644,4 @@ The phased approach ensures minimal disruption to current workflows while provid
 
 ---
 
-*This plan follows the project's existing patterns and integrates seamlessly with the current Next.js 15 + App Router architecture while providing comprehensive safeguards and monitoring capabilities.*
+_This plan follows the project's existing patterns and integrates seamlessly with the current Next.js 15 + App Router architecture while providing comprehensive safeguards and monitoring capabilities._
