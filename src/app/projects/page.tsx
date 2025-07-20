@@ -5,7 +5,7 @@ import { Card, CardLink, CardDescription } from '@/components/Card'
 import { Container } from '@/components/Container'
 import { LinkIcon } from '@/components/icons/LinkIcon'
 import { SimpleLayout } from '@/components/SimpleLayout'
-// import chromeLogo from '@/images/logos/icons8-chrome-48.png'
+import chromeLogo from '@/images/logos/icons8-chrome-48.png'
 import nextLogo from '@/images/logos/icons8-nextjs-48.png'
 import npmLogo from '@/images/logos/icons8-npm-48.png'
 import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-building-user-interfaces-32.png'
@@ -25,6 +25,16 @@ export const metadata: Metadata = {
 }
 
 const projects = [
+  {
+    name: 'Clean URL',
+    description:
+      'Chrome extension that removes tracking parameters from URLs, protecting your privacy while browsing.',
+    link: {
+      href: 'https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl',
+      label: 'Clean URL',
+    },
+    logo: chromeLogo,
+  },
   {
     name: 'eslint-config-ts-prefixer',
     description:

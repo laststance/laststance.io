@@ -26,7 +26,6 @@ const keybinds: KeybindsList = {
     'Search Quicklinks': 'Option Q',
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
-    'JP to EN': 'Option W',
     'Maximize(Window Management)': 'Option M',
     'Toggle Raycast Note': 'Option Space',
     'Confetti with sound': 'Option D',
