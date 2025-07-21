@@ -513,6 +513,7 @@ if (process.env.NODE_ENV === 'production' && process.env.MSW_ENABLED) {
    - Page load performance metrics
 
 2. **Integration Testing Scenarios**
+
    ```typescript
    // src/tests/msw-integration.test.ts
    describe('MSW Integration', () => {

@@ -1,4 +1,4 @@
-import DOMPurify from 'dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 import React from 'react'
 
 import type { Feed } from '@/lib/octokit'
