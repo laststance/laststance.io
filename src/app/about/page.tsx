@@ -33,11 +33,28 @@ function SocialLink({
   href: string
   icon: React.ComponentType<{ className?: string }>
 }) {
+  const isExternalLink =
+    href.startsWith('http') &&
+    !href.startsWith(process.env.NEXT_PUBLIC_SITE_URL || '')
+  const isEmailLink = href.startsWith('mailto:')
+
   return (
     <li className={clsx(className, 'flex')}>
       <Link
         href={href}
         className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
+        {...(isExternalLink && !isEmailLink
+          ? {
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              'aria-label': `${children} (opens in new tab)`,
+            }
+          : {})}
+        {...(isEmailLink
+          ? {
+              'aria-label': `Send email to ${children}`,
+            }
+          : {})}
       >
         <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-teal-500" />
         <span className="ml-4">{children}</span>
@@ -65,7 +82,7 @@ export default function About() {
           <div className="max-w-xs px-2.5 lg:max-w-none">
             <Image
               src={portraitImage}
-              alt=""
+              alt="Ryota Murakami portrait photo"
               sizes="(min-width: 1024px) 32rem, 20rem"
               className="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
             />
@@ -82,7 +99,8 @@ export default function About() {
               <a
                 href="https://ryota-murakami.github.io/"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                aria-label="Ryota Murakami's personal website (opens in new tab)"
               >
                 Ryota Murakami live in Tokyo,
               </a>

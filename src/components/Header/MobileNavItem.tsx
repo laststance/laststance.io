@@ -5,9 +5,8 @@ export function MobileNavItem({
   children,
   href,
   ...rest
-}: {
+}: React.ComponentPropsWithoutRef<typeof Link> & {
   children: React.ReactNode
-  href: string
 }) {
   return (
     <li>

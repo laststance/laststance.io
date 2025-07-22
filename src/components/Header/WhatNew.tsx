@@ -36,13 +36,24 @@ const WhatNew: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost">Waht's New?</Button>
+        <Button variant="ghost" aria-label="Open What's New dialog">
+          What's New?
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] sm:min-h-[425px] max-h-[600px] overflow-y-scroll">
+      <DialogContent
+        className="sm:max-w-[425px] sm:min-h-[425px] max-h-[600px] overflow-y-scroll"
+        aria-describedby="whats-new-description"
+      >
         <DialogHeader>
           <DialogTitle>What's New?</DialogTitle>
+          <p id="whats-new-description" className="sr-only">
+            Latest updates and changes to the website
+          </p>
         </DialogHeader>
-        <ScrollArea className="mt-4 space-y-4">
+        <ScrollArea
+          className="mt-4 space-y-4"
+          aria-label="What's new updates list"
+        >
           <List
             date="2025-06-08"
             li={[
@@ -132,11 +143,12 @@ const WhatNew: React.FC = () => {
             date="2023-11-20"
             li={[
               <>
-                add article:
-                <Link href="https://laststance.io/articles/Trying-less-energy-coding">
-                  Trying less energy coding
-                </Link>
-                '
+                add article:{' '}
+                <DialogClose asChild>
+                  <Link href="/articles/Trying-less-energy-coding">
+                    Trying less energy coding
+                  </Link>
+                </DialogClose>
               </>,
             ]}
           />
@@ -150,11 +162,13 @@ const WhatNew: React.FC = () => {
             date="2023-10-29"
             li={[
               <>
-                add post{` `}
-                <Link href="articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120">
-                  Dropped eslint-plugin-sort-keys-custom-order from
-                  eslint-config-ts-prefixer@v1.12.0
-                </Link>
+                add post{' '}
+                <DialogClose asChild>
+                  <Link href="/articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120">
+                    Dropped eslint-plugin-sort-keys-custom-order from
+                    eslint-config-ts-prefixer@v1.12.0
+                  </Link>
+                </DialogClose>
               </>,
             ]}
           />
