@@ -124,6 +124,9 @@
       "esbuild",
       "sharp",
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "prismjs": "^1.30.0"
+    }
   }
 }
