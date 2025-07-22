@@ -12,7 +12,7 @@ export async function GithubFeedList() {
         <BriefcaseIcon className="h-6 w-6 flex-none" />
         <span className="ml-3">Github Feed</span>
       </h2>
-      <ol className="mt-2 space-y-4 flex flex-col max-xs:max-w-[340px] h-[730px] overflow-y-scroll overflow-x-crip">
+      <ol className="mt-2 space-y-4 flex flex-col max-xs:max-w-[340px] h-[730px] overflow-y-scroll overflow-x-clip">
         {githubFeedList.length > 0 ? (
           githubFeedList.map(
             (feed, i) => feed && <FeedItem key={i} feed={feed} />,

@@ -75,7 +75,7 @@ const projects = [
   },
   {
     name: 'Create React App Vite',
-    description: 'Simple CRA style Vite teimpate.',
+    description: 'Simple CRA style Vite template.',
     link: {
       href: 'https://github.com/laststance/create-react-app-vite',
       label: 'Create React App Vite',
