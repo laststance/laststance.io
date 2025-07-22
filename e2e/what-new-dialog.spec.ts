@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/test'
 
 test("What's New dialog", async ({ page }, testInfo) => {
   await page.goto('http://localhost:3000/')
-  await expect(page.getByRole('button', { name: "Waht's New?" })).toBeVisible()
+  await expect(page.getByRole('button', { name: "What's New?" })).toBeVisible()
 
-  await expect(page.getByRole('banner')).toContainText("Waht's New?")
+  await expect(page.getByRole('banner')).toContainText("What's New?")
 
-  await page.getByRole('button', { name: "Waht's New?" }).click()
+  await page.getByRole('button', { name: "What's New?" }).click()
 
   await expect(page.getByRole('dialog')).toBeVisible()
   await argosScreenshot(page, `[${testInfo.project.name}]: What's New dialog`)

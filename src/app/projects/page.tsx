@@ -66,7 +66,7 @@ const projects = [
   },
   {
     name: 'prettier-husky-lint-staged-installer',
-    description: 'Setup prettier fortmat staged files at precommit.',
+    description: 'Setup prettier format staged files at precommit.',
     link: {
       href: 'https://github.com/laststance/prettier-husky-lint-staged-installer',
       label: 'prettier-husky-lint-staged-installer',
@@ -75,7 +75,7 @@ const projects = [
   },
   {
     name: 'Create React App Vite',
-    description: 'Simple CRA style Vite teimpate.',
+    description: 'Simple CRA style Vite template.',
     link: {
       href: 'https://github.com/laststance/create-react-app-vite',
       label: 'Create React App Vite',

@@ -56,7 +56,7 @@ export default async function ArticlesIndex() {
   return (
     <SimpleLayout
       title="Writing about new release, update and thought of Web Application Development."
-      intro={`In particular, I often write about React, CSS, JavaScript, TypeScirpt,and Node.js. collected in chronological order.`}
+      intro={`In particular, I often write about React, CSS, JavaScript, TypeScript,and Node.js. collected in chronological order.`}
     >
       <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
         <div className="flex max-w-3xl flex-col space-y-16">
