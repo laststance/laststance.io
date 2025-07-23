@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/check-completion.sh",
+            "command": "/Users/ryota.murakami/laststance/laststance.io/.claude/hooks/check-completion.sh",
             "timeout": 180
           }
         ]
