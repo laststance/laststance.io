@@ -1,11 +1,13 @@
 ---
-applyTo: "**/*.ts,**/*.tsx"
+applyTo: '**/*.ts,**/*.tsx'
 ---
+
 # Project coding standards for TypeScript and React
 
 Apply the [general coding guidelines](./general-coding.instructions.md) to all code.
 
 ## TypeScript Guidelines
+
 - Use TypeScript for all new code
 - Follow functional programming principles where possible
 - Use interfaces for data structures and type definitions
@@ -13,6 +15,7 @@ Apply the [general coding guidelines](./general-coding.instructions.md) to all c
 - Use optional chaining (?.) and nullish coalescing (??) operators
 
 ## React Guidelines
+
 - Use functional components with hooks
 - Follow the React hooks rules (no conditional hooks)
 - Use React.FC type for components with children
@@ -20,8 +23,9 @@ Apply the [general coding guidelines](./general-coding.instructions.md) to all c
 - Use CSS modules for component styling
 
 ---
-applyTo: "**/*.mdx"
----
+
+## applyTo: "\*_/_.mdx"
+
 # Storybook MDX Documentation Guide
 
 This guide explains how to create and maintain MDX documentation for Storybook components in this project.
@@ -47,7 +51,14 @@ src/components/ComponentName/
 Here's a basic template for creating MDX documentation:
 
 ```mdx
-import { Meta, Story, Canvas, Controls, ArgsTable, Stories } from '@storybook/addon-docs'
+import {
+  Meta,
+  Story,
+  Canvas,
+  Controls,
+  ArgsTable,
+  Stories,
+} from '@storybook/addon-docs'
 import * as ComponentStories from './Component.stories'
 
 <Meta of={ComponentStories} />
@@ -63,15 +74,18 @@ Brief description of what the component does and when to use it.
 ## Examples
 
 ### Example 1
+
 <Canvas of={ComponentStories.Variant1} />
 
 ### Example 2
+
 <Canvas of={ComponentStories.Variant2} />
 ```
 
 ---
-applyTo: "**/*.tsx,**/*.ts"
----
+
+## applyTo: "**/\*.tsx,**/\*.ts"
+
 # Next.js App Router Patterns
 
 This project follows these Next.js App Router patterns:
@@ -110,8 +124,9 @@ This project follows these Next.js App Router patterns:
 - Extract business logic to separate functions/hooks
 
 ---
-applyTo: "**/*.tsx,**/*.ts"
----
+
+## applyTo: "**/\*.tsx,**/\*.ts"
+
 # Development Workflow
 
 ## Available Commands
@@ -142,8 +157,9 @@ applyTo: "**/*.tsx,**/*.ts"
    - Code is formatted (`pnpm prettier`)
 
 ---
-applyTo: "**/*.tsx,**/*.ts"
----
+
+## applyTo: "**/\*.tsx,**/\*.ts"
+
 # Project Structure
 
 The project follows a standard Next.js App Router structure:
