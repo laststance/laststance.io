@@ -6,7 +6,7 @@ import { Feed } from 'feed'
 import { env } from '@/env.mjs'
 
 export async function GET(req: Request) {
-  const siteUrl = env.NEXT_PUBLIC_SITE_URL
+  const siteUrl = env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'
 
   const author = {
     name: 'Laststance.io',

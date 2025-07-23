@@ -23,7 +23,12 @@ export default async function Home() {
           </h1>
           <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
             I'm{' '}
-            <a href="https://ryota-murakami.github.io/" target="_blank">
+            <a
+              href="https://ryota-murakami.github.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ryota Murakami's personal website (opens in new tab)"
+            >
               Ryota Murakami
             </a>{' '}
             who live in Tokyo. Currently working as a freelance
