@@ -11,6 +11,7 @@ import {
   TwitterIcon,
 } from '@/components/SocialIcons'
 import portraitImage from '@/images/gonnahell.jpeg'
+import { env } from '@/env.mjs'
 
 const title = 'About'
 export const metadata: Metadata = {
@@ -34,8 +35,7 @@ function SocialLink({
   icon: React.ComponentType<{ className?: string }>
 }) {
   const isExternalLink =
-    href.startsWith('http') &&
-    !href.startsWith(process.env.NEXT_PUBLIC_SITE_URL || '')
+    href.startsWith('http') && !href.startsWith(env.NEXT_PUBLIC_SITE_URL)
   const isEmailLink = href.startsWith('mailto:')
 
   return (
