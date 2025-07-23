@@ -13,7 +13,10 @@ declare type ExpandRecursively<T> = T extends (...args: infer A) => infer R
       : never
     : T
 
-declare type d = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+// Option A: Rename for future strict templates
+declare type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+// Option B: Remove if no longer needed
 
 // Date string type alias for clarity (avoiding union complexity)
 declare type DateString = string
