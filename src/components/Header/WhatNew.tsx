@@ -142,14 +142,14 @@ const WhatNew: React.FC = () => {
           <List
             date="2023-11-20"
             li={[
-              <>
+              <React.Fragment key="article-trying-less-energy-coding">
                 add article:{' '}
                 <DialogClose asChild>
                   <Link href="/articles/Trying-less-energy-coding">
                     Trying less energy coding
                   </Link>
                 </DialogClose>
-              </>,
+              </React.Fragment>,
             ]}
           />
           <List
@@ -161,7 +161,7 @@ const WhatNew: React.FC = () => {
           <List
             date="2023-10-29"
             li={[
-              <>
+              <React.Fragment key="post-eslint-plugin-dropped">
                 add post{' '}
                 <DialogClose asChild>
                   <Link href="/articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120">
@@ -169,7 +169,7 @@ const WhatNew: React.FC = () => {
                     eslint-config-ts-prefixer@v1.12.0
                   </Link>
                 </DialogClose>
-              </>,
+              </React.Fragment>,
             ]}
           />
           <List
