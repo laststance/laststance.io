@@ -78,6 +78,7 @@ PERSONAL_ACCESS_TOKEN=ghp_...
 ```
 
 Environment variables are validated with Zod in `src/env.mjs`:
+
 - `PERSONAL_ACCESS_TOKEN` must start with `ghp_`
 - `NEXT_PUBLIC_SITE_URL` must be a valid URL
 
