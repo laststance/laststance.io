@@ -6,7 +6,7 @@ reviews:
   estimate_code_review_effort: false
   assess_linked_issues: true
   related_issues: true
-  relateAAd_prs: true
+  related_prs: true
   suggested_labels: false
   suggested_reviewers: false
   high_level_summary: false

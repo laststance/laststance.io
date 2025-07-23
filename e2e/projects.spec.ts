@@ -13,8 +13,8 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
   await page.goto('http://localhost:3000/projects')
 
   // Find the Clean URL project card
-  const cleanUrlCard = page.locator('li').filter({ 
-    hasText: 'Clean URL' 
+  const cleanUrlCard = page.locator('li').filter({
+    hasText: 'Clean URL',
   })
 
   // Check that the card exists
@@ -25,14 +25,14 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
 
   // Check the project description contains the key text
   await expect(cleanUrlCard).toContainText(
-    'Chrome extension that removes tracking parameters from URLs'
+    'Chrome extension that removes tracking parameters from URLs',
   )
 
   // Check the link
   const link = cleanUrlCard.locator('a[href*="chromewebstore.google.com"]')
   await expect(link).toHaveAttribute(
     'href',
-    'https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl'
+    'https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl',
   )
   await expect(link).toHaveAttribute('target', '_blank')
 
@@ -51,10 +51,10 @@ test('Clean URL should be the first project in the list', async ({ page }) => {
 
   // Wait for the page to fully load and the project list to be rendered
   await page.waitForSelector('ul > li h2', { state: 'visible' })
-  
+
   // Get all project titles
   const projectTitles = await page.locator('ul > li h2').allTextContents()
-  
+
   // Check that Clean URL is the first item
   expect(projectTitles[0]).toBe('Clean URL')
 })
