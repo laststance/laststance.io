@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+
 import { getAllArticles } from './articles'
 
 // Mock fast-glob
@@ -35,9 +36,18 @@ const mockArticles = {
 }
 
 // Mock the dynamic import
-vi.mock('../app/articles/article-1/page.mdx', () => mockArticles['article-1/page.mdx'])
-vi.mock('../app/articles/article-2/page.mdx', () => mockArticles['article-2/page.mdx'])
-vi.mock('../app/articles/article-3/page.mdx', () => mockArticles['article-3/page.mdx'])
+vi.mock(
+  '../app/articles/article-1/page.mdx',
+  () => mockArticles['article-1/page.mdx'],
+)
+vi.mock(
+  '../app/articles/article-2/page.mdx',
+  () => mockArticles['article-2/page.mdx'],
+)
+vi.mock(
+  '../app/articles/article-3/page.mdx',
+  () => mockArticles['article-3/page.mdx'],
+)
 
 describe('articles', () => {
   beforeEach(() => {
