@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     types: {
-      'application/rss+xml': `${env.NEXT_PUBLIC_SITE_URL}/feed.xml`,
+      'application/rss+xml': `${env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'}/feed.xml`,
     },
   },
   description: 'An independent OSS organization for coding projects.',

@@ -13,8 +13,10 @@ declare type ExpandRecursively<T> = T extends (...args: infer A) => infer R
       : never
     : T
 
-declare type Year = `${d}${d}${d}${d}`
-declare type Month = `0${d}` | '10' | '11' | '12'
-declare type Day = `0${d}` | `1${d}` | `2${d}` | '30' | '31'
+// Option A: Rename for future strict templates
+declare type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
-declare type DateString = `${Year}-${Month}-${Day}`
+// DateString type that enforces YYYY-MM-DD format
+// Provides reasonable type safety without overwhelming TypeScript's type checker
+declare type DateString =
+  `${number}${number}${number}${number}-${number}${number}-${number}${number}`

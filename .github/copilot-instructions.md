@@ -25,6 +25,7 @@ Apply the [general coding guidelines](./general-coding.instructions.md) to all c
 ---
 
 ## applyTo: "**/*.mdx"
+
 # Storybook MDX Documentation Guide
 
 This guide explains how to create and maintain MDX documentation for Storybook components in this project.

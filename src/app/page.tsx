@@ -31,7 +31,7 @@ export default async function Home() {
             >
               Ryota Murakami
             </a>{' '}
-            who live in Tokyo. Currently working as a freelance
+            who lives in Tokyo. Currently working as a freelance
             React/Node/TypeScript developer. Here is my independent OSS
             organization.
           </p>
