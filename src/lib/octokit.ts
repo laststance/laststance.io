@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { parse } from 'node-html-parser'
 import { Octokit } from 'octokit'
 import { parseStringPromise } from 'xml2js'
@@ -26,80 +27,105 @@ const getXml = async (page: number) => {
   }
 }
 
-export const fetchGithubFeedList = async (): Promise<Array<Feed | null>> => {
+const processFeedEntry = (f: Feed): Feed | null => {
   try {
-    const [xml1, xml2, xml3, xml4, xml5, xml6, xml7, xml8, xml9, xml10] =
-      await Promise.all([
-        getXml(1),
-        getXml(2),
-        getXml(3),
-        getXml(4),
-        getXml(5),
-        getXml(6),
-        getXml(7),
-        getXml(8),
-        getXml(9),
-        getXml(10),
-      ])
+    // Parse the HTML content
+    const root = parse(f.content[0]._)
 
-    // Check if each XML has feed and entry properties before spreading
-    const allEntries = [
-      ...(xml1['feed']?.['entry'] || []),
-      ...(xml2['feed']?.['entry'] || []),
-      ...(xml3['feed']?.['entry'] || []),
-      ...(xml4['feed']?.['entry'] || []),
-      ...(xml5['feed']?.['entry'] || []),
-      ...(xml6['feed']?.['entry'] || []),
-      ...(xml7['feed']?.['entry'] || []),
-      ...(xml8['feed']?.['entry'] || []),
-      ...(xml9['feed']?.['entry'] || []),
-      ...(xml10['feed']?.['entry'] || []),
-    ]
+    // Filter auto dependency updates by dependabot
+    if (root.innerText.includes('Dependabot')) return null
+    if (root.innerText.includes('dependabot')) return null
+    if (root.innerText.includes('Bump')) return null
+    if (root.innerText.includes('bump')) return null
+
+    // Filter private repository activity
+    if (root.innerText.includes('hayashima')) return null
+
+    // Update all href attributes
+    root.querySelectorAll('a').forEach((link) => {
+      const href = link.getAttribute('href')
+      if (href && !href.startsWith('http')) {
+        link.setAttribute('href', `https://github.com${href}`)
+      }
+    })
+
+    // Return the updated HTML content as a string
+    f.content[0]._ = root.toString()
+    return f
+  } catch (error) {
+    console.error('Error processing feed entry:', error)
+    return null
+  }
+}
+
+const fetchGithubFeedListUncached = async (): Promise<Array<Feed | null>> => {
+  const MAX_PAGES = 5 // Reduced from 10 to 5
+  const MIN_ENTRIES_PER_PAGE = 5 // Stop if page has fewer than this many entries
+  const allEntries: Feed[] = []
+
+  try {
+    console.log('Fetching GitHub feed data...')
+
+    for (let page = 1; page <= MAX_PAGES; page++) {
+      try {
+        console.log(`Fetching page ${page}...`)
+        const xmlData = await getXml(page)
+        const entries = xmlData['feed']?.['entry'] || []
+
+        if (entries.length === 0) {
+          console.log(`Page ${page} is empty, stopping pagination`)
+          break
+        }
+
+        console.log(`Page ${page} contains ${entries.length} entries`)
+        allEntries.push(...entries)
+
+        // Stop early if we get fewer entries than expected (likely last page)
+        if (entries.length < MIN_ENTRIES_PER_PAGE) {
+          console.log(
+            `Page ${page} has fewer than ${MIN_ENTRIES_PER_PAGE} entries, stopping pagination`,
+          )
+          break
+        }
+
+        // Add a small delay between requests to avoid rate limiting
+        if (page < MAX_PAGES) {
+          await new Promise((resolve) => setTimeout(resolve, 100))
+        }
+      } catch (pageError) {
+        console.error(`Failed to fetch page ${page}:`, pageError)
+        // Continue with next page instead of failing completely
+        continue
+      }
+    }
 
     if (allEntries.length === 0) {
-      console.warn('No GitHub feed entries found')
+      console.warn('No GitHub feed entries found across all pages')
       return []
     }
 
-    const feedList = allEntries
-      .map((f: Feed) => {
-        try {
-          // Parse the HTML content
-          const root = parse(f.content[0]._)
+    console.log(`Total entries fetched: ${allEntries.length}`)
 
-          // Filter auto dependecy update by dependabot
-          if (root.innerText.includes('Dependabot')) return null
-          if (root.innerText.includes('dependabot')) return null
-          if (root.innerText.includes('Bump')) return null
-          if (root.innerText.includes('bump')) return null
+    // Process and filter entries
+    const feedList = allEntries.map(processFeedEntry).filter(Boolean) // Filter out null entries
 
-          // Filter private repository activity
-          if (root.innerText.includes('hayashima')) return null
-
-          // Update all href attributes
-          root.querySelectorAll('a').forEach((link) => {
-            const href = link.getAttribute('href')
-            if (href && !href.startsWith('http')) {
-              link.setAttribute('href', `https://github.com${href}`)
-            }
-          })
-
-          // Return the updated HTML content as a string
-          f.content[0]._ = root.toString()
-          return f
-        } catch (error) {
-          console.error('Error processing feed entry:', error)
-          return null
-        }
-      })
-      .filter(Boolean) // Filter out null entries
-
+    console.log(`Processed entries after filtering: ${feedList.length}`)
     return feedList
   } catch (error) {
     console.error('Error fetching GitHub feed:', error)
     return []
   }
 }
+
+// Cached version with 1-hour revalidation
+export const fetchGithubFeedList = unstable_cache(
+  fetchGithubFeedListUncached,
+  ['github-feed'],
+  {
+    revalidate: 3600, // 1 hour in seconds
+    tags: ['github-feed'],
+  },
+)
 
 export type Feed = {
   id: string[]
