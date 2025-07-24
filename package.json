@@ -80,7 +80,7 @@
     "@mdx-js/loader": "^3.1.0",
     "@next/bundle-analyzer": "15.4.2",
     "@next/eslint-plugin-next": "15.4.2",
-    "@next/mdx": "15.4.2",
+    "@next/mdx": "15.4.3",
     "@playwright/test": "^1.54.1",
     "@storybook/addon-a11y": "^9.0.17",
     "@storybook/addon-docs": "^9.0.17",
