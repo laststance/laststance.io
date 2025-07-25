@@ -19,11 +19,11 @@ export const metadata: Metadata = {
       'application/rss+xml': `${env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'}/feed.xml`,
     },
   },
-  description: 'An individual OSS organization for code things.',
+  description: 'An independent OSS organization for coding projects.',
   metadataBase: new URL('https://laststance.io/'),
   openGraph: {
     title: 'Laststance.io',
-    description: 'An individual OSS organization for code things.',
+    description: 'An independent OSS organization for coding projects.',
     images: [`/api/og?title=Laststance.io`],
   },
   twitter: {

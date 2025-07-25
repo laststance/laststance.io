@@ -66,7 +66,7 @@ const projects = [
   },
   {
     name: 'prettier-husky-lint-staged-installer',
-    description: 'Setup prettier fortmat staged files at precommit.',
+    description: 'Setup prettier format staged files at precommit.',
     link: {
       href: 'https://github.com/laststance/prettier-husky-lint-staged-installer',
       label: 'prettier-husky-lint-staged-installer',

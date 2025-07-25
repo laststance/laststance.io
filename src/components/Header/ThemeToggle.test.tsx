@@ -1,6 +1,7 @@
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+
 import { ThemeToggle } from './ThemeToggle'
 
 // Mock next-themes
@@ -28,7 +29,9 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />)
 
     await waitFor(() => {
-      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      const button = screen.getByRole('button', {
+        name: /switch to dark theme/i,
+      })
       expect(button).toBeInTheDocument()
     })
   })
@@ -46,7 +49,9 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />)
 
     await waitFor(() => {
-      const button = screen.getByRole('button', { name: /switch to light theme/i })
+      const button = screen.getByRole('button', {
+        name: /switch to light theme/i,
+      })
       expect(button).toBeInTheDocument()
     })
   })
@@ -64,7 +69,9 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />)
 
     await waitFor(() => {
-      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      const button = screen.getByRole('button', {
+        name: /switch to dark theme/i,
+      })
       fireEvent.click(button)
     })
 
@@ -84,7 +91,9 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />)
 
     await waitFor(() => {
-      const button = screen.getByRole('button', { name: /switch to light theme/i })
+      const button = screen.getByRole('button', {
+        name: /switch to light theme/i,
+      })
       fireEvent.click(button)
     })
 

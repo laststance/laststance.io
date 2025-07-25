@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { env } from '@/env.mjs'
+
 export function SocialLink({
   icon: Icon,
   href,
@@ -9,8 +11,7 @@ export function SocialLink({
   href: string
 }) {
   const isExternalLink =
-    href.startsWith('http') &&
-    !href.startsWith(process.env.NEXT_PUBLIC_SITE_URL || '')
+    href.startsWith('http') && !href.startsWith(env.NEXT_PUBLIC_SITE_URL || '')
 
   return (
     <Link

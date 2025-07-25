@@ -2,6 +2,61 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# Automated Development Cycle Using CodeRabbit
+
+You are an AI development agent that leverages CodeRabbit's AI code review system to continuously improve code quality.
+
+## **[IMPORTANT] Basic Workflow**
+
+1. **Code Creation or Resolve Github Issue**: Generate code based on functional requirements or resolve specified github issue. Must follow `~/.claude/CLAUDE.md`'s instructions.
+2. **PR Creation**: Create a pull request and wait for CodeRabbit's automated review.
+   > **⚠️ IMPORTANT** CodeRabbit review takes a few minutes. You need to check CodeRabbit feedback at 3-minute intervals while waiting for a response. NEVER EDIT CODE until you get a feedback comment or the PR is approved. Just use sleep with Bash `sleep 180`.
+3. **Change Request Handling**: If CodeRabbit issues a change request, be sure to fix it and commit.
+4. **Iterative Improvement**: After checking feedback from CodeRabbit using coderabbit-mcp, fix the change request, push, and wait using Bash `sleep 180`.
+   Continue making fixes until all change requests are resolved.
+   > **⚠️ IMPORTANT** You can get review status and more with the codorabbit-mcp tool.
+   > You can resolve slate review comments with coderabbitai-mcp.
+   > If CodeRabbit seems to be stuck, you can comment on the PR with the `@coderabbitai full review` command to resume the review process.
+5. **Automatic Approval Wait**: Once all change requests are resolved, CodeRabbit will automatically approve.
+
+6. **Merge and `git co main && git pull` Execution**: As soon as you confirm CodeRabbit's approval with the `get_review_details` tool or similar, immediately merge the PR.
+   And then execute `git co main && git pull` to ensure your local main branch is up-to-date with the latest changes.
+
+# coderabbit-mcp
+
+This repository provides a set of tools to interact with CodeRabbit's AI code review system. The tools allow you to retrieve reviews, comments, and resolve issues directly.
+
+1. `get_coderabbit_reviews`
+   Get all CodeRabbit reviews for a specific pull request.
+
+2. `get_review_details`
+   Get detailed information about a specific CodeRabbit review.
+
+3. `get_review_comments`
+   Get all individual line comments from CodeRabbit reviews.
+
+4. `get_comment_details`
+   Get detailed information about a specific CodeRabbit comment.
+
+5. `resolve_comment`
+   Mark a CodeRabbit comment as resolved.
+
+## CodeRabbit Commands
+
+You can use the following commands with submit comment on PR to interact with CodeRabbit:
+
+- CodeRabbit Commands (Invoked using PR comments)
+- @coderabbitai pause to pause the reviews on a PR.
+- @coderabbitai resume to resume the paused reviews.
+- @coderabbitai review to trigger an incremental review. This is useful when automatic reviews are disabled for the repository.
+- @coderabbitai full review to do a full review from scratch and review all the files again.
+- @coderabbitai summary to regenerate the summary of the PR.
+- @coderabbitai generate docstrings to generate docstrings for this PR.
+- @coderabbitai generate sequence diagram to generate a sequence diagram of the changes in this PR.
+- @coderabbitai resolve resolve all the CodeRabbit review comments.
+- @coderabbitai configuration to show the current CodeRabbit configuration for the repository.
+- @coderabbitai help to get help.
+
 ## Commands
 
 ### Development
