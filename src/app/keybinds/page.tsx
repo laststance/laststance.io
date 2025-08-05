@@ -21,8 +21,6 @@ const keybinds: KeybindsList = {
     'Toggle Raycast': 'CMD Space',
     'Clipboard History': '^ D',
     'Search Snippets': 'CMD I',
-    'Search History (Chrome)': '^ CMD R',
-    'Search Bookmark (Chrome)': '^ CMD E',
     'Search Quicklinks': 'Option Q',
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
@@ -133,6 +131,7 @@ const keybinds: KeybindsList = {
     'Format with Prettier': '^-x ^-x',
     'Keybord Shortcut': 'Shift CMD ,',
     'Open Cursor Settings': 'Shift CMD j',
+    'Show Markdown Preview': 'CMD E',
   },
   AI: {
     'Toggle Chat Tab': 'CMD L',
