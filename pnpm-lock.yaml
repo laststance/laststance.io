@@ -103,8 +103,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       '@argos-ci/playwright':
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^6.0.1
+        version: 6.0.1
       '@chromatic-com/storybook':
         specifier: ^4.1.0
         version: 4.1.0(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)))
@@ -262,8 +262,8 @@ packages:
     resolution: {integrity: sha512-8MNANllQUJ4NotOIc+HO0LPaWFGt6LAW4uHBEJoLAyfhR/bLacUyWMQZcRJVXlBfb6RRajjQqJARmu92NbtpIg==}
     engines: {node: '>=20.0.0'}
 
-  '@argos-ci/playwright@6.0.0':
-    resolution: {integrity: sha512-L91m6sWULNT/bVFc6YvAGBPs3gyd+i5J2qk71874ZofSSYMuaP2GQ1L2eSN77EPcafBCQuEoeaNly838niYm3w==}
+  '@argos-ci/playwright@6.0.1':
+    resolution: {integrity: sha512-eK8TaxiPtOgVLbZp1dlk2PBZSFoRTOKsClnAQ0S1IIFfG8J2LGnFUl9mr+eG9JFWp7ZmQPkB1xWFXIAe+4nwqg==}
     engines: {node: '>=20.0.0'}
 
   '@argos-ci/util@3.0.0':
@@ -4588,8 +4588,8 @@ packages:
     resolution: {integrity: sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==}
     hasBin: true
 
-  tmp@0.2.3:
-    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
+  tmp@0.2.4:
+    resolution: {integrity: sha512-UdiSoX6ypifLmrfQ/XfiawN6hkjSBpCjhKxxZcWlUUmoXLaCKQU0bx4HF/tdDK2uzRuchf1txGvrWBzYREssoQ==}
     engines: {node: '>=14.14'}
 
   to-regex-range@5.0.1:
@@ -5083,11 +5083,11 @@ snapshots:
       debug: 4.4.1
       fast-glob: 3.3.3
       sharp: 0.34.3
-      tmp: 0.2.3
+      tmp: 0.2.4
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/playwright@6.0.0':
+  '@argos-ci/playwright@6.0.1':
     dependencies:
       '@argos-ci/browser': 5.0.0
       '@argos-ci/core': 4.0.0
@@ -9859,7 +9859,7 @@ snapshots:
     dependencies:
       tldts-core: 6.1.86
 
-  tmp@0.2.3: {}
+  tmp@0.2.4: {}
 
   to-regex-range@5.0.1:
     dependencies:
