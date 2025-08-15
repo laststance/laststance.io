@@ -76,7 +76,7 @@
     "@argos-ci/playwright": "^6.0.2",
     "@chromatic-com/storybook": "^4.1.0",
     "@clack/prompts": "^0.11.0",
-    "@eslint/js": "^9.32.0",
+    "@eslint/js": "^9.33.0",
     "@mdx-js/loader": "^3.1.0",
     "@next/bundle-analyzer": "15.4.6",
     "@next/eslint-plugin-next": "15.4.6",
