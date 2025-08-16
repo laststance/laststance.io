@@ -1,10 +1,28 @@
-import { defineConfig, devices } from '@playwright/test'
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 import 'dotenv/config'
+
+import { createArgosReporterOptions } from '@argos-ci/playwright/reporter'
+import { defineConfig, devices } from '@playwright/test'
+
+// Parse env booleans safely and gate Argos uploads to CI only
+function envVarIsTrue(value?: string) {
+  if (!value) return false
+  const normalized = value.trim().toLowerCase()
+  return (
+    normalized === '1' ||
+    normalized === 'true' ||
+    normalized === 'yes' ||
+    normalized === 'on'
+  )
+}
+
+const shouldUploadToArgos =
+  Boolean(process.env.CI) &&
+  Boolean(process.env.ARGOS_TOKEN) &&
+  envVarIsTrue(process.env.UPLOAD_TO_ARGOS)
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -24,22 +42,14 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
-    // Add Argos reporter only when token is available.
-    ...(process.env.ARGOS_TOKEN
-      ? [
-          [
-            '@argos-ci/playwright/reporter',
-            {
-              // Upload to Argos on CI only.
-              uploadToArgos:
-                !!process.env.CI &&
-                !!process.env.BUILD_NAME &&
-                process.env.UPLOAD_TO_ARGOS !== 'false',
-              buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
-            },
-          ] as const,
-        ]
-      : []),
+    [
+      '@argos-ci/playwright/reporter',
+      createArgosReporterOptions({
+        uploadToArgos: shouldUploadToArgos,
+        buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
+        token: process.env.ARGOS_TOKEN,
+      }),
+    ],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
