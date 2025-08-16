@@ -50,3 +50,4 @@ yarn-error.log*
 screenshots/
 *storybook.log
 storybook-static
+.serena/cache

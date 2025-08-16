@@ -1,5 +1,5 @@
+import { createArgosReporterOptions } from '@argos-ci/playwright/reporter'
 import { defineConfig, devices } from '@playwright/test'
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -25,21 +25,14 @@ export default defineConfig({
     ['list'],
     ['html'],
     // Add Argos reporter only when token is available.
-    ...(process.env.ARGOS_TOKEN
-      ? [
           [
-            '@argos-ci/playwright/reporter',
-            {
-              // Upload to Argos on CI only.
-              uploadToArgos:
-                !!process.env.CI &&
-                !!process.env.BUILD_NAME &&
-                process.env.UPLOAD_TO_ARGOS !== 'false',
-              buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
-            },
-          ] as const,
+          '@argos-ci/playwright/reporter',
+          createArgosReporterOptions({
+            uploadToArgos: !!(process.env.UPLOAD_TO_ARGOS && process.env.BUILD_NAME),
+            buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
+          })
         ]
-      : []),
+    
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
