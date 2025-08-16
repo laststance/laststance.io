@@ -24,18 +24,22 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
-    // Add Argos reporter.
-    [
-      '@argos-ci/playwright/reporter',
-      {
-        // Upload to Argos on CI only.
-        uploadToArgos:
-          !!process.env.CI &&
-          !!process.env.BUILD_NAME &&
-          process.env.UPLOAD_TO_ARGOS !== 'false',
-        buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
-      },
-    ],
+    // Add Argos reporter only when token is available.
+    ...(process.env.ARGOS_TOKEN
+      ? [
+          [
+            '@argos-ci/playwright/reporter',
+            {
+              // Upload to Argos on CI only.
+              uploadToArgos:
+                !!process.env.CI &&
+                !!process.env.BUILD_NAME &&
+                process.env.UPLOAD_TO_ARGOS !== 'false',
+              buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
+            },
+          ] as const,
+        ]
+      : []),
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
