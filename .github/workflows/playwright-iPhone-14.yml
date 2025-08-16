@@ -41,6 +41,4 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-      - name: Upload screenshots to Argos
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        run: pnpm argos upload ./screenshots
+          
