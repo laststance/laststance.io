@@ -1,3 +1,5 @@
+import { type Metadata } from 'next'
+
 import { Card, CardTitle, CardDescription } from '@/components/Card'
 import { Section } from '@/components/Section'
 import { SimpleLayout } from '@/components/SimpleLayout'
@@ -33,7 +35,7 @@ function Tool({
 }
 
 const title = 'Uses'
-export const metadata = {
+export const metadata: Metadata = {
   title: title,
   description: 'Software I use, my preference, things my favorite.',
   openGraph: {
