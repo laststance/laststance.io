@@ -25,14 +25,16 @@ export default defineConfig({
     ['list'],
     ['html'],
     // Add Argos reporter only when token is available.
-          [
-          '@argos-ci/playwright/reporter',
-          createArgosReporterOptions({
-            uploadToArgos: !!(process.env.UPLOAD_TO_ARGOS && process.env.BUILD_NAME),
-            buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
-          })
-        ]
-    
+    [
+      '@argos-ci/playwright/reporter',
+      createArgosReporterOptions({
+        uploadToArgos: !!(
+          process.env.UPLOAD_TO_ARGOS && process.env.BUILD_NAME
+        ),
+        buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
+        token: process.env.ARGOS_TOKEN,
+      }),
+    ],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
