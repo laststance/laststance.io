@@ -1,9 +1,10 @@
+import { type Metadata } from 'next'
 import { SimpleLayout } from '@/components/SimpleLayout'
 
 import KeybindsClient from './KeybindsClient'
 
 const title = 'Keybinds'
-export const metadata = {
+export const metadata: Metadata = {
   title: title,
   description: 'My Editor Keybinds.',
   openGraph: {
