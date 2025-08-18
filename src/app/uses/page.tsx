@@ -66,7 +66,7 @@ export default function Uses() {
             probably replace the Intel chip with the latest ARM chip soon, but
             it's still woking powerful and recent MacBook Pro models are too
             expensive, so I can't easily change models. <br /> To maintain a
-            comfortable posture, I run my MacBook Pro in a clamshell mode mode
+            comfortable posture, I run my MacBook Pro in a clamshell mode
             with an external monitor, keyboard, and trackpad (described below)
             connected to the computer. I often run my MacBook Pro in a clamshell
             mode with an external monitor, keyboard, and trackpad connected to
