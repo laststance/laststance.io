@@ -1,4 +1,5 @@
 import { type Metadata } from 'next'
+
 import { SimpleLayout } from '@/components/SimpleLayout'
 
 import KeybindsClient from './KeybindsClient'
