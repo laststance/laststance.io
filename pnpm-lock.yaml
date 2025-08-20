@@ -118,8 +118,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(acorn@8.15.0)
       '@next/bundle-analyzer':
-        specifier: 15.4.6
-        version: 15.4.6
+        specifier: 15.4.7
+        version: 15.4.7
       '@next/eslint-plugin-next':
         specifier: 15.4.6
         version: 15.4.6
@@ -826,8 +826,8 @@ packages:
   '@neoconfetti/react@1.0.0':
     resolution: {integrity: sha512-klcSooChXXOzIm+SE5IISIAn3bYzYfPjbX7D7HoqZL84oAfgREeSg5vSIaSFH+DaGzzvImTyWe1OyrJ67vik4A==}
 
-  '@next/bundle-analyzer@15.4.6':
-    resolution: {integrity: sha512-LZWqTQgIpfhblT77VVc1r4qtHJY1pfZOAIx8zNtliU7L3pMjpNrG4rYWikJ7AyAI/RgYyt2sCVWqkeOZmFp7Zg==}
+  '@next/bundle-analyzer@15.4.7':
+    resolution: {integrity: sha512-LB1Lm9Tpnxg6uHMgSnMrfe+NE7scyOjT1SR+V9YKdiz8U818nh77tGTWTSZjYB0EiFFdjfM7XB7LjuN4Nt7RNg==}
 
   '@next/env@15.4.6':
     resolution: {integrity: sha512-yHDKVTcHrZy/8TWhj0B23ylKv5ypocuCwey9ZqPyv4rPdUdRzpGCkSi03t04KBPyU96kxVtUqx6O3nE1kpxASQ==}
@@ -5637,7 +5637,7 @@ snapshots:
 
   '@neoconfetti/react@1.0.0': {}
 
-  '@next/bundle-analyzer@15.4.6':
+  '@next/bundle-analyzer@15.4.7':
     dependencies:
       webpack-bundle-analyzer: 4.10.1
     transitivePeerDependencies:
