@@ -79,7 +79,7 @@
     "@eslint/js": "^9.33.0",
     "@mdx-js/loader": "^3.1.0",
     "@next/bundle-analyzer": "15.4.6",
-    "@next/eslint-plugin-next": "15.4.6",
+    "@next/eslint-plugin-next": "15.4.7",
     "@next/mdx": "15.4.6",
     "@playwright/test": "^1.54.2",
     "@storybook/addon-a11y": "^9.1.1",
