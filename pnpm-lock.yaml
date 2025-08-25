@@ -100,8 +100,8 @@ importers:
         version: 4.1.1
     devDependencies:
       '@argos-ci/cli':
-        specifier: ^3.0.3
-        version: 3.0.3
+        specifier: ^3.0.4
+        version: 3.0.4
       '@argos-ci/playwright':
         specifier: ^6.1.1
         version: 6.1.1
@@ -245,10 +245,6 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@argos-ci/api-client@0.10.0':
-    resolution: {integrity: sha512-BegP4fl8TBPV5m3gu697vMqiXaZHLz4RUa5vgj1zXTBquOyyfxehGiUMLoo6lieTk3vsMbvFEHLwRSWFB1Mr3Q==}
-    engines: {node: '>=20.0.0'}
-
   '@argos-ci/api-client@0.11.0':
     resolution: {integrity: sha512-mv7LWrJfEDjjs+CmAJaM1GIexpb3A8TwuyTUCTKgDp/SHdbU0uF8uC6lV4P/mfeGIvBYZzIRKq/frd+IETlC2g==}
     engines: {node: '>=20.0.0'}
@@ -257,14 +253,10 @@ packages:
     resolution: {integrity: sha512-SKAD7EXoLX4u50dzTIT/ABnpD284+DnBfoJM0ZrTIav2eiiVJyknNKSznF5w118lYGnYvugTXbKMnukGPzJeOA==}
     engines: {node: '>=20.0.0'}
 
-  '@argos-ci/cli@3.0.3':
-    resolution: {integrity: sha512-oXQtJshBn6NficYOY14s7NgokotgiIiwQklrTHGOx3Y90kIk6eOTiW2oP7+Gz4jSz2N7l6AfZ7QwwF0aXjovNA==}
+  '@argos-ci/cli@3.0.4':
+    resolution: {integrity: sha512-HKhB2Ql1H9SrZKmJCBE+iw5vrHWN9xSppOr5z7krCbxQgMzrfZY47sFbDI0BAc4mNDqDmSMRA4WCcKOZvDY/gQ==}
     engines: {node: '>=20.0.0'}
     hasBin: true
-
-  '@argos-ci/core@4.0.3':
-    resolution: {integrity: sha512-HApdthNy9Jhuq7GkWCu4BFQzOsvmh03NSKjLN/U84rryps+VYI9TDPCJQj5WNL192dX8uUTAQZvzACzOUaOYNQ==}
-    engines: {node: '>=20.0.0'}
 
   '@argos-ci/core@4.1.0':
     resolution: {integrity: sha512-e2qEZU6NBxu8zwWmyCJcUtT5HSeWzy9yWI3F1Lo9cWGV9gG+6keEXElnmCmOt37YuXjFIRSV6Vvi5tA/TywERA==}
@@ -3425,8 +3417,8 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  ky@1.8.2:
-    resolution: {integrity: sha512-XybQJ3d4Ea1kI27DoelE5ZCT3bSJlibYTtQuMsyzKox3TMyayw1asgQdl54WroAm+fIA3ZCr8zXW2RpR7qWVpA==}
+  ky@1.9.0:
+    resolution: {integrity: sha512-NgBeR/cu7kuC4BAeF1rnXhfoI2uQ9RBe8zl5vo87ASsf1iIQoCeOxyt6Io6K4Ki++5ItCavXAtbEWWCGFciQ6g==}
     engines: {node: '>=18'}
 
   language-subtag-registry@0.3.23:
@@ -5041,13 +5033,6 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.30
 
-  '@argos-ci/api-client@0.10.0':
-    dependencies:
-      debug: 4.4.1
-      openapi-fetch: 0.14.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@argos-ci/api-client@0.11.0':
     dependencies:
       debug: 4.4.1
@@ -5057,24 +5042,12 @@ snapshots:
 
   '@argos-ci/browser@5.0.0': {}
 
-  '@argos-ci/cli@3.0.3':
+  '@argos-ci/cli@3.0.4':
     dependencies:
-      '@argos-ci/core': 4.0.3
+      '@argos-ci/core': 4.1.0
       commander: 14.0.0
       ora: 8.2.0
       update-notifier: 7.3.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@argos-ci/core@4.0.3':
-    dependencies:
-      '@argos-ci/api-client': 0.10.0
-      '@argos-ci/util': 3.1.0
-      convict: 6.2.4
-      debug: 4.4.1
-      fast-glob: 3.3.3
-      sharp: 0.34.3
-      tmp: 0.2.5
     transitivePeerDependencies:
       - supports-color
 
@@ -8346,7 +8319,7 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  ky@1.8.2: {}
+  ky@1.9.0: {}
 
   language-subtag-registry@0.3.23: {}
 
@@ -9123,7 +9096,7 @@ snapshots:
 
   package-json@10.0.1:
     dependencies:
-      ky: 1.8.2
+      ky: 1.9.0
       registry-auth-token: 5.1.0
       registry-url: 6.0.1
       semver: 7.7.2
