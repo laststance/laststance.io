@@ -48,6 +48,7 @@ export default defineConfig({
         uploadToArgos: shouldUploadToArgos,
         buildName: process.env.BUILD_NAME || 'BUILD_NAME is empty',
         token: process.env.ARGOS_TOKEN,
+        referenceCommit: '8d46e3928228908ca63f22b8ee4976e24d6c71a6',
       }),
     ],
   ],
