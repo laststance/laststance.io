@@ -39,6 +39,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# serena
+.serena/
+
 # typescript
 *.tsbuildinfo
 

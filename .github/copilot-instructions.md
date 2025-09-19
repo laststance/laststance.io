@@ -4,7 +4,7 @@ applyTo: '**/*.ts,**/*.tsx'
 
 # Project coding standards for TypeScript and React
 
-Apply the [general coding guidelines](./general-coding.instructions.md) to all code.
+Apply general coding best practices to all code.
 
 ## TypeScript Guidelines
 
@@ -24,7 +24,7 @@ Apply the [general coding guidelines](./general-coding.instructions.md) to all c
 
 ---
 
-## applyTo: "**/*.mdx"
+## applyTo: "\*_/_.mdx"
 
 # Storybook MDX Documentation Guide
 
@@ -179,3 +179,118 @@ The project follows a standard Next.js App Router structure:
 - `src/images/` - Static images organized by type
 - `e2e/` - Playwright end-to-end tests
 - `public/` - Static assets served at root level
+
+---
+
+## applyTo: "**/\*.tsx,**/\*.ts"
+
+# Essential Architecture Knowledge
+
+## Technology Stack & Key Dependencies
+
+- **Framework**: Next.js 15 with App Router and Turbopack
+- **Language**: TypeScript with strict mode enabled
+- **Styling**: Tailwind CSS v4 with custom design system
+- **Content**: MDX for articles with Prism syntax highlighting
+- **Testing**: Vitest (unit), Playwright (E2E), Storybook (components)
+- **Package Manager**: pnpm with Volta for Node.js version management
+- **UI Library**: Radix UI primitives with custom shadcn-style components
+- **Icons**: Lucide React icons
+- **Theme**: next-themes for dark/light mode with system preference detection
+
+## Critical Patterns & Conventions
+
+### Component Architecture
+
+- **Server Components Default**: All components are Server Components unless marked `.client.tsx`
+- **Client Components**: Use `.client.tsx` suffix for interactive components requiring browser APIs
+- **UI Components**: Located in `src/components/ui/`, follow shadcn conventions with `cn()` utility
+- **Styling**: Combine Tailwind classes with `cn()` from `src/lib/utils.ts` for conditional styling
+- **Props Pattern**: Use discriminated unions for polymorphic components (see `Button.tsx`)
+
+### Article/Content System
+
+- **Structure**: Articles in `src/app/articles/[year]/[slug]/page.mdx` with frontmatter metadata
+- **Generation**: Use `pnpm gen` to create new articles with proper template and JST timezone
+- **Loading**: Dynamic imports via `src/lib/articles.ts` with glob pattern matching
+- **Metadata**: Export `article` object and `metadata` for SEO in each MDX file
+
+### Environment & Configuration
+
+- **Required Variables**: `NEXT_PUBLIC_SITE_URL`, `PERSONAL_ACCESS_TOKEN` (GitHub API)
+- **Node Version**: 22.x managed by Volta
+- **Path Aliases**: `@/*` maps to `./src/*` for clean imports
+
+## Development Workflows
+
+### Testing Strategy
+
+- **Unit Tests**: Colocated with source files (`*.test.ts`), run with `pnpm test`
+- **E2E Tests**: In `/e2e` directory, test across Chrome, iPad Pro 11, iPhone 14
+- **Build Requirement**: Always run `pnpm build` before `pnpm playwright` (uses production server)
+- **Visual Testing**: Argos CI integration for visual regression testing
+
+### GitHub Integration
+
+- **API Access**: Octokit for GitHub API calls with rate limiting considerations
+- **Personal Access Token**: Required for GitHub API integration
+- **CI/CD**: GitHub Actions for build, lint, typecheck, and cross-device E2E tests
+
+### Code Quality Pipeline
+
+- **TypeScript**: Strict mode with comprehensive type checking (`pnpm typecheck`)
+- **Linting**: ESLint with Next.js rules (`pnpm lint:fix` for auto-fix)
+- **Formatting**: Prettier with Tailwind plugin (`pnpm prettier`)
+- **Git Hooks**: Husky with lint-staged for pre-commit quality checks
+
+## Common Patterns & Examples
+
+### Button Component Pattern
+
+```tsx
+// Polymorphic component with discriminated unions
+type ButtonProps = {
+  variant?: keyof typeof variantStyles
+} & (
+  | (React.ComponentPropsWithoutRef<'button'> & { href?: undefined })
+  | React.ComponentPropsWithoutRef<typeof Link>
+)
+```
+
+### Utility Function Pattern
+
+```tsx
+// cn() utility for conditional Tailwind classes
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+### Theme Provider Pattern
+
+```tsx
+// Client component for theme management
+<ThemeProvider attribute="class" disableTransitionOnChange>
+  <ThemeWatcher />
+  {children}
+</ThemeProvider>
+```
+
+### Article Metadata Pattern
+
+```tsx
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Article Title',
+  date: '2024-01-01', // JST timezone
+  description: 'Article description',
+}
+```
+
+## Troubleshooting & Gotchas
+
+- **Playwright Tests**: Must build first (`pnpm build`) before running E2E tests
+- **Force Interactions**: Use `{ force: true }` for all Playwright click actions
+- **TypeScript Paths**: Always use `@/*` aliases, never relative paths like `../../../`
+- **Client Components**: Only use when browser APIs or interactivity are required
+- **GitHub API**: Handle rate limits and implement caching for external data
