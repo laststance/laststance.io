@@ -129,3 +129,149 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .dark .FeedItem_container {
+    .d-flex {
+      border: 1px rgba(255, 255, 255, 0.1) solid;
+      border-radius: 8px;
+    }
+
+    .avatar-user {
+      border: 2px solid #e0e0e0;
+    }
+
+    .color-shadow-medium {
+      border: 1px rgba(255, 255, 255, 0.1) solid;
+    }
+
+    .Box {
+      border: 1px rgba(255, 255, 255, 0.1) solid;
+    }
+  }
+
+  .FeedItem_container {
+    ul.list-style-none {
+      margin-top: 2px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .color-fg-muted {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .d-flex {
+      display: flex;
+      padding: 10px;
+      border: 1px rgba(0, 0, 0, 0.1) solid;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+      overflow: auto;
+      text-overflow: ellipsis;
+    }
+
+    .d-flex.flex-column.width-full {
+      border: none;
+      box-shadow: none;
+    }
+
+    .flex-items-baseline {
+      align-items: baseline;
+      white-space: nowrap;
+      overflow: auto;
+      text-overflow: ellipsis;
+    }
+
+    .flex-column {
+      flex-direction: column;
+    }
+
+    .width-full {
+      width: 100%;
+      max-width: 303px;
+    }
+
+    .list-style-none {
+      & .d-flex.flex-items-baseline {
+        flex-direction: column;
+
+        & span,
+        img,
+        a {
+          display: none;
+        }
+      }
+    }
+
+    .avatar-user {
+      border-radius: 50%;
+      border: 2px solid #e0e0e0;
+    }
+
+    .Link--primary {
+      color: rgb(20, 184, 166);
+      text-decoration: none;
+    }
+
+    .Link--primary:hover {
+      text-decoration: underline;
+    }
+
+    .Link--muted {
+      color: rgb(20, 184, 166);
+      text-decoration: none;
+    }
+
+    .Link--muted:hover {
+      text-decoration: underline;
+    }
+
+    .Box {
+      border-radius: 8px;
+      margin-top: 10px;
+      padding: 15px;
+      border: 1px rgba(0, 0, 0, 0.1) solid;
+      white-space: nowrap;
+      overflow: auto;
+      text-overflow: ellipsis;
+    }
+
+    .color-shadow-medium {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .repo-language-color {
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    blockquote {
+      display: inline;
+    }
+
+    .mr-2 {
+      margin-right: 8px;
+    }
+
+    .py-4 {
+      padding: 16px 0;
+    }
+
+    .mr-3 {
+      margin-right: 12px;
+    }
+
+    .mt-1 {
+      margin-top: 4px;
+    }
+  }
+}
