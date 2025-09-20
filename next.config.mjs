@@ -9,7 +9,7 @@ const withBundleAnalyzer = withBundleAnalyzerOriginal({
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
   experimental: {
-    mdxRs: true,
+    mdxRs: false,
   },
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -19,6 +19,13 @@ const nextConfig = {
   },
 }
 
-const withMDX = nextMDX({})
+const rehypePrism = (await import('@mapbox/rehype-prism')).default
+
+const withMDX = nextMDX({
+  extension: /\.mdx?$/,
+  options: {
+    rehypePlugins: [rehypePrism],
+  },
+})
 
 export default withBundleAnalyzer(withMDX(nextConfig))
