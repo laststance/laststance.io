@@ -2,6 +2,8 @@ import React from 'react'
 
 import type { Feed } from '@/lib/octokit'
 
+import { sanitizeHtml } from '../../lib/sanitizeHtml'
+
 interface Props {
   feed: Feed
 }
@@ -11,7 +13,7 @@ export const FeedItem: React.FC<Props> = ({ feed }) => (
     <dd className="text-sm text-zinc-500 dark:text-zinc-400 dark:bg-zinc-800/90">
       <div
         dangerouslySetInnerHTML={{
-          __html: feed.content[0]._,
+          __html: sanitizeHtml(feed.content[0]._),
         }}
       />
     </dd>
