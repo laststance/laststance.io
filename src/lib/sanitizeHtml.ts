@@ -8,14 +8,15 @@ export const sanitizeHtml = (html: string): string => {
     return ''
   }
 
-  const $ = load(html, {
-    decodeEntities: false,
-    xmlMode: false,
-  })
+  const $ = load(html)
 
   $('script').remove()
 
   $('*').each((_, element) => {
+    if (!('attribs' in element) || element.type !== 'tag') {
+      return
+    }
+
     const attribs = element.attribs ?? {}
 
     Object.keys(attribs).forEach((attribute) => {
