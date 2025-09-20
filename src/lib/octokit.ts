@@ -49,6 +49,39 @@ const processFeedEntry = (f: Feed): Feed | null => {
       }
     })
 
+    // Drop relative stylesheet links that can't be resolved at build time
+    root.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
+      const href = link.getAttribute('href')
+      if (!href) return
+      if (href.startsWith('http')) return
+      link.remove()
+    })
+
+    // Normalise image sources to absolute URLs
+    root.querySelectorAll('img').forEach((img) => {
+      const src = img.getAttribute('src')
+      if (!src) return
+      if (src.startsWith('http')) return
+      if (src.startsWith('//')) {
+        img.setAttribute('src', `https:${src}`)
+        return
+      }
+      img.setAttribute('src', `https://github.com${src}`)
+    })
+
+    // Remove potentially dangerous nodes and attributes
+    root
+      .querySelectorAll('script, style, iframe, object, embed')
+      .forEach((node) => node.remove())
+
+    root.querySelectorAll('*').forEach((element) => {
+      Object.keys(element.attributes).forEach((attr) => {
+        if (attr.toLowerCase().startsWith('on')) {
+          element.removeAttribute(attr)
+        }
+      })
+    })
+
     // Return the updated HTML content as a string
     f.content[0]._ = root.toString()
     return f
