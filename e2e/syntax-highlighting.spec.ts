@@ -159,6 +159,9 @@ test.describe('Syntax Highlighting', () => {
       }
     }
 
+    // Verify theme toggle was found and clicked
+    expect(themeToggled).toBe(true)
+
     // Verify syntax highlighting is preserved after theme toggle
     const tokensAfterToggle = await page.locator('.token').count()
     expect(tokensAfterToggle).toBe(initialTokens)
