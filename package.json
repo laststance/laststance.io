@@ -81,7 +81,7 @@
     "@next/bundle-analyzer": "15.5.3",
     "@next/eslint-plugin-next": "15.5.3",
     "@next/mdx": "15.5.3",
-    "@playwright/test": "^1.55.0",
+    "@playwright/test": "^1.55.1",
     "@storybook/addon-a11y": "^9.1.2",
     "@storybook/addon-docs": "^9.1.2",
     "@storybook/addon-vitest": "^9.1.2",
