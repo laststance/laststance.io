@@ -72,7 +72,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^3.0.9",
+    "@argos-ci/cli": "^3.0.10",
     "@argos-ci/playwright": "^6.1.7",
     "@chromatic-com/storybook": "^4.1.1",
     "@clack/prompts": "^0.11.0",
