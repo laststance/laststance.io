@@ -2,7 +2,7 @@ import { argosScreenshot } from '@argos-ci/playwright'
 import { test, expect } from '@playwright/test'
 
 test('/projects', async ({ page }, testInfo) => {
-  await page.goto('http://localhost:3000/projects')
+  await page.goto('/projects')
   await argosScreenshot(
     page,
     `[${testInfo.project.name}] https://laststance.io/projects`,
@@ -10,7 +10,7 @@ test('/projects', async ({ page }, testInfo) => {
 })
 
 test('Clean URL project should be displayed correctly', async ({ page }) => {
-  await page.goto('http://localhost:3000/projects')
+  await page.goto('/projects')
 
   // Find the Clean URL project card
   const cleanUrlCard = page.locator('li').filter({
@@ -47,7 +47,7 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
 })
 
 test('Clean URL should be the first project in the list', async ({ page }) => {
-  await page.goto('http://localhost:3000/projects')
+  await page.goto('/projects')
 
   // Wait for the page to fully load and the project list to be rendered
   await page.waitForSelector('ul > li h2', { state: 'visible' })

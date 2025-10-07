@@ -2,7 +2,7 @@ import { argosScreenshot } from '@argos-ci/playwright'
 import { test, expect } from '@playwright/test'
 
 test("What's New dialog", async ({ page }, testInfo) => {
-  await page.goto('http://localhost:3000/')
+  await page.goto('/')
   await expect(page.getByRole('button', { name: "Open What's New dialog" })).toBeVisible()
 
   await expect(page.getByRole('banner')).toContainText("What's New?")

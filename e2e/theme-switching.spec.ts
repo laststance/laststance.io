@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Theme Switching', () => {
   test('should toggle between light and dark themes', async ({ page }) => {
-    await page.goto('http://localhost:3000')
+    await page.goto('')
 
     // Check initial theme (should be light by default)
     const html = page.locator('html')
@@ -26,7 +26,7 @@ test.describe('Theme Switching', () => {
   })
 
   test('should persist theme across page navigation', async ({ page }) => {
-    await page.goto('http://localhost:3000')
+    await page.goto('')
 
     // Switch to dark theme
     await page.getByLabel(/switch to dark theme/i).click()
@@ -42,7 +42,7 @@ test.describe('Theme Switching', () => {
       await page.waitForURL('**/about')
     } catch {
       // On mobile, navigation might be in a menu, just navigate directly
-      await page.goto('http://localhost:3000/about')
+      await page.goto('/about')
     }
 
     // Check that dark theme persists
@@ -57,7 +57,7 @@ test.describe('Theme Switching', () => {
   })
 
   test('should have proper ARIA labels for accessibility', async ({ page }) => {
-    await page.goto('http://localhost:3000')
+    await page.goto('')
 
     // Check ARIA label in light mode
     const lightModeButton = page.getByRole('button', {
@@ -86,7 +86,7 @@ test.describe('Theme Switching', () => {
   test('should have correct visual indicators for theme state', async ({
     page,
   }) => {
-    await page.goto('http://localhost:3000')
+    await page.goto('')
 
     // In light mode, sun icon should be visible
     const sunIcon = page
