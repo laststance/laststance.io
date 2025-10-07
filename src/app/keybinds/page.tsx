@@ -26,7 +26,9 @@ const keybinds: KeybindsList = {
     'Search Quicklinks': 'Option Q',
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
-    'Maximize(Window Management)': 'Option M',
+    "Chrome to Dia": '^ J',
+    'Search bookmarks(Raindrop)': "^ R",
+    'Latest bookmarks(Raindrop)': "^ CMD J",
     'Toggle Raycast Note': 'Option Space',
     'Confetti with sound': 'Option D',
   },
@@ -134,6 +136,7 @@ const keybinds: KeybindsList = {
     'Keybord Shortcut': 'Shift CMD ,',
     'Open Cursor Settings': 'Shift CMD j',
     'Show Markdown Preview': 'CMD E',
+    'Switch Window': '^ W'
   },
   AI: {
     'Toggle Chat Tab': 'CMD L',
@@ -155,6 +158,7 @@ const keybinds: KeybindsList = {
     'Open chrome://extensions/': 'CMD E',
     'Open chrome://bookmarks/': 'CMD B',
     'Duplicate tab': 'CMD D',
+    'DevTools: Pause script execution': '^ J'
   },
 }
 
