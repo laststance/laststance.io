@@ -95,7 +95,7 @@
     "@types/mdx": "^2.0.13",
     "@types/node": "24.7.0",
     "@types/react": "19.2.0",
-    "@types/react-dom": "19.2.0",
+    "@types/react-dom": "19.2.1",
     "@types/webpack-env": "^1.18.8",
     "@types/xml2js": "^0.4.14",
     "@vitest/browser": "3.2.4",
