@@ -55,6 +55,10 @@ const WhatNew: React.FC = () => {
           aria-label="What's new updates list"
         >
           <List
+            date="2025-10-07"
+            li={['Update Keybinds: Add Chrome, Raindrop and IDE shortcuts']}
+          />
+          <List
             date="2025-06-08"
             li={[
               <DialogClose asChild>
