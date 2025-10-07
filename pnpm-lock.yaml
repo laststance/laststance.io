@@ -97,8 +97,8 @@ importers:
         version: 4.1.11
     devDependencies:
       '@argos-ci/cli':
-        specifier: ^3.0.10
-        version: 3.0.10
+        specifier: ^3.1.0
+        version: 3.1.0
       '@argos-ci/playwright':
         specifier: ^6.1.8
         version: 6.1.8
@@ -242,10 +242,6 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@argos-ci/api-client@0.11.1':
-    resolution: {integrity: sha512-AYchqf//lyrzwmZi0KflB5uND9/+GDVQ7rpvf36pvIlSdwFNv825kIR5pYn+65kmi39780tCDsQgQJZj6Jj4CQ==}
-    engines: {node: '>=20.0.0'}
-
   '@argos-ci/api-client@0.12.0':
     resolution: {integrity: sha512-WfhI+StLJKIKERWQaIm7Kv1/k+YO/CYIp3djDVhZIU6mv/8yalyNXHnkRC6ofq1kPpmRvoag1KW79/C2WsB4Ag==}
     engines: {node: '>=20.0.0'}
@@ -254,14 +250,10 @@ packages:
     resolution: {integrity: sha512-SKAD7EXoLX4u50dzTIT/ABnpD284+DnBfoJM0ZrTIav2eiiVJyknNKSznF5w118lYGnYvugTXbKMnukGPzJeOA==}
     engines: {node: '>=20.0.0'}
 
-  '@argos-ci/cli@3.0.10':
-    resolution: {integrity: sha512-XU77ydNdgDfRFZi8CNevJxy6OxbgO/a45zyBzBrQnVhfej25c1YNhDPBQjm/wdC9lZoVe0FcMJmJ33DbVzhoBA==}
+  '@argos-ci/cli@3.1.0':
+    resolution: {integrity: sha512-byUpwK3JCgL21NpX29+lB7g2ZEZNOFhWXwRzxA/CgvOaf5imic0ioMdYJD8nn3U5ib6tpQ+C9CAvALCrND7GpA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
-
-  '@argos-ci/core@4.1.6':
-    resolution: {integrity: sha512-VXtdLub7BXSDZSQQPJa+5b1Z0y1Zai9kmOj/jZPywdwg3Csw5C9mC67To77A/ZRb2Uy6sJnQDf2IIrP+lf/wCg==}
-    engines: {node: '>=20.0.0'}
 
   '@argos-ci/core@4.2.0':
     resolution: {integrity: sha512-3RNyBZ84pYfQ8dn/Ivv5ls2x2rgqFuh8wA8e4ugggA5lx2dE7a6yghJw8cPzud+zbHrpOntl/HBM3akh2SXLkw==}
@@ -269,10 +261,6 @@ packages:
 
   '@argos-ci/playwright@6.1.8':
     resolution: {integrity: sha512-aEDMtcHCqJPqI2jf4wKvsAReYh7cXxAyWs5FATVKIbqNax1H+7/NOSzB2PirXhThJW/1P40O82ki6ELLDGF6oQ==}
-    engines: {node: '>=20.0.0'}
-
-  '@argos-ci/util@3.1.0':
-    resolution: {integrity: sha512-QM0IwJGm9YsRdsvTAskQab9iXpQOTOOLb+h9Yev76L2TzoLZ2tM9QO+pYNNlX9YLK5dYr/H/pBNQ1lWr130Jjw==}
     engines: {node: '>=20.0.0'}
 
   '@argos-ci/util@3.1.1':
@@ -3898,9 +3886,6 @@ packages:
     resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
     engines: {node: '>=12'}
 
-  openapi-fetch@0.14.0:
-    resolution: {integrity: sha512-PshIdm1NgdLvb05zp8LqRQMNSKzIlPkyMxYFxwyHR+UlKD4t2nUjkDhNxeRbhRSEd3x5EUNh2w5sJYwkhOH4fg==}
-
   openapi-fetch@0.14.1:
     resolution: {integrity: sha512-l7RarRHxlEZYjMLd/PR0slfMVse2/vvIAGm75/F7J6MlQ8/b9uUQmUF2kCPrQhJqMXSxmYWObVgeYXbFYzZR+A==}
 
@@ -5066,13 +5051,6 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.30
 
-  '@argos-ci/api-client@0.11.1':
-    dependencies:
-      debug: 4.4.3
-      openapi-fetch: 0.14.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@argos-ci/api-client@0.12.0':
     dependencies:
       debug: 4.4.3
@@ -5082,24 +5060,12 @@ snapshots:
 
   '@argos-ci/browser@5.0.0': {}
 
-  '@argos-ci/cli@3.0.10':
+  '@argos-ci/cli@3.1.0':
     dependencies:
-      '@argos-ci/core': 4.1.6
+      '@argos-ci/core': 4.2.0
       commander: 14.0.1
       ora: 9.0.0
       update-notifier: 7.3.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@argos-ci/core@4.1.6':
-    dependencies:
-      '@argos-ci/api-client': 0.11.1
-      '@argos-ci/util': 3.1.0
-      convict: 6.2.4
-      debug: 4.4.3
-      fast-glob: 3.3.3
-      sharp: 0.34.4
-      tmp: 0.2.5
     transitivePeerDependencies:
       - supports-color
 
@@ -5124,8 +5090,6 @@ snapshots:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
-
-  '@argos-ci/util@3.1.0': {}
 
   '@argos-ci/util@3.1.1': {}
 
@@ -9125,10 +9089,6 @@ snapshots:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
-
-  openapi-fetch@0.14.0:
-    dependencies:
-      openapi-typescript-helpers: 0.0.15
 
   openapi-fetch@0.14.1:
     dependencies:
