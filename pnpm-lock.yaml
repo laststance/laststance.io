@@ -118,8 +118,8 @@ importers:
         specifier: 15.5.5
         version: 15.5.5
       '@next/eslint-plugin-next':
-        specifier: 15.5.5
-        version: 15.5.5
+        specifier: 15.5.6
+        version: 15.5.6
       '@next/mdx':
         specifier: 15.5.5
         version: 15.5.5(@mdx-js/loader@3.1.1)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))
@@ -270,8 +270,8 @@ packages:
   '@asamuzakjp/css-color@4.0.5':
     resolution: {integrity: sha512-lMrXidNhPGsDjytDy11Vwlb6OIGrT3CmLg3VWNFyWkLWtijKl7xjvForlh8vuj0SHGjgl4qZEQzUmYTeQA2JFQ==}
 
-  '@asamuzakjp/dom-selector@6.6.2':
-    resolution: {integrity: sha512-+AG0jN9HTwfDLBhjhX1FKi6zlIAc/YGgEHlN/OMaHD1pOPFsC5CpYQpLkPX0aFjyaVmoq9330cQDCU4qnSL1qA==}
+  '@asamuzakjp/dom-selector@6.7.0':
+    resolution: {integrity: sha512-GrYRsKf8oVnPHsA+4dOAnPybrhT3cQ0xykXxjj2DaOni5xOlV1T8/Nqo+iNUO7wh9bs3jViIFsxJKFzDTU/ulQ==}
 
   '@asamuzakjp/nwsapi@2.3.9':
     resolution: {integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==}
@@ -856,8 +856,8 @@ packages:
   '@next/env@15.5.5':
     resolution: {integrity: sha512-2Zhvss36s/yL+YSxD5ZL5dz5pI6ki1OLxYlh6O77VJ68sBnlUrl5YqhBgCy7FkdMsp9RBeGFwpuDCdpJOqdKeQ==}
 
-  '@next/eslint-plugin-next@15.5.5':
-    resolution: {integrity: sha512-FMzm412l9oFB8zdRD+K6HQ1VzlS+sNNsdg0MfvTg0i8lfCyTgP/RFxiu/pGJqZ/IQnzn9xSiLkjOVI7Iv4nbdQ==}
+  '@next/eslint-plugin-next@15.5.6':
+    resolution: {integrity: sha512-YxDvsT2fwy1j5gMqk3ppXlsgDopHnkM4BoxSVASbvvgh5zgsK8lvWerDzPip8k3WVzsTZ1O7A7si1KNfN4OZfQ==}
 
   '@next/mdx@15.5.5':
     resolution: {integrity: sha512-+niIZwo1ObCj8YJCR31FwF3gUXnyQZTnrrt5DnJGF/nj6yW7VE0hhmhT2yWW244MuBKqL3SbXjaFX+GqWOPXfA==}
@@ -5092,7 +5092,7 @@ snapshots:
       lru-cache: 11.2.2
     optional: true
 
-  '@asamuzakjp/dom-selector@6.6.2':
+  '@asamuzakjp/dom-selector@6.7.0':
     dependencies:
       '@asamuzakjp/nwsapi': 2.3.9
       bidi-js: 1.0.3
@@ -5663,7 +5663,7 @@ snapshots:
 
   '@next/env@15.5.5': {}
 
-  '@next/eslint-plugin-next@15.5.5':
+  '@next/eslint-plugin-next@15.5.6':
     dependencies:
       fast-glob: 3.3.1
 
@@ -8301,7 +8301,7 @@ snapshots:
 
   jsdom@27.0.0(postcss@8.5.6):
     dependencies:
-      '@asamuzakjp/dom-selector': 6.6.2
+      '@asamuzakjp/dom-selector': 6.7.0
       cssstyle: 5.3.1(postcss@8.5.6)
       data-urls: 6.0.0
       decimal.js: 10.6.0
