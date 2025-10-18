@@ -49,8 +49,7 @@ test.describe('Theme Switching', () => {
     await expect(page.locator('html')).toHaveClass(/dark/)
 
     // Navigate back to home
-    await page.getByRole('link', { name: 'Ryota Murakami' }).first().click()
-    await page.waitForURL('**/')
+    await page.goto('/')
 
     // Check that dark theme still persists
     await expect(page.locator('html')).toHaveClass(/dark/)
