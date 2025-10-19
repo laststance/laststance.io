@@ -54,6 +54,11 @@
     max-width: 100%;
     overflow-x: hidden;
   }
+
+  /* Prevent layout shift when modals open by reserving scrollbar space */
+  html {
+    scrollbar-gutter: stable;
+  }
 }
 
 @layer base {
