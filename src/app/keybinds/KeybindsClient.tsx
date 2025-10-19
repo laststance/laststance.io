@@ -3,9 +3,7 @@
 import { KBD } from '@/components/KBD'
 import { Spacer } from '@/components/Spacer'
 
-interface KeybindsList {
-  [category: string]: Record<string, string>
-}
+import type { KeybindsList } from './page'
 
 interface KeybindsClientProps {
   keybinds: KeybindsList

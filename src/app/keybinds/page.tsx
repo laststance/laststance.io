@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
 }
 
-interface KeybindsList {
+export interface KeybindsList {
   [category: string]: Record<string, string>
 }
 
@@ -130,7 +130,7 @@ const keybinds: KeybindsList = {
     'Show Context Menu': '^-c ^-c',
     'Toggle Terminal': '^ \\',
     'Reload Window': '^-x ^-r',
-    'Open keybinds': '^ CMD ,',
+    'Open Settings': '^ CMD ,',
     'ESLint  —fix': '^ Space',
     'Format with Prettier': '^-x ^-x',
     'Keybord Shortcut': 'Shift CMD ,',
