@@ -16,12 +16,10 @@ const nextConfig = {
   },
 }
 
-const rehypePrism = (await import('@mapbox/rehype-prism')).default
-
 const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
-    rehypePlugins: [rehypePrism],
+    rehypePlugins: ['@mapbox/rehype-prism'],
   },
 })
 
