@@ -7,7 +7,10 @@ export async function GithubFeedList() {
   const githubFeedList = await fetchGithubFeedList()
 
   return (
-    <div className="max-xs-w-[340px] max-sm:w-[360px] w-md-[380px] max-lg:m-auto rounded-2xl border border-zinc-100 lg:p-6 dark:border-zinc-700/40">
+    <section
+      data-react-component="GithubFeedList"
+      className="max-xs:w-[340px] max-sm:w-[360px] w-md-[380px] max-lg:m-auto rounded-2xl border border-zinc-100 lg:p-6 dark:border-zinc-700/40"
+    >
       <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
         <BriefcaseIcon className="h-6 w-6 flex-none" />
         <span className="ml-3">Github Feed</span>
@@ -23,6 +26,6 @@ export async function GithubFeedList() {
           </li>
         )}
       </ol>
-    </div>
+    </section>
   )
 }
