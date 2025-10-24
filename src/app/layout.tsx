@@ -37,11 +37,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <html lang="en" className="antialiased" suppressHydrationWarning>
       <head>
         <meta name="view-transition" content="same-origin" />
       </head>
-      <body className="flex h-full bg-zinc-50 dark:bg-black">
+      <body className="flex min-h-full bg-zinc-50 dark:bg-black">
         <ProvidersClient>
           <div className="flex w-full">
             <Layout>{children}</Layout>
