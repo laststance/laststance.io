@@ -17,6 +17,7 @@ export default defineConfig([
       '**/.git/**',
       '**/.idea/**',
       '.next/**',
+      'next-env.d.ts',
       '**/storybook-static/**',
       '**/mockServiceWorker.js',
       '**/tests-examples/**',
