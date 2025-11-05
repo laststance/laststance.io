@@ -1,0 +1,54 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: '🎉 eslint-config-ts-prefixer v4.1.0 Released!',
+  date: '2025-11-05',
+  description: ' ',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+I just released **[eslint-config-ts-prefixer v4.1.0](https://github.com/laststance/eslint-config-ts-prefixer)**!
+
+## 🧩 What Changed
+
+Functionally, not much — the main change is that I **removed the Prettier rules**.
+These days, tools like **Biome** and other formatters are becoming more common, so it made sense to keep ESLint focused on linting, not formatting.
+
+## 📘 New Documentation Website
+
+I also built a simple documentation site that explains each rule used in this config:
+👉 [eslint-config-ts-prefixer Documentation](https://website-eslint-config-ts-prefixer.vercel.app/)
+
+It includes descriptions and comments for every rule, so you can understand what each one does at a glance.
+
+## 💡 About This Package
+
+This config is something I originally made **for myself** — it’s a collection of rules I personally like to use in my projects.
+
+That said, I especially recommend the **no-cycle rule**.
+It’s super helpful for preventing **circular dependencies**, which can easily sneak into large TypeScript projects.
+
+## 🗒️ Small Improvements
+
+I’ve added **concise comments** to each rule inside the config file itself,
+so when you open it, you can quickly see what the rule means in one line.
+
+## 🙏 Final Thoughts
+
+To be honest, I’m not really “into linting” — I don’t like spending too much time on it 😅
+That’s why I made this package: to reuse a set of useful rules that work for me.
+
+I’m not an ESLint professional, so there might be mistakes or better approaches.
+If you notice anything, I’d love your **feedback or pull requests** on GitHub 💬
