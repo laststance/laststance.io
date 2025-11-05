@@ -27,9 +27,7 @@ const keybinds: KeybindsList = {
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
     "Chrome to Dia": '^ J',
-    'Search bookmarks(Raindrop)': "^ R",
     'Latest bookmarks(Raindrop)': "^ CMD J",
-    'Toggle Raycast Note': 'Option Space',
     'Confetti with sound': 'Option D',
   },
   'Move Cursor': {
@@ -136,7 +134,8 @@ const keybinds: KeybindsList = {
     'Keybord Shortcut': 'Shift CMD ,',
     'Open Cursor Settings': 'Shift CMD j',
     'Show Markdown Preview': 'CMD E',
-    'Switch Window': '^ W'
+    'Switch Window': '^ W',
+    'Toggle Primary Side Bar': '^-x ^-1',
   },
   AI: {
     'Toggle Chat Tab': 'CMD L',
