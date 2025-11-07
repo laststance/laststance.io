@@ -1,7 +1,7 @@
+import { XMLParser } from 'fast-xml-parser'
 import { unstable_cache } from 'next/cache'
 import { parse } from 'node-html-parser'
 import { Octokit } from 'octokit'
-import { parseStringPromise } from 'xml2js'
 
 import { env } from '@/env.mjs'
 
@@ -19,7 +19,15 @@ const getXml = async (page: number) => {
         },
       },
     )
-    const xml = await parseStringPromise(res.data)
+    
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: '@_',
+      textNodeName: '#text',
+      isArray: (name) => name === 'entry',
+    })
+    
+    const xml = parser.parse(res.data)
     return xml
   } catch (error) {
     console.error(`Error fetching GitHub feed page ${page}:`, error)
@@ -29,19 +37,19 @@ const getXml = async (page: number) => {
 
 const processFeedEntry = (f: Feed): ValidatedFeed | null => {
   try {
-    // Validate that content exists and has at least one element
-    if (!f.content || !Array.isArray(f.content) || f.content.length === 0) {
-      console.warn('Feed entry missing content array:', f.id?.[0] || 'unknown')
+    // Validate that content exists
+    if (!f.content || typeof f.content !== 'object') {
+      console.warn('Feed entry missing content:', f.id || 'unknown')
       return null
     }
 
-    if (!f.content[0] || typeof f.content[0]._ !== 'string') {
-      console.warn('Feed entry content[0] missing or invalid:', f.id?.[0] || 'unknown')
+    if (typeof f.content['#text'] !== 'string') {
+      console.warn('Feed entry content #text missing or invalid:', f.id || 'unknown')
       return null
     }
 
     // Parse the HTML content
-    const root = parse(f.content[0]._)
+    const root = parse(f.content['#text'])
 
     // Filter auto dependency updates by dependabot
     if (root.innerText.includes('Dependabot')) return null
@@ -94,7 +102,7 @@ const processFeedEntry = (f: Feed): ValidatedFeed | null => {
     })
 
     // Return the updated HTML content as a string
-    f.content[0]._ = root.toString()
+    f.content['#text'] = root.toString()
     // Type assertion is safe here because we validated content exists at the beginning
     return f as ValidatedFeed
   } catch (error) {
@@ -176,55 +184,49 @@ export const fetchGithubFeedList = unstable_cache(
 
 export type Feed = {
   // Required by Atom spec
-  id: string[]
+  id: string
   title: {
-    $: {
-      type: string
-    }
-    _: string
-  }[]
-  updated: string[]
+    '@_type': string
+    '#text': string
+  }
+  updated: string
 
   // Required in most cases (alternate link required when present)
   link: {
-    $: {
-      href: string
-      rel: string
-      type: string
-    }
+    '@_href': string
+    '@_rel': string
+    '@_type': string
+  } | {
+    '@_href': string
+    '@_rel': string
+    '@_type': string
   }[]
 
   // Conditional/Optional fields (may not exist in XML)
   author?: {
-    name: string[]
-    email: string[]
-    uri: string[]
-  }[]
+    name: string
+    email: string
+    uri: string
+  }
   content?: {
-    $: {
-      type: string
-    }
-    _: string
-  }[]
-  published?: string[]
+    '@_type': string
+    '#text': string
+  }
+  published?: string
 
   // GitHub extension (optional)
   'media:thumbnail'?: {
-    $: {
-      height: string
-      url: string
-      width: string
-    }
-  }[]
+    '@_height': string
+    '@_url': string
+    '@_width': string
+  }
 }
 
 // Validated Feed type after processFeedEntry validation
 // This type represents feeds that have been validated and are safe to render
 export type ValidatedFeed = Feed & {
   content: {
-    $: {
-      type: string
-    }
-    _: string
-  }[]
+    '@_type': string
+    '#text': string
+  }
 }

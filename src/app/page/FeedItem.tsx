@@ -13,7 +13,7 @@ export const FeedItem: React.FC<Props> = ({ feed }) => (
     <dd className="text-sm text-zinc-500 dark:text-zinc-400 dark:bg-zinc-800/90">
       <div
         dangerouslySetInnerHTML={{
-          __html: sanitizeHtml(feed.content[0]._),
+          __html: sanitizeHtml(feed.content['#text']),
         }}
       />
     </dd>

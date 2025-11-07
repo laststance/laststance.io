@@ -59,6 +59,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "fast-glob": "^3.3.3",
+    "fast-xml-parser": "^4.5.0",
     "feed": "^5.1.0",
     "lucide-react": "^0.552.0",
     "next": "^16.0.1",
@@ -97,7 +98,6 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@types/webpack-env": "^1.18.8",
-    "@types/xml2js": "^0.4.14",
     "@vitest/browser": "4.0.7",
     "@vitest/browser-playwright": "^4.0.7",
     "@vitest/coverage-v8": "4.0.7",
@@ -115,8 +115,7 @@
     "storybook": "^10.0.5",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.7",
-    "xml2js": "^0.6.2"
+    "vitest": "^4.0.7"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
