@@ -27,7 +27,7 @@ const getXml = async (page: number) => {
   }
 }
 
-const processFeedEntry = (f: Feed): Feed | null => {
+const processFeedEntry = (f: Feed): ValidatedFeed | null => {
   try {
     // Validate that content exists and has at least one element
     if (!f.content || !Array.isArray(f.content) || f.content.length === 0) {
@@ -95,14 +95,15 @@ const processFeedEntry = (f: Feed): Feed | null => {
 
     // Return the updated HTML content as a string
     f.content[0]._ = root.toString()
-    return f
+    // Type assertion is safe here because we validated content exists at the beginning
+    return f as ValidatedFeed
   } catch (error) {
     console.error('Error processing feed entry:', error)
     return null
   }
 }
 
-const fetchGithubFeedListUncached = async (): Promise<Array<Feed | null>> => {
+const fetchGithubFeedListUncached = async (): Promise<ValidatedFeed[]> => {
   const MAX_PAGES = 5 // Reduced from 10 to 5
   const MIN_ENTRIES_PER_PAGE = 5 // Stop if page has fewer than this many entries
   const allEntries: Feed[] = []
@@ -151,7 +152,9 @@ const fetchGithubFeedListUncached = async (): Promise<Array<Feed | null>> => {
     console.log(`Total entries fetched: ${allEntries.length}`)
 
     // Process and filter entries
-    const feedList = allEntries.map(processFeedEntry).filter(Boolean) // Filter out null entries
+    const feedList = allEntries
+      .map(processFeedEntry)
+      .filter((f): f is ValidatedFeed => f !== null) // Filter out null entries with type guard
 
     console.log(`Processed entries after filtering: ${feedList.length}`)
     return feedList
@@ -172,6 +175,7 @@ export const fetchGithubFeedList = unstable_cache(
 )
 
 export type Feed = {
+  // Required by Atom spec
   id: string[]
   title: {
     $: {
@@ -179,17 +183,9 @@ export type Feed = {
     }
     _: string
   }[]
-  author: {
-    name: string[]
-    email: string[]
-    uri: string[]
-  }[]
-  content: {
-    $: {
-      type: string
-    }
-    _: string
-  }[]
+  updated: string[]
+
+  // Required in most cases (alternate link required when present)
   link: {
     $: {
       href: string
@@ -197,13 +193,38 @@ export type Feed = {
       type: string
     }
   }[]
-  'media:thumbnail': {
+
+  // Conditional/Optional fields (may not exist in XML)
+  author?: {
+    name: string[]
+    email: string[]
+    uri: string[]
+  }[]
+  content?: {
+    $: {
+      type: string
+    }
+    _: string
+  }[]
+  published?: string[]
+
+  // GitHub extension (optional)
+  'media:thumbnail'?: {
     $: {
       height: string
       url: string
       width: string
     }
   }[]
-  published: string[]
-  updated: string[]
+}
+
+// Validated Feed type after processFeedEntry validation
+// This type represents feeds that have been validated and are safe to render
+export type ValidatedFeed = Feed & {
+  content: {
+    $: {
+      type: string
+    }
+    _: string
+  }[]
 }

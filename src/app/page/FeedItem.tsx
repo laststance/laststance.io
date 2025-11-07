@@ -1,11 +1,11 @@
 import React from 'react'
 
-import type { Feed } from '@/lib/octokit'
+import type { ValidatedFeed } from '@/lib/octokit'
 
 import { sanitizeHtml } from '../../lib/sanitizeHtml'
 
 interface Props {
-  feed: Feed
+  feed: ValidatedFeed
 }
 
 export const FeedItem: React.FC<Props> = ({ feed }) => (

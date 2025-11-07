@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react'
 import React from 'react'
 
-import type { Feed } from '@/lib/octokit'
+import type { ValidatedFeed } from '@/lib/octokit'
 
 import { FeedItem } from './FeedItem'
 
 // Mock feed data for testing
-const createMockFeed = (content: string): Feed => ({
+const createMockFeed = (content: string): ValidatedFeed => ({
   id: ['test-id'],
   title: [{ $: { type: 'html' }, _: 'Test Title' }],
   author: [
