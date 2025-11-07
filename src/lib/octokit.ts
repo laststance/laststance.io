@@ -29,6 +29,17 @@ const getXml = async (page: number) => {
 
 const processFeedEntry = (f: Feed): Feed | null => {
   try {
+    // Validate that content exists and has at least one element
+    if (!f.content || !Array.isArray(f.content) || f.content.length === 0) {
+      console.warn('Feed entry missing content array:', f.id?.[0] || 'unknown')
+      return null
+    }
+
+    if (!f.content[0] || typeof f.content[0]._ !== 'string') {
+      console.warn('Feed entry content[0] missing or invalid:', f.id?.[0] || 'unknown')
+      return null
+    }
+
     // Parse the HTML content
     const root = parse(f.content[0]._)
 
