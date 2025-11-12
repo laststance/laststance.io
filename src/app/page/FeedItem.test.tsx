@@ -7,24 +7,22 @@ import { FeedItem } from './FeedItem'
 
 // Mock feed data for testing
 const createMockFeed = (content: string): ValidatedFeed => ({
-  id: ['test-id'],
-  title: [{ $: { type: 'html' }, _: 'Test Title' }],
-  author: [
-    {
-      name: ['Test Author'],
-      email: ['test@example.com'],
-      uri: ['http://example.com'],
-    },
-  ],
-  content: [{ $: { type: 'html' }, _: content }],
-  link: [
-    { $: { href: 'http://example.com', rel: 'alternate', type: 'text/html' } },
-  ],
-  'media:thumbnail': [
-    { $: { height: '30', url: 'http://example.com/thumb.jpg', width: '30' } },
-  ],
-  published: ['2024-01-01T00:00:00Z'],
-  updated: ['2024-01-01T00:00:00Z'],
+  id: 'test-id',
+  title: { '@_type': 'html', '#text': 'Test Title' },
+  author: {
+    name: 'Test Author',
+    email: 'test@example.com',
+    uri: 'http://example.com',
+  },
+  content: { '@_type': 'html', '#text': content },
+  link: { '@_href': 'http://example.com', '@_rel': 'alternate', '@_type': 'text/html' },
+  'media:thumbnail': {
+    '@_height': '30',
+    '@_url': 'http://example.com/thumb.jpg',
+    '@_width': '30',
+  },
+  published: '2024-01-01T00:00:00Z',
+  updated: '2024-01-01T00:00:00Z',
 })
 
 describe('FeedItem XSS Protection', () => {
