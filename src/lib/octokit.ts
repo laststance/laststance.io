@@ -38,13 +38,13 @@ const getXml = async (page: number) => {
 const processFeedEntry = (f: Feed): ValidatedFeed | null => {
   try {
     // Validate that content exists
+    // Note: Some GitHub event types (e.g., issue_labeled) don't include content,
+    // only metadata. This is expected behavior and they will be filtered out.
     if (!f.content || typeof f.content !== 'object') {
-      console.warn('Feed entry missing content:', f.id || 'unknown')
       return null
     }
 
     if (typeof f.content['#text'] !== 'string') {
-      console.warn('Feed entry content #text missing or invalid:', f.id || 'unknown')
       return null
     }
 
