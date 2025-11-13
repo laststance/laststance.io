@@ -55,6 +55,16 @@ const WhatNew: React.FC = () => {
           aria-label="What's new updates list"
         >
           <List
+            date="2025-11-13"
+            li={[
+              <DialogClose asChild>
+                <Link href="/articles/-eslint-config-ts-prefixer-v410-Releasedy">
+                  🎉 eslint-config-ts-prefixer v4.1.0 released!
+                </Link>
+              </DialogClose>,
+            ]}
+          />
+          <List
             date="2025-10-07"
             li={['Update Keybinds: Add Chrome, Raindrop and IDE shortcuts']}
           />
