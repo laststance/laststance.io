@@ -12,6 +12,7 @@ import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-buil
 import reduxLogo from '@/images/logos/icons8-redux-48.png'
 import shellLogo from '@/images/logos/icons8-shell-40.png'
 import viteLogo from '@/images/logos/icons8-vite-48.png'
+import mcpLogo from '@/images/logos/mcp.svg'
 
 const title = 'Projects'
 
@@ -25,6 +26,34 @@ export const metadata: Metadata = {
 }
 
 const projects = [
+  { name: '@laststance/react-next-eslint-plugin',
+    description: 'A collection of ESLint plugins for React and Next.js.',
+    link: {
+      href: 'https://github.com/laststance/react-next-eslint-plugin',
+      label: 'react-next-eslint-plugin',
+    },
+    logo: npmLogo,
+  },
+  {
+    name: 'do-i-need-umbrella',
+    description:
+      'helps you decide whether you need an umbrella based on weather forecasts. ',
+    link: {
+      href: 'https://github.com/laststance/do-i-need-an-umbrella',
+      label: 'do-i-need-umbrella',
+    },
+    logo: reactLogo,
+  },
+  {
+    name: 'electron-mcp-server',
+    description: 'A simple MCP server for Electron.',
+    link: {
+      href: 'https://github.com/laststance/electron-mcp-server',
+      label: 'electron-mcp-server',
+    },
+    logo: mcpLogo,
+  },
+
   {
     name: 'Clean URL',
     description:
