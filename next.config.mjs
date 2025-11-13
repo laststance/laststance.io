@@ -1,5 +1,6 @@
 import withBundleAnalyzerOriginal from '@next/bundle-analyzer'
 import nextMDX from '@next/mdx'
+import { codeInspectorPlugin } from 'code-inspector-plugin'
 
 const withBundleAnalyzer = withBundleAnalyzerOriginal({
   enabled: process.env.ANALYZE === 'true',
@@ -13,6 +14,12 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     qualities: [75, 85, 90, 95],
+  },
+  turbopack: {
+    rules: codeInspectorPlugin({
+      bundler: 'turbopack',
+      hotKeys: ['altKey'],
+    }),
   },
 }
 
