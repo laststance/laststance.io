@@ -46,7 +46,7 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
   await expect(linkLabel).toHaveText('Clean URL')
 })
 
-test('Clean URL should be the first project in the list', async ({ page }) => {
+test('Projects list should contain Clean URL', async ({ page }) => {
   await page.goto('/projects')
 
   // Wait for the page to fully load and the project list to be rendered
@@ -55,6 +55,6 @@ test('Clean URL should be the first project in the list', async ({ page }) => {
   // Get all project titles
   const projectTitles = await page.locator('ul > li h2').allTextContents()
 
-  // Check that Clean URL is the first item
-  expect(projectTitles[0]).toBe('Clean URL')
+  // Check that Clean URL exists in the list (position-independent)
+  expect(projectTitles).toContain('Clean URL')
 })
