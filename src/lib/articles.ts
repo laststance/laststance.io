@@ -1,4 +1,10 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import glob from 'fast-glob'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 interface Article {
   title: string
@@ -27,7 +33,7 @@ async function importArticle(
 
 export async function getAllArticles() {
   const articleFilenames = await glob('*/page.mdx', {
-    cwd: './src/app/articles',
+    cwd: path.join(__dirname, '../app/articles'),
   })
 
   const articles = await Promise.all(articleFilenames.map(importArticle))
