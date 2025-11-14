@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 import { getAllArticles } from './articles'
@@ -78,7 +80,7 @@ describe('articles', () => {
       await getAllArticles()
 
       expect(mockGlob).toHaveBeenCalledWith('*/page.mdx', {
-        cwd: './src/app/articles',
+        cwd: path.resolve(process.cwd(), 'src/app/articles'),
       })
     })
   })
