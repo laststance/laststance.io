@@ -54,6 +54,16 @@ const WhatNew: React.FC = () => {
           className="mt-4 space-y-4"
           aria-label="What's new updates list"
         >
+          <List
+            date="2025-11-14"
+            li={[
+              <DialogClose asChild>
+                <Link href="/articles/Understanding-CSS-fr-by-Reading-the-Original-Spec">
+                  Understanding CSS fr by Reading the Original Spec
+                </Link>
+              </DialogClose>,
+            ]}
+          />
           <List date="2025-11-13" li={['Updae Porjects Page']} />
           <List
             date="2025-11-05"

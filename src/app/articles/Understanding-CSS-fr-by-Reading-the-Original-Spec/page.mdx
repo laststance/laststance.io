@@ -1,0 +1,43 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'Understanding CSS fr by Reading the Original Spec',
+  date: '2025-11-14',
+  description: ' ',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+I’ve long felt fuzzy about what CSS’s fr unit really represents. I’ve read countless Grid and Flexbox introductions, but “fractional unit” never clicked for me in a precise, practical way.
+
+It finally did when I read the original W3C spec:
+
+```markdown
+“7.2.4. Flexible Lengths: the fr unit
+A flexible length or <flex> is a dimension with the fr unit, which represents a fraction of the leftover space in the grid container.”
+
+That one sentence removed the ambiguity. fr isn’t a magic proportion of the whole container. It’s a share of the leftover space after fixed and content-based tracks take what they need. In other words:
+- Calculate all non-flex tracks (px, auto, minmax, etc.)
+- Find the remaining space
+- Divide that remainder among fr tracks based on their flex factors (1fr, 2fr, …)
+
+This framing explains the behavior that tutorials often gloss over:
+- Why 1fr can resolve to zero if there’s no leftover space
+- Why .5fr, 1fr, 2fr share space proportionally rather than absolutely
+- Why fr can act “content-sized” when the container’s available space is indefinite
+```
+
+There are countless beginner articles for Flex/Grid, and many are great for getting started. But this experience reminded me that sometimes the clearest path is to read the original specification. It’s more technical, but it’s where the definitions live—and a single precise line can unlock a whole mental model.
+
+If you’ve ever been unsure about how fr actually works, try the spec first. Then use tutorials to see patterns and examples through that lens. The combination is both faster and more accurate.
