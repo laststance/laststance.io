@@ -1,0 +1,95 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'Cursor built-in browser tool list',
+  date: '2025-11-15',
+  description: 'Cursor Version: 2.0.77',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+## Overview
+
+Cursor AI (version 2.0.77) includes a powerful set of **18 browser automation tools** built on top of the [Playwright MCP (Model Context Protocol)](https://github.com/microsoft/playwright-mcp). These tools enable AI coding assistants to interact with web browsers programmatically, opening up new possibilities for automated testing, web scraping, form filling, and end-to-end workflow automation.
+
+## The 13 Browser Tools
+
+Here's the complete list of browser automation tools available in Cursor:
+
+### Navigation & Setup
+
+1. **mcp_cursor-ide-browser_browser_navigate** - Navigate to URL
+   - Opens a specified URL in the browser
+   - Returns an accessibility snapshot of the page
+
+2. **mcp_cursor-ide-browser_browser_navigate_back** - Go back
+   - Returns to the previous page in browser history
+
+3. **mcp_cursor-ide-browser_browser_resize** - Resize window
+   - Changes viewport dimensions (width × height)
+   - Essential for testing responsive designs
+
+### Page Inspection
+
+4. **mcp_cursor-ide-browser_browser_snapshot** - Accessibility snapshot
+   - Captures the page's accessibility tree in YAML format
+   - Better than screenshots for AI to understand page structure
+   - Includes element references (`ref`) for interaction
+
+5. **mcp_cursor-ide-browser_browser_take_screenshot** - Visual screenshot
+   - Takes a PNG/JPEG image of the current viewport or specific element
+   - Useful for visual verification and debugging
+
+### Waiting & Timing
+
+6. **mcp_cursor-ide-browser_browser_wait_for** - Wait for conditions
+   - Wait for text to appear
+   - Wait for text to disappear (e.g., loading spinner)
+   - Wait for a specific duration in seconds
+
+### User Interactions
+
+7. **mcp_cursor-ide-browser_browser_press_key** - Keyboard input
+   - Simulates pressing keys (e.g., `Enter`, `ArrowDown`, `Escape`)
+   - Supports special keys and modifiers
+
+8. **mcp_cursor-ide-browser_browser_click** - Click elements
+   - Clicks on elements using their `ref` from snapshots
+   - Supports single/double-click and modifiers
+
+9. **mcp_cursor-ide-browser_browser_hover** - Hover over elements
+   - Triggers hover states on elements
+   - Useful for revealing dropdown menus or tooltips
+
+10. **mcp_cursor-ide-browser_browser_type** - Type text
+    - Types text into input fields, textareas
+    - Can type slowly (character-by-character) or all at once
+    - Optional auto-submit with Enter key
+
+11. **mcp_cursor-ide-browser_browser_select_option** - Select dropdown
+    - Selects one or more options from `<select>` elements
+    - Supports both single and multi-select dropdowns
+
+### Debugging & Monitoring
+
+12. **mcp_cursor-ide-browser_browser_console_messages** - Get console logs
+    - Retrieves all console messages (log, warn, error, info)
+    - Can filter to show only errors
+    - Essential for debugging JavaScript issues
+
+13. **mcp_cursor-ide-browser_browser_network_requests** - Network monitoring
+    - Lists all HTTP/HTTPS requests made by the page
+    - Shows URLs, methods, status codes, and response times
+    - Useful for API testing and performance analysis
+
+
