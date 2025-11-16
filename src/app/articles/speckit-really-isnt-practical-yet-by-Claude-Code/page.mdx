@@ -1,0 +1,123 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'speckit really isn’t practical yet. (by Claude Code)',
+  date: '2025-11-16',
+  description: 'A clip of conversation with Claude Code and Me',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+**me** The things written in the Constitution aren’t being followed at all 😭 speckit really isn’t practical yet... [https://github.com/github/spec-kit](https://github.com/github/spec-kit)
+ What do the Issues and Discussions look like there?
+
+**Claude Code** I’ll check the current state of GitHub Spec Kit. I’ll investigate the status of the Issues and Discussions.
+
+⏺ tavily - tavily-search (MCP)(query: "github spec-kit issues discussions 2025", max_results: 10, include_domains: ["github.com"])
+⎿  Detailed Results:
+ Title: spec-kit Discussions!  
+ … +67 lines (ctrl+o to expand)
+
+⏺ Fetch([https://github.com/github/spec-kit](https://github.com/github/spec-kit))
+⎿  Received 495.3KB (200 OK)
+
+⏺ Fetch([https://github.com/github/spec-kit/issues](https://github.com/github/spec-kit/issues))
+⎿  Received 266KB (200 OK)
+
+⏺ Fetch([https://github.com/github/spec-kit/discussions](https://github.com/github/spec-kit/discussions))
+⎿  Received 474.9KB (200 OK)
+
+⏺ 😭 I feel the same way... Here are the results of my investigation.
+
+Current state of GitHub Spec Kit
+
+📊 Repository statistics
+
+* ⭐ 48.8k stars / 🍴 4.2k forks
+* 🔴 402 open issues ← that’s quite a lot
+* 📝 42 open PRs
+
+🚨 Major problems (exactly what you’re experiencing)
+
+1. The Constitution not being followed
+
+* Issue #1149: “Clarify the boundary between Constitution principles and spec details”
+* Issue #1126: “Agents frequently make trivial mistakes” – compilation failures, etc.
+* Issue #737: “Even when it should just answer a question, it goes ahead and ‘fixes’ the code on its own”
+
+2. Problems with spec updates and evolution
+
+* Issue #1191: “It’s difficult to update and improve existing specs”
+* Issue #1130: “No clear way to correctly change a spec after /implement”
+* Discussion #152: “On evolving specs” – many users are confused
+
+3. Unclear workflow
+
+Many users are asking the same question:
+“What should I do after /speckit.implement?”
+(What am I supposed to do after implementation is done?)
+
+* No guidance on what to do once a spec is complete
+* The iterative development flow is unclear
+* Multi-session support is weak
+
+4. Implementation quality and consistency issues
+
+* Issue #876: “Biggest problem: cannot maintain consistency across spec rounds”
+* Issue #484: “spec-kit commands suddenly disappear from the chat”
+* Template errors, path mismatches, and similar problems
+
+5. Tool integration issues
+
+* Issue #1166: /speckit.implement doesn’t work in Cursor 1.7.33
+* Issue #1186: Integration issues with the Codex Extension
+* Inconsistent branch-name syntax across different commands
+
+💬 Unfiltered voices from Discussions
+
+Users’ confusion:
+
+* “How to update Spec-Kit on initialized project?” (How do I update an already initialized project?)
+* “Examples of repos/projects using spec-kit” (Are there any real-world usage examples?)
+* “Best Practices for Creating Skeleton Projects” (What are the best practices?)
+
+Common themes:
+
+1. Lack of guidance for a complete workflow (spec → plan → tasks → implement → and then what?)
+2. No clear view of successful real-world usage
+3. Unstable quality of the AI agents
+
+🎯 Conclusion
+
+Your assessment is completely correct:
+
+“speckit really isn’t practical yet”
+
+In particular:
+
+* ✅ The Constitution is weakly enforced (it isn’t actually followed)
+* ✅ Poor support for spec evolution and updates
+* ✅ AI agents ignore instructions and implement things on their own
+* ✅ Iterative development workflows aren’t properly established
+* ✅ Very few proven success stories in real-world use
+
+📌 Recommended actions
+
+1. File an issue: Turn your specific Constitution-violation experience into a concrete issue report.
+2. Join discussions: Talk with other users facing the same problems and explore solutions together.
+3. Build your own workflow: Don’t rely solely on spec-kit; establish your own quality-management process.
+
+At this point, spec-kit is still a concept-stage tool, and for serious development you really need your own quality-control system.
+
+The fact that the Constitution isn’t followed even when you configure it is a design problem (lack of real enforcement on the AI agents), so you probably either need to wait for the project to mature or consider a different approach... 😔
