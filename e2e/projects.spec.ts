@@ -46,7 +46,46 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
   await expect(linkLabel).toHaveText('Clean URL')
 })
 
-test('Projects list should contain Clean URL', async ({ page }) => {
+test('Coffee Timer project should be displayed correctly', async ({ page }) => {
+  await page.goto('/projects')
+
+  // Find the Coffee Timer project card
+  const coffeeTimerCard = page.locator('li').filter({
+    hasText: 'Coffee Timer',
+  })
+
+  // Check that the card exists
+  await expect(coffeeTimerCard).toBeVisible()
+
+  // Check the project title
+  await expect(coffeeTimerCard.locator('h2')).toHaveText('Coffee Timer')
+
+  // Check the project description contains the key text
+  await expect(coffeeTimerCard).toContainText(
+    'Simple timer PWA for coffee breaks',
+  )
+
+  // Check the link
+  const link = coffeeTimerCard.locator('a[href*="github.com"]')
+  await expect(link).toHaveAttribute(
+    'href',
+    'https://github.com/laststance/coffee-timer',
+  )
+  await expect(link).toHaveAttribute('target', '_blank')
+
+  // Check that the Next.js logo is displayed
+  const logo = coffeeTimerCard.locator('img').first()
+  await expect(logo).toBeVisible()
+  await expect(logo).toHaveAttribute('src', expect.stringContaining('nextjs'))
+
+  // Check the link label using a more specific selector
+  const linkLabel = coffeeTimerCard.locator('p.relative span.ml-2')
+  await expect(linkLabel).toHaveText('coffee-timer')
+})
+
+test('Projects list should contain Clean URL and Coffee Timer', async ({
+  page,
+}) => {
   await page.goto('/projects')
 
   // Wait for the page to fully load and the project list to be rendered
@@ -57,4 +96,6 @@ test('Projects list should contain Clean URL', async ({ page }) => {
 
   // Check that Clean URL exists in the list (position-independent)
   expect(projectTitles).toContain('Clean URL')
+  // Check that Coffee Timer exists in the list
+  expect(projectTitles).toContain('Coffee Timer')
 })
