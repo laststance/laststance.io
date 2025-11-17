@@ -83,7 +83,9 @@ test('Coffee Timer project should be displayed correctly', async ({ page }) => {
   await expect(linkLabel).toHaveText('coffee-timer')
 })
 
-test('Projects list should contain Clean URL and Coffee Timer', async ({ page }) => {
+test('Projects list should contain Clean URL and Coffee Timer', async ({
+  page,
+}) => {
   await page.goto('/projects')
 
   // Wait for the page to fully load and the project list to be rendered
