@@ -26,6 +26,15 @@ export const metadata: Metadata = {
 }
 
 const projects = [
+  {
+    name: 'Coffee Timer',
+    description: 'Simple timer PWA for coffee breaks with push notifications and customizable sounds.',
+    link: {
+      href: 'https://github.com/laststance/coffee-timer',
+      label: 'coffee-timer',
+    },
+    logo: nextLogo,
+  },
   { name: '@laststance/react-next-eslint-plugin',
     description: 'A collection of ESLint plugins for React and Next.js.',
     link: {
