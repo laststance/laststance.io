@@ -103,8 +103,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1
       '@argos-ci/playwright':
-        specifier: ^6.3.1
-        version: 6.3.1
+        specifier: ^6.3.3
+        version: 6.3.3
       '@chromatic-com/storybook':
         specifier: ^4.1.3
         version: 4.1.3(storybook@10.0.5(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.1)))
@@ -251,8 +251,8 @@ packages:
     resolution: {integrity: sha512-lVWN8MrRYEbCjcZcutTzdJEA9tNB1IBqjIUJyjxR1iHMXZJYVLQbWQcmlZz33sIHkicLgAKTKrSVUOjf34MXAA==}
     engines: {node: '>=20.0.0'}
 
-  '@argos-ci/browser@5.0.0':
-    resolution: {integrity: sha512-SKAD7EXoLX4u50dzTIT/ABnpD284+DnBfoJM0ZrTIav2eiiVJyknNKSznF5w118lYGnYvugTXbKMnukGPzJeOA==}
+  '@argos-ci/browser@5.1.0':
+    resolution: {integrity: sha512-4UEM8MSPrlSKbzWMTa2KFXQ5SH/GB8tBl7TRXRk10McgzDwjNO3lG28KP10MTrWnn67cww7gzXPP8umSI048WQ==}
     engines: {node: '>=20.0.0'}
 
   '@argos-ci/cli@3.2.1':
@@ -264,8 +264,8 @@ packages:
     resolution: {integrity: sha512-jERRoj+da36Y9NwFyws00LKFmCLHBTklIE0DYRptrPUSf3aitly6KmllkKHGi2UU1XcIqAO2Pzy1l5shCs/FXw==}
     engines: {node: '>=20.0.0'}
 
-  '@argos-ci/playwright@6.3.1':
-    resolution: {integrity: sha512-E4zl8i/+l4v7eK8NUzp0J3clok+urHGe2WP/FRtOMPuQ9vmZ/FF4LTZ3obMhmeyu9/PMIdV545w4KPaTZl3Y5w==}
+  '@argos-ci/playwright@6.3.3':
+    resolution: {integrity: sha512-bnnTMdHlH2GPDWKZAamZ9g5htVE1KpJ5DU94PH00uxbzpIB6wlHX2c+DTxNchDxnPAqvyhT1T4xZT0LtAif57w==}
     engines: {node: '>=20.0.0'}
 
   '@argos-ci/util@3.2.0':
@@ -4993,7 +4993,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/browser@5.0.0': {}
+  '@argos-ci/browser@5.1.0': {}
 
   '@argos-ci/cli@3.2.1':
     dependencies:
@@ -5017,9 +5017,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@argos-ci/playwright@6.3.1':
+  '@argos-ci/playwright@6.3.3':
     dependencies:
-      '@argos-ci/browser': 5.0.0
+      '@argos-ci/browser': 5.1.0
       '@argos-ci/core': 4.5.0
       '@argos-ci/util': 3.2.0
       chalk: 5.6.2
@@ -5159,7 +5159,7 @@ snapshots:
   '@code-inspector/core@1.2.10':
     dependencies:
       '@vue/compiler-dom': 3.5.24
-      chalk: 4.1.2
+      chalk: 4.1.1
       dotenv: 16.6.1
       launch-ide: 1.2.0
       portfinder: 1.0.38
@@ -8354,7 +8354,7 @@ snapshots:
 
   launch-ide@1.2.0:
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.1
       dotenv: 16.6.1
 
   levn@0.4.1:
