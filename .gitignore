@@ -55,3 +55,5 @@ screenshots/
 *storybook.log
 storybook-static
 .serena/cache/
+# Sentry Config File
+.env.sentry-build-plugin
