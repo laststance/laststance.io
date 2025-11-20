@@ -21,6 +21,7 @@ const nextConfig = {
       hotKeys: ['altKey'],
     }),
   },
+  productionBrowserSourceMaps: true,
 }
 
 const withMDX = nextMDX({
