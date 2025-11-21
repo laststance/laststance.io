@@ -1,6 +1,6 @@
-import { withSentryConfig } from '@sentry/nextjs'
 import withBundleAnalyzerOriginal from '@next/bundle-analyzer'
 import nextMDX from '@next/mdx'
+import { withSentryConfig } from '@sentry/nextjs'
 import { codeInspectorPlugin } from 'code-inspector-plugin'
 
 const withBundleAnalyzer = withBundleAnalyzerOriginal({
