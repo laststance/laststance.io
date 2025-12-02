@@ -31,17 +31,6 @@ const handleScrollToSection = (sectionName: string) => {
 }
 
 /**
- * Checks if a value is a nested keybind category (object) or a leaf keybind (string).
- * @param value - The value to check
- * @returns True if the value is a nested category object, false if it's a string shortcut
- */
-const isNestedCategory = (
-  value: string | Record<string, string>,
-): value is Record<string, string> => {
-  return typeof value === 'object' && value !== null
-}
-
-/**
  * Renders a keybind entry row.
  * @param action - The action name
  * @param shortcut - The keyboard shortcut string
@@ -99,6 +88,17 @@ const hasNestedSubcategories = (
   categoryData: Record<string, string | Record<string, string>>,
 ): boolean => {
   return Object.values(categoryData).some((value) => isNestedCategory(value))
+}
+
+/**
+ * Checks if a value is a nested keybind category (object) or a leaf keybind (string).
+ * @param value - The value to check
+ * @returns True if the value is a nested category object, false if it's a string shortcut
+ */
+const isNestedCategory = (
+  value: string | Record<string, string>,
+): value is Record<string, string> => {
+  return typeof value === 'object' && value !== null
 }
 
 export default function KeybindsClient({ keybinds }: KeybindsClientProps) {
