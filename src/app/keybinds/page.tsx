@@ -26,9 +26,13 @@ const keybinds: KeybindsList = {
     'Search Quicklinks': 'Option Q',
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
-    "Chrome to Dia": '^ J',
-    'Latest bookmarks(Raindrop)': "^ CMD J",
+    'Chrome to Dia': '^ J',
+    'Latest bookmarks(Raindrop)': '^ CMD J',
     'Confetti with sound': 'Option D',
+    Terminal: 'CMD \\',
+    Obsidian: 'F1',
+    Cursor: 'F2',
+    Discord: 'F4',
   },
   'Move Cursor': {
     'Cursor Right': '^ F',
@@ -157,7 +161,7 @@ const keybinds: KeybindsList = {
     'Open chrome://extensions/': 'CMD E',
     'Open chrome://bookmarks/': 'CMD B',
     'Duplicate tab': 'CMD D',
-    'DevTools: Pause script execution': '^ J'
+    'DevTools: Pause script execution': '^ J',
   },
 }
 
