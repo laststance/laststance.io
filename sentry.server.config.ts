@@ -16,4 +16,12 @@ Sentry.init({
   // Enable sending user PII (Personally Identifiable Information)
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
   sendDefaultPii: true,
+
+  // Disable error reporting in development environment
+  beforeSend(event) {
+    if (process.env.NODE_ENV !== 'production') {
+      return null // Don't send events in development
+    }
+    return event
+  },
 })
