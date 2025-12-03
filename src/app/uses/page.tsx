@@ -58,19 +58,20 @@ export default function Uses() {
       <div className="space-y-20">
         <ToolsSection title="Hardware">
           <Tool
-            title="16” MacBook Pro, 2.6 GHz 6-Core Intel Core i7, 16GB RAM (2019)"
-            href="https://www.theverge.com/2019/11/21/20974649/apple-macbook-pro-16-inch-laptop-review-keyboard-test-specs-price-features"
+            title={'16" MacBook Pro M4 Max (16-core CPU, 40-core GPU, 64GB RAM) (2024)'}
+            href="https://support.apple.com/en-us/121554"
           >
-            Probably the last model with Touch Bar, only ESC key is easy to use
-            with physical keys. The keyboard layout is US. Honestly I should
-            probably replace the Intel chip with the latest ARM chip soon, but
-            it's still woking powerful and recent MacBook Pro models are too
-            expensive, so I can't easily change models. <br /> To maintain a
-            comfortable posture, I run my MacBook Pro in a clamshell mode
-            with an external monitor, keyboard, and trackpad (described below)
-            connected to the computer. I often run my MacBook Pro in a clamshell
-            mode with an external monitor, keyboard, and trackpad connected to
-            maintain a comfortable posture.
+            Finally upgraded to the latest Apple Silicon M4 Max with 16-core CPU
+            and 40-core GPU. The leap from Intel i7 to M4 Max is absolutely night
+            and day—compilation times are ~10x faster, and Cursor AI assistant
+            now runs smoothly without any performance concerns. The Liquid Retina
+            XDR display with ProMotion (up to 120Hz) makes scrolling incredibly
+            smooth. <br /> The 64GB unified memory is substantial enough for heavy
+            workloads like Next.js builds, Docker containers, and multiple editor
+            instances simultaneously. Thunderbolt 5 connectivity future-proofs the
+            machine. <br /> I continue using clamshell mode with an external 1440p
+            monitor, Magic Keyboard, and Magic Trackpad to maintain ergonomics—the
+            M4 Max's thermal efficiency keeps the machine silent even under load.
           </Tool>
           <Tool
             title="Apple Magic Keyboard - US English"

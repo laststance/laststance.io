@@ -55,6 +55,16 @@ const WhatNew: React.FC = () => {
           aria-label="What's new updates list"
         >
           <List
+            date="2025-12-03"
+            li={[
+              <DialogClose asChild>
+                <Link href="/uses">
+                  📱 Updated MacBook Pro: Upgraded to M4 Max (16-core CPU, 40-core GPU, 64GB RAM)
+                </Link>
+              </DialogClose>,
+            ]}
+          />
+          <List
             date="2025-11-15"
             li={[
               <DialogClose asChild>
