@@ -9,19 +9,19 @@ export async function GithubFeedList() {
   return (
     <section
       data-react-component="GithubFeedList"
-      className="max-xs:w-[340px] max-sm:w-[360px] w-md-[380px] max-lg:m-auto rounded-2xl border border-zinc-100 lg:p-6 dark:border-zinc-700/40"
+      className="max-xs:w-[340px] max-sm:w-[360px] w-md-[380px] max-lg:m-auto"
     >
-      <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-        <BriefcaseIcon className="h-6 w-6 flex-none" />
-        <span className="ml-3">Github Feed</span>
+      <h2 className="flex items-center gap-4 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-8">
+        <BriefcaseIcon className="h-7 w-7 flex-none text-teal-500 dark:text-teal-400" />
+        <span>GitHub Activity</span>
       </h2>
-      <ol className="mt-2 space-y-4 flex flex-col max-xs:max-w-[340px] h-[730px] overflow-y-scroll overflow-x-clip">
+      <ol className="space-y-6 flex flex-col max-xs:max-w-[340px] h-[730px] overflow-y-scroll overflow-x-clip px-1">
         {githubFeedList.length > 0 ? (
           githubFeedList.map(
             (feed, i) => feed && <FeedItem key={i} feed={feed} />,
           )
         ) : (
-          <li className="text-sm text-zinc-500 dark:text-zinc-400 p-4">
+          <li className="text-base text-zinc-600 dark:text-zinc-400 py-8 text-center">
             No GitHub activity available at the moment.
           </li>
         )}
