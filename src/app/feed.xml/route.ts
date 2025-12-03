@@ -1,11 +1,19 @@
-import assert from 'assert'
-
-import * as cheerio from 'cheerio'
 import { Feed } from 'feed'
 
 import { env } from '@/env.mjs'
+import { getAllArticles } from '@/lib/articles'
 
-export async function GET(req: Request) {
+export const runtime = 'nodejs'
+export const dynamic = 'force-static'
+
+/**
+ * Generates an RSS feed for all blog articles.
+ * Uses article metadata (title, date, description) to build the feed
+ * without requiring HTTP fetch or react-dom/server.
+ *
+ * @returns RSS 2.0 XML response
+ */
+export async function GET() {
   const siteUrl = env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'
 
   const author = {
@@ -27,34 +35,19 @@ export async function GET(req: Request) {
     link: siteUrl,
   })
 
-  const articleIds = require
-    .context('../articles', true, /\/page\.mdx$/)
-    .keys()
-    .filter((key) => key.startsWith('./'))
-    .map((key) => key.slice(2).replace(/\/page\.mdx$/, ''))
+  const articles = await getAllArticles()
 
-  for (const id of articleIds) {
-    const url = String(new URL(`/articles/${id}`, req.url))
-    const html = await (await fetch(url)).text()
-    const $ = cheerio.load(html)
-
-    const publicUrl = `${siteUrl}/articles/${id}`
-    const article = $('article').first()
-    const title = article.find('h1').first().text()
-    const date = article.find('time').first().attr('datetime')
-    const content = article.find('[data-mdx-content]').first().html()
-
-    assert(typeof title === 'string')
-    assert(typeof date === 'string')
-    assert(typeof content === 'string')
+  for (const article of articles) {
+    const publicUrl = `${siteUrl}/articles/${article.slug}`
 
     feed.addItem({
       id: publicUrl,
-      title,
+      title: article.title,
       author: [author],
-      content,
+      content: article.description,
+      description: article.description,
       contributor: [author],
-      date: new Date(date),
+      date: new Date(article.date),
       link: publicUrl,
     })
   }
