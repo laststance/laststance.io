@@ -219,7 +219,7 @@ export default function Projects() {
         ))}
       </ul>
       <Container className="grid place-content-center mt-32">
-        <h2 className="text-3xl pb-2 ml-[-0.75rem]">Icon8 Credit</h2>
+        <h2 className="text-3xl pb-2 -ml-3">Icon8 Credit</h2>
         <ul className="list-disc">
           <li>
             <a target="_blank" href="https://icons8.com/icon/24895/npm">
