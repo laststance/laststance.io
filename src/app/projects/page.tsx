@@ -12,13 +12,14 @@ import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-buil
 import reduxLogo from '@/images/logos/icons8-redux-48.png'
 import shellLogo from '@/images/logos/icons8-shell-40.png'
 import viteLogo from '@/images/logos/icons8-vite-48.png'
+import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
 import mcpLogo from '@/images/logos/mcp.svg'
 
 const title = 'Projects'
 
 export const metadata: Metadata = {
   title: title,
-  description: 'Laststance.io Github repositories.',
+  description: 'Laststance.io Projects',
   openGraph: {
     title,
     images: [`/api/og?title=${title}`],
@@ -63,6 +64,16 @@ const projects = [
       label: 'electron-mcp-server',
     },
     logo: mcpLogo,
+  },
+  {
+    name: 'Copy to',
+    description:
+      'A VSCode extension that adds a "Copy to..." option to the File Explorer context menu.',
+    link: {
+      href: 'https://github.com/laststance/copy-to',
+      label: 'copy-to',
+    },
+    logo: vscodeLogo,
   },
 
   {
@@ -291,6 +302,18 @@ export default function Projects() {
               href="https://icons8.com/icon/nuPce-GYYZeC/console"
             >
               Shell
+            </a>{' '}
+            icon by{' '}
+            <a target="_blank" href="https://icons8.com">
+              Icons8
+            </a>
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://icons8.com/icon/9OGIyU8hrxW5/visual-studio-code-2019"
+            >
+              Visual Studio Code 2019
             </a>{' '}
             icon by{' '}
             <a target="_blank" href="https://icons8.com">
