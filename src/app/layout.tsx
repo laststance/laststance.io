@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import { type Metadata } from 'next'
 
+import { HydrationFix } from '@/components/HydrationFix'
 import { Layout } from '@/components/Layout'
 import { env } from '@/env.mjs'
 
@@ -42,6 +43,7 @@ export default function RootLayout({
         <meta name="view-transition" content="same-origin" />
       </head>
       <body className="flex min-h-full bg-zinc-50 dark:bg-black">
+        <HydrationFix />
         <ProvidersClient>
           <div className="flex w-full">
             <Layout>{children}</Layout>
