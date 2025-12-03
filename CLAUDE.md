@@ -91,7 +91,7 @@ src/
 1. **Server Components by Default**: Components are Server Components unless marked with `.client.tsx` suffix or using `'use client'` directive
 
 2. **Article System**: 
-   - Articles stored as MDX files in `src/app/articles/[year]/[slug]/page.mdx`
+   - Articles stored as MDX files in `src/app/articles/[slug]/page.mdx`
    - Dynamic import system with metadata frontmatter
    - RSS feed generation at `/feed.xml`
 

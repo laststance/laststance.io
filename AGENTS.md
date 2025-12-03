@@ -4,7 +4,7 @@
 - `src/app` hosts Next.js routes, layouts, and server components in file-system segments.
 - `src/components` contains reusable components grouped by feature (e.g., `Header`, `Spacer`), while `src/lib` and `src/hooks` contain shared utilities and hooks.
 - Page content (MDX, images) lives in `src/images`, `public`, and `typography.ts`; keep them aligned when adding visuals.
-- Integration helpers and blog tooling live in `scripts/` and `examples/`; end-to-end specs live in `e2e/`, and unit tests sit beside their source as `*.test.ts[x]`.
+- Integration helpers and blog tooling live in `scripts/`; end-to-end specs live in `e2e/`, and unit tests sit beside their source as `*.test.ts[x]`.
 
 ## Build, Test, and Development Commands
 - `pnpm dev` starts the Next.js dev server with Turbopack; use `pnpm dev:network` for LAN testing.
