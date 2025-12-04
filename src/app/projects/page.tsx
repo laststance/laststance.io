@@ -28,6 +28,16 @@ export const metadata: Metadata = {
 
 const projects = [
   {
+    name: 'react-lightbox',
+    description:
+      'A flexible and accessible React lightbox component for displaying images with keyboard navigation and touch support.',
+    link: {
+      href: 'https://github.com/laststance/react-lightbox',
+      label: 'react-lightbox',
+    },
+    logo: reactLogo,
+  },
+  {
     name: 'Coffee Timer',
     description:
       'Simple timer PWA for coffee breaks with push notifications and customizable sounds.',
