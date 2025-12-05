@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "next dev -p 3939",
     "dev:network": "next dev -H 192.168.1.4 -p 3939",
-    "build": "next build",
+    "build": "next build --webpack",
     "analyze": "ANALYZE=true next build",
     "start": "next start -p 3939",
     "lint": "eslint .  --concurrency=auto --max-warnings=0",
