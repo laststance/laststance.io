@@ -1,0 +1,162 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'Laststance Recap: November 2025',
+  date: '2025-12-05',
+  description: ' ',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+November was an exceptionally productive month for Laststance! We saw activity across 18 projects with 350 commits, 20 merged PRs, and 8 releases shipped. This month's highlights include the launch of three new projects, major theme system implementations, and significant framework migrations. Here's what we shipped.
+
+## complete
+
+A macOS system-wide autocomplete application built with Swift for enhanced productivity.
+
+**Highlights:**
+
+- [v1.0.0 Release - Complete macOS system-wide autocomplete application](https://github.com/laststance/complete/commit/7f39c49ef3853cc23d11256dd77c1165b75e1354)
+  - Initial release of a native macOS autocomplete tool that works across any application, featuring keyboard navigation and automatic focus management.
+
+- [Implement comprehensive dependency injection architecture](https://github.com/laststance/complete/commit/5b14006af05c696a96ea90c17903a6f8aba20522)
+  - Complete DI implementation across all components for better testability and maintainability.
+
+- [Decompose AccessibilityManager into 5 focused classes](https://github.com/laststance/complete/commit/4d7d76f2a399a1abe8b9fe15a6cbe94904a644d6)
+  - Major refactoring effort to break down a god object into single-responsibility classes, improving code quality and maintainability.
+
+---
+
+## coffee-timer
+
+A beautiful PWA timer application with comprehensive theme support and accessibility features.
+
+**Highlights:**
+
+- [Implement Apple Liquid Glass theme design system](https://github.com/laststance/coffee-timer/commit/cafec490d796b825b50c74b19af4d283f32c8d7f)
+  - Introduced a stunning glassmorphism-inspired theme system with 7 theme variants, bringing modern Apple-style aesthetics to the app.
+
+- [Add OKLCH-derived text contrast for high contrast mode](https://github.com/laststance/coffee-timer/pull/18)
+  - Accessibility improvement using perceptually uniform color space for better text readability across all themes.
+
+- [Implement comprehensive visual regression tests](https://github.com/laststance/coffee-timer/commit/3aef79ebcb14f0297605b429b7ab6b8c79ff18f6)
+  - Added VRT with Playwright to catch unintended visual changes and ensure consistent UI quality.
+
+---
+
+## corelive
+
+A personal task navigation system built as an Electron desktop application.
+
+**Highlights:**
+
+- [Implement CoreLive DesignSystem with 100+ themes support](https://github.com/laststance/corelive/commit/1ebbe64f5b5cb794b16677a2bae0227e6d2e4c35)
+  - Comprehensive theming infrastructure allowing extensive customization options for users.
+
+- [Migrate Prisma from v6 to v7 with database adapter](https://github.com/laststance/corelive/commit/dceaff4c419fa73cf3f1dae43816e45f8dccd499)
+  - Updated to the latest Prisma version with ESM compatibility and improved database handling.
+
+- [Synchronize todos between FloatingNavigator and main window via IPC](https://github.com/laststance/corelive/pull/9)
+  - Enhanced cross-window communication for seamless task management experience.
+
+---
+
+## react-next-eslint-plugin
+
+An ESLint plugin with React and Next.js specific rules for better code quality.
+
+**Highlights:**
+
+- [v1.0.0 - Initial release with useCallback/useMemo stability rules](https://github.com/laststance/react-next-eslint-plugin/releases/tag/1.0.1)
+  - First stable release featuring rules to enforce React performance best practices, with community contributions.
+
+- [Add no-direct-use-effect rule](https://github.com/laststance/react-next-eslint-plugin/commit/1b0402f23ff63fa70c6ffe195fd734b4f95b90cc)
+  - New rule to discourage direct useEffect calls in components, promoting custom hooks for better code organization.
+
+- [ESLint 9.0+ flat config support](https://github.com/laststance/react-next-eslint-plugin/pull/8)
+  - Updated configuration to support the latest ESLint flat config format.
+
+---
+
+## nsx
+
+An auto-posting web platform for content distribution.
+
+**Highlights:**
+
+- [Implement zero-install deployment using pnpm deploy](https://github.com/laststance/nsx/pull/3636)
+  - Streamlined deployment process with pre-bundled dependencies, reducing server-side installation time significantly.
+
+- [Migrate to Prisma v7 with ESM compatibility](https://github.com/laststance/nsx/commit/ff064ab51ed6fa85128016550c83ffd19a43432a)
+  - Updated to Prisma 7 with esbuild bundler for better ESM support and improved build performance.
+
+- [Add profile editing with name and password update](https://github.com/laststance/nsx/pull/3623)
+  - New user-facing feature allowing profile customization through settings panel.
+
+---
+
+## laststance.io
+
+The official Laststance website and blog platform.
+
+**Highlights:**
+
+- [Integrate Sentry for error tracking and monitoring](https://github.com/laststance/laststance.io/commit/e6a730bc6ed49bfaa3b8a70b53c33c7d0118d333)
+  - Added comprehensive error monitoring to catch and debug production issues quickly.
+
+- [Migrate from xml2js to fast-xml-parser](https://github.com/laststance/laststance.io/commit/5c425607e6db7c53f80f8c0ea46a5f28eb4ec3a5)
+  - Replaced XML parsing library for better performance and simpler API.
+
+- [Add new articles: Speckit practicality and CSS fr unit guide](https://github.com/laststance/laststance.io/commit/c41a6610ddda2a25bdbee2866c3b96581eefb6cd)
+  - Published educational content on Claude Code tooling and CSS Grid techniques.
+
+---
+
+## eslint-config-ts-prefixer
+
+A minimal ESLint TypeScript configuration extending typescript-eslint recommended rules.
+
+**Highlights:**
+
+- [v4.1.0 - Enhanced TypeScript rules and dependencies update](https://github.com/laststance/eslint-config-ts-prefixer/releases/tag/4.1.0)
+  - Updated ESLint configuration with new rules and enhancements for better TypeScript linting experience.
+
+---
+
+## create-web-site
+
+A CLI tool for quickly scaffolding modern web projects.
+
+**Highlights:**
+
+- [v1.0.5 - Initial release with Prettier and Husky integration](https://github.com/laststance/create-web-site/releases/tag/1.0.5)
+  - New project scaffolding tool with pre-configured code formatting and git hooks.
+
+---
+
+## npm-publish-tool
+
+A CLI tool simplifying npm package publishing workflow.
+
+**Highlights:**
+
+- [v1.6.13 - Add CLI tests and fix version selection](https://github.com/laststance/npm-publish-tool/releases/tag/v1.6.13)
+  - Improved test coverage and fixed edge cases in the release workflow.
+
+---
+
+## Wrapping Up
+
+November was a landmark month with the birth of three new projects (complete, react-next-eslint-plugin, and create-web-site) and major theme system implementations across our applications. The Liquid Glass design system in coffee-timer and the 100+ themes support in corelive showcase our commitment to beautiful, customizable user experiences.
+Special thanks to the community contributors, including @shanaya-Gupta for JSDoc contributions to react-next-eslint-plugin! We shipped 8 releases this month and continue to push the boundaries of what's possible with modern web and desktop development.
