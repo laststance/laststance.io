@@ -122,18 +122,19 @@ export default function typographyStyles({
           lineHeight: theme('lineHeight.7'),
           marginBottom: theme('spacing.4'),
           marginTop: theme('spacing.20'),
+          fontWeight: theme('fontWeight.bold'),
         },
 
         // Headings
         'h2, h3': {
           color: 'var(--tw-prose-headings)',
-          fontWeight: theme('fontWeight.semibold'),
         },
         h3: {
           fontSize: theme('fontSize.base')[0],
           lineHeight: theme('lineHeight.7'),
           marginBottom: theme('spacing.4'),
           marginTop: theme('spacing.16'),
+          fontWeight: theme('fontWeight.semibold'),
         },
 
         // Horizontal rules
@@ -153,21 +154,26 @@ export default function typographyStyles({
           borderRadius: theme('borderRadius.3xl'),
         },
         li: {
-          marginBottom: theme('spacing.2'),
-          marginTop: theme('spacing.2'),
+          marginBottom: theme('spacing.3'),
+          marginTop: theme('spacing.3'),
           paddingLeft: theme('spacing[3.5]'),
         },
         'li :is(li, p)': {
-          marginBottom: theme('spacing.1'),
-          marginTop: theme('spacing.1'),
-        },
-        'li :is(ol, ul)': {
           marginBottom: theme('spacing.2'),
           marginTop: theme('spacing.2'),
+        },
+        'li :is(ol, ul)': {
+          marginBottom: theme('spacing.3'),
+          marginTop: theme('spacing.3'),
         },
         'li::marker': {
           fontSize: theme('fontSize.sm')[0],
           fontWeight: theme('fontWeight.semibold'),
+        },
+        // Nested list items (descriptions)
+        'li li': {
+          marginTop: theme('spacing.1'),
+          marginBottom: theme('spacing.2'),
         },
         // Improved line height for better readability (1.6 for body text)
         lineHeight: '1.6',
@@ -180,8 +186,8 @@ export default function typographyStyles({
           color: 'var(--tw-prose-counters)',
         },
         p: {
-          marginBottom: theme('spacing.6'),
-          marginTop: theme('spacing.6'),
+          marginBottom: theme('spacing.5'),
+          marginTop: theme('spacing.5'),
           // Minimum font size for comfortable reading
           fontSize: '1.0625rem', // 17px
         },
