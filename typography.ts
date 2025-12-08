@@ -120,7 +120,7 @@ export default function typographyStyles({
         h2: {
           fontSize: theme('fontSize.3xl')[0],
           lineHeight: theme('lineHeight.7'),
-          marginBottom: theme('spacing.4'),
+          marginBottom: theme('spacing.8'),
           marginTop: theme('spacing.10'),
           fontWeight: theme('fontWeight.bold'),
         },
