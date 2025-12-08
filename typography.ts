@@ -145,8 +145,8 @@ export default function typographyStyles({
           },
           borderColor: 'var(--tw-prose-hr)',
           borderTopWidth: '1px',
-          marginBottom: theme('spacing.15'),
-          marginTop: theme('spacing.15'),
+          marginBottom: theme('spacing.14'),
+          marginTop: theme('spacing.14'),
         },
 
         // Images
