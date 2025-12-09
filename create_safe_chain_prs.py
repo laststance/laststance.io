@@ -84,8 +84,13 @@ def detect_package_manager(repo: str) -> tuple[str, str]:
     elif has_file(repo, "package-lock.json"):
         return ("npm ci", "      - name: Use Node.js")
 
-    # Default to npm
-    return ("npm ci", "      - name: Use Node.js")
+    # Default to pnpm
+    return (
+        "pnpm install --frozen-lockfile",
+        """      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Use Node.js""",
+    )
 
 
 def is_legacy_workflow(content: str) -> bool:
