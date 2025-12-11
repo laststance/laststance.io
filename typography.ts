@@ -157,6 +157,7 @@ export default function typographyStyles({
           marginBottom: theme('spacing.3'),
           marginTop: theme('spacing.3'),
           paddingLeft: theme('spacing[3.5]'),
+          fontSize: '1rem', // 16px
         },
         'li :is(li, p)': {
           marginBottom: theme('spacing.2'),
@@ -190,6 +191,10 @@ export default function typographyStyles({
           marginTop: theme('spacing.5'),
           // Minimum font size for comfortable reading
           fontSize: '1.125rem', // 18px
+        },
+        // First paragraph and paragraphs immediately after h2 headings
+        '> p:first-child, h2 + p': {
+          fontSize: '1.25rem', // 20px
         },
 
         // Code blocks
