@@ -118,10 +118,10 @@ export default function typographyStyles({
           margin: 0,
         },
         h2: {
-          fontSize: theme('fontSize.xl')[0],
+          fontSize: theme('fontSize.3xl')[0],
           lineHeight: theme('lineHeight.7'),
-          marginBottom: theme('spacing.4'),
-          marginTop: theme('spacing.20'),
+          marginBottom: theme('spacing.8'),
+          marginTop: theme('spacing.10'),
           fontWeight: theme('fontWeight.bold'),
         },
 
@@ -145,8 +145,8 @@ export default function typographyStyles({
           },
           borderColor: 'var(--tw-prose-hr)',
           borderTopWidth: '1px',
-          marginBottom: theme('spacing.20'),
-          marginTop: theme('spacing.20'),
+          marginBottom: theme('spacing.14'),
+          marginTop: theme('spacing.14'),
         },
 
         // Images
@@ -157,6 +157,7 @@ export default function typographyStyles({
           marginBottom: theme('spacing.3'),
           marginTop: theme('spacing.3'),
           paddingLeft: theme('spacing[3.5]'),
+          fontSize: '1rem', // 16px
         },
         'li :is(li, p)': {
           marginBottom: theme('spacing.2'),
@@ -189,7 +190,11 @@ export default function typographyStyles({
           marginBottom: theme('spacing.5'),
           marginTop: theme('spacing.5'),
           // Minimum font size for comfortable reading
-          fontSize: '1.0625rem', // 17px
+          fontSize: '1.125rem', // 18px
+        },
+        // First paragraph and paragraphs immediately after h2 headings
+        '> p:first-child, h2 + p': {
+          fontSize: '1.25rem', // 20px
         },
 
         // Code blocks
