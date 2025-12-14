@@ -26,12 +26,13 @@ const keybinds: KeybindsList = {
     'Search Quicklinks': 'Option Q',
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
-    'Chrome to Dia': '^ J',
+    'Chrome to Dia': 'F5',
     'Latest bookmarks(Raindrop)': '^ CMD J',
     'Confetti with sound': 'Option D',
     Terminal: 'CMD \\',
     Obsidian: 'F1',
     Cursor: 'F2',
+    'Laststance github repository list': 'F3',
     Discord: 'F4',
   },
   Chrome: {
@@ -69,7 +70,6 @@ const keybinds: KeybindsList = {
       'Select Inner Bracket(Cursor)': '^ CMD M',
       'Toggle Sticky Selection(WebStorm)': 'Option A',
       'Select bracet(Cursor)': 'Option A',
-      'Select Current Single Line': '^ L',
     },
     Scroll: {
       cursorPageDown: '^ V',
@@ -119,7 +119,7 @@ const keybinds: KeybindsList = {
       'Prev HighLight Symbol': 'Shift CMD G',
     },
     IntelliSense: {
-      'Show IntelliSense suggestion popup': '^ I',
+      'Show type based completion': '^ I',
     },
     'File Explorer': {
       'Toggle Explorer': 'CMD 1',
