@@ -11,6 +11,7 @@ import npmLogo from '@/images/logos/icons8-npm-48.png'
 import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-building-user-interfaces-32.png'
 import reduxLogo from '@/images/logos/icons8-redux-48.png'
 import shellLogo from '@/images/logos/icons8-shell-40.png'
+import storybookLogo from '@/images/logos/icons8-storybook-48.png'
 import viteLogo from '@/images/logos/icons8-vite-48.png'
 import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
 import mcpLogo from '@/images/logos/mcp.svg'
@@ -27,6 +28,25 @@ export const metadata: Metadata = {
 }
 
 const projects = [
+  {
+    name: 'next-msw-integration',
+    description:
+      'Next.js 16 × MSW Integration Demo - Mock Service Worker setup for browser and server environments.',
+    link: {
+      href: 'https://github.com/laststance/next-msw-integration',
+      label: 'next-msw-integration',
+    },
+    logo: nextLogo,
+  },
+  {
+    name: 'mui-storybook',
+    description: 'Storybook for MUI v5 default components.',
+    link: {
+      href: 'https://github.com/laststance/mui-storybook',
+      label: 'mui-storybook',
+    },
+    logo: storybookLogo,
+  },
   {
     name: 'react-lightbox',
     description:
@@ -86,6 +106,16 @@ const projects = [
     logo: vscodeLogo,
   },
 
+  {
+    name: 'Bookmark XP Explorer',
+    description:
+      'This extension manages Chrome bookmarks using the chrome.bookmarks API.',
+    link: {
+      href: 'https://chromewebstore.google.com/detail/bookmark-xp-explorer/bafnmajgbpafgeoafooklkfgamjbobpa',
+      label: 'Bookmark XP Explorer',
+    },
+    logo: chromeLogo,
+  },
   {
     name: 'Clean URL',
     description:
@@ -324,6 +354,15 @@ export default function Projects() {
               href="https://icons8.com/icon/9OGIyU8hrxW5/visual-studio-code-2019"
             >
               Visual Studio Code 2019
+            </a>{' '}
+            icon by{' '}
+            <a target="_blank" href="https://icons8.com">
+              Icons8
+            </a>
+          </li>
+          <li>
+            <a target="_blank" href="https://icons8.com/icon/JTj1N49eUpVk/storybook">
+              Storybook
             </a>{' '}
             icon by{' '}
             <a target="_blank" href="https://icons8.com">
