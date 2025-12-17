@@ -20,8 +20,8 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
   // Check that the card exists
   await expect(cleanUrlCard).toBeVisible()
 
-  // Check the project title
-  await expect(cleanUrlCard.locator('h2')).toHaveText('Clean URL')
+  // Check the project title (h3 in new category-based layout)
+  await expect(cleanUrlCard.locator('h3')).toHaveText('Clean URL')
 
   // Check the project description contains the key text
   await expect(cleanUrlCard).toContainText(
@@ -41,8 +41,8 @@ test('Clean URL project should be displayed correctly', async ({ page }) => {
   await expect(logo).toBeVisible()
   await expect(logo).toHaveAttribute('src', expect.stringContaining('chrome'))
 
-  // Check the link label using a more specific selector
-  const linkLabel = cleanUrlCard.locator('p.relative span.ml-2')
+  // Check the link label using updated selector for new layout
+  const linkLabel = cleanUrlCard.locator('p span.truncate')
   await expect(linkLabel).toHaveText('Clean URL')
 })
 
@@ -57,8 +57,8 @@ test('Coffee Timer project should be displayed correctly', async ({ page }) => {
   // Check that the card exists
   await expect(coffeeTimerCard).toBeVisible()
 
-  // Check the project title
-  await expect(coffeeTimerCard.locator('h2')).toHaveText('Coffee Timer')
+  // Check the project title (h3 in new category-based layout)
+  await expect(coffeeTimerCard.locator('h3')).toHaveText('Coffee Timer')
 
   // Check the project description contains the key text
   await expect(coffeeTimerCard).toContainText(
@@ -78,8 +78,8 @@ test('Coffee Timer project should be displayed correctly', async ({ page }) => {
   await expect(logo).toBeVisible()
   await expect(logo).toHaveAttribute('src', expect.stringContaining('nextjs'))
 
-  // Check the link label using a more specific selector
-  const linkLabel = coffeeTimerCard.locator('p.relative span.ml-2')
+  // Check the link label using updated selector for new layout
+  const linkLabel = coffeeTimerCard.locator('p span.truncate')
   await expect(linkLabel).toHaveText('coffee-timer')
 })
 
@@ -89,10 +89,11 @@ test('Projects list should contain Clean URL and Coffee Timer', async ({
   await page.goto('/projects')
 
   // Wait for the page to fully load and the project list to be rendered
-  await page.waitForSelector('ul > li h2', { state: 'visible' })
+  // Project names are in h3 in the new category-based layout
+  await page.waitForSelector('ul > li h3', { state: 'visible' })
 
-  // Get all project titles
-  const projectTitles = await page.locator('ul > li h2').allTextContents()
+  // Get all project titles (h3 elements inside list items)
+  const projectTitles = await page.locator('ul > li h3').allTextContents()
 
   // Check that Clean URL exists in the list (position-independent)
   expect(projectTitles).toContain('Clean URL')
