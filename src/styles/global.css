@@ -21,6 +21,32 @@
   }
 }
 
+/* Staggered fade-in animation for project cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.4s ease-out both;
+  }
+
+  /* Stagger delays for cards - CSS custom property based */
+  .animation-delay-0 { animation-delay: 0ms; }
+  .animation-delay-1 { animation-delay: 60ms; }
+  .animation-delay-2 { animation-delay: 120ms; }
+  .animation-delay-3 { animation-delay: 180ms; }
+  .animation-delay-4 { animation-delay: 240ms; }
+  .animation-delay-5 { animation-delay: 300ms; }
+}
+
 @utility link-hover {
   @apply hover:text-teal-500 dark:hover:text-teal-400;
 }
