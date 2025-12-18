@@ -6,14 +6,50 @@ const interSemiBold = fetch(
   new URL('./Inter-SemiBold.ttf', import.meta.url),
 ).then(async (res) => res.arrayBuffer())
 
+/** Maximum allowed length for OG image title */
+const MAX_TITLE_LENGTH = 200
+
+/** Default title when none is provided or validation fails */
+const DEFAULT_TITLE = 'Laststance.io'
+
+/**
+ * Sanitizes the title parameter for OG image generation.
+ * Removes potentially dangerous characters and limits length for security.
+ * @param input - Raw title string from query params
+ * @returns Sanitized title string safe for rendering
+ * @example
+ * sanitizeTitle('<script>alert(1)</script>') // => 'scriptalert(1)/script'
+ * sanitizeTitle('Valid Title') // => 'Valid Title'
+ */
+const sanitizeTitle = (input: string | null): string => {
+  if (!input || typeof input !== 'string') {
+    return DEFAULT_TITLE
+  }
+
+  // Remove control characters and null bytes
+  let sanitized = input.replace(/[\x00-\x1F\x7F]/g, '')
+
+  // Remove HTML/XML angle brackets to prevent injection
+  sanitized = sanitized.replace(/[<>]/g, '')
+
+  // Remove potential script-related patterns
+  sanitized = sanitized.replace(/javascript:/gi, '')
+  sanitized = sanitized.replace(/data:/gi, '')
+
+  // Trim whitespace and limit length
+  sanitized = sanitized.trim().slice(0, MAX_TITLE_LENGTH)
+
+  // Return default if empty after sanitization
+  return sanitized || DEFAULT_TITLE
+}
+
 export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
   try {
     const { searchParams } = new URL(req.url)
     const isLight = req.headers.get('Sec-CH-Prefers-Color-Scheme') === 'light'
 
-    const title = searchParams.has('title')
-      ? searchParams.get('title')
-      : 'Laststance.io'
+    const rawTitle = searchParams.get('title')
+    const title = sanitizeTitle(rawTitle)
 
     return new ImageResponse(
       (
