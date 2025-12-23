@@ -117,6 +117,7 @@ const keybinds: KeybindsList = {
       'next code jump history': 'CMD ]',
       'Next HighLight Symbol': 'CMD G',
       'Prev HighLight Symbol': 'Shift CMD G',
+      'Next Problem': "Shift CMD P"
     },
     IntelliSense: {
       'Show type based completion': '^ I',

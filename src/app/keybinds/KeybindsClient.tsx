@@ -103,7 +103,7 @@ const isNestedCategory = (
 
 export default function KeybindsClient({ keybinds }: KeybindsClientProps) {
   return (
-    <div className="w-full sm:w-[400px] lg:w-[600px] mx-auto">
+    <div className="w-full sm:w-100 lg:w-150 mx-auto">
       {Object.keys(keybinds).map((category) => {
         const categoryData = keybinds[category]
         const hasNested = hasNestedSubcategories(categoryData)
