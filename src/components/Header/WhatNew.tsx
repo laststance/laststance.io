@@ -41,7 +41,7 @@ const WhatNew: React.FC = () => {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-[425px] sm:min-h-[425px] max-h-[600px] overflow-y-scroll"
+        className="sm:max-w-106.25 sm:min-h-106.25 max-h-150 overflow-y-scroll"
         aria-describedby="whats-new-description"
       >
         <DialogHeader>
@@ -54,6 +54,16 @@ const WhatNew: React.FC = () => {
           className="mt-4 space-y-4"
           aria-label="What's new updates list"
         >
+          <List
+            date="2025-12-31"
+            li={[
+              <DialogClose asChild key="projects-redesign">
+                <Link href="/projects">
+                  Add new projects to the Projects page
+                </Link>
+              </DialogClose>,
+            ]}
+          />
           <List
             date="2025-12-17"
             li={[
@@ -80,7 +90,8 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/uses">
-                  📱 Updated MacBook Pro: Upgraded to M4 Max (16-core CPU, 40-core GPU, 64GB RAM)
+                  📱 Updated MacBook Pro: Upgraded to M4 Max (16-core CPU,
+                  40-core GPU, 64GB RAM)
                 </Link>
               </DialogClose>,
             ]}

@@ -6,6 +6,7 @@ import { Container } from '@/components/Container'
 import { LinkIcon } from '@/components/icons/LinkIcon'
 import { SimpleLayout } from '@/components/SimpleLayout'
 import chromeLogo from '@/images/logos/icons8-chrome-48.png'
+import git from '@/images/logos/icons8-git-48.png'
 import macosLogo from '@/images/logos/icons8-macos-48.png'
 import nextLogo from '@/images/logos/icons8-nextjs-48.png'
 import npmLogo from '@/images/logos/icons8-npm-48.png'
@@ -133,6 +134,15 @@ const categories: Category[] = [
     emoji: '📦',
     projects: [
       {
+        name: 'Claude Code Plugin Dashboard',
+        description: 'Claude Plugin Dashboard CLI',
+        link: {
+          href: 'https://github.com/laststance/claude-plugin-dashboard',
+          label: 'claude-plugin-dashboard',
+        },
+        logo: npmLogo,
+      },
+      {
         name: '@laststance/react-next-eslint-plugin',
         description: 'A collection of ESLint plugins for React and Next.js.',
         link: {
@@ -194,6 +204,16 @@ const categories: Category[] = [
     name: 'Web Applications',
     emoji: '🚀',
     projects: [
+      {
+        name: 'GitBox',
+        description:
+          'A web application for managing GitHub repositories in Kanban board format.',
+        link: {
+          href: 'https://gitbox-laststance.vercel.app/',
+          label: 'gitbox',
+        },
+        logo: git,
+      },
       {
         name: 'Coffee Timer',
         description:
@@ -330,10 +350,7 @@ export default function Projects() {
     >
       <div className="space-y-14 sm:space-y-18 md:space-y-24">
         {categories.map((category, index) => (
-          <section
-            key={category.name}
-            aria-labelledby={`category-${index}`}
-          >
+          <section key={category.name} aria-labelledby={`category-${index}`}>
             {/* Category Header with improved visual hierarchy */}
             <div className="relative mb-8 sm:mb-10 md:mb-12">
               {/* Enhanced gradient divider with better dark mode visibility */}
@@ -435,18 +452,97 @@ export default function Projects() {
               className="underline underline-offset-2 transition-colors duration-150 hover:text-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 active:text-zinc-700 dark:hover:text-zinc-400 dark:active:text-zinc-300 dark:focus-visible:ring-offset-zinc-900"
             >
               Icons8
+            </a>{' '}
+            &mdash;{' '}
+            <a
+              href="https://icons8.com/icon/24895/npm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              NPM
             </a>
-            {' '}&mdash;{' '}
-            <a href="https://icons8.com/icon/24895/npm" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">NPM</a>,{' '}
-            <a href="https://icons8.com/icon/63785/chrome" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">Chrome</a>,{' '}
-            <a href="https://icons8.com/icon/9vlfB9hjA1lX/react-a-javascript-library-for-building-user-interfaces" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">React</a>,{' '}
-            <a href="https://icons8.com/icon/YO3YqSaTOu5K/vite" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">Vite</a>,{' '}
-            <a href="https://icons8.com/icon/3VGtaw5gCc8T/redux-an-open-source-javascript-library-for-managing-application-state" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">Redux</a>,{' '}
-            <a href="https://icons8.com/icon/yUdJlcKanVbh/next.js" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">Next.js</a>,{' '}
-            <a href="https://icons8.com/icon/nuPce-GYYZeC/console" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">Shell</a>,{' '}
-            <a href="https://icons8.com/icon/9OGIyU8hrxW5/visual-studio-code-2019" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">VS Code</a>,{' '}
-            <a href="https://icons8.com/icon/JTj1N49eUpVk/storybook" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">Storybook</a>,{' '}
-            <a href="https://icons8.com/icon/WbRVMGxOfiNl/mac-os" target="_blank" rel="noopener noreferrer" className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900">macOS</a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/63785/chrome"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Chrome
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/9vlfB9hjA1lX/react-a-javascript-library-for-building-user-interfaces"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              React
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/YO3YqSaTOu5K/vite"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Vite
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/3VGtaw5gCc8T/redux-an-open-source-javascript-library-for-managing-application-state"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Redux
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/yUdJlcKanVbh/next.js"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Next.js
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/nuPce-GYYZeC/console"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Shell
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/9OGIyU8hrxW5/visual-studio-code-2019"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              VS Code
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/JTj1N49eUpVk/storybook"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Storybook
+            </a>
+            ,{' '}
+            <a
+              href="https://icons8.com/icon/WbRVMGxOfiNl/mac-os"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-zinc-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:hover:text-zinc-400 dark:focus-visible:ring-offset-zinc-900"
+            >
+              macOS
+            </a>
           </p>
         </aside>
       </Container>
