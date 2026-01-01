@@ -1,8 +1,9 @@
-export default function typographyStyles({
-  theme,
-}: {
-  theme: (path: string) => string
-}) {
+/**
+ * Typography styles for Tailwind CSS prose
+ * @param {{ theme: (path: string) => string }} options
+ * @returns {object} Typography configuration
+ */
+export default function typographyStyles({ theme }) {
   return {
     DEFAULT: {
       css: {

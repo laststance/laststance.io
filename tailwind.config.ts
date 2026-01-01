@@ -1,10 +1,13 @@
-import typographyStyles from './typography'
+import typography from '@tailwindcss/typography'
+import tailwindcssAnimate from 'tailwindcss-animate'
+
+import typographyStyles from './typography.js'
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   content: ['./src/app/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
   darkMode: ['class'],
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [tailwindcssAnimate, typography],
   theme: {
     screens: {
       xs: '390px',
@@ -69,12 +72,12 @@ module.exports = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: 0 },
+          from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: 0 },
+          to: { height: '0' },
         },
       },
     },
@@ -96,3 +99,5 @@ module.exports = {
     typography: typographyStyles,
   },
 }
+
+export default config
