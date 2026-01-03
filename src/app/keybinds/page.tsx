@@ -152,6 +152,7 @@ const keybinds: KeybindsList = {
     },
     AI: {
       'Toggle Chat Tab': 'CMD L',
+      'New AI Chat': 'CMD Shift L',
       'Toggle Cursor Tab': '^-x ^-c',
     },
     Git: {
