@@ -6,13 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Build & Development
 ```bash
-# Development with Turbopack (fast refresh)
+# Development with Turbopack (fast refresh) - runs on port 3939
 pnpm dev
 
-# Build for production (required before Playwright tests)
+# Development on local network (for mobile testing)
+pnpm dev:network
+
+# Build for production (uses webpack, required before Playwright tests)
 pnpm build
 
-# Start production server
+# Start production server on port 3939
 pnpm start
 ```
 
@@ -28,6 +31,9 @@ pnpm build                  # Required before running Playwright
 pnpm playwright             # Run all E2E tests with list reporter
 pnpm playwright test <file> # Run specific test file
 pnpm playwright test -g 'pattern' # Run tests matching pattern
+pnpm playwright:ui          # Interactive UI mode
+pnpm playwright:headed      # Run with visible browser
+pnpm playwright:debug       # Debug mode with inspector
 
 # Visual testing (Storybook)
 pnpm storybook              # Dev server on port 6066
@@ -57,12 +63,14 @@ pnpm gen                    # Interactive CLI for creating articles
 ## Project Architecture
 
 ### Technology Stack
-- **Framework**: Next.js 15 with App Router (Turbopack in dev)
+- **Framework**: Next.js 16 with App Router (Turbopack in dev)
+- **UI Library**: React 19 with Server Components
 - **Styling**: Tailwind CSS v4 with custom UI components (shadcn-style)
 - **Content**: MDX for articles with syntax highlighting (Prism)
-- **Testing**: Vitest (unit), Playwright (E2E), Storybook (component)
+- **Testing**: Vitest (unit), Playwright (E2E), Storybook 10 (component)
+- **Monitoring**: Sentry for error tracking
 - **Language**: TypeScript with strict mode
-- **Package Manager**: pnpm with Volta for Node version management
+- **Package Manager**: pnpm with mize for Node version management
 
 ### Directory Structure
 ```
@@ -136,7 +144,7 @@ src/
 ### Development Workflow
 
 1. Use tmux for background processes (dev servers)
-2. Node.js 22.x required (managed by Volta)
+2. Node.js 24.x required (managed by Volta)
 3. Strict TypeScript with comprehensive type checking
 4. ESLint with Next.js specific rules
 5. Prettier with Tailwind plugin for consistent formatting
