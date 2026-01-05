@@ -90,6 +90,7 @@ const keybinds: KeybindsList = {
       'Cut All Left': '^ W',
       'Cut All Right': '^ K',
       'Rename selected symbol': '^ R',
+      'Surround With': 'Shift CMD T',
       'Wrapping selected HTML Tag: select children elements ->': '^ S',
       'Delete Pararent HTML Tag(preserve children)(WebStorm)': '^ CMD D',
     },
