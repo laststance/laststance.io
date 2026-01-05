@@ -123,7 +123,7 @@ const keybinds: KeybindsList = {
     },
     'File Explorer': {
       'Toggle Explorer': 'CMD 1',
-      'Toggle File Structure': 'CMD 2',
+      'Toggle Outline': 'CMD 2',
       'Focus Editor': 'ESC',
       'New File': 'CMD N',
       'New Folder': 'CMD D',
