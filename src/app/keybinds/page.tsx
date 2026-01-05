@@ -87,7 +87,6 @@ const keybinds: KeybindsList = {
       'Insert line Above(Cursor)': '^ CMD Enter',
       'Insert line Below(Cursor)': 'CMD Enter',
       'Delete matched bracket or tag': '^-x ^-m',
-      'Cut All Left': '^ W',
       'Cut All Right': '^ K',
       'Rename selected symbol': '^ R',
       'Surround With': 'Shift CMD T',
@@ -147,7 +146,7 @@ const keybinds: KeybindsList = {
       'Keybord Shortcut': 'Shift CMD ,',
       'Open Cursor Settings': 'Shift CMD j',
       'Show Markdown Preview': 'CMD E',
-      'Switch Window': '^ W',
+      'Switch Project': '^ W',
       'Toggle Primary Side Bar': '^-x ^-1',
     },
     AI: {
