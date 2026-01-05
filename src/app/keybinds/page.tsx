@@ -100,7 +100,7 @@ const keybinds: KeybindsList = {
       'Replace text in Folder': 'CMD Shift R',
     },
     'Split Editor Window': {
-      'Split RIght': '^-x ^-f',
+      'Split Right': '^-x ^-f',
       'Split Down': '^-x ^-n',
       'Split Up': '^-x ^-p',
       'Move Focus Window Right': '^-x ^-j',
