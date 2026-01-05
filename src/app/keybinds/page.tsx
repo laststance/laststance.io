@@ -26,7 +26,6 @@ const keybinds: KeybindsList = {
     'Search Quicklinks': 'Option Q',
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'Option E',
-    'Chrome to Dia': 'F5',
     'Latest bookmarks(Raindrop)': '^ CMD J',
     'Confetti with sound': 'Option D',
     Terminal: 'CMD \\',
