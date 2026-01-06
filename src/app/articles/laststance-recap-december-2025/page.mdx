@@ -1,0 +1,152 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'ryota-murakami',
+  date: '2026-01-06',
+  title: 'Laststance Recap: December 2025',
+  description: 'A massive month for Laststance with 768 commits across 34 active projects, featuring new releases for Signage, Complete, and the launch of GitBox and Claude Plugin Dashboard.',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# Laststance Recap: December 2025
+
+December 2025 was an extraordinary month for Laststance! With 768 commits across 34 active projects, 45 merged pull requests, and 14 releases, this was our most productive month yet. I launched new projects, shipped major features, and rolled out security improvements across the entire organization.
+
+## 🎉 New Projects
+
+### [claude-plugin-dashboard](https://github.com/laststance/claude-plugin-dashboard)
+
+An interactive CLI dashboard to browse, install, and manage Claude Code plugins.
+
+- [v0.1.0 - Initial Release](https://github.com/laststance/claude-plugin-dashboard/releases/tag/v0.1.0)
+Browse 100+ plugins from multiple marketplaces, install/uninstall directly from the dashboard, and toggle plugins with keyboard-driven navigation. Features Emacs-style shortcuts and a beautiful TUI that matches Claude Code's design.
+
+---
+
+### [gitbox](https://gitbox-laststance.vercel.app/)
+
+A web application for managing GitHub repositories in Kanban board format.
+
+**Highlights:**
+
+- [Initial Release](https://github.com/laststance/gitbox/releases/tag/v0.1.0)
+
+- [Board favorites feature with E2E tests](https://github.com/laststance/gitbox/pull/16)
+  - Added the ability to favorite boards for quick access, with comprehensive end-to-end test coverage.
+
+- [Card Display Settings in Board Settings dialog](https://github.com/laststance/gitbox/pull/21)
+  - Users can now customize how cards are displayed within their boards.
+
+---
+
+## 🖥️ Desktop Apps
+
+### signage
+
+Dark self screen saver app for cooldown brain. Eight releases this month!
+
+**Highlights:**
+
+- [v1.4.0 - Auto-Update System](https://github.com/laststance/signage/releases/tag/v1.4.0)
+  - Implemented VS Code/Slack-style automatic updates with silent background downloads, non-intrusive banner notifications, and one-click restart to install.
+
+- [v1.3.0 - Settings Window](https://github.com/laststance/signage/releases/tag/v1.3.0)
+  - Added a new Settings window with options for menu bar visibility, dock icon, startup behavior, and customizable global shortcuts.
+
+- [v1.2.0 - Black Mirror Mode](https://github.com/laststance/signage/releases/tag/v1.2.0)
+  - New visual mode that displays a static black screen with no effects when cursor moves - perfect for complete visual rest.
+
+---
+
+### complete
+
+macOS system-wide spell autocomplete triggered by global hotkey.
+
+**Highlights:**
+
+- [v0.1.0 - Initial Release](https://github.com/laststance/complete/releases/tag/v0.1.0)
+  - Global hotkey trigger (⇧⌘I), smart positioning near cursor, TextEdit-quality completions powered by NSSpellChecker, keyboard navigation, and cross-app compatibility.
+
+- [v0.1.2 - Browser Positioning Fix](https://github.com/laststance/complete/releases/tag/v0.1.2)
+  - Fixed popup appearing at wrong position in browser form inputs and textareas. Now works correctly in Chrome with textarea, input, and address bar.
+
+- [v0.1.3 - Critical Bug Fix](https://github.com/laststance/complete/releases/tag/v0.1.3)
+  - Fixed production crash on startup caused by missing SPM resource bundles.
+
+---
+
+## 🌐 Chrome Extensions
+
+### clean-url
+
+Chrome extension that removes tracking parameters from URLs.
+
+**Release:**
+
+- [v1.0.6 - Amazon Tracking Support & Context Menu Fix](https://github.com/laststance/clean-url/releases/tag/v1.0.6)
+  - Amazon affiliate URLs are now properly detected and cleaned. Context menu "Clean current URL" and "Clean this link" now work correctly.
+
+---
+
+## 📚 Developer Tools
+
+### mui-storybook
+
+Storybook for MUI v7 default components.
+
+**Highlights:**
+
+- [Add 30 layout pattern components with stories](https://github.com/laststance/mui-storybook/pull/17)
+  - Comprehensive collection of common layout patterns for MUI applications.
+
+- [Implement comprehensive Storybook testing with Vitest addon](https://github.com/laststance/mui-storybook/pull/6)
+  - Added Vitest integration for testing component stories directly.
+
+- [Add 12 missing MUI components with stories and tests](https://github.com/laststance/mui-storybook/pull/7)
+  - Expanded component coverage to include previously missing MUI components.
+
+---
+
+### semantic-react
+
+React component wrapper for DevTools visibility via Custom Elements.
+
+**Highlight:**
+
+- [Add replaceDivRoot option for cleaner DOM structure](https://github.com/laststance/semantic-react/pull/1)
+  - New option allows for a cleaner DOM output when using semantic-react components.
+
+---
+
+## 🔒 Security Initiative: malware-safe-chain
+
+This month, I rolled out the **malware-safe-chain** workflow across all Laststance repositories. This GitHub Actions workflow adds an additional layer of security to our CI/CD pipelines.
+
+Repositories updated include: nsx, laststance.io, clean-url, utils, coffee-timer, create-react-app-vite, eslint-config-ts-prefixer, signage, react-next-eslint-plugin, next-msw-integration, mui-storybook, vite-rtk-query, usd-query, react-typescript-todomvc-2022, Engage, corelive, complete, Redux-Front-Page, do-i-need-an-umbrella, website-eslint-config-ts-prefixer, react-lightbox, bookmark-xp-explorer, swagger-node-codegen, git-gpt-commit, npm-publish-tool, create-web-site, copy-to, and electron-mcp-server.
+
+---
+
+## 📊 December by the Numbers
+
+| Metric | Count |
+|--------|-------|
+| Active Repositories | 34 / 36 |
+| Total Commits | 768 |
+| Merged Pull Requests | 45 |
+| Releases | 14 |
+
+---
+
+## Wrapping Up
+
+December 2025 was a landmark month for Laststance. I launched two significant new projects (GitBox and Claude Plugin Dashboard), shipped multiple versions of our desktop apps (Signage and Complete), and strengthened security posture across all repositories.
+
+The GitBox project represents our vision for a better GitHub repository management experience, while Claude Plugin Dashboard brings our expertise in developer tooling to the Claude Code ecosystem.
+
+---

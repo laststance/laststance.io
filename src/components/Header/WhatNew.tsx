@@ -55,6 +55,16 @@ const WhatNew: React.FC = () => {
           aria-label="What's new updates list"
         >
           <List
+            date="2026-01-06"
+            li={[
+              <DialogClose asChild key="laststance-recap-december-2025">
+                <Link href="/articles/laststance-recap-december-2025">
+                  Laststance Recap: December 2025
+                </Link>
+              </DialogClose>,
+            ]}
+          />
+          <List
             date="2025-12-31"
             li={[
               <DialogClose asChild key="projects-redesign">
