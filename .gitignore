@@ -24,6 +24,9 @@ next-env.d.ts
 .DS_Store
 *.pem
 
+# logs
+/logs/
+
 # claude
 .claude/
 
