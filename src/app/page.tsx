@@ -12,6 +12,12 @@ import {
 import { Box, HStack, Text, VStack } from '@/components/ui/primitives'
 import { getAllArticles } from '@/lib/articles'
 
+/**
+ * Enable ISR with 1-hour revalidation interval
+ * Matches GitHub feed cache duration for consistent updates
+ */
+export const revalidate = 3600
+
 export default async function Home() {
   const articles = (await getAllArticles()).slice(0, 4)
 
