@@ -81,20 +81,35 @@ const config = {
         },
       },
     },
+    // Typography scale - Updated for improved readability
+    // Base increased to 18px, all sizes scaled proportionally
     fontSize: {
-      '2xl': ['1.5rem', { lineHeight: '2rem' }],
-      '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-      '4xl': ['2rem', { lineHeight: '2.5rem' }],
-      '5xl': ['3rem', { lineHeight: '3.5rem' }],
-      '6xl': ['3.75rem', { lineHeight: '1' }],
-      '7xl': ['4.5rem', { lineHeight: '1' }],
+      // 12px - Overline, fine print
+      xs: ['0.75rem', { lineHeight: '1.5' }],
+      // 14px - Caption, secondary text (was 13px)
+      sm: ['0.875rem', { lineHeight: '1.5' }],
+      // 16px - Body small (was base)
+      base: ['1rem', { lineHeight: '1.75' }],
+      // 18px - Body default (INCREASED from 16px)
+      lg: ['1.125rem', { lineHeight: '1.75' }],
+      // 20px - Body large, H4
+      xl: ['1.25rem', { lineHeight: '1.75' }],
+      // 24px - H3
+      '2xl': ['1.5rem', { lineHeight: '1.4' }],
+      // 30px - H2
+      '3xl': ['1.875rem', { lineHeight: '1.35' }],
+      // 36px - H1 mobile
+      '4xl': ['2.25rem', { lineHeight: '1.25' }],
+      // 48px - H1 desktop, Display
+      '5xl': ['3rem', { lineHeight: '1.2' }],
+      // 60px - Display large
+      '6xl': ['3.75rem', { lineHeight: '1.1' }],
+      // 72px - Hero
+      '7xl': ['4.5rem', { lineHeight: '1.1' }],
+      // 96px - Mega
       '8xl': ['6rem', { lineHeight: '1' }],
+      // 128px - Ultra
       '9xl': ['8rem', { lineHeight: '1' }],
-      base: ['1rem', { lineHeight: '1.75rem' }],
-      lg: ['1.125rem', { lineHeight: '1.75rem' }],
-      sm: ['0.875rem', { lineHeight: '1.5rem' }],
-      xl: ['1.25rem', { lineHeight: '2rem' }],
-      xs: ['0.8125rem', { lineHeight: '1.5rem' }],
     },
     typography: typographyStyles,
   },
