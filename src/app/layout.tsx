@@ -1,8 +1,9 @@
 import { Analytics } from '@vercel/analytics/react'
 import { type Metadata } from 'next'
 
+import { Footer } from '@/components/Footer' 
+import { Header } from '@/components/Header'
 import { HydrationFix } from '@/components/HydrationFix'
-import { Layout } from '@/components/Layout'
 import { env } from '@/env.mjs'
 
 import { ProvidersClient } from './providers.client'
@@ -46,7 +47,12 @@ export default function RootLayout({
         <HydrationFix />
         <ProvidersClient>
           <div className="flex w-full">
-            <Layout>{children}</Layout>
+            <BackGround />
+            <div className="relative flex w-full flex-col">
+              <Header />
+              <main className="flex-auto">{children}</main>
+              <Footer />
+            </div>
           </div>
         </ProvidersClient>
         <Analytics />
@@ -54,3 +60,27 @@ export default function RootLayout({
     </html>
   )
 }
+
+
+/**
+ * 📐 BackGround
+ * ページ全体の背景レイヤーを提供する装飾コンポーネント。
+ * fixed配置で画面全体をカバーし、コンテンツの下に表示される。
+ * ライト/ダークモード対応の背景色とボーダーを持つ。
+ */
+function BackGround() {
+  // fixed + inset-0: ビューポート全体に固定
+  // このコンポーネントはソースオーダーでコンテンツより先に配置することで
+  // 自動的にコンテンツの背景として機能する
+  return (
+    <div className="fixed inset-0 flex justify-center max-xs:w-screen sm:px-8">
+      {/* max-w-7xl: コンテンツエリアの最大幅に合わせた制限 */}
+      <div className="flex w-full max-w-7xl lg:px-8">
+        {/* 実際の背景カード: ライト=白、ダーク=zinc-900 */}
+        {/* ring-1: 薄いボーダーでカードの端を強調 */}
+        <div className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20"></div>
+      </div>
+    </div>
+  )
+}
+
