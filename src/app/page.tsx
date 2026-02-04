@@ -23,7 +23,7 @@ export default async function Home() {
 
   return (
     <>
-      <Container className="mt-9 max-h-[936px]">
+      <Container className="mt-9 max-h-234">
         <Box maxW="2xl">
           <VStack gap={6}>
             <Text variant="h1">
