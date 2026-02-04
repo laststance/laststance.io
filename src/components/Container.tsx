@@ -1,21 +1,24 @@
 import clsx from 'clsx'
-import { forwardRef } from 'react'
 
-export const ContainerOuter = forwardRef<
-  React.ElementRef<'div'>,
-  React.ComponentPropsWithoutRef<'div'>
->(function OuterContainer({ children, className, ...props }, ref) {
+export const ContainerOuter = ({
+  children,
+  className,
+  ref,
+  ...props
+}: React.ComponentProps<'div'>) => {
   return (
     <div ref={ref} className={clsx('sm:px-8', className)} {...props}>
       <div className="mx-auto w-full max-w-7xl lg:px-8">{children}</div>
     </div>
   )
-})
+}
 
-export const ContainerInner = forwardRef<
-  React.ElementRef<'div'>,
-  React.ComponentPropsWithoutRef<'div'>
->(function InnerContainer({ children, className, ...props }, ref) {
+export const ContainerInner = ({
+  children,
+  className,
+  ref,
+  ...props
+}: React.ComponentProps<'div'>) => {
   return (
     <div
       id="mobile-side-padding-container"
@@ -28,15 +31,16 @@ export const ContainerInner = forwardRef<
       </div>
     </div>
   )
-})
+}
 
-export const Container = forwardRef<
-  React.ElementRef<typeof ContainerOuter>,
-  React.ComponentPropsWithoutRef<typeof ContainerOuter>
->(function Container({ children, ...props }, ref) {
+export const Container = ({
+  children,
+  ref,
+  ...props
+}: React.ComponentProps<typeof ContainerOuter>) => {
   return (
     <ContainerOuter ref={ref} {...props}>
       <ContainerInner>{children}</ContainerInner>
     </ContainerOuter>
   )
-})
+}
