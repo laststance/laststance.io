@@ -306,7 +306,7 @@ export default function Projects() {
         </section>
 
         {/* Icon Credits - Minimal footer */}
-        {/* <footer className="mt-24 pb-16 sm:mt-32">
+        <section className="mt-16">
           <p className="text-xs text-zinc-400 dark:text-zinc-500">
             Icons by{' '}
             <a
@@ -318,7 +318,7 @@ export default function Projects() {
               Icons8
             </a>
           </p>
-        </footer> */}
+          </section>
       </Container>
     </main>
   )
