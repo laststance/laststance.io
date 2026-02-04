@@ -70,6 +70,13 @@ const projects: Project[] = [
     logo: mcpLogo,
     featured: true,
   },
+  {
+    name: 'mac-mcp-server',
+    description: "MacOS MCP Server",
+    category: 'Developer Tool',
+    href: 'https://github.com/laststance/mac-mcp-server',
+    logo: mcpLogo,
+  },
 
   // Chrome Extensions
   {
@@ -159,13 +166,6 @@ const projects: Project[] = [
     description: 'One command to set up Prettier formatting on staged files at pre-commit.',
     category: 'NPM Package',
     href: 'https://github.com/laststance/prettier-husky-lint-staged-installer',
-    logo: npmLogo,
-  },
-  {
-    name: 'USD Query',
-    description: 'Minimal $ alias for document.querySelector. Simple. Clean. Effective.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/usd-query',
     logo: npmLogo,
   },
 
