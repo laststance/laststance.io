@@ -1,0 +1,222 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'Laststance Recap: January 2026',
+  date: '2026-02-05',
+  description: ' ',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# Laststance Recap: January 2026
+
+January 2026 was an incredibly productive month for Laststance! 🚀 We saw significant activity across **10+ active projects** with a total of **42 releases**, focusing heavily on improving developer experience, modernizing our tooling, and building new desktop applications. Key themes this month included Electron app development, E2E testing infrastructure improvements, and enhanced UI/UX across our products.
+
+Let's dive into what we shipped this month!
+
+---
+
+## corelive
+
+A real-time todo/task management application with web and Electron desktop support.
+
+**Highlights:**
+
+- [Implement drag-and-drop reordering for todos](https://github.com/laststance/corelive/commit/7ec9193327595f1cc26b1503866d78e7ebe98f07)
+  - Added `@dnd-kit` integration for smooth drag-and-drop task reordering with optimistic updates and server synchronization. This significantly improves the task management UX.
+
+- [Migrate main process to TypeScript and add Settings with Hide App Icon](https://github.com/laststance/corelive/pull/14)
+  - The Electron main process is now fully TypeScript, and users can hide the app icon from the dock for a cleaner desktop experience.
+
+- [Add eslint-plugin-dslint for design token enforcement](https://github.com/laststance/corelive/commit/a24bb51ee104e14c80c398e39cb1aaab06efa345)
+  - Created a custom ESLint plugin that enforces design system compliance using Tailwind config as the single source of truth. This ensures consistent styling across the entire application.
+
+**Releases:** v0.1.0 through v0.1.8 (9 releases)
+
+---
+
+## gitbox
+
+A GitHub repository management dashboard with Kanban-style organization.
+
+**Highlights:**
+
+- [Migrate from MSW to real local Supabase database for E2E tests](https://github.com/laststance/gitbox/pull/45)
+  - Replaced MSW mock handlers with a real local Supabase instance for higher test confidence. This ensures E2E tests reflect actual database behavior.
+
+- [Migrate project structure to src directory](https://github.com/laststance/gitbox/pull/40)
+  - Reorganized the entire project following Next.js conventions, moving all source files into a `src/` directory for better organization and maintainability.
+
+- [Migrate forwardRef to React 19 ref-as-prop pattern](https://github.com/laststance/gitbox/commit/913ab2644ecfd8f18982f043bc6d489e9fcdcc12)
+  - Updated all UI components to use React 19's new ref-as-prop pattern, removing the need for forwardRef wrappers and modernizing the codebase.
+
+**Releases:** v0.1.0, v0.2.0
+
+---
+
+## claude-plugin-dashboard
+
+A TUI (Terminal User Interface) dashboard for managing Claude Code plugins and marketplaces.
+
+**Highlights:**
+
+- [Add component detail view with focus mode navigation](https://github.com/laststance/claude-plugin-dashboard/pull/20)
+  - Users can now drill into plugin components (Skills, Slash commands, Agents, MCP servers) and view detailed information with Emacs-style keyboard navigation.
+
+- [Add marketplace management capabilities](https://github.com/laststance/claude-plugin-dashboard/pull/15)
+  - Full marketplace management with add (`a`), remove (`d`), and update (`u`) keyboard shortcuts. Supports GitHub shorthand, Git URLs, and local paths.
+
+- [Display plugin component names in detail panel](https://github.com/laststance/claude-plugin-dashboard/pull/18)
+  - Plugin details now show actual component names instead of just counts, making it easier to understand what each plugin provides.
+
+**Releases:** v0.1.1, v0.2.0, v0.2.1, v0.2.2, v0.2.3, v0.3.0 (6 releases)
+
+---
+
+## skills-desktop
+
+An Electron-based desktop application for managing Claude Code skills.
+
+**Highlights:**
+
+- [v0.1.0 - Initial Release](https://github.com/laststance/skills-desktop/releases/tag/v0.1.0)
+  - First public release of the skills-desktop application, providing a native desktop experience for skill management.
+
+- [v0.1.1 - UpdateToast UI](https://github.com/laststance/skills-desktop/releases/tag/v0.1.1)
+  - Added toast notifications for update availability, improving the user experience for app updates.
+
+**Releases:** v0.1.0, v0.1.1
+
+---
+
+## mac-mcp-server
+
+An MCP (Model Context Protocol) server for macOS-specific functionality.
+
+**Highlights:**
+
+- [v0.1.0 - Initial Release](https://github.com/laststance/mac-mcp-server/releases/tag/v0.1.0)
+  - First release of the macOS MCP server, enabling Claude to interact with macOS-specific features and APIs.
+
+**Releases:** v0.1.0
+
+---
+
+## electron-mcp-server
+
+An MCP server for Electron application integration.
+
+**Highlights:**
+
+- [v1.6.0 - Multi-Window Support](https://github.com/laststance/electron-mcp-server/releases/tag/v1.6.0)
+  - Added support for managing multiple Electron windows, expanding the server's capabilities for complex desktop applications.
+
+**Releases:** v1.6.0
+
+---
+
+## npm-publish-tool
+
+A CLI tool for streamlined npm package publishing.
+
+**Highlights:**
+
+- [v2.0.0](https://github.com/laststance/npm-publish-tool/releases/tag/v2.0.0)
+  - Major version release with breaking changes to improve the publishing workflow.
+
+**Releases:** v2.0.0
+
+---
+
+## git-gpt-commit
+
+An AI-powered git commit message generator.
+
+**Highlights:**
+
+- [v0.10.5](https://github.com/laststance/git-gpt-commit/releases/tag/v0.10.5)
+  - Latest release with improved commit message generation and bug fixes.
+
+**Releases:** v0.10.3, v0.10.5
+
+---
+
+## eslint-config-ts-prefixer
+
+A shareable ESLint configuration for TypeScript projects.
+
+**Highlights:**
+
+- [v4.1.3](https://github.com/laststance/eslint-config-ts-prefixer/releases/tag/v4.1.3)
+  - Updated configuration with improved TypeScript linting rules and compatibility fixes.
+
+**Releases:** v4.1.1, 4.1.2, v4.1.3
+
+---
+
+## react-next-eslint-plugin
+
+ESLint plugin with React and Next.js specific rules.
+
+**Highlights:**
+
+- [v1.3.0](https://github.com/laststance/react-next-eslint-plugin/releases/tag/v1.3.0)
+  - Added new linting rules for React 19 patterns and Next.js best practices.
+
+**Releases:** 1.2.2, 1.2.3, 1.3.0
+
+---
+
+## redux-strorage-middeware
+
+Redux middleware for persistent storage with type safety.
+
+**Highlights:**
+
+- [v0.2.0 - Initial Public Release](https://github.com/laststance/redux-strorage-middeware/releases/tag/v0.2.0)
+  - First public release of this middleware for persisting Redux state to localStorage with TypeScript support.
+
+- [Fix ESM module resolution with tsup migration](https://github.com/laststance/redux-strorage-middeware/pull/2)
+  - Migrated build system from tsc to tsup for proper ESM module resolution, fixing import issues in modern JavaScript environments.
+
+**Releases:** v0.2.0, v0.2.1
+
+---
+
+## create-react-app-vite
+
+A modern React + TypeScript + Vite template as an alternative to Create React App.
+
+**Highlights:**
+
+- [Remove baseUrl from tsconfig.json](https://github.com/laststance/create-react-app-vite/pull/1571)
+  - Community contribution by @sickhippie to improve TypeScript configuration compatibility.
+
+---
+
+## Wrapping Up
+
+January 2026 was a month of significant progress! 🎊 We shipped **42 releases** across **10 active repositories**, with major focus on:
+
+- **Desktop applications**: corelive Electron improvements, skills-desktop launch, and MCP server updates
+- **Developer experience**: New ESLint plugins, improved E2E testing infrastructure, and React 19 migrations
+- **Claude Code ecosystem**: claude-plugin-dashboard reached v0.3.0 with comprehensive plugin management features
+
+A huge thank you to everyone who contributed this month! Special shoutout to community contributor @sickhippie for the create-react-app-vite improvement.
+
+If you'd like to contribute, check out our projects and look for issues labeled `good first issue`. We're always happy to help new contributors get started! 💪
+
+---
+
+*Follow our open source work at [github.com/laststance](https://github.com/laststance)*
