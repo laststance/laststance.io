@@ -1,10 +1,22 @@
 import { ImageResponse } from 'next/og'
 import type { NextRequest } from 'next/server'
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import type { ReactElement } from 'react'
 
-const interSemiBold = fetch(
-  new URL('./Inter-SemiBold.ttf', import.meta.url),
-).then(async (res) => res.arrayBuffer())
+/**
+ * Loads the Inter SemiBold font file for OG image generation.
+ * Uses Node.js fs/promises for reliable font loading in serverless environments.
+ * @returns Promise resolving to the font data as ArrayBuffer
+ */
+const loadFont = async (): Promise<ArrayBuffer> => {
+  const fontPath = join(process.cwd(), 'src/app/api/og/Inter-SemiBold.ttf')
+  const fontBuffer = await readFile(fontPath)
+  return fontBuffer.buffer.slice(
+    fontBuffer.byteOffset,
+    fontBuffer.byteOffset + fontBuffer.byteLength,
+  )
+}
 
 /** Maximum allowed length for OG image title */
 const MAX_TITLE_LENGTH = 200
@@ -88,7 +100,7 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
         fonts: [
           {
             name: 'Inter',
-            data: await interSemiBold,
+            data: await loadFont(),
             style: 'normal',
             weight: 400,
           },
