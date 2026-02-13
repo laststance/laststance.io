@@ -63,8 +63,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       dotenv:
-        specifier: ^17.2.4
-        version: 17.2.4
+        specifier: ^17.3.1
+        version: 17.3.1
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -78,8 +78,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       lucide-react:
-        specifier: ^0.563.0
-        version: 0.563.0(react@19.2.4)
+        specifier: ^0.564.0
+        version: 0.564.0(react@19.2.4)
       motion:
         specifier: ^12.34.0
         version: 12.34.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -127,8 +127,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       '@clack/prompts':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.1
+        version: 1.0.1
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.0.0(jiti@2.6.1))
@@ -401,11 +401,11 @@ packages:
     peerDependencies:
       storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0
 
-  '@clack/core@1.0.0':
-    resolution: {integrity: sha512-Orf9Ltr5NeiEuVJS8Rk2XTw3IxNC2Bic3ash7GgYeA8LJ/zmSNpSQ/m5UAhe03lA6KFgklzZ5KTHs4OAMA/SAQ==}
+  '@clack/core@1.0.1':
+    resolution: {integrity: sha512-WKeyK3NOBwDOzagPR5H08rFk9D/WuN705yEbuZvKqlkmoLM2woKtXb10OO2k1NoSU4SFG947i2/SCYh+2u5e4g==}
 
-  '@clack/prompts@1.0.0':
-    resolution: {integrity: sha512-rWPXg9UaCFqErJVQ+MecOaWsozjaxol4yjnmYcGNipAWzdaWa2x+VJmKfGq7L0APwBohQOYdHC+9RO4qRXej+A==}
+  '@clack/prompts@1.0.1':
+    resolution: {integrity: sha512-/42G73JkuYdyWZ6m8d/CJtBrGl1Hegyc7Fy78m5Ob+jF85TOUmLR5XLce/U3LxYAw0kJ8CT5aI99RIvPHcGp/Q==}
 
   '@code-inspector/core@1.4.2':
     resolution: {integrity: sha512-7OPkFtkfYaXhuTlwub2jT++rW7VggMMEeqsPIZGvHdXykwKAtzB8nnrj3N3uBT/mRoFfP627ShrVyRzCqyfr2w==}
@@ -3309,8 +3309,8 @@ packages:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
 
-  dotenv@17.2.4:
-    resolution: {integrity: sha512-mudtfb4zRB4bVvdj0xRo+e6duH1csJRM8IukBqfTRvHotn9+LBXB8ynAidP9zHqoRC/fsllXgk4kCKlR21fIhw==}
+  dotenv@17.3.1:
+    resolution: {integrity: sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -4322,8 +4322,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.563.0:
-    resolution: {integrity: sha512-8dXPB2GI4dI8jV4MgUDGBeLdGk8ekfqVZ0BdLcrRzocGgG75ltNEmWS+gE7uokKF/0oSUuczNDT+g9hFJ23FkA==}
+  lucide-react@0.564.0:
+    resolution: {integrity: sha512-JJ8GVTQqFwuliifD48U6+h7DXEHdkhJ/E87kksGByII3qHxtPciVb8T8woQONHBQgHVOl7rSMrrip3SeVNy7Fg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -6160,14 +6160,14 @@ snapshots:
       - '@chromatic-com/cypress'
       - '@chromatic-com/playwright'
 
-  '@clack/core@1.0.0':
+  '@clack/core@1.0.1':
     dependencies:
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
-  '@clack/prompts@1.0.0':
+  '@clack/prompts@1.0.1':
     dependencies:
-      '@clack/core': 1.0.0
+      '@clack/core': 1.0.1
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
@@ -9130,7 +9130,7 @@ snapshots:
 
   dotenv@16.6.1: {}
 
-  dotenv@17.2.4: {}
+  dotenv@17.3.1: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -10268,7 +10268,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.563.0(react@19.2.4):
+  lucide-react@0.564.0(react@19.2.4):
     dependencies:
       react: 19.2.4
 
