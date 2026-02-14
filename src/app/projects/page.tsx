@@ -144,14 +144,6 @@ const projects: Project[] = [
     href: 'https://github.com/laststance/signage',
     logo: macosLogo,
   },
-  {
-    name: 'complete',
-    description:
-      'macOS system-wide spell autocomplete triggered by global hotkey. Type faster, everywhere.',
-    category: 'macOS App',
-    href: 'https://github.com/laststance/complete',
-    logo: macosLogo,
-  },
 
   // VS Code Extensions
   {

@@ -55,6 +55,16 @@ const WhatNew: React.FC = () => {
           aria-label="What's new updates list"
         >
           <List
+            date="2026-02-14"
+            li={[
+              <DialogClose asChild key="discontinuing-complete">
+                <Link href="/articles/Discontinuing-Complete-macOS-Autocomplete">
+                  Discontinuing Complete: Per-App Coordinate Calculation
+                </Link>
+              </DialogClose>,
+            ]}
+          />
+          <List
             date="2026-01-06"
             li={[
               <DialogClose asChild key="laststance-recap-december-2025">
