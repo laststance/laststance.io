@@ -4,6 +4,7 @@ import { type StaticImageData } from 'next/image'
 import { Container } from '@/components/Container'
 import { ProjectListItem } from '@/components/ProjectListItem'
 import chromeLogo from '@/images/logos/icons8-chrome-48.png'
+import electronLogo from '@/images/logos/icons8-electron-48.png'
 import git from '@/images/logos/icons8-git-48.png'
 import macosLogo from '@/images/logos/icons8-macos-48.png'
 import nextLogo from '@/images/logos/icons8-nextjs-48.png'
@@ -12,6 +13,7 @@ import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-buil
 import reduxLogo from '@/images/logos/icons8-redux-48.png'
 import shellLogo from '@/images/logos/icons8-shell-40.png'
 import storybookLogo from '@/images/logos/icons8-storybook-48.png'
+import tailwindLogo from '@/images/logos/icons8-tailwindcss-48.png'
 import viteLogo from '@/images/logos/icons8-vite-48.png'
 import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
 import mcpLogo from '@/images/logos/mcp.svg'
@@ -45,6 +47,42 @@ type Project = {
 const projects: Project[] = [
   // Featured Projects
   {
+    name: 'Skills Desktop',
+    description:
+      'Visualize installed Skills and symlink status across AI agents. GUI for managing skills with 21 AI agents support and 26 themes.',
+    category: 'Desktop App',
+    href: 'https://skills-desktop.vercel.app/',
+    logo: electronLogo,
+    featured: true,
+  },
+  {
+    name: 'Skills',
+    description:
+      'Agent skills for AI coding assistants. Reusable skill modules for Claude Code, Cursor, Codex, Gemini CLI, and more.',
+    category: 'Developer Tool',
+    href: 'https://github.com/laststance/skills',
+    logo: shellLogo,
+    featured: true,
+  },
+  {
+    name: 'Tailwind CSS Canonical Classes',
+    description:
+      'Automatically convert non-canonical Tailwind CSS v4 classes to their canonical equivalents. Prettier plugin, CLI, and core library.',
+    category: 'NPM Package',
+    href: 'https://github.com/laststance/tailwindcss-canonical-classes-monrepo',
+    logo: tailwindLogo,
+    featured: true,
+  },
+  {
+    name: '@laststance/redux-storage-middleware',
+    description:
+      'SSR-safe Redux Toolkit middleware for localStorage persistence with selective slice hydration and performance optimization.',
+    category: 'NPM Package',
+    href: 'https://github.com/laststance/redux-strorage-middeware',
+    logo: reduxLogo,
+    featured: true,
+  },
+  {
     name: 'GitBox',
     description:
       'A web application for managing GitHub repositories in Kanban board format. Organize your repos visually and boost productivity.',
@@ -64,7 +102,8 @@ const projects: Project[] = [
   },
   {
     name: 'electron-mcp-server',
-    description: 'A Model Context Protocol server for Electron applications. Bridge AI agents with desktop applications seamlessly.',
+    description:
+      'A Model Context Protocol server for Electron applications. Bridge AI agents with desktop applications seamlessly.',
     category: 'Developer Tool',
     href: 'https://github.com/laststance/electron-mcp-server',
     logo: mcpLogo,
@@ -72,7 +111,7 @@ const projects: Project[] = [
   },
   {
     name: 'mac-mcp-server',
-    description: "MacOS MCP Server",
+    description: 'MacOS MCP Server',
     category: 'Developer Tool',
     href: 'https://github.com/laststance/mac-mcp-server',
     logo: mcpLogo,
@@ -99,7 +138,8 @@ const projects: Project[] = [
   // macOS Apps
   {
     name: 'signage',
-    description: 'Dark self screen saver app for cooldown brain. Minimal distraction, maximum focus.',
+    description:
+      'Dark self screen saver app for cooldown brain. Minimal distraction, maximum focus.',
     category: 'macOS App',
     href: 'https://github.com/laststance/signage',
     logo: macosLogo,
@@ -126,14 +166,16 @@ const projects: Project[] = [
   // NPM Packages
   {
     name: 'Claude Plugin Dashboard',
-    description: 'CLI dashboard for managing Claude Code plugins. Monitor and control your AI workflow.',
+    description:
+      'CLI dashboard for managing Claude Code plugins. Monitor and control your AI workflow.',
     category: 'NPM Package',
     href: 'https://github.com/laststance/claude-plugin-dashboard',
     logo: npmLogo,
   },
   {
     name: '@laststance/react-next-eslint-plugin',
-    description: 'A collection of ESLint plugins for React and Next.js. Enforce best practices automatically.',
+    description:
+      'A collection of ESLint plugins for React and Next.js. Enforce best practices automatically.',
     category: 'NPM Package',
     href: 'https://github.com/laststance/react-next-eslint-plugin',
     logo: npmLogo,
@@ -156,14 +198,16 @@ const projects: Project[] = [
   },
   {
     name: 'npm-publish-tool',
-    description: 'Streamlined tool for publishing npm packages with version management.',
+    description:
+      'Streamlined tool for publishing npm packages with version management.',
     category: 'NPM Package',
     href: 'https://github.com/laststance/npm-publish-tool',
     logo: npmLogo,
   },
   {
     name: 'prettier-husky-lint-staged-installer',
-    description: 'One command to set up Prettier formatting on staged files at pre-commit.',
+    description:
+      'One command to set up Prettier formatting on staged files at pre-commit.',
     category: 'NPM Package',
     href: 'https://github.com/laststance/prettier-husky-lint-staged-installer',
     logo: npmLogo,
@@ -195,7 +239,8 @@ const projects: Project[] = [
   },
   {
     name: 'nsx',
-    description: 'Personal tech resource logger. Curate and revisit valuable reads.',
+    description:
+      'Personal tech resource logger. Curate and revisit valuable reads.',
     category: 'Web App',
     href: 'https://github.com/laststance/nsx',
     logo: reactLogo,
@@ -212,7 +257,8 @@ const projects: Project[] = [
   },
   {
     name: 'Create React App Vite',
-    description: 'Simple CRA-style Vite template. Familiar structure, modern tooling.',
+    description:
+      'Simple CRA-style Vite template. Familiar structure, modern tooling.',
     category: 'Template',
     href: 'https://github.com/laststance/create-react-app-vite',
     logo: viteLogo,
@@ -236,21 +282,24 @@ const projects: Project[] = [
   // Developer Tools
   {
     name: 'mui-storybook',
-    description: 'Storybook for MUI v5 default components. Visual component documentation.',
+    description:
+      'Storybook for MUI v5 default components. Visual component documentation.',
     category: 'Developer Tool',
     href: 'https://github.com/laststance/mui-storybook',
     logo: storybookLogo,
   },
   {
     name: 'Redux Front Page',
-    description: 'Solving Redux documentation fragmentation. One source of truth.',
+    description:
+      'Solving Redux documentation fragmentation. One source of truth.',
     category: 'Developer Tool',
     href: 'https://github.com/laststance/Redux-Front-Page',
     logo: reduxLogo,
   },
   {
     name: 'dotfiles',
-    description: 'Personal Mac OS X setup manual. Reproducible development environment.',
+    description:
+      'Personal Mac OS X setup manual. Reproducible development environment.',
     category: 'Developer Tool',
     href: 'https://github.com/ryota-murakami/dotfiles',
     logo: shellLogo,
