@@ -3,7 +3,7 @@ import { ArticleLayout } from '@/components/ArticleLayout'
 export const article = {
   auhtor: 'Ryota Murakami',
   title: 'All TypeScript release blog list',
-  date: '2025-04-24',
+  date: '2026-02-16',
   description: 'Update continues',
 }
 
@@ -22,6 +22,51 @@ Personally, I often find that blog posts announcing new versions have clearer ex
 So, I used AI to gather links and summaries for all the version posts.
 
 I plan to update this whenever a new version comes out.
+
+## Announcing TypeScript 6.0 Beta
+
+* **Date**: 2026-02-11. 
+* **Summary**: TypeScript 6.0 Beta is a transition-focused release intended to be the **last major version on the current JavaScript codebase**, acting as a bridge from 5.9 toward TypeScript 7.0’s upcoming native (Go) port—while still shipping a handful of notable features and significant config/deprecation changes. 
+
+  * **Most significant topic — preparing for TypeScript 7.0**: TS 6.0 aligns behaviors/defaults and introduces migration helpers (like `--stableTypeOrdering`) so upgrading to the native TS 7.0 toolchain produces fewer surprises. 
+  * **Highlights**
+
+    * **Smarter inference for `this`-less methods**: functions that never use `this` are treated as less “contextually sensitive,” improving inference in object literals that use method syntax. 
+    * **Node/package.json ergonomics**: support for subpath imports starting with `#/`, plus more flexibility combining `--moduleResolution bundler` with `--module commonjs`. 
+    * **New/updated lib & target surface**: `es2025` for `target`/`lib`, built-in typings for `Temporal`, typings for new Map/WeakMap “upsert” methods (`getOrInsert*`), and `RegExp.escape`. 
+    * **Simplified DOM libs**: `lib.dom.d.ts` now fully includes what used to live in `lib.dom.iterable.d.ts` / `lib.dom.asynciterable.d.ts`. 
+    * **Breaking changes & default shifts**: `strict` defaults to `true`, `module` defaults to `esnext`, `target` defaults to a current-year ES level (currently `es2025`), plus many deprecations/removals. 
+  * **Table of contents (summarized)**
+
+    * **Less Context-Sensitivity on `this`-less Functions**: improves inference for method syntax when `this` isn’t used. 
+    * **Subpath Imports Starting with `#/`**: supports Node’s newer `#/` subpath-import style under modern module-resolution modes. 
+    * **Combining `--moduleResolution bundler` with `--module commonjs`**: enables a practical upgrade path for many projects moving off older Node resolution. 
+    * **The `--stableTypeOrdering` Flag**: helps reduce output/type-ordering diffs between TS 6 and TS 7; can add noticeable type-checking overhead. 
+    * **`es2025` option for `target` and `lib`**: introduces the `es2025` target/lib surface (mostly new built-in API typings). 
+    * **New Types for `Temporal`**: adds built-in typings for the Temporal date/time API under `esnext` (or `temporal.esnext`). 
+    * **New Types for “upsert” Methods (`getOrInsert*`)**: adds typings for Map/WeakMap’s new “get-or-insert” APIs in `esnext`. 
+    * **`RegExp.escape`**: adds typings for the new standard `RegExp.escape` helper (in `es2025`). 
+    * **The `dom` lib Now Contains `dom.iterable` and `dom.asynciterable`**: folds iterable/async-iterable DOM declarations into `dom`. 
+    * **Breaking Changes and Deprecations in TypeScript 6.0**: broad modernization + cleanup to match today’s JS ecosystem and prepare for TS 7.0. 
+
+      * **Up-Front Adjustments**: common fixes many projects will need post-upgrade (e.g., `types`, `rootDir`). 
+      * **Simple Default Changes**: new defaults like `strict: true`, `module: esnext`, floating `target` (currently `es2025`). 
+      * **Deprecated: `target: es5`**: ES5 output is deprecated; TS’s lowest target is now ES2015. 
+      * **Deprecated: `--downlevelIteration`**: deprecated since it’s tied to ES5 emit. 
+      * **Deprecated: `--moduleResolution node` (node10)**: migrate toward `nodenext` or `bundler`. 
+      * **Deprecated: `amd`, `umd`, `systemjs` module targets**: no longer supported. 
+      * **Deprecated: `--baseUrl`**: deprecated to avoid accidental “lookup root” behavior; prefer explicit `paths`. 
+      * **Deprecated: `--moduleResolution classic`**: removed; migrate to modern strategies. 
+      * **Deprecated: `--esModuleInterop false` / `--allowSyntheticDefaultImports false`**: safer interop behavior is always enabled. 
+      * **Deprecated: `--alwaysStrict false`**: TS assumes strict-mode semantics; “sloppy mode” assumptions may need changes. 
+      * **Deprecated: `outFile`**: removed in favor of bundlers. 
+      * **Deprecated: legacy `module` syntax for namespaces**: `module Foo {}` form is now a hard deprecation; use `namespace`. 
+      * **Deprecated: `asserts` keyword on imports**: replaced by import attributes with `with`. 
+      * **Deprecated: `no-default-lib` directives**: `/// <reference no-default-lib="true"/>` no longer supported. 
+      * **Specifying CLI files when `tsconfig.json` exists is now an error**: makes the “tsconfig is ignored” case explicit; use `--ignoreConfig` to opt out. 
+    * **Preparing for TypeScript 7.0**: guidance on addressing deprecations now so the TS 7 migration is smoother. 
+    * **What’s Next?**: beta is “feature stable,” focusing on bug fixes and feedback before release. 
+* **Link**: [Announcing TypeScript 6.0 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-6-0-beta/)
 
 ## Announcing TypeScript 5.8
 
