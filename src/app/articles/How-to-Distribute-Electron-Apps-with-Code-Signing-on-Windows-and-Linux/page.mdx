@@ -1,0 +1,659 @@
+
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'How to Distribute Electron Apps with Code Signing on Windows and Linux',
+  date: '2026-02-17',
+  description: 'A comprehensive guide to distributing Electron applications on Windows and Linux with code signing. Covers traditional OV/EV certificates, Azure Trusted Signing, Linux package formats (AppImage, Snap, deb, rpm), and CI/CD automation with GitHub Actions.',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+  openGraph: {
+    title: article.title,
+    images: [`/api/og?title=${article.title}`],
+  },
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# How to Distribute Electron Apps with Code Signing on Windows and Linux
+
+Distributing an Electron app is more than just building an executable. Without code signing, users face scary OS warnings, and your app looks untrustworthy. This guide covers everything you need to ship a signed Electron app on **Windows** and **Linux** using modern tooling (as of early 2026).
+
+---
+
+## Table of Contents
+
+1. [Choosing a Build Tool: electron-builder vs Electron Forge](#choosing-a-build-tool)
+2. [Windows Code Signing](#windows-code-signing)
+3. [Azure Trusted Signing (Recommended)](#azure-trusted-signing)
+4. [Linux Distribution](#linux-distribution)
+5. [Auto-Update](#auto-update)
+6. [CI/CD with GitHub Actions](#cicd-with-github-actions)
+7. [Summary](#summary)
+8. [2026 Certificate Validity Changes](#important-2026-certificate-validity-changes)
+9. [Known Issues and Gotchas](#known-issues-and-gotchas)
+
+---
+
+## Choosing a Build Tool
+
+Before diving into signing, you need to pick a build tool. The two main options in the Electron ecosystem are **electron-builder** and **Electron Forge**.
+
+| Feature | electron-builder | Electron Forge |
+|---------|-----------------|----------------|
+| Configuration | YAML or JSON | TypeScript (forge.config.ts) |
+| Linux targets | AppImage, deb, rpm, snap, pacman, flatpak | deb, rpm, flatpak, snap |
+| Windows targets | NSIS, MSI, portable, AppX | Squirrel, MSI, WiX |
+| Auto-update | Built-in electron-updater | update-electron-app |
+| Publishing | GitHub, S3, Spaces, generic | GitHub, S3, GCS, Bitbucket |
+| Maturity | Stable, widely used | Officially recommended by Electron team |
+
+**My recommendation:** Use **electron-builder** if you need maximum flexibility with Linux targets (especially AppImage + deb + rpm + snap in one build). Use **Electron Forge** if you want the officially supported toolchain and tighter integration with the Electron ecosystem.
+
+This guide shows configuration for **both** tools.
+
+---
+
+## Windows Code Signing
+
+Without code signing, Windows shows a **SmartScreen warning** ("Windows protected your PC") that blocks users from running your app. This is the single biggest barrier to distributing Electron apps on Windows.
+
+### Understanding Certificates: OV vs EV
+
+| Type | Cost | SmartScreen | Hardware | CI/CD |
+|------|------|-------------|----------|-------|
+| **OV** (Organization Validation) | ~$200-400/year | Reputation builds over time | HSM required (since June 2023) | Moderate (cloud HSM or token) |
+| **EV** (Extended Validation) | ~$400-700/year | Instant reputation | HSM required | Difficult (USB token or cloud HSM) |
+| **Azure Trusted Signing** | $9.99/month | Instant reputation | Not required (cloud-based) | Native support |
+
+> **Important (June 2023 change):** The CA/Browser Forum now requires **all** new OV code signing certificates to be stored on hardware security modules (HSMs) or tokens. The old distinction of "OV = file-based, EV = hardware" no longer applies. Both require hardware. This makes Azure Trusted Signing even more attractive.
+
+**Certificate providers:** DigiCert, Sectigo, SSL.com, GlobalSign.
+
+### Traditional Certificate Signing (OV/EV)
+
+#### 1. Get a Certificate
+
+Purchase an OV or EV code signing certificate from a provider like [SSL.com](https://www.ssl.com/) or [DigiCert](https://www.digicert.com/). You will receive a `.pfx` (PKCS#12) file and a password.
+
+#### 2. Configure electron-builder
+
+In your `electron-builder.yml` (or `package.json`):
+
+```yaml
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  signingHashAlgorithms:
+    - sha256
+  certificateSubjectName: "Your Company Name"
+
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+```
+
+Set environment variables for CI:
+
+```bash
+# Base64-encode your certificate for safe storage in CI secrets
+# macOS/Linux:
+base64 -i certificate.pfx -o cert-base64.txt
+# Linux:
+base64 certificate.pfx > cert-base64.txt
+
+# Set environment variables
+export WIN_CSC_LINK="base64://$(cat cert-base64.txt)"
+export WIN_CSC_KEY_PASSWORD="your-certificate-password"
+```
+
+#### 3. Configure Electron Forge
+
+Create a `windowsSign.ts` file:
+
+```typescript
+import type { WindowsSignOptions } from "@electron/packager";
+
+export const windowsSign: WindowsSignOptions = {
+  signWithParams: `/v /fd SHA256 /f "${process.env.WIN_CSC_LINK}" /p "${process.env.WIN_CSC_KEY_PASSWORD}" /tr "http://timestamp.digicert.com" /td SHA256`,
+  hashes: ["sha256"],
+};
+```
+
+Then in `forge.config.ts`:
+
+```typescript
+import { windowsSign } from "./windowsSign";
+
+const config: ForgeConfig = {
+  packagerConfig: {
+    windowsSign,
+  },
+  makers: [
+    new MakerSquirrel({
+      // @ts-expect-error - incorrect types exported by MakerSquirrel
+      windowsSign,
+    }),
+  ],
+};
+```
+
+### SmartScreen Reputation
+
+Even with an OV certificate, SmartScreen operates on a **reputation system**. A brand-new certificate has zero reputation, so users will still see warnings initially. Reputation builds as more users download and run your signed app without issues.
+
+**Key facts:**
+- EV certificates and Azure Trusted Signing get **instant reputation** (no warning from the first download)
+- OV certificates require time to build reputation (typically days to weeks of downloads)
+- Renewing or replacing a certificate **resets reputation** for OV certificates
+- There is no official threshold published by Microsoft
+
+---
+
+## Azure Trusted Signing
+
+**Azure Trusted Signing** is Microsoft's cloud-based code signing service, launched in 2024 and now generally available. It is the **recommended approach** for new projects because it provides instant SmartScreen reputation at a fraction of the cost of traditional EV certificates.
+
+### Pricing
+
+**$9.99/month** per signing account. No per-signature fees. Certificates rotate daily and are managed automatically by Azure.
+
+### Requirements
+
+- A legal business entity with **3+ years of verifiable tax history**
+- An Azure account with a pay-as-you-go subscription
+- Business and domain ownership verification by Microsoft
+
+### Setup Steps
+
+#### 1. Register the Resource Provider
+
+```bash
+az login
+az provider register --namespace Microsoft.CodeSigning
+az provider show --namespace Microsoft.CodeSigning --query "registrationState"
+```
+
+#### 2. Create a Trusted Signing Account
+
+Create a Trusted Signing Account in the Azure Portal. Select your preferred region (e.g., `wus2` for West US 2).
+
+#### 3. Complete Identity Validation
+
+Submit business documentation through the Azure Portal. Microsoft's identity validation typically takes 1 hour to several days. You need a "Public Trust" profile for SmartScreen reputation.
+
+#### 4. Create a Certificate Profile
+
+After identity validation completes, create a certificate profile under your Trusted Signing Account.
+
+#### 5. Configure electron-builder
+
+Add `azureSignOptions` to your `electron-builder.yml`:
+
+```yaml
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  azureSignOptions:
+    publisherName: "Your Company Name"  # Must match CN of certificate
+    endpoint: "https://wus2.codesigning.azure.net"
+    certificateProfileName: "YourProfileName"
+    codeSigningAccountName: "YourSigningAccountName"
+```
+
+#### 6. Configure Electron Forge
+
+For Electron Forge, create a `windowsSign.ts`:
+
+```typescript
+import type { WindowsSignOptions } from "@electron/packager";
+import type { HASHES } from "@electron/windows-sign/dist/esm/types";
+
+export const windowsSign: WindowsSignOptions = {
+  ...(process.env.SIGNTOOL_PATH
+    ? { signToolPath: process.env.SIGNTOOL_PATH }
+    : {}),
+  signWithParams: `/v /debug /dlib ${process.env.AZURE_CODE_SIGNING_DLIB} /dmdf ${process.env.AZURE_METADATA_JSON}`,
+  timestampServer: "http://timestamp.acs.microsoft.com",
+  hashes: ["sha256" as HASHES],
+};
+```
+
+Environment variables required:
+
+```bash
+AZURE_CLIENT_ID='xxx'
+AZURE_CLIENT_SECRET='xxx'
+AZURE_TENANT_ID='xxx'
+AZURE_METADATA_JSON='C:\path\to\metadata.json'
+AZURE_CODE_SIGNING_DLIB='C:\path\to\bin\x64\Azure.CodeSigning.Dlib.dll'
+SIGNTOOL_PATH='C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe'
+```
+
+The `metadata.json` file:
+
+```json
+{
+  "Endpoint": "https://wus2.codesigning.azure.net",
+  "CodeSigningAccountName": "YourSigningAccountName",
+  "CertificateProfileName": "YourProfileName"
+}
+```
+
+---
+
+## Linux Distribution
+
+Linux has multiple packaging formats, each with different trade-offs. Unlike Windows and macOS, **code signing on Linux is not enforced by the OS** but is still good practice for repository integrity.
+
+### Package Format Comparison
+
+| Format | Sandboxing | Auto-update | Store | Dependencies |
+|--------|-----------|-------------|-------|-------------|
+| **AppImage** | None | Via AppImageUpdate | None | Bundled |
+| **Snap** | Yes (strict) | Automatic via Snap Store | Snap Store | Managed |
+| **Flatpak** | Yes (portals) | Automatic via Flathub | Flathub | Managed |
+| **deb** | None | Via apt repository | None (or PPA) | System package manager |
+| **rpm** | None | Via yum/dnf repository | None (or COPR) | System package manager |
+
+**My recommendation:** Ship **AppImage** as the universal download + **deb** for Debian/Ubuntu + **rpm** for Fedora/RHEL. Add **Snap** if you want Snap Store distribution. Flatpak is great for sandboxing but requires more setup.
+
+### electron-builder Configuration
+
+```yaml
+linux:
+  target:
+    - AppImage
+    - deb
+    - rpm
+    - snap
+  category: Utility
+  icon: build/icons
+  desktop:
+    StartupNotify: "false"
+    MimeType: "x-scheme-handler/myapp"
+
+appImage:
+  artifactName: "${productName}-${version}-${arch}.AppImage"
+
+deb:
+  priority: optional
+  depends:
+    - libnotify4
+    - libxtst6
+    - libnss3
+
+rpm:
+  fpm:
+    - "--rpm-rpmbuild-define"
+    - "_build_id_links none"
+
+snap:
+  confinement: strict
+  grade: stable
+  plugs:
+    - default
+    - removable-media
+```
+
+### Electron Forge Configuration
+
+```typescript
+const config: ForgeConfig = {
+  makers: [
+    new MakerDeb({
+      options: {
+        maintainer: "Your Name",
+        homepage: "https://yourapp.com",
+        icon: "./build/icon.png",
+        categories: ["Utility"],
+      },
+    }),
+    new MakerRpm({
+      options: {
+        homepage: "https://yourapp.com",
+        icon: "./build/icon.png",
+        categories: ["Utility"],
+      },
+    }),
+    new MakerFlatpak({
+      options: {
+        id: "com.yourcompany.yourapp",
+        runtimeVersion: "24.08",
+      },
+    }),
+  ],
+};
+```
+
+### GPG Signing for Linux Packages
+
+While not enforced at the OS level, signing `.deb` and `.rpm` packages with GPG is standard practice for repository distribution.
+
+#### Signing deb Packages
+
+```bash
+# Generate a GPG key
+gpg --full-generate-key
+
+# Export the public key
+gpg --armor --export your@email.com > public.key
+
+# Sign the package
+dpkg-sig -k your-key-id --sign builder your-app.deb
+
+# Verify the signature
+dpkg-sig --verify your-app.deb
+```
+
+#### Signing rpm Packages
+
+```bash
+# Configure RPM macros
+echo '%_gpg_name Your Name <your@email.com>' >> ~/.rpmmacros
+
+# Sign the package
+rpm --addsign your-app.rpm
+
+# Verify the signature
+rpm --checksig your-app.rpm
+```
+
+### Publishing to Snap Store
+
+```bash
+# Install snapcraft
+sudo snap install snapcraft --classic
+
+# Login to Snap Store
+snapcraft login
+
+# Register your app name
+snapcraft register your-app-name
+
+# Upload and release
+snapcraft upload your-app.snap --release=stable
+```
+
+---
+
+## Auto-Update
+
+A signed app needs automatic updates to deliver patches seamlessly.
+
+### electron-builder + electron-updater
+
+Install `electron-updater`:
+
+```bash
+npm install electron-updater
+```
+
+In your main process:
+
+```typescript
+import { autoUpdater } from "electron-updater";
+import log from "electron-log";
+
+autoUpdater.logger = log;
+
+export function checkForUpdates() {
+  autoUpdater.checkForUpdatesAndNotify();
+}
+
+autoUpdater.on("update-available", (info) => {
+  log.info("Update available:", info.version);
+});
+
+autoUpdater.on("update-downloaded", (info) => {
+  log.info("Update downloaded. Will install on restart.");
+  // Optionally prompt user to restart
+  autoUpdater.quitAndInstall();
+});
+```
+
+Configure the publish target in `electron-builder.yml`:
+
+```yaml
+publish:
+  - provider: github
+    owner: your-username
+    repo: your-app
+    releaseType: release
+```
+
+### Electron Forge + update-electron-app
+
+```bash
+npm install update-electron-app
+```
+
+In your main process:
+
+```javascript
+const { updateElectronApp } = require("update-electron-app");
+
+updateElectronApp({
+  updateInterval: "1 hour",
+  logger: require("electron-log"),
+});
+```
+
+This works with `@electron-forge/publisher-github` and the free [update.electronjs.org](https://update.electronjs.org) service for public repositories.
+
+> **Note:** Auto-update on Linux AppImage requires the user to have `libappimage` or to use a custom update mechanism. Snap and Flatpak handle updates through their respective stores automatically.
+
+---
+
+## CI/CD with GitHub Actions
+
+Here is a complete GitHub Actions workflow that builds and signs your Electron app for Windows and Linux, then publishes to GitHub Releases.
+
+### electron-builder Workflow
+
+```yaml
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      # Option A: Traditional certificate signing
+      - name: Build Windows (OV Certificate)
+        if: ${{ !vars.USE_AZURE_SIGNING }}
+        run: npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WIN_CSC_LINK: ${{ secrets.WIN_CERTIFICATE }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CERTIFICATE_PASSWORD }}
+
+      # Option B: Azure Trusted Signing
+      - name: Azure Login
+        if: ${{ vars.USE_AZURE_SIGNING }}
+        uses: azure/login@v2
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Build Windows (Azure Trusted Signing)
+        if: ${{ vars.USE_AZURE_SIGNING }}
+        run: npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifacts
+          path: |
+            dist/*.exe
+            dist/*.msi
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - name: Build Linux
+        run: npm run build:linux
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-artifacts
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.rpm
+            dist/*.snap
+
+  publish:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
+```
+
+### Storing Secrets
+
+Add these secrets in your GitHub repository settings (`Settings > Secrets and variables > Actions`):
+
+| Secret | Purpose |
+|--------|---------|
+| `WIN_CERTIFICATE` | Base64-encoded `.pfx` file (for OV/EV) |
+| `WIN_CERTIFICATE_PASSWORD` | Certificate password (for OV/EV) |
+| `AZURE_CLIENT_ID` | Azure App Registration client ID |
+| `AZURE_CLIENT_SECRET` | Azure App Registration secret |
+| `AZURE_TENANT_ID` | Azure tenant ID |
+| `AZURE_SUBSCRIPTION_ID` | Azure subscription ID |
+
+> **Security tip:** Never commit certificates or secrets to your repository. Always use GitHub Secrets or a secrets management service.
+
+---
+
+## Summary
+
+| Platform | Signing | Recommended Approach | Cost |
+|----------|---------|---------------------|------|
+| **Windows** | Code signing certificate | Azure Trusted Signing | $9.99/month |
+| **Windows** | Code signing certificate | OV Certificate (alternative) | ~$200-400/year |
+| **Linux** | GPG (optional) | AppImage + deb + rpm | Free |
+| **Linux** | Store signing | Snap Store | Free |
+
+### Decision Flowchart
+
+1. **Are you a business with 3+ years of history?** &rarr; Use **Azure Trusted Signing** ($9.99/month, instant SmartScreen reputation)
+2. **Individual developer or new business?** &rarr; Use an **OV certificate** from SSL.com or Sectigo (~$200-400/year), accept temporary SmartScreen warnings
+3. **Linux distribution?** &rarr; Ship **AppImage** (universal) + **deb** (Ubuntu/Debian) + **rpm** (Fedora/RHEL)
+4. **Want store distribution?** &rarr; Add **Snap Store** publishing
+5. **Auto-update?** &rarr; Use **electron-updater** (electron-builder) or **update-electron-app** (Forge) with GitHub Releases
+
+### Key Takeaways
+
+- **Always sign your Windows builds.** Unsigned apps trigger SmartScreen warnings that most users cannot bypass.
+- **Azure Trusted Signing is the future.** At $9.99/month with instant reputation and no hardware tokens, it is the best option for businesses.
+- **Linux does not enforce code signing at the OS level**, but sign your packages for repository integrity.
+- **Automate everything with GitHub Actions.** Cross-platform builds with signing should run in CI, not on your local machine.
+- **Ship multiple Linux formats.** No single format covers all Linux users.
+
+---
+
+## Important: 2026 Certificate Validity Changes
+
+Starting **March 1, 2026**, the CA/Browser Forum has reduced the maximum validity period for publicly trusted code signing certificates from **39 months to 460 days** (~15 months). This means:
+
+- More frequent certificate renewals (every ~15 months instead of every 3 years)
+- Major CAs (DigiCert, GlobalSign) have already stopped issuing multi-year certificates as of December 2025
+- Azure Trusted Signing is unaffected because it handles certificate rotation automatically (daily)
+
+This regulatory change further reinforces the advantage of Azure Trusted Signing over traditional certificates for teams that want to minimize certificate management overhead.
+
+---
+
+## Known Issues and Gotchas
+
+### electron-builder + Azure Trusted Signing Race Condition
+
+There is a known race condition ([GitHub issue #9076](https://github.com/electron-userland/electron-builder/issues/9076)) when electron-builder signs multiple files concurrently with Azure Trusted Signing. The signing invocations try to install the Trusted Signing toolchain simultaneously, causing file access conflicts. If you hit this, consider serializing signing operations.
+
+### Linux AppImage on Ubuntu 24.04+
+
+Modern Ubuntu (24.04+) requires `libfuse2` for AppImage:
+
+```bash
+sudo apt install libfuse2
+```
+
+Also, Ubuntu 24.04+ restricts unprivileged user namespaces via AppArmor, which can break Electron's sandbox. Users may need:
+
+```bash
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+```
+
+Or run the app with `--no-sandbox` (not recommended for production).
+
+### Electron Fuses for Security
+
+When distributing signed apps, configure [Electron Fuses](https://www.electronjs.org/docs/latest/tutorial/fuses) at package time (before signing) to harden your app:
+
+```javascript
+// forge.config.js
+const { FusesPlugin } = require("@electron-forge/plugin-fuses");
+const { FuseV1Options, FuseVersion } = require("@electron/fuses");
+
+module.exports = {
+  plugins: [
+    new FusesPlugin({
+      version: FuseVersion.V1,
+      [FuseV1Options.RunAsNode]: false,
+      [FuseV1Options.EnableCookieEncryption]: true,
+      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+      [FuseV1Options.EnableNodeCliInspectArguments]: false,
+      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+      [FuseV1Options.OnlyLoadAppFromAsar]: true,
+    }),
+  ],
+};
+```
+
+---
+
+*For more details, refer to the [electron-builder documentation](https://www.electron.build/) and the [Electron Forge guides](https://www.electronforge.io/).*
