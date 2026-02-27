@@ -3,6 +3,7 @@ import { type StaticImageData } from 'next/image'
 
 import { Container } from '@/components/Container'
 import { ProjectListItem } from '@/components/ProjectListItem'
+import { Box, Text } from '@/components/ui/primitives'
 import chromeLogo from '@/images/logos/icons8-chrome-48.png'
 import electronLogo from '@/images/logos/icons8-electron-48.png'
 import git from '@/images/logos/icons8-git-48.png'
@@ -310,23 +311,25 @@ const projects: Project[] = [
  */
 export default function Projects() {
   return (
-    <main className="mt-16 sm:mt-24 md:mt-32">
+    <Box as="main" mt={16} className="sm:mt-24 md:mt-32">
       <Container>
         {/* Header */}
-        <header className="max-w-3xl">
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-50">
+        <Box as="header" maxW="3xl">
+          <Text as="h1" variant="h1">
             Projects
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-zinc-600 sm:text-xl dark:text-zinc-400">
+          </Text>
+          <Text variant="bodyLarge" color="muted" mt={6}>
             Eliminating unnecessary complexity from web development.
             <br className="hidden sm:block" />
             Tools, libraries, and applications that solve real problems.
-          </p>
-        </header>
+          </Text>
+        </Box>
 
         {/* Project List */}
-        <section
-          className="mt-16 sm:mt-20 md:mt-24"
+        <Box
+          as="section"
+          mt={16}
+          className="sm:mt-20 md:mt-24"
           aria-label="Project list"
         >
           {/* Top border */}
@@ -344,11 +347,11 @@ export default function Projects() {
               index={index}
             />
           ))}
-        </section>
+        </Box>
 
         {/* Icon Credits - Minimal footer */}
-        <section className="mt-16">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500">
+        <Box as="section" mt={16}>
+          <Text as="p" variant="caption" className="text-xs text-zinc-400 dark:text-zinc-500">
             Icons by{' '}
             <a
               href="https://icons8.com"
@@ -358,9 +361,9 @@ export default function Projects() {
             >
               Icons8
             </a>
-          </p>
-          </section>
+          </Text>
+        </Box>
       </Container>
-    </main>
+    </Box>
   )
 }

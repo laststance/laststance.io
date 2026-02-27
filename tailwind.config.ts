@@ -1,6 +1,7 @@
 import typography from '@tailwindcss/typography'
 import tailwindcssAnimate from 'tailwindcss-animate'
 
+import { typography as designTokens } from './src/lib/design-tokens.js'
 import typographyStyles from './typography.js'
 
 /** @type {import('tailwindcss').Config} */
@@ -81,29 +82,29 @@ const config = {
         },
       },
     },
-    // Typography scale - Updated for improved readability
-    // Base increased to 18px, all sizes scaled proportionally
+    // Typography scale — derived from design-tokens.ts (single source of truth)
+    // Responsive 3-step: mobile (default) → tablet (sm:) → desktop (lg:)
     fontSize: {
-      // 12px - Overline, fine print
-      xs: ['0.75rem', { lineHeight: '1.5' }],
-      // 14px - Caption, secondary text (was 13px)
-      sm: ['0.875rem', { lineHeight: '1.5' }],
-      // 16px - Body small (was base)
-      base: ['1rem', { lineHeight: '1.75' }],
-      // 18px - Body default (INCREASED from 16px)
-      lg: ['1.125rem', { lineHeight: '1.75' }],
-      // 20px - Body large, H4
-      xl: ['1.25rem', { lineHeight: '1.75' }],
-      // 24px - H3
-      '2xl': ['1.5rem', { lineHeight: '1.4' }],
-      // 30px - H2
-      '3xl': ['1.875rem', { lineHeight: '1.35' }],
-      // 36px - H1 mobile
-      '4xl': ['2.25rem', { lineHeight: '1.25' }],
-      // 48px - H1 desktop, Display
-      '5xl': ['3rem', { lineHeight: '1.2' }],
-      // 60px - Display large
-      '6xl': ['3.75rem', { lineHeight: '1.1' }],
+      // 12px - Overline mobile
+      xs: [designTokens.overline.mobile, { lineHeight: designTokens.overline.lineHeight }],
+      // 14px - Caption, overline desktop
+      sm: [designTokens.caption.mobile, { lineHeight: designTokens.caption.lineHeight }],
+      // 16px - Body mobile, caption desktop
+      base: [designTokens.body.mobile, { lineHeight: designTokens.body.lineHeight }],
+      // 18px - Body tablet, bodySmall desktop
+      lg: [designTokens.body.tablet, { lineHeight: designTokens.body.lineHeight }],
+      // 20px - Body desktop
+      xl: [designTokens.body.fontSize, { lineHeight: designTokens.body.lineHeight }],
+      // 24px - H3 tablet, H4 desktop
+      '2xl': [designTokens.h4.fontSize, { lineHeight: designTokens.h4.lineHeight }],
+      // 28px - H3 desktop (custom)
+      '3xl': [designTokens.h3.fontSize, { lineHeight: designTokens.h3.lineHeight }],
+      // 36px - H2 desktop, H1 tablet
+      '4xl': [designTokens.h2.fontSize, { lineHeight: designTokens.h2.lineHeight }],
+      // 48px - H1 desktop, Display tablet
+      '5xl': [designTokens.h1.fontSize, { lineHeight: designTokens.h1.lineHeight }],
+      // 60px - Display desktop
+      '6xl': [designTokens.display.fontSize, { lineHeight: designTokens.display.lineHeight }],
       // 72px - Hero
       '7xl': ['4.5rem', { lineHeight: '1.1' }],
       // 96px - Mega

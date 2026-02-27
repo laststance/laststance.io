@@ -1,148 +1,26 @@
 import { type VariantProps, cva } from 'class-variance-authority'
-import { forwardRef } from 'react'
+import {
+  type ComponentPropsWithoutRef,
+  type ElementType,
+  type ReactNode,
+} from 'react'
 
 import { cn } from '@/lib/utils'
+
+import { spacingVariants } from './spacing'
 
 /**
  * Box component style variants using CVA
  *
  * A fundamental layout primitive for consistent spacing.
- * Implements the 8pt grid system for padding and margin.
+ * Spacing variants imported from shared spacing.ts (single source of truth).
  */
 const boxVariants = cva('', {
   variants: {
-    /**
-     * Padding (all sides)
-     */
-    p: {
-      0: 'p-0',
-      1: 'p-1', // 4px
-      2: 'p-2', // 8px
-      3: 'p-3', // 12px
-      4: 'p-4', // 16px
-      5: 'p-5', // 20px
-      6: 'p-6', // 24px
-      8: 'p-8', // 32px
-      10: 'p-10', // 40px
-      12: 'p-12', // 48px
-      16: 'p-16', // 64px
-    },
+    // Shared spacing variants (from spacing.ts)
+    ...spacingVariants,
 
-    /**
-     * Horizontal padding
-     */
-    px: {
-      0: 'px-0',
-      1: 'px-1',
-      2: 'px-2',
-      3: 'px-3',
-      4: 'px-4',
-      5: 'px-5',
-      6: 'px-6',
-      8: 'px-8',
-      10: 'px-10',
-      12: 'px-12',
-      16: 'px-16',
-    },
-
-    /**
-     * Vertical padding
-     */
-    py: {
-      0: 'py-0',
-      1: 'py-1',
-      2: 'py-2',
-      3: 'py-3',
-      4: 'py-4',
-      5: 'py-5',
-      6: 'py-6',
-      8: 'py-8',
-      10: 'py-10',
-      12: 'py-12',
-      16: 'py-16',
-    },
-
-    /**
-     * Margin (all sides)
-     */
-    m: {
-      0: 'm-0',
-      1: 'm-1',
-      2: 'm-2',
-      3: 'm-3',
-      4: 'm-4',
-      5: 'm-5',
-      6: 'm-6',
-      8: 'm-8',
-      10: 'm-10',
-      12: 'm-12',
-      16: 'm-16',
-      auto: 'm-auto',
-    },
-
-    /**
-     * Horizontal margin
-     */
-    mx: {
-      0: 'mx-0',
-      1: 'mx-1',
-      2: 'mx-2',
-      3: 'mx-3',
-      4: 'mx-4',
-      5: 'mx-5',
-      6: 'mx-6',
-      8: 'mx-8',
-      auto: 'mx-auto',
-    },
-
-    /**
-     * Vertical margin
-     */
-    my: {
-      0: 'my-0',
-      1: 'my-1',
-      2: 'my-2',
-      3: 'my-3',
-      4: 'my-4',
-      5: 'my-5',
-      6: 'my-6',
-      8: 'my-8',
-    },
-
-    /**
-     * Top margin
-     */
-    mt: {
-      0: 'mt-0',
-      1: 'mt-1',
-      2: 'mt-2',
-      3: 'mt-3',
-      4: 'mt-4',
-      5: 'mt-5',
-      6: 'mt-6',
-      8: 'mt-8',
-      10: 'mt-10',
-      12: 'mt-12',
-      16: 'mt-16',
-    },
-
-    /**
-     * Bottom margin
-     */
-    mb: {
-      0: 'mb-0',
-      1: 'mb-1',
-      2: 'mb-2',
-      3: 'mb-3',
-      4: 'mb-4',
-      5: 'mb-5',
-      6: 'mb-6',
-      8: 'mb-8',
-    },
-
-    /**
-     * Border radius
-     */
+    /** Border radius */
     rounded: {
       none: 'rounded-none',
       sm: 'rounded-sm', // 4px
@@ -153,9 +31,7 @@ const boxVariants = cva('', {
       full: 'rounded-full',
     },
 
-    /**
-     * Background style
-     */
+    /** Background style */
     bg: {
       transparent: 'bg-transparent',
       primary: 'bg-background',
@@ -164,18 +40,14 @@ const boxVariants = cva('', {
       accent: 'bg-accent',
     },
 
-    /**
-     * Border style
-     */
+    /** Border style */
     border: {
       none: 'border-0',
       default: 'border border-border',
       muted: 'border border-border/50',
     },
 
-    /**
-     * Shadow
-     */
+    /** Shadow */
     shadow: {
       none: 'shadow-none',
       sm: 'shadow-sm',
@@ -184,9 +56,7 @@ const boxVariants = cva('', {
       xl: 'shadow-xl',
     },
 
-    /**
-     * Display
-     */
+    /** Display */
     display: {
       block: 'block',
       inline: 'inline',
@@ -197,9 +67,7 @@ const boxVariants = cva('', {
       hidden: 'hidden',
     },
 
-    /**
-     * Width
-     */
+    /** Width */
     w: {
       auto: 'w-auto',
       full: 'w-full',
@@ -209,9 +77,7 @@ const boxVariants = cva('', {
       fit: 'w-fit',
     },
 
-    /**
-     * Max width
-     */
+    /** Max width */
     maxW: {
       none: 'max-w-none',
       xs: 'max-w-xs',
@@ -234,39 +100,34 @@ const boxVariants = cva('', {
 
 type BoxVariantProps = VariantProps<typeof boxVariants>
 
-type BoxProps = {
-  /**
-   * Override the default element type
-   */
-  as?: React.ElementType
-  /**
-   * Additional CSS classes
-   */
+/**
+ * Own props for the Box component.
+ */
+type BoxOwnProps<T extends ElementType> = {
+  as?: T
   className?: string
-  /**
-   * Children content
-   */
-  children?: React.ReactNode
-} & BoxVariantProps &
-  Omit<React.HTMLAttributes<HTMLElement>, keyof BoxVariantProps>
+  children?: ReactNode
+  // Polymorphic ref requires broad type for compatibility across element types
+  ref?: React.Ref<any>
+} & BoxVariantProps
+
+/**
+ * Full props — merges own props with element-specific native props.
+ */
+type BoxProps<T extends ElementType = 'div'> = BoxOwnProps<T> &
+  Omit<ComponentPropsWithoutRef<T>, keyof BoxOwnProps<T>>
 
 /**
  * Box component for consistent spacing and layout.
  *
  * A fundamental primitive that provides:
- * - Consistent padding/margin based on 8pt grid
+ * - Consistent padding/margin based on 8pt grid (shared with Text)
  * - Background, border, and shadow options
  * - Width constraints
  * - Display options
  *
- * @param p - Padding (all sides)
- * @param px - Horizontal padding
- * @param py - Vertical padding
- * @param m - Margin (all sides)
- * @param mx - Horizontal margin
- * @param my - Vertical margin
- * @param mt - Top margin
- * @param mb - Bottom margin
+ * @param p/px/py - Padding props from shared spacing scale
+ * @param m/mx/my/mt/mb - Margin props from shared spacing scale
  * @param rounded - Border radius
  * @param bg - Background color
  * @param border - Border style
@@ -280,12 +141,6 @@ type BoxProps = {
  * // Card with padding and rounded corners
  * <Box p={6} rounded="xl" bg="elevated" shadow="md">
  *   <Text variant="h3">Card Title</Text>
- *   <Text variant="body" color="muted">Card content</Text>
- * </Box>
- *
- * // Section with vertical margin
- * <Box my={8}>
- *   <SectionContent />
  * </Box>
  *
  * // Constrained content area
@@ -293,61 +148,59 @@ type BoxProps = {
  *   <ArticleContent />
  * </Box>
  */
-export const Box = forwardRef<HTMLDivElement, BoxProps>(
-  (
-    {
-      as: Component = 'div',
-      p,
-      px,
-      py,
-      m,
-      mx,
-      my,
-      mt,
-      mb,
-      rounded,
-      bg,
-      border,
-      shadow,
-      display,
-      w,
-      maxW,
-      className,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <Component
-        ref={ref}
-        className={cn(
-          boxVariants({
-            p,
-            px,
-            py,
-            m,
-            mx,
-            my,
-            mt,
-            mb,
-            rounded,
-            bg,
-            border,
-            shadow,
-            display,
-            w,
-            maxW,
-          }),
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
-)
+export function Box<T extends ElementType = 'div'>({
+  as,
+  p,
+  px,
+  py,
+  m,
+  mx,
+  my,
+  mt,
+  mb,
+  rounded,
+  bg,
+  border,
+  shadow,
+  display,
+  w,
+  maxW,
+  className,
+  children,
+  ref,
+  ...props
+}: BoxProps<T>) {
+  const Component = as ?? 'div'
+
+  return (
+    <Component
+      ref={ref}
+      className={cn(
+        boxVariants({
+          p,
+          px,
+          py,
+          m,
+          mx,
+          my,
+          mt,
+          mb,
+          rounded,
+          bg,
+          border,
+          shadow,
+          display,
+          w,
+          maxW,
+        }),
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
 
 Box.displayName = 'Box'
 

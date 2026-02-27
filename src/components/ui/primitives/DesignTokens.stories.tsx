@@ -27,30 +27,27 @@ const meta: Meta = {
 
 Design tokens are the visual design atoms of the design system. They are named entities that store visual design attributes. We use them in place of hard-coded values to ensure flexibility and consistency.
 
-## Token Categories
+## Token Source of Truth
 
-1. **Typography** - Font sizes, line heights, font weights
-2. **Spacing** - Based on 8pt grid system
-3. **Colors** - Semantic color tokens
-4. **Radii** - Border radius values
-5. **Shadows** - Elevation shadows
+\`\`\`
+src/lib/design-tokens.ts  ← SINGLE SOURCE OF TRUTH
+       │
+       ├──→ tailwind.config.ts  (imports typography, generates fontSize)
+       ├──→ Text.tsx CVA variants (maps to Tailwind classes)
+       └──→ DesignTokens.stories.tsx (imports and visualizes tokens)
+\`\`\`
 
 ## Usage
 
 \`\`\`tsx
-import { typography, spacing, colors } from '@/lib/design-tokens'
-
-// Use tokens directly
-const style = {
-  fontSize: typography.body.fontSize, // '1.125rem'
-  marginBottom: spacing[4], // '1rem'
-}
-
-// Or use the component primitives
+// Preferred: Use component primitives
 import { Text, Box, Stack } from '@/components/ui/primitives'
 
-<Text variant="body">Uses typography.body tokens</Text>
+<Text variant="body">Uses responsive 16px→18px→20px</Text>
 <Box p={4}>Uses spacing[4] for padding</Box>
+
+// Escape hatch: Use tokens directly
+import { typography, spacing } from '@/lib/design-tokens'
 \`\`\`
         `,
       },
@@ -64,7 +61,7 @@ export default meta
 type Story = StoryObj
 
 export const TypographyTokens: Story = {
-  name: 'Typography',
+  name: 'Typography (Responsive 3-Step)',
   render: () => (
     <VStack gap={8}>
       <Box>
@@ -72,8 +69,9 @@ export const TypographyTokens: Story = {
           Typography Scale
         </Text>
         <Text variant="body" color="muted" className="mb-8">
-          Font sizes have been increased for improved readability. Body text is
-          now 18px (up from 16px).
+          Responsive 3-step progression: mobile (default) → tablet (sm: 640px+)
+          → desktop (lg: 1024px+). Desktop body text is 20px for Apple.com-style
+          readability.
         </Text>
       </Box>
 
@@ -84,13 +82,16 @@ export const TypographyTokens: Story = {
               <Text variant="caption">Token</Text>
             </th>
             <th className="py-3 text-left">
-              <Text variant="caption">Size</Text>
+              <Text variant="caption">Mobile</Text>
+            </th>
+            <th className="py-3 text-left">
+              <Text variant="caption">Tablet</Text>
+            </th>
+            <th className="py-3 text-left">
+              <Text variant="caption">Desktop</Text>
             </th>
             <th className="py-3 text-left">
               <Text variant="caption">Line Height</Text>
-            </th>
-            <th className="py-3 text-left">
-              <Text variant="caption">Weight</Text>
             </th>
             <th className="py-3 text-left">
               <Text variant="caption">Example</Text>
@@ -98,40 +99,48 @@ export const TypographyTokens: Story = {
           </tr>
         </thead>
         <tbody>
-          {(Object.entries(typography) as [string, typeof typography.body][]).map(
-            ([name, token]) => (
-              <tr
-                key={name}
-                className="border-b border-zinc-100 dark:border-zinc-800"
-              >
-                <td className="py-4">
-                  <Text variant="code" className="bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-sm">
-                    {name}
-                  </Text>
-                </td>
-                <td className="py-4">
-                  <Text variant="bodySmall">{token.fontSize}</Text>
-                </td>
-                <td className="py-4">
-                  <Text variant="bodySmall">{token.lineHeight}</Text>
-                </td>
-                <td className="py-4">
-                  <Text variant="bodySmall">{token.fontWeight}</Text>
-                </td>
-                <td className="py-4">
-                  <span
-                    style={{
-                      fontSize: token.fontSize,
-                      lineHeight: token.lineHeight,
-                      fontWeight: token.fontWeight,
-                    }}
-                  >
-                    Sample
-                  </span>
-                </td>
-              </tr>
-            )
-          )}
+          {(
+            Object.entries(typography) as [string, typeof typography.body][]
+          ).map(([name, token]) => (
+            <tr
+              key={name}
+              className="border-b border-zinc-100 dark:border-zinc-800"
+            >
+              <td className="py-4">
+                <Text
+                  variant="code"
+                  className="rounded bg-zinc-100 px-2 py-0.5 text-sm dark:bg-zinc-800"
+                >
+                  {name}
+                </Text>
+              </td>
+              <td className="py-4">
+                <Text variant="bodySmall">{token.mobile}</Text>
+              </td>
+              <td className="py-4">
+                <Text variant="bodySmall">{token.tablet}</Text>
+              </td>
+              <td className="py-4">
+                <Text variant="bodySmall" weight="semibold">
+                  {token.fontSize}
+                </Text>
+              </td>
+              <td className="py-4">
+                <Text variant="bodySmall">{token.lineHeight}</Text>
+              </td>
+              <td className="py-4">
+                <span
+                  style={{
+                    fontSize: token.fontSize,
+                    lineHeight: token.lineHeight,
+                    fontWeight: token.fontWeight,
+                  }}
+                >
+                  Sample
+                </span>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Box>
     </VStack>
@@ -155,7 +164,10 @@ export const SpacingTokens: Story = {
         {(Object.entries(spacing) as [string, string][]).map(([key, value]) => (
           <HStack key={key} gap={4} align="center">
             <Box className="w-16">
-              <Text variant="code" className="bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-sm">
+              <Text
+                variant="code"
+                className="rounded bg-zinc-100 px-2 py-0.5 text-sm dark:bg-zinc-800"
+              >
                 {key}
               </Text>
             </Box>
@@ -165,7 +177,7 @@ export const SpacingTokens: Story = {
               </Text>
             </Box>
             <div
-              className="h-4 bg-teal-500 rounded"
+              className="h-4 rounded bg-teal-500"
               style={{ width: value }}
             />
           </HStack>
@@ -198,7 +210,10 @@ export const ColorTokens: Story = {
             ([name, value]) => (
               <HStack key={name} gap={4} align="center">
                 <Box className="w-32">
-                  <Text variant="code" className="bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-xs">
+                  <Text
+                    variant="code"
+                    className="rounded bg-zinc-100 px-2 py-0.5 text-xs dark:bg-zinc-800"
+                  >
                     text.{name}
                   </Text>
                 </Box>
@@ -307,7 +322,7 @@ export const ShadowTokens: Story = {
           ([name, value]) => (
             <VStack key={name} gap={3} align="center">
               <Box
-                className="h-24 w-24 bg-white dark:bg-zinc-800 rounded-xl"
+                className="h-24 w-24 rounded-xl bg-white dark:bg-zinc-800"
                 style={{ boxShadow: value }}
               />
               <Text variant="caption">{name}</Text>
@@ -335,37 +350,45 @@ export const ContrastCheck: Story = {
 
       <HStack gap={6} wrap>
         {/* Light Mode */}
-        <Box p={6} rounded="xl" className="bg-white border border-zinc-200">
+        <Box p={6} rounded="xl" className="border border-zinc-200 bg-white">
           <VStack gap={4}>
-            <Text variant="h4" className="text-zinc-800">
-              Light Mode
+            <Text variant="h4">Light Mode</Text>
+            <Text variant="body" color="default">
+              Default — zinc-900 (primary content)
             </Text>
-            <Text variant="body" className="text-zinc-800">
-              Primary text (zinc-800)
+            <Text variant="body" color="muted">
+              Muted — zinc-600 (secondary content)
             </Text>
-            <Text variant="body" className="text-zinc-600">
-              Secondary text (zinc-600)
+            <Text variant="body" color="accent">
+              Accent — teal-700 (links, highlights)
             </Text>
-            <Text variant="body" className="text-teal-600">
-              Accent text (teal-600)
+            <Text variant="bodySmall" color="muted">
+              Body Small — zinc-600 (fine print)
             </Text>
           </VStack>
         </Box>
 
         {/* Dark Mode */}
-        <Box p={6} rounded="xl" className="bg-zinc-900 border border-zinc-700">
+        <Box
+          p={6}
+          rounded="xl"
+          className="border border-zinc-700 bg-zinc-900"
+        >
           <VStack gap={4}>
-            <Text variant="h4" className="text-zinc-100">
+            <Text variant="h4" className="text-zinc-50">
               Dark Mode
             </Text>
-            <Text variant="body" className="text-zinc-100">
-              Primary text (zinc-100)
+            <Text variant="body" className="text-zinc-50">
+              Default — zinc-50 (primary content)
             </Text>
-            <Text variant="body" className="text-zinc-400">
-              Secondary text (zinc-400)
+            <Text variant="body" className="text-zinc-300">
+              Muted — zinc-300 (secondary, 10:1 ratio)
             </Text>
             <Text variant="body" className="text-teal-400">
-              Accent text (teal-400)
+              Accent — teal-400 (links, highlights)
+            </Text>
+            <Text variant="bodySmall" className="text-zinc-300">
+              Body Small — zinc-300 (fine print)
             </Text>
           </VStack>
         </Box>
@@ -373,10 +396,243 @@ export const ContrastCheck: Story = {
 
       <Box p={4} rounded="lg" bg="secondary" border="muted">
         <Text variant="bodySmall">
-          <strong>Note:</strong> Body text is set to 18px minimum on desktop and
-          16px on mobile to ensure readability. The minimum contrast ratio is
-          4.5:1 for all text.
+          <strong>Note:</strong> Body text is responsive: 16px mobile → 18px
+          tablet → 20px desktop. Dark muted text uses zinc-300 (improved from
+          zinc-400) for 10:1 contrast ratio. Accent uses teal-700 light / teal-400
+          dark for AA compliance.
         </Text>
+      </Box>
+    </VStack>
+  ),
+}
+
+export const MigrationPatterns: Story = {
+  render: () => (
+    <VStack gap={8}>
+      <Box>
+        <Text variant="h2" className="mb-6">
+          Migration Patterns
+        </Text>
+        <Text variant="body" color="muted" className="mb-8">
+          Before/after examples for migrating from raw HTML to design system
+          primitives.
+        </Text>
+      </Box>
+
+      <VStack gap={6}>
+        {/* Pattern 1: Page Title */}
+        <Box p={4} rounded="lg" border="default">
+          <Text variant="h4" className="mb-3">
+            Page Title
+          </Text>
+          <HStack gap={4} wrap>
+            <Box className="flex-1">
+              <Text variant="overline" color="error" className="mb-2">
+                Before
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-red-50 font-mono text-sm dark:bg-red-950"
+              >
+                {`<h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">`}
+              </Box>
+            </Box>
+            <Box className="flex-1">
+              <Text variant="overline" color="success" className="mb-2">
+                After
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-green-50 font-mono text-sm dark:bg-green-950"
+              >
+                {`<Text variant="h1">`}
+              </Box>
+            </Box>
+          </HStack>
+        </Box>
+
+        {/* Pattern 2: Muted Description */}
+        <Box p={4} rounded="lg" border="default">
+          <Text variant="h4" className="mb-3">
+            Muted Description
+          </Text>
+          <HStack gap={4} wrap>
+            <Box className="flex-1">
+              <Text variant="overline" color="error" className="mb-2">
+                Before
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-red-50 font-mono text-sm dark:bg-red-950"
+              >
+                {`<p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">`}
+              </Box>
+            </Box>
+            <Box className="flex-1">
+              <Text variant="overline" color="success" className="mb-2">
+                After
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-green-50 font-mono text-sm dark:bg-green-950"
+              >
+                {`<Text variant="body" color="muted" mt={6}>`}
+              </Box>
+            </Box>
+          </HStack>
+        </Box>
+
+        {/* Pattern 3: Layout Container */}
+        <Box p={4} rounded="lg" border="default">
+          <Text variant="h4" className="mb-3">
+            Layout Container
+          </Text>
+          <HStack gap={4} wrap>
+            <Box className="flex-1">
+              <Text variant="overline" color="error" className="mb-2">
+                Before
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-red-50 font-mono text-sm dark:bg-red-950"
+              >
+                {`<div className="mt-16 sm:mt-20">`}
+              </Box>
+            </Box>
+            <Box className="flex-1">
+              <Text variant="overline" color="success" className="mb-2">
+                After
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-green-50 font-mono text-sm dark:bg-green-950"
+              >
+                {`<Box mt={16}>`}
+              </Box>
+            </Box>
+          </HStack>
+        </Box>
+
+        {/* Pattern 4: Flex Layout */}
+        <Box p={4} rounded="lg" border="default">
+          <Text variant="h4" className="mb-3">
+            Flex Layout
+          </Text>
+          <HStack gap={4} wrap>
+            <Box className="flex-1">
+              <Text variant="overline" color="error" className="mb-2">
+                Before
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-red-50 font-mono text-sm dark:bg-red-950"
+              >
+                {`<div className="flex flex-wrap gap-6 items-center">`}
+              </Box>
+            </Box>
+            <Box className="flex-1">
+              <Text variant="overline" color="success" className="mb-2">
+                After
+              </Text>
+              <Box
+                p={3}
+                rounded="md"
+                className="bg-green-50 font-mono text-sm dark:bg-green-950"
+              >
+                {`<HStack gap={6} wrap align="center">`}
+              </Box>
+            </Box>
+          </HStack>
+        </Box>
+      </VStack>
+    </VStack>
+  ),
+}
+
+export const SpacingApplications: Story = {
+  render: () => (
+    <VStack gap={8}>
+      <Box>
+        <Text variant="h2" className="mb-6">
+          Spacing Applications
+        </Text>
+        <Text variant="body" color="muted" className="mb-8">
+          Real layout patterns using the 8pt grid spacing system.
+        </Text>
+      </Box>
+
+      {/* Section Layout */}
+      <Box border="default" rounded="xl" p={6}>
+        <Text variant="h4" className="mb-4">
+          Section Layout
+        </Text>
+        <Box
+          className="border-2 border-dashed border-teal-500/30"
+          mt={16}
+          p={6}
+        >
+          <Text variant="overline" color="accent">
+            mt-16 (64px) — Section spacing
+          </Text>
+          <Text variant="h2" className="mt-4">
+            Section Title
+          </Text>
+          <Text variant="body" color="muted" mt={6}>
+            p-6 (24px) — Card padding
+          </Text>
+        </Box>
+      </Box>
+
+      {/* Card Layout */}
+      <Box border="default" rounded="xl" p={6}>
+        <Text variant="h4" className="mb-4">
+          Card Pattern
+        </Text>
+        <Box
+          p={6}
+          rounded="xl"
+          bg="elevated"
+          shadow="md"
+          border="muted"
+          maxW="md"
+        >
+          <Text variant="overline" color="accent">
+            Featured Project
+          </Text>
+          <Text variant="h3" mt={2}>
+            Project Name
+          </Text>
+          <Text variant="body" color="muted" mt={2}>
+            gap-4 between items, p-6 card padding
+          </Text>
+          <Text variant="caption" color="muted" mt={3}>
+            Updated 3 days ago
+          </Text>
+        </Box>
+      </Box>
+
+      {/* List Layout */}
+      <Box border="default" rounded="xl" p={6}>
+        <Text variant="h4" className="mb-4">
+          List Pattern
+        </Text>
+        <VStack gap={4}>
+          {['Item One', 'Item Two', 'Item Three'].map((item) => (
+            <Box key={item} p={4} rounded="lg" border="muted">
+              <Text variant="body">{item}</Text>
+              <Text variant="bodySmall" color="muted" mt={1}>
+                gap-4 (16px) between items
+              </Text>
+            </Box>
+          ))}
+        </VStack>
       </Box>
     </VStack>
   ),

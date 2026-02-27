@@ -119,8 +119,8 @@ export default function typographyStyles({ theme }) {
           margin: 0,
         },
         h2: {
-          fontSize: theme('fontSize.3xl')[0],
-          lineHeight: theme('lineHeight.7'),
+          fontSize: '2.25rem', // 36px — matches design-tokens h2 desktop
+          lineHeight: '1.2',
           marginBottom: theme('spacing.8'),
           marginTop: theme('spacing.10'),
           fontWeight: theme('fontWeight.bold'),
@@ -131,8 +131,8 @@ export default function typographyStyles({ theme }) {
           color: 'var(--tw-prose-headings)',
         },
         h3: {
-          fontSize: theme('fontSize.base')[0],
-          lineHeight: theme('lineHeight.7'),
+          fontSize: '1.75rem', // 28px — matches design-tokens h3 desktop
+          lineHeight: '1.3',
           marginBottom: theme('spacing.4'),
           marginTop: theme('spacing.16'),
           fontWeight: theme('fontWeight.semibold'),
@@ -158,7 +158,7 @@ export default function typographyStyles({ theme }) {
           marginBottom: theme('spacing.3'),
           marginTop: theme('spacing.3'),
           paddingLeft: theme('spacing[3.5]'),
-          fontSize: '1rem', // 16px
+          fontSize: '1.25rem', // 20px — match body
         },
         'li :is(li, p)': {
           marginBottom: theme('spacing.2'),
@@ -177,8 +177,10 @@ export default function typographyStyles({ theme }) {
           marginTop: theme('spacing.1'),
           marginBottom: theme('spacing.2'),
         },
-        // Improved line height for better readability (1.6 for body text)
+        // Improved line height for better readability
         lineHeight: '1.6',
+        // Minimum font size for comfortable reading on desktop
+        fontSize: '1.25rem', // 20px (matches design-tokens body desktop)
         // Maximum width for optimal reading (60-75 characters)
         maxWidth: '65ch',
         ol: {
@@ -190,23 +192,24 @@ export default function typographyStyles({ theme }) {
         p: {
           marginBottom: theme('spacing.5'),
           marginTop: theme('spacing.5'),
-          // Minimum font size for comfortable reading
-          fontSize: '1.125rem', // 18px
-        },
-        // First paragraph and paragraphs immediately after h2 headings
-        '> p:first-child, h2 + p': {
+          // Body text size matching design-tokens body desktop
           fontSize: '1.25rem', // 20px
         },
+        // Lead paragraphs — first paragraph and paragraphs after h2
+        '> p:first-child, h2 + p': {
+          fontSize: '1.375rem', // 22px (bodyLarge)
+        },
 
-        // Code blocks
+        // Code blocks — line-height 1.45 for vertical code scanning
         pre: {
           backgroundColor: 'var(--tw-prose-pre-bg)',
           border: '1px solid',
           borderColor: 'var(--tw-prose-pre-border)',
           borderRadius: theme('borderRadius.3xl'),
           color: 'var(--tw-prose-pre-code)',
-          fontSize: theme('fontSize.sm')[0],
+          fontSize: '1rem', // 16px — slightly smaller than body for code blocks
           fontWeight: theme('fontWeight.medium'),
+          lineHeight: '1.45',
           overflowX: 'auto',
           padding: theme('spacing.8'),
         },

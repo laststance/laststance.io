@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { Text } from '@/components/ui/primitives'
 import { cn } from '@/lib/utils'
 
 /**
@@ -119,28 +120,27 @@ export function ProjectListItem({
             </div>
 
             {/* Project Name */}
-            <h2
-              className={cn(
-                'text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl',
-                'text-zinc-900 dark:text-zinc-50'
-              )}
+            <Text
+              as="h2"
+              variant="h3"
+              className="text-zinc-900 dark:text-zinc-50"
             >
               {name}
-            </h2>
+            </Text>
           </div>
 
           {/* Right: Category + Arrow */}
           <div className="flex shrink-0 items-center gap-3 sm:gap-6">
             {/* Category Label */}
-            <span
-              className={cn(
-                'hidden text-sm font-medium sm:block',
-                'uppercase tracking-wider',
-                'text-zinc-400 dark:text-zinc-500'
-              )}
+            <Text
+              as="span"
+              variant="caption"
+              color="muted"
+              transform="uppercase"
+              className="hidden sm:block text-zinc-400 dark:text-zinc-500"
             >
               {category}
-            </span>
+            </Text>
 
             {/* Arrow Icon with Motion spring animation */}
             <motion.svg
@@ -183,25 +183,19 @@ export function ProjectListItem({
         >
           <div className="pt-6 pl-16 sm:pl-[72px]">
             {/* Mobile category */}
-            <span
-              className={cn(
-                'mb-2 block text-xs font-medium sm:hidden',
-                'uppercase tracking-wider',
-                'text-zinc-400 dark:text-zinc-500'
-              )}
+            <Text
+              as="span"
+              variant="overline"
+              color="muted"
+              className="mb-2 block sm:hidden text-zinc-400 dark:text-zinc-500"
             >
               {category}
-            </span>
+            </Text>
 
             {/* Description */}
-            <p
-              className={cn(
-                'max-w-2xl text-base leading-relaxed',
-                'text-zinc-600 dark:text-zinc-400'
-              )}
-            >
+            <Text variant="body" color="muted" className="max-w-2xl">
               {description}
-            </p>
+            </Text>
           </div>
         </motion.div>
       </Link>

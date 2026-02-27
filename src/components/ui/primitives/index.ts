@@ -28,3 +28,4 @@ export {
   type StackVariantProps,
 } from './Stack'
 export { Box, boxVariants, type BoxVariantProps } from './Box'
+export { spacingVariants, type SpacingVariants } from './spacing'
