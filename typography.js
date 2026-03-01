@@ -158,7 +158,7 @@ export default function typographyStyles({ theme }) {
           marginBottom: theme('spacing.3'),
           marginTop: theme('spacing.3'),
           paddingLeft: theme('spacing[3.5]'),
-          fontSize: '1.25rem', // 20px — match body
+          fontSize: 'inherit', // Responsive — inherits from prose base
         },
         'li :is(li, p)': {
           marginBottom: theme('spacing.2'),
@@ -179,8 +179,14 @@ export default function typographyStyles({ theme }) {
         },
         // Improved line height for better readability
         lineHeight: '1.6',
-        // Minimum font size for comfortable reading on desktop
-        fontSize: '1.25rem', // 20px (matches design-tokens body desktop)
+        // Responsive body size: mobile 16px → tablet 18px → desktop 20px
+        fontSize: '1rem',
+        '@media (min-width: 768px)': {
+          fontSize: '1.125rem',
+        },
+        '@media (min-width: 1024px)': {
+          fontSize: '1.25rem',
+        },
         // Maximum width for optimal reading (60-75 characters)
         maxWidth: '65ch',
         ol: {
@@ -192,12 +198,19 @@ export default function typographyStyles({ theme }) {
         p: {
           marginBottom: theme('spacing.5'),
           marginTop: theme('spacing.5'),
-          // Body text size matching design-tokens body desktop
-          fontSize: '1.25rem', // 20px
+          // Inherit responsive prose body size
+          fontSize: 'inherit',
         },
         // Lead paragraphs — first paragraph and paragraphs after h2
+        // Responsive: mobile 18px → tablet 20px → desktop 22px
         '> p:first-child, h2 + p': {
-          fontSize: '1.375rem', // 22px (bodyLarge)
+          fontSize: '1.125rem',
+          '@media (min-width: 768px)': {
+            fontSize: '1.25rem',
+          },
+          '@media (min-width: 1024px)': {
+            fontSize: '1.375rem',
+          },
         },
 
         // Code blocks — line-height 1.45 for vertical code scanning
