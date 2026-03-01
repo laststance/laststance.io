@@ -15,17 +15,21 @@
 // =============================================================================
 
 /**
- * Typography scale based on 1.25 ratio (Major Third)
- * Base size: 18px for improved readability
+ * Typography scale — Responsive 3-step progression (mobile → tablet → desktop)
+ * Desktop base: 20px body for Apple.com-style readability
+ * Mobile base: 16px for 40+ chars/line on small screens
  *
  * @example
- * typography.body.fontSize // '1.125rem' (18px)
- * typography.h1.fontSize // '2.5rem' (40px)
+ * typography.body.fontSize // Desktop size: '1.25rem' (20px)
+ * typography.body.mobile   // Mobile size:  '1rem' (16px)
+ * typography.h1.fontSize   // Desktop size: '3rem' (48px)
  */
 export const typography = {
   // Display headings (for hero sections)
   display: {
-    fontSize: '3rem', // 48px
+    fontSize: '3.75rem', // 60px desktop
+    tablet: '3rem', // 48px tablet
+    mobile: '2.25rem', // 36px mobile
     lineHeight: '1.1',
     fontWeight: '800',
     letterSpacing: '-0.025em',
@@ -33,63 +37,79 @@ export const typography = {
 
   // Heading 1 - Page titles
   h1: {
-    fontSize: '2.5rem', // 40px (was 2rem/32px - increased)
-    lineHeight: '1.2',
+    fontSize: '3rem', // 48px desktop
+    tablet: '2.25rem', // 36px tablet
+    mobile: '1.875rem', // 30px mobile
+    lineHeight: '1.15',
     fontWeight: '700',
     letterSpacing: '-0.02em',
   },
 
   // Heading 2 - Section titles
   h2: {
-    fontSize: '2rem', // 32px (was 1.5rem/24px - increased)
-    lineHeight: '1.25',
+    fontSize: '2.25rem', // 36px desktop
+    tablet: '1.875rem', // 30px tablet
+    mobile: '1.5rem', // 24px mobile
+    lineHeight: '1.2',
     fontWeight: '600',
     letterSpacing: '-0.015em',
   },
 
   // Heading 3 - Subsection titles
   h3: {
-    fontSize: '1.5rem', // 24px (was 1.25rem/20px - increased)
-    lineHeight: '1.35',
+    fontSize: '1.75rem', // 28px desktop
+    tablet: '1.5rem', // 24px tablet
+    mobile: '1.25rem', // 20px mobile
+    lineHeight: '1.3',
     fontWeight: '600',
     letterSpacing: '-0.01em',
   },
 
   // Heading 4 - Card/component titles
   h4: {
-    fontSize: '1.25rem', // 20px (was 1.125rem/18px - increased)
-    lineHeight: '1.4',
+    fontSize: '1.5rem', // 24px desktop
+    tablet: '1.25rem', // 20px tablet
+    mobile: '1.125rem', // 18px mobile
+    lineHeight: '1.3',
     fontWeight: '600',
     letterSpacing: '-0.005em',
   },
 
-  // Body large - For emphasized content
+  // Body large - Lead paragraphs, emphasized content
   bodyLarge: {
-    fontSize: '1.25rem', // 20px
-    lineHeight: '1.7',
+    fontSize: '1.375rem', // 22px desktop
+    tablet: '1.25rem', // 20px tablet
+    mobile: '1.125rem', // 18px mobile
+    lineHeight: '1.6',
     fontWeight: '400',
     letterSpacing: '0',
   },
 
-  // Body - Default text (INCREASED from 16px to 18px)
+  // Body - Default text (responsive: 16px → 18px → 20px)
   body: {
-    fontSize: '1.125rem', // 18px (was 1rem/16px)
-    lineHeight: '1.75',
+    fontSize: '1.25rem', // 20px desktop
+    tablet: '1.125rem', // 18px tablet
+    mobile: '1rem', // 16px mobile
+    lineHeight: '1.6',
     fontWeight: '400',
     letterSpacing: '0',
   },
 
   // Body small - Secondary content
   bodySmall: {
-    fontSize: '1rem', // 16px (was 0.875rem/14px)
+    fontSize: '1.125rem', // 18px desktop
+    tablet: '1rem', // 16px tablet
+    mobile: '0.875rem', // 14px mobile
     lineHeight: '1.6',
     fontWeight: '400',
     letterSpacing: '0',
   },
 
-  // Caption - Labels, meta info (INCREASED from 13px to 14px)
+  // Caption - Labels, meta info
   caption: {
-    fontSize: '0.875rem', // 14px (was 0.8125rem/13px)
+    fontSize: '1rem', // 16px desktop
+    tablet: '0.875rem', // 14px tablet
+    mobile: '0.875rem', // 14px mobile
     lineHeight: '1.5',
     fontWeight: '500',
     letterSpacing: '0.01em',
@@ -97,17 +117,21 @@ export const typography = {
 
   // Overline - Category labels, eyebrow text
   overline: {
-    fontSize: '0.75rem', // 12px
+    fontSize: '0.875rem', // 14px desktop
+    tablet: '0.75rem', // 12px tablet
+    mobile: '0.75rem', // 12px mobile
     lineHeight: '1.5',
     fontWeight: '600',
     letterSpacing: '0.08em',
     textTransform: 'uppercase' as const,
   },
 
-  // Code - Monospace text
+  // Code - Monospace text (line-height 1.45 for vertical code scanning)
   code: {
-    fontSize: '0.9375rem', // 15px
-    lineHeight: '1.6',
+    fontSize: '1.125rem', // 18px desktop
+    tablet: '1rem', // 16px tablet
+    mobile: '0.875rem', // 14px mobile
+    lineHeight: '1.45',
     fontWeight: '400',
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   },

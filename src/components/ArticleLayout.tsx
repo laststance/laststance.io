@@ -1,5 +1,6 @@
 import { Container } from '@/components/Container'
 import { Prose } from '@/components/Prose'
+import { Text } from '@/components/ui/primitives'
 import { type ArticleWithSlug } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
 
@@ -30,9 +31,9 @@ export function ArticleLayout({
           {/* )} */}
           <article>
             <header className="flex flex-col">
-              <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
+              <Text as="h1" variant="h1" mt={6}>
                 {article.title}
-              </h1>
+              </Text>
               <time
                 dateTime={article.date}
                 className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"

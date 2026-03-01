@@ -1,838 +1,191 @@
-import {
-  Meta,
-  Canvas,
-  ColorPalette,
-  ColorItem,
-  Typeset,
-} from '@storybook/addon-docs/blocks'
-import { Button } from './Button'
-import { Card, CardTitle, CardDescription, CardEyebrow, CardCta } from './Card'
-import { Button as UIButton } from './ui/button'
+import { Meta } from '@storybook/addon-docs/blocks'
+import { Text } from './ui/primitives/Text'
+import { Box } from './ui/primitives/Box'
+import { VStack } from './ui/primitives/Stack'
 
 <Meta title="Design System/Overview" />
 
 # Design System
 
-This design system provides a comprehensive set of design tokens, components, and guidelines for building consistent user interfaces.
-
-## Colors
-
-Our color palette is built with CSS custom properties for seamless light and dark mode support.
-
-### shadcn/ui CSS Variables
-
-Complete set of CSS variables used in the shadcn/ui components with their color visualizations.
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-  }}
->
-  <div
-    style={{
-      background: 'hsl(0 0% 100%)',
-      padding: '1rem',
-      border: '1px solid hsl(var(--border))',
-      borderRadius: '0.5rem',
-    }}
-  >
-    <div style={{ color: 'hsl(240 10% 3.9%)' }}>
-      <strong>Background</strong>
-      <br />
-      <code>hsl(var(--background))</code>
-      <br />
-      <small>Primary background color</small>
-    </div>
-  </div>
-
-<div
-  style={{
-    background: 'hsl(240 10% 3.9%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(0 0% 100%)' }}>
-    <strong>Foreground</strong>
-    <br />
-    <code>hsl(var(--foreground))</code>
-    <br />
-    <small>Primary text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(0 0% 100%)',
-    padding: '1rem',
-    border: 'px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 10% 3.9%)' }}>
-    <strong>Card</strong>
-    <br />
-    <code>hsl(var(--card))</code>
-    <br />
-    <small>Card background color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 10% 3.9%)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(0 0% 98%)' }}>
-    <strong>Card Foreground</strong>
-    <br />
-    <code>hsl(var(--card-foreground))</code>
-    <br />
-    <small>Card text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(0 0% 100%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 10% 3.9%)' }}>
-    <strong>Popover</strong>
-    <br />
-    <code>hsl(var(--popover))</code>
-    <br />
-    <small>Popover background color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 10% 3.9%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(0 0% 100%)' }}>
-    <strong>Popover Foreground</strong>
-    <br />
-    <code>hsl(var(--popover-foreground))</code>
-    <br />
-    <small>Popover text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 5.9% 10%)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 4.8% 95.9)' }}>
-    <strong>Primary</strong>
-    <br />
-    <code>hsl(var(--primary))</code>
-    <br />
-    <small>Primary brand color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(0 0% 98%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 5.9% 10%)' }}>
-    <strong>Primary Foreground</strong>
-    <br />
-    <code>hsl(var(--primary-foreground))</code>
-    <br />
-    <small>Primary text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 4.8% 95.9%)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 5.9% 10%)' }}>
-    <strong>Secondary</strong>
-    <br />
-    <code>hsl(var(--secondary))</code>
-    <br />
-    <small>Secondary color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 5.9% 10%)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 4.8% 95.9%)' }}>
-    <strong>Secondary Foreground</strong>
-    <br />
-    <code>hsl(var(--secondary-foreground))</code>
-    <br />
-    <small>Secondary text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 4.8% 95.9%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 3.8% 46.1%)' }}>
-    <strong>Muted</strong>
-    <br />
-    <code>hsl(var(--muted))</code>
-    <br />
-    <small>Muted background color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 3.8% 46.1%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 4.8% 95.9%)' }}>
-    <strong>Muted Foreground</strong>
-    <br />
-    <code>hsl(var(--muted-foreground))</code>
-    <br />
-    <small>Muted text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 4.8% 95.9)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 5.9% 10%)' }}>
-    <strong>Accent</strong>
-    <br />
-    <code>hsl(var(--accent))</code>
-    <br />
-    <small>Accent background color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 5.9% 10%)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 4.8% 95.9)' }}>
-    <strong>Accent Foreground</strong>
-    <br />
-    <code>hsl(var(--accent-foreground))</code>
-    <br />
-    <small>Accent text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(0 84.2% 60.2%)',
-    padding: '1rem',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(0 0% 98%)' }}>
-    <strong>Destructive</strong>
-    <br />
-    <code>hsl(var(--destructive))</code>
-    <br />
-    <small>Error/destructive color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(0 0% 98%)',
-    padding: '1rem',
-    border: '1px solid hsl(240 5.9% 90%)',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(0 84.2% 60.2%)' }}>
-    <strong>Destructive Foreground</strong>
-    <br />
-    <code>hsl(var(--destructive-foreground))</code>
-    <br />
-    <small>Destructive text color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 5.9% 90%)',
-    padding: '1rem',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 5.9% 10%)' }}>
-    <strong>Border</strong>
-    <br />
-    <code>hsl(var(--border))</code>
-    <br />
-    <small>Default border color</small>
-  </div>
-</div>
-
-<div
-  style={{
-    background: 'hsl(240 5.9% 90%)',
-    padding: '1rem',
-    borderRadius: '0.5rem',
-  }}
->
-  <div style={{ color: 'hsl(240 10% 3.9%)' }}>
-    <strong>Input</strong>
-    <br />
-    <code>hsl(var(--input))</code>
-    <br />
-    <small>Input background color</small>
-  </div>
-</div>
-
-  <div
-    style={{
-      background: 'hsl(240 10% 3.9%)',
-      padding: '1rem',
-      borderRadius: '0.5rem',
-    }}
-  >
-    <div style={{ color: 'white' }}>
-      <strong>Ring</strong>
-      <br />
-      <code>hsl(var(--ring))</code>
-      <br />
-      <small>Focus ring color</small>
-    </div>
-  </div>
-</div>
-
-### Brand Colors
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-  }}
->
-  <div
-    style={{ background: '#14b8a6', padding: '1rem', borderRadius: '0.5rem' }}
-  >
-    <div style={{ color: 'white' }}>
-      <strong>Teal 500</strong>
-      <br />
-      <code>#14b8a6</code>
-      <br />
-      <small>Primary accent</small>
-    </div>
-  </div>
-
-<div style={{ background: '#0d9488', padding: '1rem', borderRadius: '0.5rem' }}>
-  <div style={{ color: 'white' }}>
-    <strong>Teal 600</strong>
-    <br />
-    <code>#0d9488</code>
-    <br />
-    <small>Accent hover</small>
-  </div>
-</div>
-
-  <div
-    style={{ background: '#5eead4', padding: '1rem', borderRadius: '0.5rem' }}
-  >
-    <div style={{ color: '#0f172a' }}>
-      <strong>Teal 400</strong>
-      <br />
-      <code>#5eead4</code>
-      <br />
-      <small>Dark mode accent</small>
-    </div>
-  </div>
-</div>
-
-## Typography
-
-Our typography scale provides a harmonious set of font sizes with corresponding line heights.
-
-### Font Scale
-
-<div style={{ marginBottom: '2rem' }}>
-  <div
-    style={{
-      fontSize: '0.8125rem',
-      lineHeight: '1.5rem',
-      marginBottom: '1rem',
-      padding: '0.5rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-    }}
-  >
-    <strong>XS</strong> - 0.8125rem / 1.5rem line-height
-    <br />
-    <span>The quick brown fox jumps over the lazy dog</span>
-  </div>
-
-<div
-  style={{
-    fontSize: '0.875rem',
-    lineHeight: '1.5rem',
-    marginBottom: '1rem',
-    padding: '0.5rem',
-    background: 'hsl(var(--muted))',
-    borderRadius: '0.25rem',
-  }}
->
-  <strong>SM</strong> - 0.875rem / 1.5rem line-height
-  <br />
-  <span>The quick brown fox jumps over the lazy dog</span>
-</div>
-
-<div
-  style={{
-    fontSize: '1rem',
-    lineHeight: '1.75rem',
-    marginBottom: '1rem',
-    padding: '0.5rem',
-    background: 'hsl(var(--muted))',
-    borderRadius: '0.25rem',
-  }}
->
-  <strong>Base</strong> - 1rem / 1.75rem line-height
-  <br />
-  <span>The quick brown fox jumps over the lazy dog</span>
-</div>
-
-<div
-  style={{
-    fontSize: '1.125rem',
-    lineHeight: '1.75rem',
-    marginBottom: '1rem',
-    padding: '0.5rem',
-    background: 'hsl(var(--muted))',
-    borderRadius: '0.25rem',
-  }}
->
-  <strong>LG</strong> - 1.125rem / 1.75rem line-height
-  <br />
-  <span>The quick brown fox jumps over the lazy dog</span>
-</div>
-
-<div
-  style={{
-    fontSize: '1.25rem',
-    lineHeight: '2rem',
-    marginBottom: '1rem',
-    padding: '0.5rem',
-    background: 'hsl(var(--muted))',
-    borderRadius: '0.25rem',
-  }}
->
-  <strong>XL</strong> - 1.25rem / 2rem line-height
-  <br />
-  <span>The quick brown fox jumps over the lazy dog</span>
-</div>
-
-<div
-  style={{
-    fontSize: '1.5rem',
-    lineHeight: '2rem',
-    marginBottom: '1rem',
-    padding: '0.5rem',
-    background: 'hsl(var(--muted))',
-    borderRadius: '0.25rem',
-  }}
->
-  <strong>2XL</strong> - 1.5rem / 2rem line-height
-  <br />
-  <span>The quick brown fox jumps over the lazy dog</span>
-</div>
-
-  <div
-    style={{
-      fontSize: '1.875rem',
-      lineHeight: '2.25rem',
-      marginBottom: '1rem',
-      padding: '0.5rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-    }}
-  >
-    <strong>3XL</strong> - 1.875rem / 2.25rem line-height
-    <br />
-    <span>The quick brown fox jumps over the lazy dog</span>
-  </div>
-</div>
-
-## Spacing Scale
-
-Our spacing system follows a consistent scale for margins, padding, and positioning.
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-  }}
->
-  {[0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24].map((size) => (
-    <div key={size} style={{ textAlign: 'center' }}>
-      <div
-        style={{
-          height: `${size * 0.25}rem`,
-          backgroundColor: '#14b8a6',
-          marginBottom: '0.5rem',
-          borderRadius: '0.125rem',
-        }}
-      />
-      <div
-        style={{ fontSize: '0.875rem', color: 'hsl(var(--muted-foreground))' }}
-      >
-        <strong>{size}</strong>
-        <br />
-        {size * 0.25}rem
-      </div>
-    </div>
-  ))}
-</div>
-
-## Border Radius
-
-Our border radius system creates consistent rounded corners throughout the interface.
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-  }}
->
-  <div style={{ textAlign: 'center' }}>
-    <div
-      style={{
-        width: '60px',
-        height: '60px',
-        backgroundColor: '#14b8a6',
-        borderRadius: 'calc(var(--radius) - 4px)',
-        margin: '0 auto 0.5rem',
-      }}
-    />
-    <div>
-      <strong>SM</strong>
-      <br />
-      <code>calc(var(--radius) - 4px)</code>
-    </div>
-  </div>
-
-<div style={{ textAlign: 'center' }}>
-  <div
-    style={{
-      width: '60px',
-      height: '60px',
-      backgroundColor: '#14b8a6',
-      borderRadius: 'calc(var(--radius) - 2px)',
-      margin: '0 auto 0.5rem',
-    }}
-  />
-  <div>
-    <strong>MD</strong>
-    <br />
-    <code>calc(var(--radius) - 2px)</code>
-  </div>
-</div>
-
-  <div style={{ textAlign: 'center' }}>
-    <div
-      style={{
-        width: '60px',
-        height: '60px',
-        backgroundColor: '#14b8a6',
-        borderRadius: 'var(--radius)',
-        margin: '0 auto 0.5rem',
-      }}
-    />
-    <div>
-      <strong>LG</strong>
-      <br />
-      <code>var(--radius)</code>
-      <br />
-      <small>0.5rem</small>
-    </div>
-  </div>
-</div>
-
-## Breakpoints
-
-Our responsive breakpoint system ensures consistent behavior across devices.
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '0.5rem',
-    marginBottom: '2rem',
-  }}
->
-  <div
-    style={{
-      padding: '1rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-  >
-    <strong>xs</strong>
-    <code>390px</code>
-  </div>
-  <div
-    style={{
-      padding: '1rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-  >
-    <strong>sm</strong>
-    <code>640px</code>
-  </div>
-  <div
-    style={{
-      padding: '1rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-  >
-    <strong>md</strong>
-    <code>768px</code>
-  </div>
-  <div
-    style={{
-      padding: '1rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-  >
-    <strong>lg</strong>
-    <code>1024px</code>
-  </div>
-  <div
-    style={{
-      padding: '1rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-  >
-    <strong>xl</strong>
-    <code>1280px</code>
-  </div>
-  <div
-    style={{
-      padding: '1rem',
-      background: 'hsl(var(--muted))',
-      borderRadius: '0.25rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-  >
-    <strong>2xl</strong>
-    <code>1536px</code>
-  </div>
-</div>
-
-## Shadows & Effects
-
-Subtle shadows and effects enhance visual hierarchy and depth.
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-  }}
->
-  <div
-    style={{
-      padding: '1.5rem',
-      background: 'hsl(var(--card))',
-      borderRadius: '0.5rem',
-      boxShadow:
-        '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-      textAlign: 'center',
-    }}
-  >
-    <strong>Card Shadow</strong>
-    <br />
-    <small>Subtle elevation</small>
-  </div>
-
-  <div
-    style={{
-      padding: '1.5rem',
-      background: 'hsl(var(--card))',
-      borderRadius: '0.5rem',
-      boxShadow:
-        '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-      textAlign: 'center',
-    }}
-  >
-    <strong>Hover Shadow</strong>
-    <br />
-    <small>Interactive elevation</small>
-  </div>
-</div>
-
-## Component Examples
-
-### Buttons
-
-<div
-  style={{
-    display: 'flex',
-    gap: '1rem',
-    marginBottom: '2rem',
-    flexWrap: 'wrap',
-  }}
->
-  <Button variant="primary">Primary Button</Button>
-  <Button variant="secondary">Secondary Button</Button>
-  <UIButton variant="default">UI Default</UIButton>
-  <UIButton variant="secondary">UI Secondary</UIButton>
-  <UIButton variant="outline">Outline</UIButton>
-  <UIButton variant="ghost">Ghost</UIButton>
-  <UIButton variant="destructive">Destructive</UIButton>
-</div>
-
-### Cards
-
-<div
-  style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem',
-  }}
->
-  <Card className="p-6">
-    <CardEyebrow>March 16, 2024</CardEyebrow>
-    <CardTitle>Example Card</CardTitle>
-    <CardDescription>
-      This is an example card component showing how our design system components
-      work together.
-    </CardDescription>
-    <CardCta>Read more</CardCta>
-  </Card>
-
-  <Card className="p-6">
-    <CardEyebrow decorate>Featured</CardEyebrow>
-    <CardTitle>Decorated Card</CardTitle>
-    <CardDescription>
-      This card showcases the decorated eyebrow variant with a visual indicator.
-    </CardDescription>
-    <CardCta>Learn more</CardCta>
-  </Card>
-</div>
-
-## Usage Guidelines
-
-### Color Usage
-
-- Use semantic color tokens for consistent theming
-- Primary colors for main actions and brand elements
-- Muted colors for secondary content and backgrounds
-- Destructive colors only for error states and dangerous actions
-
-### Typography Guidelines
-
-- Use the base size (1rem) for body text
-- Headings should use larger sizes (xl, 2xl, 3xl)
-- Small text (sm, xs) for metadata and captions
-- Maintain consistent line heights for readability
-
-### Spacing Consistency
-
-- Use multiples of 4px (spacing scale) for consistent rhythm
-- Apply spacing systematically: 4px, 8px, 12px, 16px, 24px, 32px
-- Maintain consistent margins and padding across components
-
-### Responsive Design
-
-- Mobile-first approach using our breakpoint system
-- Test components across all breakpoints
-- Ensure touch targets are at least 44px for mobile devices
-
-## Dark Mode Support
-
-All design tokens automatically adapt to dark mode using CSS custom properties. The system seamlessly switches between light and dark themes while maintaining contrast ratios and accessibility standards.
-
-```css
-/* Light mode (default) */
-:root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
-  /* ... */
-}
-
-/* Dark mode */
-.dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  /* ... */
-}
+Laststance.io's design system provides consistent typography, spacing, and layout primitives. Built on design tokens, Tailwind CSS, and CVA.
+
+## Quick Start (3 minutes)
+
+### 1. Import Primitives
+
+```tsx
+import { Text, Box, Stack, HStack, VStack } from '@/components/ui/primitives'
+```
+
+### 2. Use Text for All Typography
+
+```tsx
+// Page title → renders as <h1>
+<Text variant="h1">Welcome</Text>
+
+// Muted description with spacing
+<Text variant="body" color="muted" mt={6}>
+  Description text here.
+</Text>
+
+// Category label
+<Text variant="overline" color="accent">
+  Featured
+</Text>
+```
+
+### 3. Use Box for Layout Containers
+
+```tsx
+// Card container
+<Box p={6} rounded="xl" bg="elevated" shadow="md">
+  <Text variant="h3">Card Title</Text>
+</Box>
+
+// Page section with max width
+<Box maxW="2xl" mx="auto" mt={16}>
+  <Text variant="h2">Section</Text>
+</Box>
+```
+
+### 4. Use Stack for Flex Layouts
+
+```tsx
+// Vertical stack with gap
+<VStack gap={4}>
+  <Text variant="body">Item 1</Text>
+  <Text variant="body">Item 2</Text>
+</VStack>
+
+// Horizontal layout
+<HStack gap={6} wrap align="center">
+  <Text variant="caption">Left</Text>
+  <Text variant="caption">Right</Text>
+</HStack>
+```
+
+---
+
+## Typography Scale
+
+Responsive 3-step: **mobile** (default) → **tablet** (sm: 640px+) → **desktop** (lg: 1024px+)
+
+| Variant | Mobile | Tablet | Desktop | Element |
+|---------|--------|--------|---------|---------|
+| `display` | 36px | 48px | 60px | `<h1>` |
+| `h1` | 30px | 36px | 48px | `<h1>` |
+| `h2` | 24px | 30px | 36px | `<h2>` |
+| `h3` | 20px | 24px | 28px | `<h3>` |
+| `h4` | 18px | 20px | 24px | `<h4>` |
+| `bodyLarge` | 18px | 20px | 22px | `<p>` |
+| **`body`** | **16px** | **18px** | **20px** | **`<p>`** |
+| `bodySmall` | 14px | 16px | 18px | `<p>` |
+| `caption` | 14px | 14px | 16px | `<span>` |
+| `overline` | 12px | 12px | 14px | `<span>` |
+| `code` | 14px | 16px | 18px | `<code>` |
+
+---
+
+## Color Variants
+
+All colors meet **WCAG 2.2 AA** contrast requirements.
+
+| Variant | Light | Dark | Ratio |
+|---------|-------|------|-------|
+| `default` | zinc-900 | zinc-50 | 21:1 / 18:1 |
+| `muted` | zinc-600 | zinc-300 | 5.7:1 / 10:1 |
+| `accent` | teal-700 | teal-400 | 6.0:1 / 6.5:1 |
+
+---
+
+## Spacing (8pt Grid)
+
+Text and Box share the same spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, `mt`, `mb`.
+
+| Value | Size | Use Case |
+|-------|------|----------|
+| 2 | 8px | Tight (icon + text) |
+| 4 | 16px | Standard gap |
+| 6 | 24px | Card padding, relaxed gap |
+| 8 | 32px | Section internal spacing |
+| 16 | 64px | Section top margin |
+
+---
+
+## Migration Guide
+
+### From Raw HTML to Primitives
+
+```diff
+- <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
++ <Text variant="h1">
+
+- <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
++ <Text variant="body" color="muted" mt={6}>
+
+- <div className="mt-16 sm:mt-20">
++ <Box mt={16}>
+
+- <div className="flex flex-wrap gap-6 items-center">
++ <HStack gap={6} wrap align="center">
+
+- <div className="flex flex-col gap-4">
++ <VStack gap={4}>
+```
+
+### Card Internal Composition
+
+Cards use Text internally — don't replace Card sub-components:
+
+```tsx
+// Correct: Use Card sub-components as before
+<Card>
+  <CardEyebrow>March 2026</CardEyebrow>
+  <CardTitle href="/post">Post Title</CardTitle>
+  <CardDescription>Description</CardDescription>
+</Card>
+```
+
+---
+
+## Decision Tree
+
+**Which primitive?**
+
+- **Displaying text?** → `<Text variant="..." />`
+- **Container with spacing/bg/border?** → `<Box />`
+- **Vertical list of items?** → `<VStack gap={N} />`
+- **Horizontal row?** → `<HStack gap={N} />`
+- **Generic flex?** → `<Stack direction="..." />`
+
+**Which Text variant?**
+
+- **Hero / splash?** → `display`
+- **Page title?** → `h1`
+- **Section heading?** → `h2`
+- **Card / sub-section title?** → `h3` or `h4`
+- **Main content?** → `body` (default)
+- **Lead paragraph?** → `bodyLarge`
+- **Secondary info?** → `bodySmall`
+- **Meta / labels?** → `caption`
+- **Category tags?** → `overline`
+- **Code?** → `code`
+
+---
+
+## Token Architecture
+
+```
+src/lib/design-tokens.ts          ← Single source of truth
+       │
+       ├──→ tailwind.config.ts    (imports tokens → generates fontSize)
+       ├──→ Text.tsx / Box.tsx    (CVA maps to Tailwind classes)
+       └──→ Storybook stories    (imports and visualizes tokens)
+
+src/components/ui/primitives/
+       ├── spacing.ts             ← Shared spacing variants (DRY)
+       ├── Text.tsx               ← Typography primitive
+       ├── Box.tsx                ← Layout primitive
+       ├── Stack.tsx              ← Flex layout primitive
+       └── index.ts              ← Barrel exports
 ```

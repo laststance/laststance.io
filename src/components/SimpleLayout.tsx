@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container'
+import { Box, Text } from '@/components/ui/primitives'
 
 // TODO Add center layout
 export function SimpleLayout({
@@ -12,15 +13,15 @@ export function SimpleLayout({
 }) {
   return (
     <Container className="mt-16 sm:mt-32">
-      <header className="max-w-2xl">
-        <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
+      <Box as="header" maxW="2xl">
+        <Text as="h1" variant="h1">
           {title}
-        </h1>
-        <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+        </Text>
+        <Text variant="body" color="muted" mt={6}>
           {intro}
-        </p>
-      </header>
-      {children && <div className="mt-10">{children}</div>}
+        </Text>
+      </Box>
+      {children && <Box mt={10}>{children}</Box>}
     </Container>
   )
 }
