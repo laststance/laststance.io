@@ -4,24 +4,17 @@
 
 import * as Sentry from '@sentry/nextjs'
 
+const isProduction = process.env.VERCEL_ENV === 'production'
+
 Sentry.init({
-  dsn: 'https://5e977b65922d736b1f2b29c7c6cd9ccc@o1245861.ingest.us.sentry.io/4510397497409536',
+  // Only send events in Vercel production environment
+  dsn: isProduction
+    ? 'https://5e977b65922d736b1f2b29c7c6cd9ccc@o1245861.ingest.us.sentry.io/4510397497409536'
+    : undefined,
 
-  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
+  environment: process.env.VERCEL_ENV || process.env.NODE_ENV,
+
   tracesSampleRate: 1,
-
-  // Enable logs to be sent to Sentry
   enableLogs: true,
-
-  // Enable sending user PII (Personally Identifiable Information)
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
   sendDefaultPii: true,
-
-  // Disable error reporting in development environment
-  beforeSend(event) {
-    if (process.env.NODE_ENV !== 'production') {
-      return null // Don't send events in development
-    }
-    return event
-  },
 })
