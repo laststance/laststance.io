@@ -43,7 +43,7 @@ export default function RootLayout({
       <head>
         <meta name="view-transition" content="same-origin" />
       </head>
-      <body className="flex min-h-full bg-zinc-50 dark:bg-black">
+      <body className="flex min-h-full bg-zinc-50 dark:bg-black" suppressHydrationWarning>
         <HydrationFix />
         <ProvidersClient>
           <div className="flex w-full">
