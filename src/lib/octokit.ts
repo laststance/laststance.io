@@ -57,9 +57,6 @@ const processFeedEntry = (f: Feed): ValidatedFeed | null => {
     if (root.innerText.includes('Bump')) return null
     if (root.innerText.includes('bump')) return null
 
-    // Filter private repository activity
-    if (root.innerText.includes('hayashima')) return null
-
     // Update all href attributes
     root.querySelectorAll('a').forEach((link) => {
       const href = link.getAttribute('href')
