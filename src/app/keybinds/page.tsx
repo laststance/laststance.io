@@ -160,7 +160,7 @@ const keybinds: KeybindsList = {
     },
     'Multiple Cursor': {
       'Rectangular Multiple Cursor Select(WebStorm)': 'Option Drag',
-      'Rectangular Multiple Cursor Select(Cursor)': 'M Shift Drag',
+      'Rectangular Multiple Cursor Select(Cursor)': 'Option Shift Drag',
       'Add or Remove caret': 'CMD Click',
       'Clone Cursor Above': 'Option CMD ↑',
       'Clone Cursor Bellow': 'Option CMD ↓',
