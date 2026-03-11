@@ -9,7 +9,18 @@ const octokit = new Octokit({
   auth: env.PERSONAL_ACCESS_TOKEN || undefined,
 })
 
+/**
+ * Fetches GitHub atom feed XML for the given page.
+ * Includes a 5-second timeout to prevent Vercel function timeout during ISR.
+ * @param page - The feed page number
+ * @returns Parsed XML object, or empty feed on error/timeout
+ * @example
+ * const xml = await getXml(1) // xml.feed.entry = [...]
+ */
 const getXml = async (page: number) => {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 5000)
+
   try {
     const res = await octokit.request(
       `GET https://github.com/ryota-murakami.atom?page=${page}`,
@@ -17,21 +28,26 @@ const getXml = async (page: number) => {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28',
         },
+        request: {
+          signal: controller.signal,
+        },
       },
     )
-    
+
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
       textNodeName: '#text',
       isArray: (name) => name === 'entry',
     })
-    
+
     const xml = parser.parse(res.data)
     return xml
   } catch (error) {
     console.error(`Error fetching GitHub feed page ${page}:`, error)
     return { feed: { entry: [] } }
+  } finally {
+    clearTimeout(timeoutId)
   }
 }
 

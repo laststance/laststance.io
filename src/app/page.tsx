@@ -1,5 +1,8 @@
+import { Suspense } from 'react'
+
 import { Article } from '@/app/page/Article'
 import { GithubFeedList } from '@/app/page/githubFeedList'
+import { GithubFeedListSkeleton } from '@/app/page/GithubFeedListSkeleton'
 import { Photos } from '@/app/page/Photos'
 import { SocialLink } from '@/app/page/SocialLink'
 import { Container } from '@/components/Container'
@@ -79,7 +82,9 @@ export default async function Home() {
           </VStack>
           {/* Hide <GithubFeedList /> for Mobile */}
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <GithubFeedList />
+            <Suspense fallback={<GithubFeedListSkeleton />}>
+              <GithubFeedList />
+            </Suspense>
           </div>
         </div>
       </Container>
