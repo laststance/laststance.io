@@ -12,7 +12,7 @@ export function GithubFeedListSkeleton() {
   return (
     <section
       data-react-component="GithubFeedListSkeleton"
-      className="max-xs:w-[340px] max-sm:w-[360px] w-md-[380px] max-lg:m-auto"
+      className="max-xs:w-[340px] max-sm:w-[360px] md:w-[380px] max-lg:m-auto"
     >
       <h2 className="flex items-center gap-4 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-8">
         <BriefcaseIcon className="h-7 w-7 flex-none text-teal-500 dark:text-teal-400" />
