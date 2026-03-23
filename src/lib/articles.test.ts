@@ -21,9 +21,9 @@ describe('articles', () => {
     it.skip('should return all articles sorted by date (newest first)', async () => {
       const glob = await import('fast-glob')
       vi.mocked(glob.default).mockResolvedValue([
-        'article-1/page.mdx',
-        'article-2/page.mdx',
-        'article-3/page.mdx',
+        'article-1/content.mdx',
+        'article-2/content.mdx',
+        'article-3/content.mdx',
       ])
 
       const articles = await getAllArticles()
@@ -63,9 +63,9 @@ describe('articles', () => {
     })
 
     // TODO: Fix dynamic import mocking for vitest 4.0
-    it.skip('should remove /page.mdx from slug', async () => {
+    it.skip('should remove /content.mdx from slug', async () => {
       const glob = await import('fast-glob')
-      vi.mocked(glob.default).mockResolvedValue(['article-1/page.mdx'])
+      vi.mocked(glob.default).mockResolvedValue(['article-1/content.mdx'])
 
       const articles = await getAllArticles()
 
@@ -79,7 +79,7 @@ describe('articles', () => {
 
       await getAllArticles()
 
-      expect(mockGlob).toHaveBeenCalledWith('*/page.mdx', {
+      expect(mockGlob).toHaveBeenCalledWith('*/content.mdx', {
         cwd: path.resolve(process.cwd(), 'src/app/articles'),
       })
     })

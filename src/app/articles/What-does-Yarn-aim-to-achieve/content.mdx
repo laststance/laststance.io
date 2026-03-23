@@ -1,0 +1,24 @@
+import Image from 'next/image'
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  auhtor: 'Ryota Murakami',
+  title: 'What does Yarn aim to achieve?',
+  date: '2023-10-26',
+  description:
+    'I tried Yarn v4 but quit using it after being frustrated by the typescript project setup.',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+I created a new project using the recently released [Yarn v4](https://yarnpkg.com/blog/release/4.0), installed `express` and typescript, and then installed `@types/express`.
+But typescript says there is no type declare file even though @types/express should have been installed.  
+I wondered what was going on and looked in the directory and found that there was no `node_modules` folder.
+
+That in itself is fine, it probably stores the package in one place somewhere like pnpm, but it seems strange for a package manager to install a package and not have it installed.
+That's why I have to learn PnP or something of its own and do some additional tasks so that the typescript project can be started.
+
+I think pnpm is a good tool in that respect.
+It offers flat and clear dependency resolution, storage saving with Store and other features that would be nice to have without additional learning.
+
+All developers are busy, they don't have time to spend their learning time on a package manager.

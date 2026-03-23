@@ -30,7 +30,7 @@ const published_at = () => {
   return localISOTime.slice(0, 10)
 }
 
-const template = `
+const mdxTemplate = `
 import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
@@ -40,29 +40,35 @@ export const article = {
   description: '${description}',
 }
 
-export const metadata = {
+export default (props) => <ArticleLayout article={article} {...props} />
+`
+
+const pageTsxTemplate = `import type { Metadata } from 'next'
+import Content, { article } from './content.mdx'
+
+export const metadata: Metadata = {
   title: article.title,
   description: article.description,
   openGraph: {
     title: article.title,
-    images: [\`/api/og?title=\${article.title}\`],
+    images: [\\\`/api/og?title=\\\${article.title}\\\`],
   },
 }
 
-export default (props) => <ArticleLayout article={article} {...props} />
+export default Content
 `
 
 const wordList = title.split(' ')
 const folderName = wordList.length === 1 ? title : wordList.join('-')
 
 const folderPath = `./src/app/articles/${folderName.replace(/[^\w|-]/g, '')}`
-const filePath = `${folderPath}/page.mdx`
 
 const s = spinner()
 s.start('processing...')
 
 await fs.mkdir(folderPath)
-await fs.writeFile(filePath, template)
+await fs.writeFile(`${folderPath}/content.mdx`, mdxTemplate)
+await fs.writeFile(`${folderPath}/page.tsx`, pageTsxTemplate)
 s.stop('processing...')
 
-outro(`${folderPath}/page.mdx generated!✅`)
+outro(`${folderPath} generated!✅`)
