@@ -39,6 +39,9 @@ const getXml = async (page: number) => {
       attributeNamePrefix: '@_',
       textNodeName: '#text',
       isArray: (name) => name === 'entry',
+      // GitHub atom feed contains many HTML entities (&amp;, &lt;, etc.)
+      // across entries. Default limit (1000) is too low for multi-page feeds.
+      processEntities: { enabled: true, maxTotalExpansions: 10000 },
     })
 
     const xml = parser.parse(res.data)

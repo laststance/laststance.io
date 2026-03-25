@@ -9,6 +9,11 @@ vi.mock('fast-glob', () => ({
   default: vi.fn(),
 }))
 
+// Mock unstable_cache to pass through to the inner function
+vi.mock('next/cache', () => ({
+  unstable_cache: (fn: Function) => fn,
+}))
+
 describe('articles', () => {
   beforeEach(() => {
     vi.clearAllMocks()
