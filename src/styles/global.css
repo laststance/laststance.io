@@ -39,12 +39,24 @@
   }
 
   /* Stagger delays for cards - CSS custom property based */
-  .animation-delay-0 { animation-delay: 0ms; }
-  .animation-delay-1 { animation-delay: 60ms; }
-  .animation-delay-2 { animation-delay: 120ms; }
-  .animation-delay-3 { animation-delay: 180ms; }
-  .animation-delay-4 { animation-delay: 240ms; }
-  .animation-delay-5 { animation-delay: 300ms; }
+  .animation-delay-0 {
+    animation-delay: 0ms;
+  }
+  .animation-delay-1 {
+    animation-delay: 60ms;
+  }
+  .animation-delay-2 {
+    animation-delay: 120ms;
+  }
+  .animation-delay-3 {
+    animation-delay: 180ms;
+  }
+  .animation-delay-4 {
+    animation-delay: 240ms;
+  }
+  .animation-delay-5 {
+    animation-delay: 300ms;
+  }
 }
 
 @utility link-hover {
@@ -208,7 +220,11 @@
     .d-flex {
       display: flex;
       padding: 14px 16px;
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.02) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.01) 0%,
+        rgba(0, 0, 0, 0.02) 100%
+      );
       border: none;
       border-radius: 10px;
       white-space: nowrap;
@@ -218,7 +234,11 @@
     }
 
     .d-flex:hover {
-      background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(20, 184, 166, 0.08) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(20, 184, 166, 0.05) 0%,
+        rgba(20, 184, 166, 0.08) 100%
+      );
     }
 
     .d-flex.flex-column.width-full {
@@ -305,7 +325,11 @@
       border-radius: 10px;
       margin-top: 12px;
       padding: 16px 18px;
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.03) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.01) 0%,
+        rgba(0, 0, 0, 0.03) 100%
+      );
       border: none;
       white-space: nowrap;
       overflow: auto;
@@ -314,7 +338,11 @@
     }
 
     .Box:hover {
-      background: linear-gradient(135deg, rgba(20, 184, 166, 0.04) 0%, rgba(20, 184, 166, 0.06) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(20, 184, 166, 0.04) 0%,
+        rgba(20, 184, 166, 0.06) 100%
+      );
     }
 
     .color-shadow-medium {
@@ -360,7 +388,7 @@
     .feed-content {
       font-size: 15px;
       line-height: 1.7;
-      
+
       strong {
         font-weight: 700;
         color: inherit;

@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import {
-  Card,
-  CardTitle,
-  CardDescription,
-  CardCta,
-  CardEyebrow,
-} from './Card'
+import { Card, CardTitle, CardDescription, CardCta, CardEyebrow } from './Card'
 
 const meta: Meta<typeof Card> = {
   title: 'components/Card',

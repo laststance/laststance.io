@@ -29,7 +29,10 @@ export const sanitizeHtml = (html: string): string => {
 
       if (attributeName === 'href' || attributeName === 'src') {
         const value = attribs[attribute]
-        if (typeof value === 'string' && value.trim().toLowerCase().startsWith('javascript:')) {
+        if (
+          typeof value === 'string' &&
+          value.trim().toLowerCase().startsWith('javascript:')
+        ) {
           $(element).removeAttr(attribute)
         }
       }

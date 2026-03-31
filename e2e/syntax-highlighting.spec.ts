@@ -25,7 +25,9 @@ import { expect, test } from '@playwright/test'
  * - Prism.js and rehype-prism plugin must be properly configured
  */
 test.describe('Syntax Highlighting', () => {
-  test('should apply syntax highlighting to code blocks in article pages', async ({ page }) => {
+  test('should apply syntax highlighting to code blocks in article pages', async ({
+    page,
+  }) => {
     // Navigate to an article with code blocks (TypeScript example)
     await page.goto('/articles/update-eslint-config-ts-prefixer@v0.23.3')
 
@@ -50,26 +52,26 @@ test.describe('Syntax Highlighting', () => {
     const commentTokens = page.locator('.token.comment')
 
     // At least one of these token types should be present
-    const hasKeywords = await keywordTokens.count() > 0
-    const hasStrings = await stringTokens.count() > 0
-    const hasComments = await commentTokens.count() > 0
+    const hasKeywords = (await keywordTokens.count()) > 0
+    const hasStrings = (await stringTokens.count()) > 0
+    const hasComments = (await commentTokens.count()) > 0
 
     expect(hasKeywords || hasStrings || hasComments).toBe(true)
 
     // Check that tokens have proper styling (color should not be default)
     if (hasKeywords) {
-      const keywordColor = await keywordTokens.first().evaluate((el) =>
-        window.getComputedStyle(el).color
-      )
+      const keywordColor = await keywordTokens
+        .first()
+        .evaluate((el) => window.getComputedStyle(el).color)
       // Should not be the default text color (white or black)
       expect(keywordColor).not.toBe('rgb(255, 255, 255)')
       expect(keywordColor).not.toBe('rgb(0, 0, 0)')
     }
 
     if (hasStrings) {
-      const stringColor = await stringTokens.first().evaluate((el) =>
-        window.getComputedStyle(el).color
-      )
+      const stringColor = await stringTokens
+        .first()
+        .evaluate((el) => window.getComputedStyle(el).color)
       // Should not be the default text color
       expect(stringColor).not.toBe('rgb(255, 255, 255)')
       expect(stringColor).not.toBe('rgb(0, 0, 0)')
@@ -82,8 +84,12 @@ test.describe('Syntax Highlighting', () => {
     await page.waitForLoadState('networkidle')
 
     // Switch to dark mode
-    const themeToggle = page.locator('[data-testid="theme-toggle"], button[aria-label*="theme" i], button[title*="theme" i]').first()
-    if (await themeToggle.count() > 0) {
+    const themeToggle = page
+      .locator(
+        '[data-testid="theme-toggle"], button[aria-label*="theme" i], button[title*="theme" i]',
+      )
+      .first()
+    if ((await themeToggle.count()) > 0) {
       await themeToggle.click()
       await page.waitForTimeout(500) // Wait for theme transition
     }
@@ -94,8 +100,8 @@ test.describe('Syntax Highlighting', () => {
 
     // Check that at least one token has color styling
     const firstToken = tokens.first()
-    const tokenColor = await firstToken.evaluate((el) =>
-      window.getComputedStyle(el).color
+    const tokenColor = await firstToken.evaluate(
+      (el) => window.getComputedStyle(el).color,
     )
 
     // Should have color styling applied
@@ -104,7 +110,9 @@ test.describe('Syntax Highlighting', () => {
     expect(tokenColor).not.toBe('rgb(0, 0, 0)')
   })
 
-  test('should highlight different programming languages correctly', async ({ page }) => {
+  test('should highlight different programming languages correctly', async ({
+    page,
+  }) => {
     // Test JavaScript/TypeScript highlighting
     await page.goto('/articles/update-eslint-config-ts-prefixer@v0.23.3')
     await page.waitForLoadState('networkidle')
@@ -119,20 +127,25 @@ test.describe('Syntax Highlighting', () => {
 
     // Verify that different token types have different colors
     const tokenColors = await tokens.evaluateAll((elements) =>
-      elements.map(el => window.getComputedStyle(el).color)
+      elements.map((el) => window.getComputedStyle(el).color),
     )
 
     // Should have multiple different colors (syntax highlighting working)
-    const uniqueColors = new Set(tokenColors.filter(color =>
-      color !== 'rgb(255, 255, 255)' &&
-      color !== 'rgb(0, 0, 0)' &&
-      color !== ''
-    ))
+    const uniqueColors = new Set(
+      tokenColors.filter(
+        (color) =>
+          color !== 'rgb(255, 255, 255)' &&
+          color !== 'rgb(0, 0, 0)' &&
+          color !== '',
+      ),
+    )
 
     expect(uniqueColors.size).toBeGreaterThan(0)
   })
 
-  test('should maintain syntax highlighting after theme toggle', async ({ page }) => {
+  test('should maintain syntax highlighting after theme toggle', async ({
+    page,
+  }) => {
     await page.goto('/articles/update-eslint-config-ts-prefixer@v0.23.3')
     await page.waitForLoadState('networkidle')
 
@@ -145,13 +158,13 @@ test.describe('Syntax Highlighting', () => {
       'button[aria-label*="theme" i]',
       'button[title*="theme" i]',
       'button:has-text("theme" i)',
-      'button[class*="theme"]'
+      'button[class*="theme"]',
     ]
 
     let themeToggled = false
     for (const selector of themeSelectors) {
       const toggle = page.locator(selector).first()
-      if (await toggle.count() > 0) {
+      if ((await toggle.count()) > 0) {
         await toggle.click()
         await page.waitForTimeout(500)
         themeToggled = true
@@ -168,10 +181,10 @@ test.describe('Syntax Highlighting', () => {
 
     // Verify tokens still have color styling
     const tokens = page.locator('.token')
-    if (await tokens.count() > 0) {
-      const tokenColor = await tokens.first().evaluate((el) =>
-        window.getComputedStyle(el).color
-      )
+    if ((await tokens.count()) > 0) {
+      const tokenColor = await tokens
+        .first()
+        .evaluate((el) => window.getComputedStyle(el).color)
       expect(tokenColor).toBeTruthy()
     }
   })

@@ -107,9 +107,7 @@ export const Default: Story = {
     rounded: 'xl',
     bg: 'elevated',
     border: 'default',
-    children: (
-      <Text variant="body">Box with default styling</Text>
-    ),
+    children: <Text variant="body">Box with default styling</Text>,
   },
 }
 
@@ -119,7 +117,9 @@ export const PaddingScale: Story = {
       <VStack gap={4}>
         {([2, 4, 6, 8, 12] as const).map((p) => (
           <Box key={p} p={p} bg="secondary" rounded="lg">
-            <Text variant="caption">p={p} ({p * 4}px)</Text>
+            <Text variant="caption">
+              p={p} ({p * 4}px)
+            </Text>
           </Box>
         ))}
       </VStack>
@@ -142,7 +142,7 @@ export const BorderRadiusScale: Story = {
             >
               <Text variant="caption">{radius}</Text>
             </Box>
-          )
+          ),
         )}
       </HStack>
     ),
@@ -216,7 +216,14 @@ export const MaxWidthConstraints: Story = {
     () => (
       <VStack gap={4}>
         {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
-          <Box key={size} maxW={size} p={4} bg="secondary" rounded="lg" w="full">
+          <Box
+            key={size}
+            maxW={size}
+            p={4}
+            bg="secondary"
+            rounded="lg"
+            w="full"
+          >
             <Text variant="caption">maxW="{size}"</Text>
           </Box>
         ))}
@@ -283,7 +290,14 @@ export const CardExample: Story = {
 export const AsideExample: Story = {
   decorators: [
     () => (
-      <Box as="aside" maxW="xs" p={4} rounded="lg" bg="secondary" border="muted">
+      <Box
+        as="aside"
+        maxW="xs"
+        p={4}
+        rounded="lg"
+        bg="secondary"
+        border="muted"
+      >
         <VStack gap={3}>
           <Text variant="h4">Pro Tip</Text>
           <Text variant="bodySmall" color="muted">

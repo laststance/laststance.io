@@ -176,10 +176,7 @@ export const SpacingTokens: Story = {
                 {value}
               </Text>
             </Box>
-            <div
-              className="h-4 rounded bg-teal-500"
-              style={{ width: value }}
-            />
+            <div className="h-4 rounded bg-teal-500" style={{ width: value }} />
           </HStack>
         ))}
       </VStack>
@@ -225,7 +222,7 @@ export const ColorTokens: Story = {
                   <span style={{ color: value }}>Sample text</span>
                 </Box>
               </HStack>
-            )
+            ),
           )}
         </VStack>
       </Box>
@@ -245,7 +242,7 @@ export const ColorTokens: Story = {
                 />
                 <Text variant="caption">{name}</Text>
               </VStack>
-            )
+            ),
           )}
         </HStack>
       </Box>
@@ -265,7 +262,7 @@ export const ColorTokens: Story = {
                 />
                 <Text variant="caption">{name}</Text>
               </VStack>
-            )
+            ),
           )}
         </HStack>
       </Box>
@@ -327,7 +324,7 @@ export const ShadowTokens: Story = {
               />
               <Text variant="caption">{name}</Text>
             </VStack>
-          )
+          ),
         )}
       </HStack>
     </VStack>
@@ -369,11 +366,7 @@ export const ContrastCheck: Story = {
         </Box>
 
         {/* Dark Mode */}
-        <Box
-          p={6}
-          rounded="xl"
-          className="border border-zinc-700 bg-zinc-900"
-        >
+        <Box p={6} rounded="xl" className="border border-zinc-700 bg-zinc-900">
           <VStack gap={4}>
             <Text variant="h4" className="text-zinc-50">
               Dark Mode
@@ -398,8 +391,8 @@ export const ContrastCheck: Story = {
         <Text variant="bodySmall">
           <strong>Note:</strong> Body text is responsive: 16px mobile → 18px
           tablet → 20px desktop. Dark muted text uses zinc-300 (improved from
-          zinc-400) for 10:1 contrast ratio. Accent uses teal-700 light / teal-400
-          dark for AA compliance.
+          zinc-400) for 10:1 contrast ratio. Accent uses teal-700 light /
+          teal-400 dark for AA compliance.
         </Text>
       </Box>
     </VStack>

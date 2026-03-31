@@ -1,12 +1,12 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 # Documentation: https://docs.coderabbit.ai/getting-started/configure-coderabbit/
 
-language: "en-US"
-tone_instructions: "Be concise and constructive. Focus on bugs, security, and performance over style."
+language: 'en-US'
+tone_instructions: 'Be concise and constructive. Focus on bugs, security, and performance over style.'
 early_access: false
 
 reviews:
-  profile: "chill"
+  profile: 'chill'
   request_changes_workflow: false
   high_level_summary: true
   poem: false
@@ -14,42 +14,42 @@ reviews:
   collapse_walkthrough: false
 
   path_filters:
-    - "!pnpm-lock.yaml"
-    - "!**/*.tsbuildinfo"
-    - "!storybook-static/**"
-    - "!public/monitoring/**"
-    - "!playwright-report/**"
-    - "!test-results/**"
-    - "!coverage/**"
+    - '!pnpm-lock.yaml'
+    - '!**/*.tsbuildinfo'
+    - '!storybook-static/**'
+    - '!public/monitoring/**'
+    - '!playwright-report/**'
+    - '!test-results/**'
+    - '!coverage/**'
 
   path_instructions:
-    - path: "src/app/**/*.tsx"
+    - path: 'src/app/**/*.tsx'
       instructions: |
         This is a Next.js 16 App Router project using React 19 server components.
         - Verify correct use of 'use client' directive only when needed.
         - Check that async server components handle errors gracefully.
         - Ensure Suspense boundaries wrap slow async components.
         - Validate metadata exports and revalidate settings for ISR.
-    - path: "src/components/**/*.tsx"
+    - path: 'src/components/**/*.tsx'
       instructions: |
         Reusable UI components using Tailwind CSS and shadcn/ui patterns.
         - Check for proper TypeScript prop types with explicit return types.
         - Verify accessibility: aria labels, keyboard navigation, focus management.
         - Ensure dark mode support via Tailwind dark: variants.
         - Minimum tap area of 44x44px for interactive elements.
-    - path: "src/lib/**/*.ts"
+    - path: 'src/lib/**/*.ts'
       instructions: |
         Shared utility modules.
         - Verify proper error handling with try/catch.
         - Check for input validation at system boundaries.
         - Ensure functions have JSDoc with @param, @returns, and @example.
-    - path: "e2e/**/*.spec.ts"
+    - path: 'e2e/**/*.spec.ts'
       instructions: |
         Playwright E2E tests.
         - Ensure tests use proper selectors (data-testid preferred).
         - Check for flaky patterns: avoid hardcoded waits, use proper assertions.
         - Verify test isolation — no shared state between tests.
-    - path: "**/*.mdx"
+    - path: '**/*.mdx'
       instructions: |
         MDX blog articles. Review for:
         - Correct frontmatter (title, date, description).
@@ -60,8 +60,8 @@ reviews:
     enabled: true
     drafts: false
     ignore_title_keywords:
-      - "WIP"
-      - "DO NOT MERGE"
+      - 'WIP'
+      - 'DO NOT MERGE'
 
   tools:
     eslint:
@@ -73,6 +73,6 @@ chat:
 knowledge_base:
   opt_out: false
   learnings:
-    scope: "auto"
+    scope: 'auto'
   web_search:
     enabled: true

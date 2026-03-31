@@ -133,7 +133,8 @@ export const typography = {
     mobile: '0.875rem', // 14px mobile
     lineHeight: '1.45',
     fontWeight: '400',
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+    fontFamily:
+      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   },
 } as const
 

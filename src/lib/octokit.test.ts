@@ -68,7 +68,9 @@ describe('octokit module', () => {
     mockOctokitInstance = {
       request: vi.fn(),
     }
-    vi.mocked(Octokit).mockImplementation(() => mockOctokitInstance as unknown as InstanceType<typeof Octokit>)
+    vi.mocked(Octokit).mockImplementation(
+      () => mockOctokitInstance as unknown as InstanceType<typeof Octokit>,
+    )
   })
 
   afterEach(() => {
@@ -333,7 +335,9 @@ describe('octokit module', () => {
 
     it('should handle missing feed property', () => {
       const noFeedResponse = {}
-      expect((noFeedResponse as { feed?: { entry?: Feed[] } }).feed).toBeUndefined()
+      expect(
+        (noFeedResponse as { feed?: { entry?: Feed[] } }).feed,
+      ).toBeUndefined()
     })
 
     it('should handle network errors gracefully', async () => {

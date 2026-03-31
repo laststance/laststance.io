@@ -34,8 +34,10 @@ test.describe('Theme Switching', () => {
 
     // Navigate to another page
     // For mobile devices, we might need to open the menu first
-    const aboutLink = page.getByRole('navigation').getByRole('link', { name: 'About' })
-    
+    const aboutLink = page
+      .getByRole('navigation')
+      .getByRole('link', { name: 'About' })
+
     // Try to click the link, if it's not visible (mobile), skip navigation test
     try {
       await aboutLink.click({ timeout: 5000 })

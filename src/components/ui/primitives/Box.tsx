@@ -193,7 +193,7 @@ export function Box<T extends ElementType = 'div'>({
           w,
           maxW,
         }),
-        className
+        className,
       )}
       {...props}
     >

@@ -25,8 +25,7 @@ const textVariants = cva('', {
      */
     variant: {
       // Display - Hero sections: 36px → 48px → 60px
-      display:
-        'text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl',
+      display: 'text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl',
 
       // H1 - Page titles: 30px → 36px → 48px
       h1: 'text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl',
@@ -165,7 +164,9 @@ type TextProps<T extends ElementType = 'p'> = TextOwnProps<T> &
  * getDefaultElement('body')    // 'p'
  * getDefaultElement('caption') // 'span'
  */
-function getDefaultElement(variant: TextVariant | null | undefined): ElementType {
+function getDefaultElement(
+  variant: TextVariant | null | undefined,
+): ElementType {
   switch (variant) {
     case 'display':
     case 'h1':
@@ -276,7 +277,7 @@ export function Text<T extends ElementType = 'p'>({
           px,
           py,
         }),
-        className
+        className,
       )}
       {...props}
     >

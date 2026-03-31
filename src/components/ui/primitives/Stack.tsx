@@ -149,21 +149,21 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <Component
         ref={ref}
         className={cn(
           stackVariants({ direction, gap, align, justify, wrap, fullWidth }),
-          className
+          className,
         )}
         {...props}
       >
         {children}
       </Component>
     )
-  }
+  },
 )
 
 Stack.displayName = 'Stack'
@@ -178,7 +178,7 @@ Stack.displayName = 'Stack'
  * </VStack>
  */
 export const VStack = forwardRef<HTMLDivElement, Omit<StackProps, 'direction'>>(
-  (props, ref) => <Stack ref={ref} direction="vertical" {...props} />
+  (props, ref) => <Stack ref={ref} direction="vertical" {...props} />,
 )
 VStack.displayName = 'VStack'
 
@@ -192,7 +192,7 @@ VStack.displayName = 'VStack'
  * </HStack>
  */
 export const HStack = forwardRef<HTMLDivElement, Omit<StackProps, 'direction'>>(
-  (props, ref) => <Stack ref={ref} direction="horizontal" {...props} />
+  (props, ref) => <Stack ref={ref} direction="horizontal" {...props} />,
 )
 HStack.displayName = 'HStack'
 

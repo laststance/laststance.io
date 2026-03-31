@@ -81,7 +81,7 @@ export function ProjectListItem({
         'relative',
         // Border
         'border-b border-zinc-200/60 dark:border-zinc-700/40',
-        'hover:border-zinc-300/80 dark:hover:border-zinc-600/60'
+        'hover:border-zinc-300/80 dark:hover:border-zinc-600/60',
       )}
     >
       <Link
@@ -94,7 +94,7 @@ export function ProjectListItem({
           'block py-10 sm:py-12 md:py-16',
           'outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 focus-visible:ring-offset-4',
           'focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-900',
-          'rounded-sm'
+          'rounded-sm',
         )}
         aria-label={`${name} - ${category} (opens in new tab)`}
       >
@@ -108,7 +108,7 @@ export function ProjectListItem({
                 'flex h-12 w-12 shrink-0 items-center justify-center',
                 'rounded-xl bg-zinc-100 dark:bg-zinc-800',
                 'ring-1 ring-zinc-200/50 dark:ring-zinc-700/50',
-                isExpanded && 'ring-zinc-300 dark:ring-zinc-600'
+                isExpanded && 'ring-zinc-300 dark:ring-zinc-600',
               )}
             >
               <Image
@@ -150,7 +150,7 @@ export function ProjectListItem({
                 'h-5 w-5',
                 isExpanded
                   ? 'text-teal-500 dark:text-teal-400'
-                  : 'text-zinc-400 dark:text-zinc-500'
+                  : 'text-zinc-400 dark:text-zinc-500',
               )}
               fill="none"
               viewBox="0 0 24 24"

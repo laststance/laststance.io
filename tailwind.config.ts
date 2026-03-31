@@ -86,25 +86,55 @@ const config = {
     // Responsive 3-step: mobile (default) → tablet (sm:) → desktop (lg:)
     fontSize: {
       // 12px - Overline mobile
-      xs: [designTokens.overline.mobile, { lineHeight: designTokens.overline.lineHeight }],
+      xs: [
+        designTokens.overline.mobile,
+        { lineHeight: designTokens.overline.lineHeight },
+      ],
       // 14px - Caption, overline desktop
-      sm: [designTokens.caption.mobile, { lineHeight: designTokens.caption.lineHeight }],
+      sm: [
+        designTokens.caption.mobile,
+        { lineHeight: designTokens.caption.lineHeight },
+      ],
       // 16px - Body mobile, caption desktop
-      base: [designTokens.body.mobile, { lineHeight: designTokens.body.lineHeight }],
+      base: [
+        designTokens.body.mobile,
+        { lineHeight: designTokens.body.lineHeight },
+      ],
       // 18px - Body tablet, bodySmall desktop
-      lg: [designTokens.body.tablet, { lineHeight: designTokens.body.lineHeight }],
+      lg: [
+        designTokens.body.tablet,
+        { lineHeight: designTokens.body.lineHeight },
+      ],
       // 20px - Body desktop
-      xl: [designTokens.body.fontSize, { lineHeight: designTokens.body.lineHeight }],
+      xl: [
+        designTokens.body.fontSize,
+        { lineHeight: designTokens.body.lineHeight },
+      ],
       // 24px - H3 tablet, H4 desktop
-      '2xl': [designTokens.h4.fontSize, { lineHeight: designTokens.h4.lineHeight }],
+      '2xl': [
+        designTokens.h4.fontSize,
+        { lineHeight: designTokens.h4.lineHeight },
+      ],
       // 28px - H3 desktop (custom)
-      '3xl': [designTokens.h3.fontSize, { lineHeight: designTokens.h3.lineHeight }],
+      '3xl': [
+        designTokens.h3.fontSize,
+        { lineHeight: designTokens.h3.lineHeight },
+      ],
       // 36px - H2 desktop, H1 tablet
-      '4xl': [designTokens.h2.fontSize, { lineHeight: designTokens.h2.lineHeight }],
+      '4xl': [
+        designTokens.h2.fontSize,
+        { lineHeight: designTokens.h2.lineHeight },
+      ],
       // 48px - H1 desktop, Display tablet
-      '5xl': [designTokens.h1.fontSize, { lineHeight: designTokens.h1.lineHeight }],
+      '5xl': [
+        designTokens.h1.fontSize,
+        { lineHeight: designTokens.h1.lineHeight },
+      ],
       // 60px - Display desktop
-      '6xl': [designTokens.display.fontSize, { lineHeight: designTokens.display.lineHeight }],
+      '6xl': [
+        designTokens.display.fontSize,
+        { lineHeight: designTokens.display.lineHeight },
+      ],
       // 72px - Hero
       '7xl': ['4.5rem', { lineHeight: '1.1' }],
       // 96px - Mega

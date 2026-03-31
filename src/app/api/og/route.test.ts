@@ -54,7 +54,9 @@ describe('OG Route - sanitizeTitle', () => {
 
   describe('XSS prevention', () => {
     it('should remove script tags', () => {
-      expect(sanitizeTitle('<script>alert(1)</script>')).toBe('scriptalert(1)/script')
+      expect(sanitizeTitle('<script>alert(1)</script>')).toBe(
+        'scriptalert(1)/script',
+      )
     })
 
     it('should remove angle brackets', () => {
@@ -81,8 +83,7 @@ describe('OG Route - sanitizeTitle', () => {
     })
 
     it('should handle multiple injection attempts', () => {
-      const malicious =
-        '<script>javascript:data:<img onerror="alert(1)">'
+      const malicious = '<script>javascript:data:<img onerror="alert(1)">'
       const result = sanitizeTitle(malicious)
       expect(result).not.toContain('<')
       expect(result).not.toContain('>')
@@ -181,8 +182,8 @@ describe('OG Route - sanitizeTitle', () => {
     })
 
     it('should handle quotes safely', () => {
-      expect(sanitizeTitle("Title with 'single' and \"double\" quotes")).toBe(
-        "Title with 'single' and \"double\" quotes",
+      expect(sanitizeTitle('Title with \'single\' and "double" quotes')).toBe(
+        'Title with \'single\' and "double" quotes',
       )
     })
   })
@@ -195,8 +196,8 @@ describe('OG Route - sanitizeTitle', () => {
     })
 
     it('should handle titles with symbols', () => {
-      expect(sanitizeTitle('React 19 - What\'s New?')).toBe(
-        'React 19 - What\'s New?',
+      expect(sanitizeTitle("React 19 - What's New?")).toBe(
+        "React 19 - What's New?",
       )
     })
 

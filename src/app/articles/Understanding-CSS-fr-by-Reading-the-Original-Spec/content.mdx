@@ -1,4 +1,3 @@
-
 import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
@@ -19,11 +18,13 @@ It finally did when I read the original [W3C spec](https://drafts.csswg.org/css-
 A flexible length or <flex> is a dimension with the fr unit, which represents a fraction of the leftover space in the grid container."
 
 That one sentence removed the ambiguity. fr is not a magic proportion of the whole container. It is a share of the leftover space after fixed and content-based tracks take what they need. In other words:
+
 - Calculate all non-flex tracks (px, auto, minmax, etc.)
 - Find the remaining space
 - Divide that remainder among fr tracks based on their flex factors (1fr, 2fr, ...)
 
 This framing explains the behavior that tutorials often gloss over:
+
 - Why 1fr can resolve to zero if there is no leftover space
 - Why .5fr, 1fr, 2fr share space proportionally rather than absolutely
 - Why fr can act "content-sized" when the container available space is indefinite

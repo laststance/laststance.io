@@ -1,14 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "types": [
-      "@types/webpack-env"
-    ],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "types": ["@types/webpack-env"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -27,9 +21,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -46,9 +38,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    "**/*.mdx"
-  ]
+  "exclude": ["node_modules", ".next", "**/*.mdx"]
 }

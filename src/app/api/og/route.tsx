@@ -65,38 +65,36 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
     const title = sanitizeTitle(rawTitle)
 
     return new ImageResponse(
-      (
+      <div
+        style={{
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'relative',
+        }}
+      >
+        {isLight ? <LightSvg /> : <DarkSvg />}
         <div
           style={{
-            alignItems: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            position: 'relative',
+            color: isLight ? 'black' : 'white',
+            fontFamily: 'Inter',
+            fontSize: '48px',
+            fontWeight: '600',
+            left: '50%',
+            letterSpacing: '-0.04em',
+            maxWidth: '750px',
+            overflowWrap: 'break-word',
+            position: 'absolute',
+            textAlign: 'center',
+            top: '250px',
+            transform: 'translateX(-50%)',
+            whiteSpace: 'pre-wrap',
+            wordWrap: 'break-word',
           }}
         >
-          {isLight ? <LightSvg /> : <DarkSvg />}
-          <div
-            style={{
-              color: isLight ? 'black' : 'white',
-              fontFamily: 'Inter',
-              fontSize: '48px',
-              fontWeight: '600',
-              left: '50%',
-              letterSpacing: '-0.04em',
-              maxWidth: '750px',
-              overflowWrap: 'break-word',
-              position: 'absolute',
-              textAlign: 'center',
-              top: '250px',
-              transform: 'translateX(-50%)',
-              whiteSpace: 'pre-wrap',
-              wordWrap: 'break-word',
-            }}
-          >
-            {title}
-          </div>
+          {title}
         </div>
-      ),
+      </div>,
       {
         fonts: [
           {

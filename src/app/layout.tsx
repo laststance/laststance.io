@@ -1,7 +1,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import { type Metadata } from 'next'
 
-import { Footer } from '@/components/Footer' 
+import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { HydrationFix } from '@/components/HydrationFix'
 import { env } from '@/env.mjs'
@@ -43,7 +43,10 @@ export default function RootLayout({
       <head>
         <meta name="view-transition" content="same-origin" />
       </head>
-      <body className="flex min-h-full bg-zinc-50 dark:bg-black" suppressHydrationWarning>
+      <body
+        className="flex min-h-full bg-zinc-50 dark:bg-black"
+        suppressHydrationWarning
+      >
         <HydrationFix />
         <ProvidersClient>
           <div className="flex w-full">
@@ -60,7 +63,6 @@ export default function RootLayout({
     </html>
   )
 }
-
 
 /**
  * 📐 BackGround
@@ -83,4 +85,3 @@ function BackGround() {
     </div>
   )
 }
-

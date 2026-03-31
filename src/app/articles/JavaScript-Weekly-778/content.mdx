@@ -1,11 +1,11 @@
-
 import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
   author: 'Ryota Murakami',
   title: 'JavaScript Weekly #778 Digest',
   date: '2026-03-25',
-  description: 'TypeScript 6.0リリース、Edge.js WASMサンドボックス、pnpm 11 Beta、Next.js 16.2の400%高速化など、今週のJavaScriptエコシステムの注目ニュースまとめ',
+  description:
+    'TypeScript 6.0リリース、Edge.js WASMサンドボックス、pnpm 11 Beta、Next.js 16.2の400%高速化など、今週のJavaScriptエコシステムの注目ニュースまとめ',
 }
 
 export default (props) => <ArticleLayout article={article} {...props} />
@@ -26,6 +26,7 @@ export default (props) => <ArticleLayout article={article} {...props} />
 TypeScript 6.0は**現行JavaScriptコードベースでの最後のメジャーリリース**。Go言語で書き直される7.0への移行を全面的に意識した"ブリッジリリース"として位置づけられている。
 
 **主要な変更点:**
+
 - **デフォルト値の大幅変更**: `strict: true`、`module: esnext`、`rootDir: .`、`types: []`（`node_modules/@types`を自動読込しない）がデフォルトに。特に`types: []`は多くのプロジェクトで`"types": ["node"]`の明示指定が必要になる
 - **非推奨化の波**: `target: es5`、AMD/UMD/SystemJSモジュール出力、`--baseUrl`、`--outFile`、旧`--moduleResolution node`が非推奨に。`import ... assert {}`構文も廃止
 - **`--stableTypeOrdering`フラグ**: 6.0の型順序を7.0に一致させ、推論の差異を事前診断可能に
@@ -48,6 +49,7 @@ TypeScript 6.0は**現行JavaScriptコードベースでの最後のメジャー
 Wasmerが発表した**アルファ版ランタイム**。既存のNode.jsアプリを**変更なし**でWASMサンドボックス内で実行可能。Deno/Cloudflare Workersとは根本的にアプローチが異なる。
 
 **アーキテクチャの核心:**
+
 - JSエンジン自体はネイティブ実行、**システムコール・ネイティブモジュールのみ**をWASIXでサンドボックス化。全体をWASM化するよりオーバーヘッドが大幅に小さい
 - **JSエンジン選択可能**: V8、JavaScriptCore、QuickJSをプラガブルに切替
 - Node.js v24互換を目標。libuv/simdutf/ada/llhttp/ncryptoなどNode同一の依存を使用
@@ -69,6 +71,7 @@ Wasmerが発表した**アルファ版ランタイム**。既存のNode.jsアプ
 [GitHub Release](https://github.com/pnpm/pnpm/releases/tag/v11.0.0-beta.0)
 
 **主要変更:**
+
 - **SQLiteベースストア**: メタデータをJSONファイルからSQLiteに移行。msgpack形式の最適化されたインデックスファイルフォーマットと組み合わせ、小さなブロブ（&lt;100KiB）の読み書きが従来より高速に
 - **`pnpm sbom`コマンド**: CycloneDX 1.7/SPDX 2.3形式のSoftware Bill of Materials生成。EU Cyber Resilience Act対応を見据えた**ファーストパーティSBOM対応**。`--prod`/`--dev`/`--filter`オプション完備
 - **設定の大幅刷新**: `pnpm-workspace.yaml`でパッケージごとの設定(`packageConfigs`)、ビルドセキュリティの厳格化（`allowBuilds`で明示許可制に）

@@ -173,7 +173,11 @@ export const Alignment: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             align="start"
           </Text>
-          <HStack gap={4} align="start" className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            align="start"
+            className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>Short</DemoItem>
             <DemoItem>Medium text</DemoItem>
             <DemoItem>Much longer text here</DemoItem>
@@ -183,7 +187,11 @@ export const Alignment: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             align="center"
           </Text>
-          <HStack gap={4} align="center" className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            align="center"
+            className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>Short</DemoItem>
             <DemoItem>Medium text</DemoItem>
             <DemoItem>Much longer text here</DemoItem>
@@ -193,7 +201,11 @@ export const Alignment: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             align="end"
           </Text>
-          <HStack gap={4} align="end" className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            align="end"
+            className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>Short</DemoItem>
             <DemoItem>Medium text</DemoItem>
             <DemoItem>Much longer text here</DemoItem>
@@ -212,7 +224,12 @@ export const Justification: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             justify="start"
           </Text>
-          <HStack gap={4} justify="start" fullWidth className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            justify="start"
+            fullWidth
+            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
             <DemoItem>C</DemoItem>
@@ -222,7 +239,12 @@ export const Justification: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             justify="center"
           </Text>
-          <HStack gap={4} justify="center" fullWidth className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            justify="center"
+            fullWidth
+            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
             <DemoItem>C</DemoItem>
@@ -232,7 +254,12 @@ export const Justification: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             justify="between"
           </Text>
-          <HStack gap={4} justify="between" fullWidth className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            justify="between"
+            fullWidth
+            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
             <DemoItem>C</DemoItem>
@@ -242,7 +269,12 @@ export const Justification: Story = {
           <Text variant="caption" color="muted" className="mb-2">
             justify="evenly"
           </Text>
-          <HStack gap={4} justify="evenly" fullWidth className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+          <HStack
+            gap={4}
+            justify="evenly"
+            fullWidth
+            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+          >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
             <DemoItem>C</DemoItem>
@@ -315,7 +347,14 @@ export const NestedStacks: Story = {
 export const RealWorldExample: Story = {
   decorators: [
     () => (
-      <Box maxW="md" p={6} rounded="xl" bg="elevated" shadow="lg" border="default">
+      <Box
+        maxW="md"
+        p={6}
+        rounded="xl"
+        bg="elevated"
+        shadow="lg"
+        border="default"
+      >
         <VStack gap={4}>
           <HStack gap={4} align="center">
             <div className="h-12 w-12 rounded-full bg-teal-500" />

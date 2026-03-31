@@ -3,7 +3,9 @@ import { test, expect } from '@playwright/test'
 
 test("What's New dialog", async ({ page }, testInfo) => {
   await page.goto('/')
-  await expect(page.getByRole('button', { name: "Open What's New dialog" })).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: "Open What's New dialog" }),
+  ).toBeVisible()
 
   await expect(page.getByRole('banner')).toContainText("What's New?")
 
@@ -33,12 +35,14 @@ test("What's New dialog - no layout shift on open/close", async ({ page }) => {
       innerWidth: window.innerWidth,
       documentWidth: document.documentElement.clientWidth,
       scrollbarWidth: window.innerWidth - document.documentElement.clientWidth,
-      bodyOffsetLeft: document.body.offsetLeft
+      bodyOffsetLeft: document.body.offsetLeft,
     }
   })
 
   // Open the modal
-  await page.getByRole('button', { name: "Open What's New dialog" }).click({ force: true })
+  await page
+    .getByRole('button', { name: "Open What's New dialog" })
+    .click({ force: true })
   await expect(page.getByRole('dialog')).toBeVisible()
 
   // Wait for any animations to complete
@@ -50,12 +54,14 @@ test("What's New dialog - no layout shift on open/close", async ({ page }) => {
       innerWidth: window.innerWidth,
       documentWidth: document.documentElement.clientWidth,
       scrollbarWidth: window.innerWidth - document.documentElement.clientWidth,
-      bodyOffsetLeft: document.body.offsetLeft
+      bodyOffsetLeft: document.body.offsetLeft,
     }
   })
 
   // Verify no horizontal shift occurred - body should not have moved
-  expect(openViewportWidth.bodyOffsetLeft).toBe(initialViewportWidth.bodyOffsetLeft)
+  expect(openViewportWidth.bodyOffsetLeft).toBe(
+    initialViewportWidth.bodyOffsetLeft,
+  )
 
   // Close the modal
   await page.getByRole('button', { name: 'Close' }).click({ force: true })
@@ -70,10 +76,12 @@ test("What's New dialog - no layout shift on open/close", async ({ page }) => {
       innerWidth: window.innerWidth,
       documentWidth: document.documentElement.clientWidth,
       scrollbarWidth: window.innerWidth - document.documentElement.clientWidth,
-      bodyOffsetLeft: document.body.offsetLeft
+      bodyOffsetLeft: document.body.offsetLeft,
     }
   })
 
   // Verify position returned to initial state
-  expect(closedViewportWidth.bodyOffsetLeft).toBe(initialViewportWidth.bodyOffsetLeft)
+  expect(closedViewportWidth.bodyOffsetLeft).toBe(
+    initialViewportWidth.bodyOffsetLeft,
+  )
 })

@@ -82,11 +82,7 @@ export function CardTitle<T extends React.ElementType = 'h2'>({
 
 export function CardDescription({ children }: { children: React.ReactNode }) {
   return (
-    <Text
-      variant="bodySmall"
-      color="muted"
-      className="relative z-10 mt-2"
-    >
+    <Text variant="bodySmall" color="muted" className="relative z-10 mt-2">
       {children}
     </Text>
   )

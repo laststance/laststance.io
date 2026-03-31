@@ -34,7 +34,9 @@ describe('sanitizeHtml', () => {
 
     it('should preserve images with safe src', () => {
       const html = '<img src="https://example.com/image.png" alt="test">'
-      expect(sanitizeHtml(html)).toContain('src="https://example.com/image.png"')
+      expect(sanitizeHtml(html)).toContain(
+        'src="https://example.com/image.png"',
+      )
     })
   })
 
@@ -71,7 +73,8 @@ describe('sanitizeHtml', () => {
     })
 
     it('should handle script tags with attributes', () => {
-      const html = '<script type="text/javascript" defer async>alert("xss")</script>'
+      const html =
+        '<script type="text/javascript" defer async>alert("xss")</script>'
       expect(sanitizeHtml(html)).not.toContain('<script')
     })
   })
@@ -141,7 +144,8 @@ describe('sanitizeHtml', () => {
     })
 
     it('should remove all on* prefixed attributes', () => {
-      const html = '<div onsubmit="a()" onkeydown="b()" onkeyup="c()">Form</div>'
+      const html =
+        '<div onsubmit="a()" onkeydown="b()" onkeyup="c()">Form</div>'
       const result = sanitizeHtml(html)
       expect(result).not.toContain('onsubmit')
       expect(result).not.toContain('onkeydown')
@@ -223,7 +227,8 @@ describe('sanitizeHtml', () => {
     })
 
     it('should handle form action javascript:', () => {
-      const html = '<form action="javascript:alert(1)"><input type="submit"></form>'
+      const html =
+        '<form action="javascript:alert(1)"><input type="submit"></form>'
       // Note: The sanitizer only removes javascript: from href/src, not action
       // This is a known limitation - action is not covered
       const result = sanitizeHtml(html)
@@ -274,8 +279,7 @@ describe('sanitizeHtml', () => {
     })
 
     it('should handle deeply nested HTML', () => {
-      const html =
-        '<div><div><div><p><span>Deep</span></p></div></div></div>'
+      const html = '<div><div><div><p><span>Deep</span></p></div></div></div>'
       const result = sanitizeHtml(html)
       expect(result).toContain('Deep')
     })

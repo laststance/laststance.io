@@ -15,7 +15,11 @@ const createMockFeed = (content: string): ValidatedFeed => ({
     uri: 'http://example.com',
   },
   content: { '@_type': 'html', '#text': content },
-  link: { '@_href': 'http://example.com', '@_rel': 'alternate', '@_type': 'text/html' },
+  link: {
+    '@_href': 'http://example.com',
+    '@_rel': 'alternate',
+    '@_type': 'text/html',
+  },
   'media:thumbnail': {
     '@_height': '30',
     '@_url': 'http://example.com/thumb.jpg',

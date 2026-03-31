@@ -23,7 +23,8 @@ const title = 'Projects'
 
 export const metadata: Metadata = {
   title: title,
-  description: 'Laststance.io Projects - Eliminating complexity from web development.',
+  description:
+    'Laststance.io Projects - Eliminating complexity from web development.',
   openGraph: {
     title,
     images: [`/api/og?title=${title}`],
@@ -351,7 +352,11 @@ export default function Projects() {
 
         {/* Icon Credits - Minimal footer */}
         <Box as="section" mt={16}>
-          <Text as="p" variant="caption" className="text-xs text-zinc-400 dark:text-zinc-500">
+          <Text
+            as="p"
+            variant="caption"
+            className="text-xs text-zinc-400 dark:text-zinc-500"
+          >
             Icons by{' '}
             <a
               href="https://icons8.com"

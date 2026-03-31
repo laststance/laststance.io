@@ -208,15 +208,17 @@ export type Feed = {
   updated: string
 
   // Required in most cases (alternate link required when present)
-  link: {
-    '@_href': string
-    '@_rel': string
-    '@_type': string
-  } | {
-    '@_href': string
-    '@_rel': string
-    '@_type': string
-  }[]
+  link:
+    | {
+        '@_href': string
+        '@_rel': string
+        '@_type': string
+      }
+    | {
+        '@_href': string
+        '@_rel': string
+        '@_type': string
+      }[]
 
   // Conditional/Optional fields (may not exist in XML)
   author?: {
