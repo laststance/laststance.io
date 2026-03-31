@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const FeedItem: React.FC<Props> = ({ feed }) => (
-  <li className="FeedItem_container max-xs:max-w-[340px] group transition-all duration-200">
+  <li className="FeedItem_container max-xs:max-w-85 group transition-all duration-200">
     <dd
       className="text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 
                    bg-linear-to-br from-zinc-50 to-white dark:from-zinc-800/50 dark:to-zinc-900/30 
