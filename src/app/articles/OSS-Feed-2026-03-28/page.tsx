@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+
 import Content, { article } from './content.mdx'
 export const metadata: Metadata = {
   title: article.title,
