@@ -129,7 +129,7 @@ const keybinds: KeybindsList = {
       'New File': 'CMD N',
       'New Folder': 'CMD D',
       Rename: '^ R',
-      Delete: 'CMDDelete',
+      Delete: 'CMD Delete',
       'Copy Relative File Path': 'CMD Shift C',
     },
     'IDE Feature': {
