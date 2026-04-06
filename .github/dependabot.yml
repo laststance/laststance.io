@@ -4,7 +4,7 @@ updates:
     # Files stored in `app` directory
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'daily'
     open-pull-requests-limit: 10
     groups:
       all-dependencies:
