@@ -35,3 +35,13 @@
 - Each PR should outline the change, testing performed, and any environment toggles; attach screenshots or recordings for UI-impacting work.
 - Keep diffs focused—split unrelated changes—and ensure lint, tests, and type checks pass before requesting review.
 - Tag reviewers familiar with the affected area and note any follow-up tasks or post-deploy toggles in the PR description.
+
+## Cursor Cloud specific instructions
+
+- **Dev server**: `pnpm dev` runs on port 3939 (not the default 3000). Access at `http://localhost:3939`.
+- **Build**: `pnpm build` uses `--webpack` flag. The GitHub feed fetch may show `AbortError` for pages beyond available data during static generation — this is expected and non-blocking.
+- **Env vars**: `PERSONAL_ACCESS_TOKEN` and `NEXT_PUBLIC_SITE_URL` are optional (see `src/env.mjs`). The site works without them — GitHub activity feed degrades gracefully.
+- **E2E tests**: Per the user's rules, Playwright requires a production build first: `pnpm build && pnpm exec playwright test --reporter=list`. Browsers must be installed via `npx playwright install --with-deps` before first run.
+- **Storybook**: Runs on port 6066 via `pnpm storybook`. Storybook tests use a separate vitest config: `pnpm test:storybook`.
+- **Pre-commit hook**: Husky runs `lint-staged` (Prettier) on commit. This is already set up via the `husky` devDependency.
+- See `package.json` scripts and the README for all standard commands.
