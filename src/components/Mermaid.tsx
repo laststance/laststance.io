@@ -1,7 +1,9 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+
+import { MermaidLightbox } from '@/components/MermaidLightbox'
 
 interface MermaidProps {
   chart: string
@@ -13,11 +15,16 @@ interface MermaidProps {
  * Mermaid is loaded via dynamic import so it stays out of the SSR bundle and
  * is only fetched on pages that actually contain a diagram. The component
  * re-renders the SVG whenever the chart text or the resolved theme changes,
- * which keeps it consistent with the site-wide light/dark toggle.
+ * which keeps it consistent with the site-wide light/dark toggle. Once
+ * rendered, the diagram becomes a clickable trigger that opens a fullscreen
+ * {@link MermaidLightbox} for pan & zoom inspection.
  *
  * @param chart - Raw Mermaid source (e.g. a `sequenceDiagram` block).
- * @returns A `<div>` containing the rendered SVG, or the original source as a
- *   fallback while loading or after a parse error.
+ * @returns
+ * - While loading: a `<div>` skeleton with `aria-busy="true"`.
+ * - On parse error: a `<pre>` containing the original source.
+ * - Once rendered: a `<button>` wrapping the SVG plus a {@link MermaidLightbox}
+ *   that opens when the button is activated.
  * @example
  * <Mermaid chart={`sequenceDiagram\n  A->>B: hi`} />
  */
@@ -30,6 +37,8 @@ export function Mermaid({ chart }: MermaidProps) {
   const { resolvedTheme } = useTheme()
   const [svg, setSvg] = useState<string | null>(null)
   const [hasError, setHasError] = useState(false)
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -96,11 +105,28 @@ export function Mermaid({ chart }: MermaidProps) {
   }
 
   return (
-    <div
-      className="not-prose my-6 flex justify-center overflow-x-auto rounded-2xl bg-zinc-50 p-4 ring-1 ring-zinc-200/60 dark:bg-zinc-900/40 dark:ring-zinc-800/60 [&>svg]:h-auto [&>svg]:max-w-full"
-      // Mermaid output is a self-contained SVG string that we control end-to-end.
-      // securityLevel: 'strict' above sandboxes user-supplied diagram text.
-      dangerouslySetInnerHTML={{ __html: svg }}
-    />
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={() => setIsLightboxOpen(true)}
+        aria-label="Open diagram in fullscreen viewer"
+        className="not-prose my-6 block w-full cursor-zoom-in rounded-2xl bg-zinc-50 p-4 text-left ring-1 ring-zinc-200/60 transition hover:ring-zinc-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-400 dark:bg-zinc-900/40 dark:ring-zinc-800/60 dark:hover:ring-zinc-700"
+      >
+        <div
+          className="flex justify-center overflow-x-auto [&>svg]:h-auto [&>svg]:max-w-full"
+          // Mermaid output is a self-contained SVG string that we control end-to-end.
+          // securityLevel: 'strict' above sandboxes user-supplied diagram text.
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+      </button>
+      <MermaidLightbox
+        open={isLightboxOpen}
+        onOpenChange={setIsLightboxOpen}
+        svg={svg}
+        safeId={safeId}
+        triggerRef={triggerRef}
+      />
+    </>
   )
 }
