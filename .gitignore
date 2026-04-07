@@ -65,3 +65,4 @@ storybook-static
 .idea/
 .qodo/
 .playwright-mcp/
+package-lock.json

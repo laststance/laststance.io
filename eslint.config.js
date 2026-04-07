@@ -2,11 +2,19 @@
 import nextNext from '@next/eslint-plugin-next'
 import { defineConfig } from 'eslint/config'
 import tsPreFixer from 'eslint-config-ts-prefixer'
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import storybook from 'eslint-plugin-storybook'
 
 export default defineConfig([
   ...tsPreFixer,
+  {
+    settings: {
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver({ alwaysTryTypes: true }),
+      ],
+    },
+  },
   {
     ignores: [
       '**/.vscode/**',
