@@ -28,20 +28,29 @@ This post explains the implementation and the pitfalls that actually mattered.
 
 The architecture that worked for me is a **system browser + deep link handoff**.
 
-```text
-Electron login button
-  -> shell.openExternal("https://app.example.com/oauth/start?provider=google&state=...")
-  -> /oauth/start calls Clerk signIn.authenticateWithRedirect()
-  -> Clerk redirects to Google
-  -> Google redirects back to Clerk
-  -> Clerk redirects to /oauth/sso-callback
-  -> <AuthenticateWithRedirectCallback /> completes the browser-side flow
-  -> Clerk redirects to /oauth/callback
-  -> /oauth/callback calls /api/oauth/create-signin-token
-  -> Browser redirects to corelive://oauth/callback?state=...&token=...
-  -> Electron receives the deep link
-  -> Electron renderer exchanges the token with Clerk's ticket strategy
-  -> Electron activates its own Clerk session
+```mermaid
+sequenceDiagram
+    autonumber
+    participant E as Electron App
+    participant B as System Browser
+    participant C as Clerk
+    participant G as Google
+    participant S as Next.js Server
+
+    E->>B: shell.openExternal("/oauth/start?provider=google&state=...")
+    B->>C: signIn.authenticateWithRedirect()
+    C->>G: redirect to Google sign-in
+    G-->>C: redirect back with auth code
+    C->>B: redirect to /oauth/sso-callback
+    Note over B: AuthenticateWithRedirectCallback<br/>finishes the browser session
+    C->>B: redirect to /oauth/callback
+    B->>S: POST /api/oauth/create-signin-token
+    S-->>B: short-lived sign-in token
+    B->>E: redirect to corelive://oauth/callback?state=...&token=...
+    Note over E: Main process receives<br/>the deep link
+    E->>C: signIn.create({ strategy: "ticket", ticket })
+    C-->>E: createdSessionId
+    Note over E: setActive(session)<br/>renderer is now signed in
 ```
 
 That is the key idea:
