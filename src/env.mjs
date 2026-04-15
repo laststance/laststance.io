@@ -4,6 +4,7 @@ import { z } from 'zod'
 export const env = createEnv({
   server: {
     PERSONAL_ACCESS_TOKEN: z.string().min(1).startsWith('ghp_').optional(),
+    REVALIDATE_SECRET: z.string().min(16).optional(),
   },
 
   client: {
@@ -13,6 +14,7 @@ export const env = createEnv({
   runtimeEnv: {
     PERSONAL_ACCESS_TOKEN: process.env.PERSONAL_ACCESS_TOKEN,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    REVALIDATE_SECRET: process.env.REVALIDATE_SECRET,
   },
 
   skipValidation:
