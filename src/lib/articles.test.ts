@@ -57,14 +57,13 @@ describe('articles', () => {
       })
     })
 
-    it('should handle empty article list', async () => {
+    it('should throw on empty article list to prevent cache poisoning', async () => {
       const glob = await import('fast-glob')
       vi.mocked(glob.default).mockResolvedValue([])
 
-      const articles = await getAllArticles()
-
-      expect(articles).toHaveLength(0)
-      expect(articles).toEqual([])
+      await expect(getAllArticles()).rejects.toThrow(
+        'getAllArticles: glob returned no MDX files',
+      )
     })
 
     // TODO: Fix dynamic import mocking for vitest 4.0
@@ -82,7 +81,7 @@ describe('articles', () => {
       const mockGlob = vi.mocked(glob.default)
       mockGlob.mockResolvedValue([])
 
-      await getAllArticles()
+      await expect(getAllArticles()).rejects.toThrow()
 
       expect(mockGlob).toHaveBeenCalledWith('*/content.mdx', {
         cwd: path.resolve(process.cwd(), 'src/app/articles'),
