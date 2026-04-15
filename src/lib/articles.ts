@@ -37,6 +37,11 @@ async function importArticle(
  * Wrapped with unstable_cache so the glob result persists across ISR
  * revalidations on Vercel, where source .mdx files may not exist in
  * the serverless function's compiled output.
+ *
+ * Throws if the glob returns empty — prevents cache poisoning when
+ * the serverless runtime can't access MDX files. `revalidate: 3600`
+ * floor ensures stale entries (e.g., added articles) refresh hourly
+ * instead of living forever under the default 1-year TTL.
  * @returns Sorted array of articles (newest first)
  * @example
  * const articles = await getAllArticles()
@@ -48,10 +53,16 @@ export const getAllArticles = unstable_cache(
       cwd: path.join(__dirname, '../app/articles'),
     })
 
+    if (articleFilenames.length === 0) {
+      throw new Error(
+        'getAllArticles: glob returned no MDX files — refusing to cache empty result',
+      )
+    }
+
     const articles = await Promise.all(articleFilenames.map(importArticle))
 
     return articles.sort((a, z) => +new Date(z.date) - +new Date(a.date))
   },
   ['all-articles'],
-  { tags: ['all-articles'] },
+  { tags: ['all-articles'], revalidate: 3600 },
 )
