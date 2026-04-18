@@ -8,7 +8,10 @@
     "node": ">=22"
   },
   "lint-staged": {
-    "*": "prettier --ignore-unknown --write"
+    "*": "prettier --ignore-unknown --write",
+    "*.{js,ts,jsx,tsx,cjs,mjs}": [
+      "eslint --fix --max-warnings=0 --no-warn-ignored"
+    ]
   },
   "browserslist": [
     "last 1 version"
