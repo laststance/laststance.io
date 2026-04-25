@@ -139,7 +139,7 @@ const keybinds: KeybindsList = {
       'Open refactor menu selected code': '^ T',
       'Show Reference/Usage': 'CMD U',
       'Show Context Menu': '^-c ^-c',
-      'Toggle Terminal': '^ \\',
+      'Toggle Terminal': 'CMD + 2',
       'Reload Window': '^-x ^-r',
       'Open Settings': '^ CMD ,',
       'ESLint  —fix': '^-x ^-x',
