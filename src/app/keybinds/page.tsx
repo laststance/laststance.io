@@ -92,7 +92,7 @@ const keybinds: KeybindsList = {
       'Surround With': 'Shift CMD T',
       'Surround With Snippet': '^ CMD T',
       'Wrapping selected HTML Tag: select children elements ->': '^ S',
-      'Delete Pararent HTML Tag(preserve children)(WebStorm)': '^ CMD D',
+      'Delete Pararent HTML Tag(preserve children)(WebStorm)': '^ CMD S',
     },
     Find: {
       'Find text in current single file': 'CMD F',
