@@ -262,7 +262,7 @@ export const CardExample: Story = {
         border="muted"
       >
         <VStack gap={4}>
-          <div className="h-40 w-full rounded-xl bg-gradient-to-br from-teal-400 to-teal-600" />
+          <div className="h-40 w-full rounded-xl bg-linear-to-br from-teal-400 to-teal-600" />
           <VStack gap={2}>
             <Text variant="overline" color="accent">
               Featured

@@ -95,7 +95,7 @@ export function Mermaid({ chart }: MermaidProps) {
     return (
       <div
         aria-busy="true"
-        className="not-prose my-6 flex min-h-[120px] items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200/60 dark:bg-zinc-900/40 dark:ring-zinc-800/60"
+        className="not-prose my-6 flex min-h-30 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200/60 dark:bg-zinc-900/40 dark:ring-zinc-800/60"
       >
         <span className="text-sm text-zinc-500 dark:text-zinc-400">
           Loading diagram…

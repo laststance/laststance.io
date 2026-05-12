@@ -181,7 +181,7 @@ export function ProjectListItem({
           style={{ overflow: 'hidden' }}
           aria-hidden={!isExpanded}
         >
-          <div className="pt-6 pl-16 sm:pl-[72px]">
+          <div className="pt-6 pl-16 sm:pl-18">
             {/* Mobile category */}
             <Text
               as="span"

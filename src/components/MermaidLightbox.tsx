@@ -252,48 +252,42 @@ function useZoomPan(enabled: boolean): UseZoomPanResult {
     lastPinchDistRef.current = null
   }, [])
 
-  const onPointerDown = useCallback(
-    (e: ReactPointerEvent<HTMLDivElement>) => {
-      e.currentTarget.setPointerCapture(e.pointerId)
+  const onPointerDown = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId)
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    if (pointersRef.current.size === 2) {
+      const [a, b] = Array.from(pointersRef.current.values())
+      lastPinchDistRef.current = Math.hypot(a.x - b.x, a.y - b.y)
+    }
+  }, [])
+
+  const onPointerMove = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
+    const previous = pointersRef.current.get(e.pointerId)
+    if (!previous) return
+
+    if (pointersRef.current.size === 1) {
+      // Single-pointer drag → pan
+      const dx = e.clientX - previous.x
+      const dy = e.clientY - previous.y
       pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-      if (pointersRef.current.size === 2) {
-        const [a, b] = Array.from(pointersRef.current.values())
-        lastPinchDistRef.current = Math.hypot(a.x - b.x, a.y - b.y)
-      }
-    },
-    [],
-  )
+      setX((current) => current + dx)
+      setY((current) => current + dy)
+      return
+    }
 
-  const onPointerMove = useCallback(
-    (e: ReactPointerEvent<HTMLDivElement>) => {
-      const previous = pointersRef.current.get(e.pointerId)
-      if (!previous) return
-
-      if (pointersRef.current.size === 1) {
-        // Single-pointer drag → pan
-        const dx = e.clientX - previous.x
-        const dy = e.clientY - previous.y
-        pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-        setX((current) => current + dx)
-        setY((current) => current + dy)
-        return
+    if (pointersRef.current.size === 2) {
+      // Two-pointer pinch → zoom by distance ratio
+      pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const [a, b] = Array.from(pointersRef.current.values())
+      const dist = Math.hypot(a.x - b.x, a.y - b.y)
+      const lastDist = lastPinchDistRef.current
+      if (lastDist && lastDist > 0) {
+        const ratio = dist / lastDist
+        setScale((current) => clamp(current * ratio, MIN_SCALE, MAX_SCALE))
       }
-
-      if (pointersRef.current.size === 2) {
-        // Two-pointer pinch → zoom by distance ratio
-        pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-        const [a, b] = Array.from(pointersRef.current.values())
-        const dist = Math.hypot(a.x - b.x, a.y - b.y)
-        const lastDist = lastPinchDistRef.current
-        if (lastDist && lastDist > 0) {
-          const ratio = dist / lastDist
-          setScale((current) => clamp(current * ratio, MIN_SCALE, MAX_SCALE))
-        }
-        lastPinchDistRef.current = dist
-      }
-    },
-    [],
-  )
+      lastPinchDistRef.current = dist
+    }
+  }, [])
 
   const onPointerUp = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
     pointersRef.current.delete(e.pointerId)

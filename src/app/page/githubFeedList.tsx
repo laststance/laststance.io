@@ -9,13 +9,13 @@ export async function GithubFeedList() {
   return (
     <section
       data-react-component="GithubFeedList"
-      className="max-xs:w-[340px] max-sm:w-[360px] md:w-[380px] max-lg:m-auto"
+      className="max-xs:w-85 max-sm:w-90 md:w-95 max-lg:m-auto"
     >
-      <h2 className="flex items-center gap-4 text-2xl font-bold tracking-[-0.025em] text-zinc-900 dark:text-zinc-50 mb-8">
+      <h2 className="flex items-center gap-4 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-8">
         <BriefcaseIcon className="h-7 w-7 flex-none text-teal-500 dark:text-teal-400" />
         <span>GitHub Activity</span>
       </h2>
-      <ol className="space-y-6 flex flex-col max-xs:max-w-[340px] h-[730px] overflow-y-scroll overflow-x-clip px-1">
+      <ol className="space-y-6 flex flex-col max-xs:max-w-85 h-182.5 overflow-y-scroll overflow-x-clip px-1">
         {githubFeedList.length > 0 ? (
           githubFeedList.map(
             (feed, i) => feed && <FeedItem key={i} feed={feed} />,

@@ -88,11 +88,11 @@ If you are wondering what this pattern is called, “**system browser OAuth with
 
 In my case, I ended up with four dedicated routes:
 
-| Route                           | Purpose |
-| ------------------------------- | ------- |
-| `/oauth/start`                  | Starts Clerk OAuth in the system browser |
-| `/oauth/sso-callback`           | Hosts Clerk's `<AuthenticateWithRedirectCallback />` |
-| `/oauth/callback`               | Creates a one-time sign-in token and redirects to Electron |
+| Route                            | Purpose                                                     |
+| -------------------------------- | ----------------------------------------------------------- |
+| `/oauth/start`                   | Starts Clerk OAuth in the system browser                    |
+| `/oauth/sso-callback`            | Hosts Clerk's `<AuthenticateWithRedirectCallback />`        |
+| `/oauth/callback`                | Creates a one-time sign-in token and redirects to Electron  |
 | `/api/oauth/create-signin-token` | Server route that mints the short-lived Clerk sign-in token |
 
 Keeping these responsibilities separate made the flow much easier to debug.
@@ -106,8 +106,7 @@ On the Electron side, I generate a `state` value, build the OAuth start URL, and
 ```ts
 const state = crypto.randomBytes(32).toString('hex')
 
-const oauthUrl =
-  `${getWebAppOrigin()}/oauth/start?provider=google&state=${state}`
+const oauthUrl = `${getWebAppOrigin()}/oauth/start?provider=google&state=${state}`
 
 await shell.openExternal(oauthUrl)
 ```
@@ -144,7 +143,7 @@ This distinction is critical:
 
 - `redirectUrl` is **not** your final destination
 - `redirectUrl` should point to the route that runs Clerk's redirect callback logic
-- `redirectUrlComplete` is where you continue *after Clerk has finalized the browser session*
+- `redirectUrlComplete` is where you continue _after Clerk has finalized the browser session_
 
 If you skip that separation and try to jump directly from Google back into your own bridge page, the flow becomes fragile.
 
@@ -234,8 +233,7 @@ Clerk's sign-in token API defaults to a much longer expiration window, but for a
 On `/oauth/callback`, after the token is created, the browser redirects back into the desktop app:
 
 ```ts
-const deepLink =
-  `corelive://oauth/callback?state=${encodeURIComponent(state)}&token=${encodeURIComponent(token)}`
+const deepLink = `corelive://oauth/callback?state=${encodeURIComponent(state)}&token=${encodeURIComponent(token)}`
 
 window.location.href = deepLink
 ```
@@ -256,10 +254,7 @@ const signInAttempt = await client.signIn.create({
   ticket: token,
 })
 
-if (
-  signInAttempt.status === 'complete' &&
-  signInAttempt.createdSessionId
-) {
+if (signInAttempt.status === 'complete' && signInAttempt.createdSessionId) {
   await setActive({
     session: signInAttempt.createdSessionId,
     navigate: ({ decorateUrl }) => {

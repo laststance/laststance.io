@@ -26,19 +26,19 @@ type Story = StoryObj
 
 export const Twitter: Story = {
   render: () => (
-    <TwitterIcon className="h-[24px] w-[24px] fill-(--color-zinc-500) transition hover:fill-zinc-600 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
+    <TwitterIcon className="h-6 w-6 fill-zinc-500 transition hover:fill-zinc-600 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
   ),
 }
 
 export const Instagram: Story = {
   render: () => (
-    <InstagramIcon className="h-[24px] w-[24px] fill-(--color-zinc-500) transition hover:fill-zinc-600 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
+    <InstagramIcon className="h-6 w-6 fill-zinc-500 transition hover:fill-zinc-600 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
   ),
 }
 
 export const GitHub: Story = {
   render: () => (
-    <GitHubIcon className="h-[24px] w-[24px] fill-(--color-zinc-500) transition hover:fill-zinc-600 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
+    <GitHubIcon className="h-6 w-6 fill-zinc-500 transition hover:fill-zinc-600 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
   ),
 }
 

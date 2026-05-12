@@ -31,7 +31,7 @@ export const Default: Story = {
   decorators: [
     () => (
       <AvatarContainer>
-        <div className="h-full w-full rounded-full bg-gradient-to-br from-teal-400 to-teal-600" />
+        <div className="h-full w-full rounded-full bg-linear-to-br from-teal-400 to-teal-600" />
       </AvatarContainer>
     ),
   ],
