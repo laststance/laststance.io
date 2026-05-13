@@ -244,8 +244,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(prettier@3.8.3)
       prettier-plugin-tailwindcss-canonical-classes:
-        specifier: file:/Users/ryotamurakami/.cache/tailwindcss-canonical-local-packs/prettier-plugin-tailwindcss-canonical-classes-0.1.4.tgz
-        version: file:../../../.cache/tailwindcss-canonical-local-packs/prettier-plugin-tailwindcss-canonical-classes-0.1.4.tgz(prettier@3.8.3)(tailwindcss@4.3.0)
+        specifier: 0.1.4
+        version: 0.1.4(prettier@3.8.3)(tailwindcss@4.3.0)
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
@@ -2501,9 +2501,6 @@ packages:
 
   '@types/mysql@2.15.27':
     resolution: {integrity: sha512-YfWiV16IY0OeBfBCk8+hXKmdTKrKlwKN1MNKAPBu5JYxLwBEZl7QzeEpGnlZb3VMGJrrGmB84gXiH+ofs/TezA==}
-
-  '@types/node@25.6.0':
-    resolution: {integrity: sha512-+qIYRKdNYJwY3vRCZMdJbPLJAtGjQBudzZzdzwQYkEPQd+PJGixUL5QfvCLDaULoLv+RhT3LDkwEfKaAkgSmNQ==}
 
   '@types/node@25.7.0':
     resolution: {integrity: sha512-z+pdZyxE+RTQE9AcboAZCb4otwcrvgHD+GlBpPgn0emDVt0ohrTMhAwlr2Wd9nZ+nihhYFxO2pThz3C5qSu2Eg==}
@@ -5157,9 +5154,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier-plugin-tailwindcss-canonical-classes@file:../../../.cache/tailwindcss-canonical-local-packs/prettier-plugin-tailwindcss-canonical-classes-0.1.4.tgz:
-    resolution: {integrity: sha512-zQv+NALQ+39RdpFy6DTmUCtfGLKZXARPUcC4xmGOOx5nQ7JOEZmnZ3tEHQPsW3QxQu2PiCO3sYcIds23UePH9Q==, tarball: file:../../../.cache/tailwindcss-canonical-local-packs/prettier-plugin-tailwindcss-canonical-classes-0.1.4.tgz}
-    version: 0.1.4
+  prettier-plugin-tailwindcss-canonical-classes@0.1.4:
+    resolution: {integrity: sha512-jlNx0B7BlIAWjArIsbn03SqSfLDHhcZNDAfIZrLh2V7/2PmbqGZh97S46FjbpVfp8Edt7Felj07ec6EhbmR7EQ==}
     engines: {node: '>=18'}
     peerDependencies:
       prettier: ^3.0.0
@@ -5906,9 +5902,6 @@ packages:
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
-
-  undici-types@7.19.2:
-    resolution: {integrity: sha512-qYVnV5OEm2AW8cJMCpdV20CDyaN3g0AjDlOGf1OW4iaDEx8MwdtChUp4zu4H0VP3nDRF/8RKWH+IPp9uW0YGZg==}
 
   undici-types@7.21.0:
     resolution: {integrity: sha512-w9IMgQrz4O0YN1LtB7K5P63vhlIOvC7opSmouCJ+ZywlPAlO9gIkJ+otk6LvGpAs2wg4econaCz3TvQ9xPoyuQ==}
@@ -8609,10 +8602,6 @@ snapshots:
     dependencies:
       '@types/node': 25.7.0
 
-  '@types/node@25.6.0':
-    dependencies:
-      undici-types: 7.19.2
-
   '@types/node@25.7.0':
     dependencies:
       undici-types: 7.21.0
@@ -10665,7 +10654,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 25.6.0
+      '@types/node': 25.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -11712,7 +11701,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-tailwindcss-canonical-classes@file:../../../.cache/tailwindcss-canonical-local-packs/prettier-plugin-tailwindcss-canonical-classes-0.1.4.tgz(prettier@3.8.3)(tailwindcss@4.3.0):
+  prettier-plugin-tailwindcss-canonical-classes@0.1.4(prettier@3.8.3)(tailwindcss@4.3.0):
     dependencies:
       '@laststance/tailwindcss-canonical-classes-core': 0.1.0(tailwindcss@4.3.0)
       prettier: 3.8.3
@@ -12524,8 +12513,6 @@ snapshots:
       has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
-
-  undici-types@7.19.2: {}
 
   undici-types@7.21.0: {}
 

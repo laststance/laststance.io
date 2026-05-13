@@ -121,7 +121,7 @@
     "lint-staged": "^17.0.4",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
-    "prettier-plugin-tailwindcss-canonical-classes": "file:/Users/ryotamurakami/.cache/tailwindcss-canonical-local-packs/prettier-plugin-tailwindcss-canonical-classes-0.1.4.tgz",
+    "prettier-plugin-tailwindcss-canonical-classes": "0.1.4",
     "remark-gfm": "^4.0.1",
     "sharp": "0.34.5",
     "storybook": "^10.3.6",
