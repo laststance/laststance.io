@@ -29,7 +29,10 @@ const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: ['remark-gfm'],
-    rehypePlugins: ['@mapbox/rehype-prism'],
+    rehypePlugins: [
+      // MDX snippets contain JSX-like syntax, but refractor does not register an `mdx` grammar.
+      ['@mapbox/rehype-prism', { alias: { jsx: ['mdx'] } }],
+    ],
   },
 })
 

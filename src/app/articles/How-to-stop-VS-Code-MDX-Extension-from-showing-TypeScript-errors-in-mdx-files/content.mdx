@@ -1,0 +1,226 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title:
+    'How to stop VS Code MDX Extension from showing TypeScript errors in .mdx files',
+  date: '2026-05-12',
+  description:
+    'A practical fix for TS1434 and other false TypeScript errors in MDX files by using a local tsconfig, the MDX TypeScript plugin, and remark-frontmatter.',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+If you install the **MDX** extension for VS Code and suddenly start seeing TypeScript errors such as `TS1434`, `TS2304`, or `with statements are not allowed in strict mode` inside `.mdx` files, the problem is often **not your MDX content**.
+
+In my case, YAML frontmatter and even plain markdown body text were being parsed as if they were raw TypeScript.
+
+This post documents the setup that actually fixed it.
+
+---
+
+## The Symptom
+
+The errors looked like this:
+
+```text
+Unexpected keyword or identifier. ts-plugin(1434)
+Cannot find name 'start'. ts-plugin(2304)
+'with' statements are not allowed in strict mode.
+```
+
+And they appeared on content like this:
+
+```mdx
+---
+title: Installation
+description: Installing @dnd-kit/core
+---
+
+<Note>There is a new version available.</Note>
+```
+
+If you are seeing that, the MDX extension is usually failing to apply the right MDX-aware TypeScript configuration to that folder.
+
+---
+
+## Why This Happens
+
+The VS Code MDX extension is backed by the MDX language server and a TypeScript plugin.
+
+That means the editor experience depends on **which TypeScript project the `.mdx` file belongs to**.
+
+The failure mode I hit was this:
+
+- my MDX files lived in a subtree that was excluded from the root `tsconfig.json`
+- the MDX subtree did not have its own TypeScript project close enough to the files
+- frontmatter support was not being applied
+- the `.mdx` file fell back into a bad parse path and markdown text started surfacing as TypeScript syntax errors
+
+So the fix was not “change the markdown”.
+The fix was to give that MDX subtree its own TypeScript context.
+
+---
+
+## The Fix That Worked
+
+### 1. Install the MDX TypeScript plugin and frontmatter plugin
+
+```bash
+pnpm add -D @mdx-js/typescript-plugin remark-frontmatter
+```
+
+The important part here is that the TypeScript plugin name in `tsconfig.json` is `@mdx-js/typescript-plugin`, so I installed that exact package locally.
+
+---
+
+### 2. Add a local `tsconfig.json` next to the MDX subtree
+
+In my case, the MDX files lived under `legacy/`, so I added `legacy/tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": false,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "plugins": [
+      {
+        "name": "@mdx-js/typescript-plugin"
+      }
+    ]
+  },
+  "include": ["**/*.d.ts", "**/*.mdx"],
+  "mdx": {
+    "plugins": [["remark-frontmatter", ["yaml"]]]
+  }
+}
+```
+
+Two details matter a lot here:
+
+- `plugins` enables the MDX-aware TypeScript behavior
+- `mdx.plugins` enables YAML frontmatter parsing
+
+If your MDX files are in a different folder, create the local `tsconfig.json` in that folder instead.
+
+---
+
+### 3. Add an MDX module declaration file
+
+I also added `legacy/mdx-env.d.ts`:
+
+```ts
+declare module '*.mdx' {
+  import type { ComponentType } from 'react'
+
+  const MDXComponent: ComponentType<Record<string, unknown>>
+
+  export default MDXComponent
+}
+```
+
+This helps the local TypeScript project become a real project and avoids the common `TS18003: No inputs were found in config file` issue when the folder only contains `.mdx` files.
+
+---
+
+### 4. Reload VS Code or restart the TypeScript server
+
+After adding the files above, reload the window or restart the TS server.
+
+That step matters because the extension and TypeScript server may keep holding onto the old project graph.
+
+---
+
+## My Exact Working Setup
+
+The relevant pieces ended up looking like this:
+
+### Root `package.json`
+
+```json
+{
+  "devDependencies": {
+    "@mdx-js/typescript-plugin": "^0.1.3",
+    "remark-frontmatter": "^5.0.0"
+  }
+}
+```
+
+### MDX subtree `tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": false,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "plugins": [
+      {
+        "name": "@mdx-js/typescript-plugin"
+      }
+    ]
+  },
+  "include": ["**/*.d.ts", "**/*.mdx"],
+  "mdx": {
+    "plugins": [["remark-frontmatter", ["yaml"]]]
+  }
+}
+```
+
+### MDX module declaration
+
+```ts
+declare module '*.mdx' {
+  import type { ComponentType } from 'react'
+
+  const MDXComponent: ComponentType<Record<string, unknown>>
+
+  export default MDXComponent
+}
+```
+
+Once I had those in place, the false TypeScript errors in `.mdx` files disappeared.
+
+---
+
+## If You Still See Errors
+
+If the errors are still there, check these points:
+
+- Is the `.mdx` file inside a folder excluded by the root `tsconfig.json`?
+- Did you put the local `tsconfig.json` in the same subtree as the MDX files?
+- Did you install `@mdx-js/typescript-plugin` locally?
+- Did you include `**/*.d.ts` as well as `**/*.mdx`?
+- Did you add `remark-frontmatter` under `mdx.plugins`?
+- Did you reload the VS Code window after changing TypeScript config?
+
+In my experience, the nearest `tsconfig.json` was the key.
+
+---
+
+## A Simpler Fallback
+
+If you do **not** need MDX IntelliSense and only want the red lines gone, the blunt fallback is to treat `*.mdx` as plain markdown in VS Code.
+
+But if you want to keep the MDX extension enabled and still avoid bogus TypeScript errors, the local `tsconfig.json` approach above is the better fix.
+
+---
+
+## Final Takeaway
+
+When VS Code MDX starts showing TypeScript syntax errors inside valid markdown, the root cause is often **project configuration**, not content.
+
+The working fix for me was:
+
+1. install `@mdx-js/typescript-plugin` and `remark-frontmatter`
+2. create a local `tsconfig.json` near the MDX files
+3. include both `**/*.d.ts` and `**/*.mdx`
+4. add `mdx-env.d.ts`
+5. reload VS Code
+
+If your MDX lives in a directory excluded from the root TypeScript project, this is the first thing I would try.
