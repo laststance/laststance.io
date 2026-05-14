@@ -101,7 +101,8 @@ function PaginationItem({
   rel,
 }: PaginationItemProps) {
   const className = cn(
-    'inline-flex h-9 min-w-9 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors',
+    // モバイル(< sm)は 44×44px (WCAG/HIG タップターゲット最小)、sm 以上は 36px に絞ってデスクトップでの主張を抑える
+    'inline-flex h-11 min-w-11 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors sm:h-9 sm:min-w-9',
     current
       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
       : 'text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800',
