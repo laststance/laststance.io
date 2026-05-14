@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { ThemeProvider, useTheme } from 'next-themes'
 import NextTopLoader from 'nextjs-toploader'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { createContext, useEffect } from 'react'
 
 import { usePrevious } from '@/hooks/usePrevious'
@@ -50,7 +51,7 @@ export function ProvidersClient({ children }: { children: React.ReactNode }) {
       />
       <ThemeProvider attribute="class" disableTransitionOnChange>
         <ThemeWatcher />
-        {children}
+        <NuqsAdapter>{children}</NuqsAdapter>
       </ThemeProvider>
     </AppContext.Provider>
   )
