@@ -10,6 +10,13 @@ export default defineConfig({
     // Define projects for workspace configuration (replaces vitest.workspace.ts)
     projects: [
       {
+        // Per-project resolve so the `@` alias works inside the workspace —
+        // top-level `resolve.alias` does not propagate into project contexts.
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
+        },
         test: {
           name: 'unit',
           environment: 'happy-dom',
