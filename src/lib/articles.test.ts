@@ -1,91 +1,48 @@
-import path from 'path'
+import { describe, it, expect, vi } from 'vitest'
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+// Mock the build-time manifest so the test asserts behavior of `getAllArticles`
+// against a known, hard-coded fixture (DAMP) rather than the real article list.
+vi.mock('./articles-manifest', () => ({
+  articlesManifest: [
+    {
+      slug: 'older-post',
+      title: 'Older Post',
+      author: 'Author A',
+      date: '2024-01-10',
+      description: 'An older entry',
+    },
+    {
+      slug: 'newer-post',
+      title: 'Newer Post',
+      author: 'Author B',
+      date: '2024-02-20',
+      description: 'A newer entry',
+    },
+  ],
+}))
 
 import { getAllArticles } from './articles'
 
-// Mock fast-glob
-vi.mock('fast-glob', () => ({
-  default: vi.fn(),
-}))
+describe('getAllArticles', () => {
+  it('returns every entry from the build-time manifest', async () => {
+    const articles = await getAllArticles()
 
-// Mock unstable_cache to pass through to the inner function
-vi.mock('next/cache', () => ({
-  unstable_cache: (fn: Function) => fn,
-}))
-
-describe('articles', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
+    expect(articles).toHaveLength(2)
+    expect(articles.map((article) => article.slug)).toEqual(
+      expect.arrayContaining(['older-post', 'newer-post']),
+    )
   })
 
-  describe('getAllArticles', () => {
-    // TODO: Fix dynamic import mocking for vitest 4.0
-    // These tests require MDX file mocking which doesn't work with dynamic imports
-    // See: https://github.com/vitest-dev/vitest/issues/XXXX
-    it.skip('should return all articles sorted by date (newest first)', async () => {
-      const glob = await import('fast-glob')
-      vi.mocked(glob.default).mockResolvedValue([
-        'article-1/content.mdx',
-        'article-2/content.mdx',
-        'article-3/content.mdx',
-      ])
+  it('exposes each entry as ArticleWithSlug (slug + frontmatter)', async () => {
+    const articles = await getAllArticles()
+    const newer = articles.find((article) => article.slug === 'newer-post')
 
-      const articles = await getAllArticles()
-
-      expect(articles).toHaveLength(3)
-      expect(articles[0]).toEqual({
-        slug: 'article-2',
-        title: 'Test Article 2',
-        author: 'Test Author',
-        date: '2024-02-20',
-        description: 'Description for test article 2',
-      })
-      expect(articles[1]).toEqual({
-        slug: 'article-1',
-        title: 'Test Article 1',
-        author: 'Test Author',
-        date: '2024-01-15',
-        description: 'Description for test article 1',
-      })
-      expect(articles[2]).toEqual({
-        slug: 'article-3',
-        title: 'Test Article 3',
-        author: 'Test Author',
-        date: '2024-01-10',
-        description: 'Description for test article 3',
-      })
-    })
-
-    it('should throw on empty article list to prevent cache poisoning', async () => {
-      const glob = await import('fast-glob')
-      vi.mocked(glob.default).mockResolvedValue([])
-
-      await expect(getAllArticles()).rejects.toThrow(
-        'getAllArticles: glob returned no MDX files',
-      )
-    })
-
-    // TODO: Fix dynamic import mocking for vitest 4.0
-    it.skip('should remove /content.mdx from slug', async () => {
-      const glob = await import('fast-glob')
-      vi.mocked(glob.default).mockResolvedValue(['article-1/content.mdx'])
-
-      const articles = await getAllArticles()
-
-      expect(articles[0].slug).toBe('article-1')
-    })
-
-    it('should call glob with correct parameters', async () => {
-      const glob = await import('fast-glob')
-      const mockGlob = vi.mocked(glob.default)
-      mockGlob.mockResolvedValue([])
-
-      await expect(getAllArticles()).rejects.toThrow()
-
-      expect(mockGlob).toHaveBeenCalledWith('*/content.mdx', {
-        cwd: path.resolve(process.cwd(), 'src/app/articles'),
-      })
+    expect(newer).toEqual({
+      slug: 'newer-post',
+      title: 'Newer Post',
+      author: 'Author B',
+      date: '2024-02-20',
+      description: 'A newer entry',
     })
   })
 })
