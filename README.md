@@ -55,6 +55,10 @@ The script automatically:
 - Creates a URL-friendly folder name based on the title
 - Sets up the proper article layout and metadata
 
+## Design Language
+
+The visual system — color tokens, typography scale, spacing grid, motion patterns, and editorial voice — is documented in [DESIGN.md](./DESIGN.md). It surfaces decisions already baked into `src/lib/design-tokens.ts` and the component primitives in `src/components/ui/primitives/`.
+
 ## License
 
 This site template is a commercial product and is licensed under the [Tailwind UI license](https://tailwindui.com/license).
