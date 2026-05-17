@@ -1,8 +1,5 @@
-import { Suspense } from 'react'
-
 import { Article } from '@/app/page/Article'
-import { GithubFeedList } from '@/app/page/githubFeedList'
-import { GithubFeedListSkeleton } from '@/app/page/GithubFeedListSkeleton'
+import { NowPanel } from '@/app/page/NowPanel'
 import { Photos } from '@/app/page/Photos'
 import { SocialLink } from '@/app/page/SocialLink'
 import { Container } from '@/components/Container'
@@ -14,12 +11,6 @@ import {
 } from '@/components/SocialIcons'
 import { Box, HStack, Text, VStack } from '@/components/ui/primitives'
 import { getAllArticles } from '@/lib/articles'
-
-/**
- * Enable ISR with 1-hour revalidation interval
- * Matches GitHub feed cache duration for consistent updates
- */
-export const revalidate = 3600
 
 export default async function Home() {
   const articles = (await getAllArticles()).slice(0, 4)
@@ -80,11 +71,8 @@ export default async function Home() {
               <Article key={article.slug} article={article} />
             ))}
           </VStack>
-          {/* Hide <GithubFeedList /> for Mobile */}
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <Suspense fallback={<GithubFeedListSkeleton />}>
-              <GithubFeedList />
-            </Suspense>
+            <NowPanel />
           </div>
         </div>
       </Container>
