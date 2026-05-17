@@ -56,18 +56,22 @@ test.describe('/articles pagination', () => {
     expect(firstTitleOnPage2).not.toBe(firstTitleOnPage1)
   })
 
-  test('out-of-range page=999 clamps to the last page without a client-side crash', async ({
+  test('out-of-range page renders a non-empty page without a client-side crash', async ({
     page,
   }) => {
     // 🪤 Regression guard for the Sentry incident where /articles threw
     //    "Application error: a client-side exception has occurred"
     //    because runtime fast-glob returned [] inside Vercel's serverless bundle.
+    //    The page-component now clamps over-range `page` query params to a valid
+    //    page; this test fails the moment a clamp returns zero articles or a
+    //    client-side exception escapes during render.
     const pageErrors: Error[] = []
     page.on('pageerror', (error) => pageErrors.push(error))
 
     await page.goto('/articles?page=999')
 
-    // Last page should render between 1 and ARTICLES_PER_PAGE articles — never zero.
+    // Any valid page must render between 1 and ARTICLES_PER_PAGE articles —
+    // never zero, which is the exact symptom of the Sentry incident.
     const articleHeadings = page.locator('article h2 a[href^="/articles/"]')
     const count = await articleHeadings.count()
     expect(count).toBeGreaterThan(0)
