@@ -182,7 +182,7 @@ export const articlesManifest: ArticleWithSlug[] = [
   },
   {
     "slug": "All-TypeScript-release-blog-list",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "All TypeScript release blog list",
     "date": "2026-02-16",
     "description": "Update continues"
@@ -196,7 +196,7 @@ export const articlesManifest: ArticleWithSlug[] = [
   },
   {
     "slug": "Laststance-Recap-January-2026",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Laststance Recap: January 2026",
     "date": "2026-02-05",
     "description": " "
@@ -210,21 +210,21 @@ export const articlesManifest: ArticleWithSlug[] = [
   },
   {
     "slug": "Laststance-Recap-November-2025",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Laststance Recap: November 2025",
     "date": "2025-12-05",
     "description": " "
   },
   {
     "slug": "speckit-really-isnt-practical-yet-by-Claude-Code",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "speckit really isn’t practical yet. (by Claude Code)",
     "date": "2025-11-16",
     "description": "A clip of conversation with Claude Code and Me"
   },
   {
     "slug": "Cursor-built-in-browser-tool-list",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Cursor built-in browser tool list",
     "date": "2025-11-15",
     "description": "A comprehensive guide to the 13 browser automation tools available in Cursor AI (v2.0.77) for automated testing, web scraping, and workflow automation."
@@ -238,14 +238,14 @@ export const articlesManifest: ArticleWithSlug[] = [
   },
   {
     "slug": "-eslint-config-ts-prefixer-v410-Released",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "🎉 eslint-config-ts-prefixer v4.1.0 Released!",
     "date": "2025-11-05",
     "description": " "
   },
   {
     "slug": "What-is-the-difference-between-position-fixed-and-sticky",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "What is the difference between position: fixed and sticky?",
     "date": "2025-06-23",
     "description": ""
@@ -259,28 +259,28 @@ export const articlesManifest: ArticleWithSlug[] = [
   },
   {
     "slug": "100-English-with-Lucy",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "100の日常英語フレーズ - English with Lucy",
     "date": "2025-05-29",
     "description": ""
   },
   {
     "slug": "How-to-use-fakerseed",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "How to use faker.seed()",
     "date": "2025-05-28",
     "description": ""
   },
   {
     "slug": "Ive-just-released-git-gpt-commit-v090",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "I've just released git-gpt-commit v0.9.0! 🎉",
     "date": "2025-05-08",
     "description": "A commit message generation for CLI"
   },
   {
     "slug": "I-created-Redux-Front-Page",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "I created Redux Front Page",
     "date": "2025-05-01",
     "description": ""
@@ -294,91 +294,91 @@ export const articlesManifest: ArticleWithSlug[] = [
   },
   {
     "slug": "CSS-attribute-selector",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "CSS attribute selector",
     "date": "2024-04-13",
     "description": "The underrated seclector form."
   },
   {
     "slug": "Wanna-be-indie-hacker-an-ordinary-person",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Wanna be indie hacker an ordinary person.",
     "date": "2024-01-29",
     "description": "reaching capacity limit?"
   },
   {
     "slug": "just-2024-list",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Just 2024 list",
     "date": "2024-01-18",
     "description": "Just a todo list"
   },
   {
     "slug": "Why-E2E-Testing-Matter",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Why E2E Testing Matter",
     "date": "2023-12-07",
     "description": "for a web application"
   },
   {
     "slug": "Trying-less-energy-coding",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Trying less energy coding",
     "date": "2023-11-19",
     "description": "generate with out extream focus by hand"
   },
   {
     "slug": "dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "dropped eslint-plugin-sort-keys-custom-order from eslint-config-ts-prefixer@v1.12.0",
     "date": "2023-10-28",
     "description": "I decide drop eslint-plugin-sort-keys-custom-order from ts-prefixer"
   },
   {
     "slug": "What-does-Yarn-aim-to-achieve",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "What does Yarn aim to achieve?",
     "date": "2023-10-26",
     "description": "I tried Yarn v4 but quit using it after being frustrated by the typescript project setup."
   },
   {
     "slug": "Deno-npm-compatibility-is-not-perfect-yet",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Deno npm compatibility is not perfect yet.",
     "date": "2023-09-02",
     "description": "I can't run @clack/prompts on Deno"
   },
   {
     "slug": "access-nested-class-with-nodule-scss-file",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Access nested class with `modules.scss` file",
     "date": "2023-08-21",
     "description": "way to reach nested selector via `styles` object."
   },
   {
     "slug": "what-is-font-family",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "What is font-family?",
     "date": "2023-08-19",
     "description": "explains the font-family property in CSS."
   },
   {
     "slug": "update-eslint-config-ts-prefixer@v0.23.3",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "Update eslint-config-ts-prefixer@v0.23.3",
     "date": "2023-08-17",
     "description": "Further update async/await/Promise rules."
   },
   {
     "slug": "vite-trk-query-update-v0.4.0",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "vite-trk-query-update-v0.4.0",
     "date": "2023-08-16",
     "description": "React Router and CSS Modules implovement."
   },
   {
     "slug": "first-blog-post",
-    "auhtor": "Ryota Murakami",
+    "author": "Ryota Murakami",
     "title": "A first blog Post",
     "date": "2023-08-04",
     "description": "Explain what is the Laststance.io."

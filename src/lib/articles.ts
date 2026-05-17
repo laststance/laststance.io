@@ -2,10 +2,7 @@ import { articlesManifest } from './articles-manifest'
 
 interface Article {
   title: string
-  /** Some legacy MDX files use the misspelled `auhtor` key. Both are optional
-   *  here so `articles-manifest.ts` (which mirrors the source verbatim) type-checks. */
-  author?: string
-  auhtor?: string
+  author: string
   date: string
   description: string
 }

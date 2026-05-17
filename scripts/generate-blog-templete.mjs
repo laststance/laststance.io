@@ -34,7 +34,7 @@ const mdxTemplate = `
 import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
-  auhtor: 'Ryota Murakami',
+  author: 'Ryota Murakami',
   title: '${title}',
   date: '${published_at()}',
   description: '${description}',

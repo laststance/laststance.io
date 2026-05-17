@@ -35,6 +35,7 @@
     "typecheck:watch": "tsc --watch",
     "clean": "rimraf .next node_modules tsconfig.tsbuildinfo pnpm-lock.yaml",
     "gen": "node ./scripts/generate-blog-templete.mjs",
+    "postgen": "node ./scripts/generate-articles-manifest.mjs",
     "gen:manifest": "node ./scripts/generate-articles-manifest.mjs",
     "playwright": "playwright test",
     "playwright:ui": "playwright test --ui",
