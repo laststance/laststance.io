@@ -9,72 +9,91 @@ test('/projects', async ({ page }, testInfo) => {
   )
 })
 
-test('Clean URL project should be displayed correctly', async ({ page }) => {
-  await page.goto('/projects')
-
-  // Find the Clean URL project card (article element with h2 title)
-  const cleanUrlCard = page.locator('article').filter({
-    has: page.locator('h2', { hasText: 'Clean URL' }),
-  })
-
-  // Check that the card exists
-  await expect(cleanUrlCard).toBeVisible()
-
-  // Check the project title (h2 in minimal list layout)
-  await expect(cleanUrlCard.locator('h2')).toHaveText('Clean URL')
-
-  // The link wraps the entire card content
-  const link = cleanUrlCard.locator(
-    'a[href="https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl"]',
-  )
-  await expect(link).toBeVisible()
-  await expect(link).toHaveAttribute('target', '_blank')
-
-  // Check that the Chrome logo is displayed
-  const logo = cleanUrlCard.locator('img').first()
-  await expect(logo).toBeVisible()
-})
-
-test('Coffee Timer project should be displayed correctly', async ({ page }) => {
-  await page.goto('/projects')
-
-  // Find the Coffee Timer project card (article element with h2 title)
-  const coffeeTimerCard = page.locator('article').filter({
-    has: page.locator('h2', { hasText: 'Coffee Timer' }),
-  })
-
-  // Check that the card exists
-  await expect(coffeeTimerCard).toBeVisible()
-
-  // Check the project title (h2 in minimal list layout)
-  await expect(coffeeTimerCard.locator('h2')).toHaveText('Coffee Timer')
-
-  // The link wraps the entire card content
-  const link = coffeeTimerCard.locator(
-    'a[href="https://github.com/laststance/coffee-timer"]',
-  )
-  await expect(link).toBeVisible()
-  await expect(link).toHaveAttribute('target', '_blank')
-
-  // Check that the Next.js logo is displayed
-  const logo = coffeeTimerCard.locator('img').first()
-  await expect(logo).toBeVisible()
-})
-
-test('Projects list should contain Clean URL and Coffee Timer', async ({
+test('featured Skills Desktop renders with Active status label', async ({
   page,
 }) => {
+  // Arrange
   await page.goto('/projects')
 
-  // Wait for the page to fully load and the project list to be rendered
-  // Project names are in h2 inside article elements (minimal list layout)
-  await page.waitForSelector('article h2', { state: 'visible' })
+  // Act: featured projects render inside <article> with h2 headings.
+  const skillsDesktopCard = page.locator('article').filter({
+    has: page.locator('h2', { hasText: 'Skills Desktop' }),
+  })
 
-  // Get all project titles (h2 elements inside articles)
-  const projectTitles = await page.locator('article h2').allTextContents()
+  // Assert: card is present, links externally, and shows ACTIVE status (uppercase via CSS).
+  await expect(skillsDesktopCard).toBeVisible()
+  await expect(
+    skillsDesktopCard.locator('a[href="https://skills-desktop.vercel.app/"]'),
+  ).toHaveAttribute('target', '_blank')
+  // Status label is rendered "Active" but transformed to "ACTIVE" via Tailwind `uppercase`.
+  // The label is duplicated in DOM (desktop block + mobile-expansion block) so we
+  // assert containment rather than count — the spec is "status text is wired to this card",
+  // not "rendered exactly once".
+  await expect(skillsDesktopCard).toContainText('Active')
+})
 
-  // Check that Clean URL exists in the list (position-independent)
-  expect(projectTitles).toContain('Clean URL')
-  // Check that Coffee Timer exists in the list
-  expect(projectTitles).toContain('Coffee Timer')
+test('featured electron-mcp-server renders with Experiment status label', async ({
+  page,
+}) => {
+  // Arrange
+  await page.goto('/projects')
+
+  // Act
+  const electronMcpCard = page.locator('article').filter({
+    has: page.locator('h2', { hasText: 'electron-mcp-server' }),
+  })
+
+  // Assert: present + EXPERIMENT label (uppercase via CSS).
+  // Same desktop/mobile DOM-duplication caveat as the Active-label test above.
+  await expect(electronMcpCard).toBeVisible()
+  await expect(electronMcpCard).toContainText('Experiment')
+})
+
+test('archive Clean URL renders with Chrome Extension category', async ({
+  page,
+}) => {
+  // Arrange
+  await page.goto('/projects')
+
+  // Act: archive items render as <li> inside the archive <ul>.
+  const cleanUrlLink = page.locator(
+    'a[href="https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl"]',
+  )
+
+  // Assert: link is present, external, and shows the category.
+  await expect(cleanUrlLink).toBeVisible()
+  await expect(cleanUrlLink).toHaveAttribute('target', '_blank')
+  await expect(cleanUrlLink).toContainText('Clean URL')
+  await expect(cleanUrlLink).toContainText(/chrome extension/i)
+})
+
+test('archive Coffee Timer renders with Web App category', async ({ page }) => {
+  // Arrange
+  await page.goto('/projects')
+
+  // Act
+  const coffeeTimerLink = page.locator(
+    'a[href="https://github.com/laststance/coffee-timer"]',
+  )
+
+  // Assert
+  await expect(coffeeTimerLink).toBeVisible()
+  await expect(coffeeTimerLink).toHaveAttribute('target', '_blank')
+  await expect(coffeeTimerLink).toContainText('Coffee Timer')
+  await expect(coffeeTimerLink).toContainText(/web app/i)
+})
+
+test('featured section shows 7 projects and archive section shows 22', async ({
+  page,
+}) => {
+  // Arrange
+  await page.goto('/projects')
+
+  // Act: featured cards are <article>; archive items are <li> inside the archive list.
+  const featuredCards = page.locator('section[aria-label="Featured projects"] article')
+  const archiveItems = page.locator('section[aria-label="Archive projects"] li')
+
+  // Assert: structural counts catch accidental featured ↔ archive misplacement.
+  await expect(featuredCards).toHaveCount(7)
+  await expect(archiveItems).toHaveCount(22)
 })

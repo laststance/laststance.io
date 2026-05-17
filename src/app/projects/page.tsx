@@ -1,23 +1,10 @@
 import { type Metadata } from 'next'
-import { type StaticImageData } from 'next/image'
 
+import { ArchiveProjectListItem } from '@/components/ArchiveProjectListItem'
 import { Container } from '@/components/Container'
-import { ProjectListItem } from '@/components/ProjectListItem'
+import { FeaturedProjectListItem } from '@/components/FeaturedProjectListItem'
 import { Box, Text } from '@/components/ui/primitives'
-import chromeLogo from '@/images/logos/icons8-chrome-48.png'
-import electronLogo from '@/images/logos/icons8-electron-48.png'
-import git from '@/images/logos/icons8-git-48.png'
-import macosLogo from '@/images/logos/icons8-macos-48.png'
-import nextLogo from '@/images/logos/icons8-nextjs-48.png'
-import npmLogo from '@/images/logos/icons8-npm-48.png'
-import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-building-user-interfaces-32.png'
-import reduxLogo from '@/images/logos/icons8-redux-48.png'
-import shellLogo from '@/images/logos/icons8-shell-40.png'
-import storybookLogo from '@/images/logos/icons8-storybook-48.png'
-import tailwindLogo from '@/images/logos/icons8-tailwindcss-48.png'
-import viteLogo from '@/images/logos/icons8-vite-48.png'
-import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
-import mcpLogo from '@/images/logos/mcp.svg'
+import { ARCHIVE_PROJECTS, FEATURED_PROJECTS } from '@/lib/projects'
 
 const title = 'Projects'
 
@@ -32,289 +19,19 @@ export const metadata: Metadata = {
 }
 
 /**
- * Project data structure for the minimal list layout
- */
-type Project = {
-  name: string
-  description: string
-  category: string
-  href: string
-  logo: StaticImageData
-  featured?: boolean
-}
-
-/**
- * Flattened project list, sorted by importance (featured first)
- */
-const projects: Project[] = [
-  // Featured Projects
-  {
-    name: 'Skills Desktop',
-    description:
-      'Visualize installed Skills and symlink status across AI agents. GUI for managing skills with 21 AI agents support and 26 themes.',
-    category: 'Desktop App',
-    href: 'https://skills-desktop.vercel.app/',
-    logo: electronLogo,
-    featured: true,
-  },
-  {
-    name: 'Skills',
-    description:
-      'Agent skills for AI coding assistants. Reusable skill modules for Claude Code, Cursor, Codex, Gemini CLI, and more.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/skills',
-    logo: shellLogo,
-    featured: true,
-  },
-  {
-    name: 'Tailwind CSS Canonical Classes',
-    description:
-      'Automatically convert non-canonical Tailwind CSS v4 classes to their canonical equivalents. Prettier plugin, CLI, and core library.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/tailwindcss-canonical-classes-monrepo',
-    logo: tailwindLogo,
-    featured: true,
-  },
-  {
-    name: '@laststance/redux-storage-middleware',
-    description:
-      'SSR-safe Redux Toolkit middleware for localStorage persistence with selective slice hydration and performance optimization.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/redux-strorage-middeware',
-    logo: reduxLogo,
-    featured: true,
-  },
-  {
-    name: 'GitBox',
-    description:
-      'A web application for managing GitHub repositories in Kanban board format. Organize your repos visually and boost productivity.',
-    category: 'Web App',
-    href: 'https://gitbox-laststance.vercel.app/',
-    logo: git,
-    featured: true,
-  },
-  {
-    name: 'react-lightbox',
-    description:
-      'A flexible and accessible React lightbox component for displaying images with keyboard navigation and touch support.',
-    category: 'React Library',
-    href: 'https://github.com/laststance/react-lightbox',
-    logo: reactLogo,
-    featured: true,
-  },
-  {
-    name: 'electron-mcp-server',
-    description:
-      'A Model Context Protocol server for Electron applications. Bridge AI agents with desktop applications seamlessly.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/electron-mcp-server',
-    logo: mcpLogo,
-    featured: true,
-  },
-  {
-    name: 'mac-mcp-server',
-    description: 'MacOS MCP Server',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/mac-mcp-server',
-    logo: mcpLogo,
-  },
-
-  // Chrome Extensions
-  {
-    name: 'Bookmark XP Explorer',
-    description:
-      'Manage Chrome bookmarks with a classic Windows XP explorer interface. Nostalgic yet functional.',
-    category: 'Chrome Extension',
-    href: 'https://chromewebstore.google.com/detail/bookmark-xp-explorer/bafnmajgbpafgeoafooklkfgamjbobpa',
-    logo: chromeLogo,
-  },
-  {
-    name: 'Clean URL',
-    description:
-      'Remove tracking parameters from URLs automatically, protecting your privacy while browsing.',
-    category: 'Chrome Extension',
-    href: 'https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl',
-    logo: chromeLogo,
-  },
-
-  // macOS Apps
-  {
-    name: 'signage',
-    description:
-      'Dark self screen saver app for cooldown brain. Minimal distraction, maximum focus.',
-    category: 'macOS App',
-    href: 'https://github.com/laststance/signage',
-    logo: macosLogo,
-  },
-
-  // VS Code Extensions
-  {
-    name: 'Copy to',
-    description:
-      'A VSCode extension that adds a "Copy to..." option to the File Explorer context menu.',
-    category: 'VS Code Extension',
-    href: 'https://github.com/laststance/copy-to',
-    logo: vscodeLogo,
-  },
-
-  // NPM Packages
-  {
-    name: 'Claude Plugin Dashboard',
-    description:
-      'CLI dashboard for managing Claude Code plugins. Monitor and control your AI workflow.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/claude-plugin-dashboard',
-    logo: npmLogo,
-  },
-  {
-    name: '@laststance/react-next-eslint-plugin',
-    description:
-      'A collection of ESLint plugins for React and Next.js. Enforce best practices automatically.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/react-next-eslint-plugin',
-    logo: npmLogo,
-  },
-  {
-    name: 'eslint-config-ts-prefixer',
-    description:
-      'Opinionated ESLint config with meaningful runtime rules and beautiful formatters.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/eslint-config-ts-prefixer',
-    logo: npmLogo,
-  },
-  {
-    name: 'git-commit-gpt',
-    description:
-      "AI-powered Git extension that generates commit messages using OpenAI's GPT models.",
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/git-commit-gpt',
-    logo: npmLogo,
-  },
-  {
-    name: 'npm-publish-tool',
-    description:
-      'Streamlined tool for publishing npm packages with version management.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/npm-publish-tool',
-    logo: npmLogo,
-  },
-  {
-    name: 'prettier-husky-lint-staged-installer',
-    description:
-      'One command to set up Prettier formatting on staged files at pre-commit.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/prettier-husky-lint-staged-installer',
-    logo: npmLogo,
-  },
-
-  // Web Applications
-  {
-    name: 'Coffee Timer',
-    description:
-      'Simple timer PWA for coffee breaks with push notifications and customizable sounds.',
-    category: 'Web App',
-    href: 'https://github.com/laststance/coffee-timer',
-    logo: nextLogo,
-  },
-  {
-    name: 'do-i-need-umbrella',
-    description:
-      'Weather-based decision helper. Simple answer to a daily question.',
-    category: 'Web App',
-    href: 'https://github.com/laststance/do-i-need-an-umbrella',
-    logo: reactLogo,
-  },
-  {
-    name: 'Laststance.io',
-    description: 'This website. Built with Next.js, Tailwind, and MDX.',
-    category: 'Web App',
-    href: 'https://github.com/laststance/laststance.io',
-    logo: nextLogo,
-  },
-  {
-    name: 'nsx',
-    description:
-      'Personal tech resource logger. Curate and revisit valuable reads.',
-    category: 'Web App',
-    href: 'https://github.com/laststance/nsx',
-    logo: reactLogo,
-  },
-
-  // Templates & Starters
-  {
-    name: 'next-msw-integration',
-    description:
-      'Next.js 16 + MSW integration demo. Mock Service Worker setup for browser and server environments.',
-    category: 'Template',
-    href: 'https://github.com/laststance/next-msw-integration',
-    logo: nextLogo,
-  },
-  {
-    name: 'Create React App Vite',
-    description:
-      'Simple CRA-style Vite template. Familiar structure, modern tooling.',
-    category: 'Template',
-    href: 'https://github.com/laststance/create-react-app-vite',
-    logo: viteLogo,
-  },
-  {
-    name: 'vite-rtk-query',
-    description:
-      'Vite template for React + TypeScript + Redux Toolkit with RTK Query.',
-    category: 'Template',
-    href: 'https://github.com/laststance/vite-rtk-query',
-    logo: reduxLogo,
-  },
-  {
-    name: 'React TypeScript TodoMVC 2022',
-    description: 'Modern TodoMVC implementation. Clean code, modern patterns.',
-    category: 'Template',
-    href: 'https://github.com/laststance/react-typescript-todomvc-2022',
-    logo: reactLogo,
-  },
-
-  // Developer Tools
-  {
-    name: 'mui-storybook',
-    description:
-      'Storybook for MUI v5 default components. Visual component documentation.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/mui-storybook',
-    logo: storybookLogo,
-  },
-  {
-    name: 'Redux Front Page',
-    description:
-      'Solving Redux documentation fragmentation. One source of truth.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/Redux-Front-Page',
-    logo: reduxLogo,
-  },
-  {
-    name: 'dotfiles',
-    description:
-      'Personal Mac OS X setup manual. Reproducible development environment.',
-    category: 'Developer Tool',
-    href: 'https://github.com/ryota-murakami/dotfiles',
-    logo: shellLogo,
-  },
-]
-
-/**
- * Projects page with minimal list layout
+ * Projects page — Featured (status-labeled) / Archive (compressed reference) split.
  *
- * Design inspired by Linear and Rauno Freiberg's portfolio.
- * Features:
- * - Typography-first approach with generous whitespace
- * - Hover/focus accordion expansion for project details
- * - Flattened structure (no category grouping)
- * - Featured projects at the top
+ * Layout intent (DESIGN.md §7 + Walking Skeleton Phase 3):
+ * - Featured 7 — large expanded layout, status label drives single-accent hierarchy.
+ * - Archive 22 — 1-line compressed list, alphabetical, no motion / no status.
+ *
+ * The visual jump from large rows → compressed rows is the hierarchy signal,
+ * so the Featured section deliberately has no "Featured" heading.
  */
 export default function Projects() {
   return (
     <Box as="main" mt={16} className="sm:mt-24 md:mt-32">
       <Container>
-        {/* Header */}
         <Box as="header" maxW="3xl">
           <Text as="h1" variant="h1">
             Projects
@@ -326,31 +43,59 @@ export default function Projects() {
           </Text>
         </Box>
 
-        {/* Project List */}
+        {/* Featured section — top, no heading (the typography itself signals importance) */}
         <Box
           as="section"
           mt={16}
           className="sm:mt-20 md:mt-24"
-          aria-label="Project list"
+          aria-label="Featured projects"
         >
-          {/* Top border */}
           <div className="border-t border-zinc-200/60 dark:border-zinc-700/40" />
-
-          {/* Projects */}
-          {projects.map((project, index) => (
-            <ProjectListItem
+          {FEATURED_PROJECTS.map((project, index) => (
+            <FeaturedProjectListItem
               key={project.name}
               name={project.name}
               description={project.description}
               category={project.category}
               href={project.href}
               logo={project.logo}
+              status={project.status}
               index={index}
             />
           ))}
         </Box>
 
-        {/* Icon Credits - Minimal footer */}
+        {/* Archive section — divider + heading + compressed list */}
+        <Box
+          as="section"
+          mt={16}
+          className="sm:mt-20 md:mt-24"
+          aria-label="Archive projects"
+        >
+          <Text
+            as="h2"
+            variant="overline"
+            color="muted"
+            mb={6}
+            className="text-zinc-500 dark:text-zinc-400"
+          >
+            Archive
+          </Text>
+          <ul className="border-t border-zinc-200/60 dark:border-zinc-700/40">
+            {ARCHIVE_PROJECTS.map((project) => (
+              <ArchiveProjectListItem
+                key={project.name}
+                name={project.name}
+                description={project.description}
+                category={project.category}
+                href={project.href}
+                logo={project.logo}
+              />
+            ))}
+          </ul>
+        </Box>
+
+        {/* Icon Credits */}
         <Box as="section" mt={16}>
           <Text
             as="p"

@@ -1,70 +1,64 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { type StaticImageData } from 'next/image'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
 import { Text } from '@/components/ui/primitives'
+import { type FeaturedProject } from '@/lib/projects'
 import { cn } from '@/lib/utils'
 
-/**
- * Project data structure for the minimal list layout
- */
-type ProjectListItemProps = {
-  /** Project name - displayed prominently */
-  name: string
-  /** Brief description - shown on expand */
-  description: string
-  /** Category label - displayed right-aligned */
-  category: string
-  /** External link */
-  href: string
-  /** Project logo */
-  logo: StaticImageData
-  /** Animation delay index for staggered entrance */
+type FeaturedProjectListItemProps = FeaturedProject & {
+  /** Stagger entrance animation index (Featured 0..6) */
   index?: number
 }
 
 /**
- * Minimal list-style project item with Motion-powered hover/focus accordion.
+ * Featured project row — large expanded layout with author-decided status label.
  *
- * Design inspired by Linear and Henry's Portfolio - typography-first approach
- * with generous whitespace and smooth spring animations.
+ * Visual treatment per DESIGN.md §7 (Status Label Vocabulary):
+ * - `Active` → teal accent (the one project receiving daily polish)
+ * - Other 4 statuses → zinc-400/500 muted
+ * - All statuses share `font-mono uppercase tracking-wider` for editorial uniformity
  *
- * Features:
- * - Staggered entrance animation on page load
- * - Spring physics for natural accordion expand/collapse
- * - Height: auto animation (Motion's killer feature)
- * - Arrow animation with spring physics
+ * Motion budget per DESIGN.md §6:
+ * - Staggered entrance (0.05s × index)
+ * - Spring-physics arrow + accordion height on hover/focus
  *
- * @param name - Project name (large, bold typography)
+ * @param name - Project name
  * @param description - Brief description (revealed on hover/focus)
  * @param category - Category label (right-aligned, muted)
- * @param href - Link to project
+ * @param href - External link to the project
  * @param logo - Project icon
- * @param index - For staggered animation delays
+ * @param status - Author-decided 1-of-5 status label (DESIGN.md §7)
+ * @param index - Stagger animation delay index
  *
  * @example
- * <ProjectListItem
- *   name="GitBox"
- *   description="Manage GitHub repositories in Kanban format."
- *   category="Web App"
- *   href="https://gitbox.vercel.app"
- *   logo={gitLogo}
+ * <FeaturedProjectListItem
+ *   name="Skills Desktop"
+ *   description="Visualize installed Skills..."
+ *   category="Desktop App"
+ *   href="https://skills-desktop.vercel.app/"
+ *   logo={electronLogo}
+ *   status="Active"
  *   index={0}
  * />
  */
-export function ProjectListItem({
+export function FeaturedProjectListItem({
   name,
   description,
   category,
   href,
   logo,
+  status,
   index = 0,
-}: ProjectListItemProps) {
+}: FeaturedProjectListItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+
+  // Only `Active` consumes the accent token; others stay muted.
+  // Single-accent pattern preserves editorial uniformity while signaling priority.
+  const isActiveStatus = status === 'Active'
 
   return (
     <motion.article
@@ -79,7 +73,6 @@ export function ProjectListItem({
       onHoverEnd={() => setIsExpanded(false)}
       className={cn(
         'relative',
-        // Border
         'border-b border-zinc-200/60 dark:border-zinc-700/40',
         'hover:border-zinc-300/80 dark:hover:border-zinc-600/60',
       )}
@@ -96,13 +89,11 @@ export function ProjectListItem({
           'focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-900',
           'rounded-sm',
         )}
-        aria-label={`${name} - ${category} (opens in new tab)`}
+        aria-label={`${name} - ${status}, ${category} (opens in new tab)`}
       >
-        {/* Main row: Logo + Name | Category + Arrow */}
+        {/* Main row: Logo + Name | Status + Category + Arrow */}
         <div className="flex items-center justify-between gap-4">
-          {/* Left: Logo + Name */}
           <div className="flex min-w-0 items-center gap-4 sm:gap-6">
-            {/* Logo */}
             <div
               className={cn(
                 'flex h-12 w-12 shrink-0 items-center justify-center',
@@ -119,7 +110,6 @@ export function ProjectListItem({
               />
             </div>
 
-            {/* Project Name */}
             <Text
               as="h2"
               variant="h3"
@@ -129,20 +119,31 @@ export function ProjectListItem({
             </Text>
           </div>
 
-          {/* Right: Category + Arrow */}
           <div className="flex shrink-0 items-center gap-3 sm:gap-6">
-            {/* Category Label */}
+            {/* Status label — Active only consumes the accent token */}
+            <Text
+              as="span"
+              variant="caption"
+              color={isActiveStatus ? 'accent' : undefined}
+              transform="uppercase"
+              className={cn(
+                'hidden font-mono tracking-wider sm:inline-block',
+                !isActiveStatus && 'text-zinc-400 dark:text-zinc-500',
+              )}
+            >
+              {status}
+            </Text>
+
             <Text
               as="span"
               variant="caption"
               color="muted"
               transform="uppercase"
-              className="hidden sm:block text-zinc-400 dark:text-zinc-500"
+              className="hidden text-zinc-400 sm:block dark:text-zinc-500"
             >
               {category}
             </Text>
 
-            {/* Arrow Icon with Motion spring animation */}
             <motion.svg
               animate={{ x: isExpanded ? 4 : 0 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -167,7 +168,7 @@ export function ProjectListItem({
           </div>
         </div>
 
-        {/* Expandable Content with Motion height animation */}
+        {/* Expandable description with spring height animation */}
         <motion.div
           initial={false}
           animate={{
@@ -182,17 +183,29 @@ export function ProjectListItem({
           aria-hidden={!isExpanded}
         >
           <div className="pt-6 pl-16 sm:pl-18">
-            {/* Mobile category */}
-            <Text
-              as="span"
-              variant="overline"
-              color="muted"
-              className="mb-2 block sm:hidden text-zinc-400 dark:text-zinc-500"
-            >
-              {category}
-            </Text>
+            {/* Mobile-only: status + category stacked above description */}
+            <div className="mb-2 flex items-center gap-3 sm:hidden">
+              <Text
+                as="span"
+                variant="overline"
+                color={isActiveStatus ? 'accent' : undefined}
+                className={cn(
+                  'font-mono',
+                  !isActiveStatus && 'text-zinc-400 dark:text-zinc-500',
+                )}
+              >
+                {status}
+              </Text>
+              <Text
+                as="span"
+                variant="overline"
+                color="muted"
+                className="text-zinc-400 dark:text-zinc-500"
+              >
+                {category}
+              </Text>
+            </div>
 
-            {/* Description */}
             <Text variant="body" color="muted" className="max-w-2xl">
               {description}
             </Text>
