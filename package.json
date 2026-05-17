@@ -17,8 +17,10 @@
     "last 1 version"
   ],
   "scripts": {
+    "predev": "node ./scripts/generate-articles-manifest.mjs",
     "dev": "next dev -p 3939",
     "dev:network": "next dev -H 192.168.1.4 -p 3939",
+    "prebuild": "node ./scripts/generate-articles-manifest.mjs",
     "build": "next build --webpack",
     "analyze": "ANALYZE=true next build",
     "start": "next start -p 3939",
@@ -33,6 +35,7 @@
     "typecheck:watch": "tsc --watch",
     "clean": "rimraf .next node_modules tsconfig.tsbuildinfo pnpm-lock.yaml",
     "gen": "node ./scripts/generate-blog-templete.mjs",
+    "gen:manifest": "node ./scripts/generate-articles-manifest.mjs",
     "playwright": "playwright test",
     "playwright:ui": "playwright test --ui",
     "playwright:headed": "playwright test --headed",
