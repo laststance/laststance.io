@@ -18,12 +18,10 @@ First, [Node@22.x.x](https://nodejs.org/en) required and install the dependencie
 pnpm install
 ```
 
-Next, create a `.env.local` file in the root of your project and set the `NEXT_PUBLIC_SITE_URL` and variable to your site's public URL.  
-And set the `PERSONAL_ACCESS_TOKEN` and [github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) created by your Github account.
+Next, create a `.env.local` file in the root of your project and set `NEXT_PUBLIC_SITE_URL` to your site's public URL.
 
 ```
 NEXT_PUBLIC_SITE_URL=https://example.com
-PERSONAL_ACCESS_TOKEN=ghp_i{|i$AY%kt&)>p$Y@7:C[KC$anpxfJ
 ```
 
 Next, run the development server:
