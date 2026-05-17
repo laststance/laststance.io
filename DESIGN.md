@@ -281,7 +281,7 @@ onBlur={() => setIsExpanded(false)}
 
 Entrance motion communicates "new content has arrived." The following are not arrivals and intentionally omit stagger / entrance motion:
 
-- **`NowPanel`** (`src/app/page/NowPanel.tsx`, added in Phase 2) — represents stable, ongoing intent. Animating it implies it just changed; it didn't.
+- **`NowPanel`** (planned for Phase 2 — `src/app/page/NowPanel.tsx` does not exist yet) — represents stable, ongoing intent. Animating it implies it just changed; it didn't.
 - **Hero header** (`src/app/page.tsx` author intro block) — already in view above the fold; animating on every mount is theatrical.
 - **Layout primitives** (`Container`, `Box`, `Stack` themselves) — these wrap content; the content animates, not the wrapper.
 
@@ -320,7 +320,7 @@ Rationale: one focal point per view ("what I'm working on right now") gets the a
 ### Type contract
 
 ```ts
-// src/lib/projects.ts (added in Phase 3)
+// Planned location: src/lib/projects.ts (Phase 3 — file does not exist yet)
 type FeaturedStatus =
   | 'Active'
   | 'Daily tool'
@@ -329,7 +329,7 @@ type FeaturedStatus =
   | 'Paused'
 ```
 
-The union lives next to the data (`src/lib/projects.ts`). Importing the type elsewhere is fine; redefining it is a documentation bug.
+The union will live next to the data once `src/lib/projects.ts` lands in Phase 3. Importing the type elsewhere is fine; redefining it is a documentation bug.
 
 ---
 
@@ -349,7 +349,7 @@ The union lives next to the data (`src/lib/projects.ts`). Importing the type els
 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
   <VStack gap={16}>{/* Left: Recent Articles */}</VStack>
   <div className="space-y-10 lg:pl-16 xl:pl-24">
-    {/* Right: NowPanel (post-Phase 2). Was GithubFeedList. */}
+    {/* Right: NowPanel (planned for Phase 2). Currently GithubFeedList. */}
   </div>
 </div>
 ```
