@@ -11,11 +11,12 @@ const meta: Meta<typeof ArchiveProjectListItem> = {
   component: ArchiveProjectListItem,
   parameters: {
     layout: 'padded',
-    // The Storybook+Vitest test environment renders Tailwind `dark:` classes
-    // on a white surface (no dark-class on root), so axe sees zinc-400 on
-    // white and flags the intentionally-faint category label. The production
-    // surface always pairs the right text + bg variant, so we silence only
-    // this one rule rather than turning a11y off wholesale.
+    // Under the Storybook+Vitest test runner, axe-core reports colors that
+    // don't match the production cascade — flagging the intentionally-faint
+    // zinc-400 category label as low-contrast when the same row renders
+    // correctly in both themes via Next.js. We silence only the color-contrast
+    // rule rather than turning a11y off wholesale; visual verification happens
+    // in the manual Storybook UI and the Playwright/Argos suite.
     a11y: {
       config: {
         rules: [{ id: 'color-contrast', enabled: false }],

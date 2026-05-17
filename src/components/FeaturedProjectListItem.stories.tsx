@@ -11,11 +11,12 @@ const meta: Meta<typeof FeaturedProjectListItem> = {
   component: FeaturedProjectListItem,
   parameters: {
     layout: 'padded',
-    // The Storybook+Vitest test environment renders Tailwind `dark:` classes
-    // on a white surface (no dark-class on root), so axe sees the dark-variant
-    // colors against white and flags spurious low-contrast violations. The
-    // production layout always pairs the right text + bg variant; we silence
-    // only the color-contrast rule rather than turning a11y off wholesale.
+    // Under the Storybook+Vitest test runner, axe-core reports colors that
+    // don't match the production cascade — surfacing spurious low-contrast
+    // failures on rows that read correctly in both themes when rendered by
+    // Next.js. We silence only the color-contrast rule rather than turning
+    // a11y off wholesale; visual verification happens in the manual Storybook
+    // UI and the Playwright/Argos suite.
     a11y: {
       config: {
         rules: [{ id: 'color-contrast', enabled: false }],
