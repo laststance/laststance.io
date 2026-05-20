@@ -33,9 +33,6 @@ export function Footer() {
               >
                 <NavLink href="/about">About</NavLink>
                 <NavLink href="/projects">Projects</NavLink>
-                <NavLink href="https://nsx.malloc.tokyo/" target="_blank">
-                  ReadList
-                </NavLink>
                 <NavLink href="/uses">Uses</NavLink>
                 <NavLink href="/keybinds">Keybinds</NavLink>
               </HStack>
