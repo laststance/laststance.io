@@ -157,9 +157,11 @@ const keybinds: KeybindsList = {
       'Git Blame(WebStorm)': '^-g ^-b',
     },
     'Multiple Cursor': {
+      'editor.multiCursorModifier (VS Code/Cursor settings.json — use ctrlCmd on macOS so CMD+click is multi-cursor and Option+drag is column select)':
+        'ctrlCmd',
       'Rectangular Multiple Cursor Select(WebStorm)': 'Option Drag',
       'Rectangular Multiple Cursor Select(Cursor)': 'Option Shift Drag',
-      'Add or Remove caret': 'CMD Click',
+      'Add or Remove caret (with multiCursorModifier ctrlCmd on macOS)': 'CMD Click',
       'Clone Cursor Above': 'Option CMD ↑',
       'Clone Cursor Bellow': 'Option CMD ↓',
       'Vertical cursor fillin(Cursor)': 'CMD Shift mouse',
