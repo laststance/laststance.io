@@ -84,8 +84,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^5.0.0",
-    "@argos-ci/playwright": "^7.0.0",
+    "@argos-ci/cli": "^5.0.1",
+    "@argos-ci/playwright": "^7.0.1",
     "@chromatic-com/storybook": "^5.2.1",
     "@clack/prompts": "^1.4.0",
     "@eslint/js": "^10.0.1",
@@ -110,9 +110,9 @@
     "@types/react-dom": "19.2.3",
     "@types/webpack-env": "^1.18.8",
     "@types/xml2js": "^0.4.14",
-    "@vitest/browser": "4.1.6",
-    "@vitest/browser-playwright": "^4.1.6",
-    "@vitest/coverage-v8": "4.1.6",
+    "@vitest/browser": "4.1.7",
+    "@vitest/browser-playwright": "^4.1.7",
+    "@vitest/coverage-v8": "4.1.7",
     "baseline-browser-mapping": "^2.10.31",
     "code-inspector-plugin": "^1.5.1",
     "eslint": "^10.4.0",
@@ -131,7 +131,7 @@
     "storybook": "^10.4.0",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.6",
+    "vitest": "^4.1.7",
     "xml2js": "^0.6.2"
   },
   "pnpm": {
