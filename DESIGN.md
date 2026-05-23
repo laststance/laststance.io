@@ -84,7 +84,7 @@ Source: `src/components/ui/primitives/Text.tsx`. WCAG AA+ verified for `default 
 
 Responsive 3-step progression (mobile → tablet → desktop).
 
-**Source of truth**: `src/lib/design-tokens.ts` (`typography` export) + `src/components/ui/primitives/Text.tsx` (`textVariants`).
+**Source of truth**: `src/lib/design-tokens.ts` (`typography` export) + `src/components/ui/primitives/Text.tsx` (`textVariants`) + `typography.js` (Tailwind Typography overrides for MDX article prose).
 
 | Variant     | Mobile | Tablet (`sm:`) | Desktop (`lg:`) | Weight                            | Default element |
 | ----------- | ------ | -------------- | --------------- | --------------------------------- | --------------- |
@@ -106,6 +106,7 @@ Responsive 3-step progression (mobile → tablet → desktop).
 - **Body baseline is 20px desktop / 16px mobile** — Apple.com-style readability, ~50–60 chars/line at desktop body width.
 - **`caption` ≠ `bodySmall`** — `caption` carries meta (timestamp, category label). `bodySmall` carries secondary content prose.
 - **Numbers as data** (stars, dates, ports): wrap in `<code>` or apply `font-mono` to the digit substring only, never to the surrounding prose. Always include a unit (`★ 1,234`, `120 commits`, `port 3939`).
+- **Article prose (MDX rendering)** — flat **20px** body across breakpoints (no responsive ladder; matches the desktop `body` variant). Inline `<code>` inside `h2/h3` scales as `0.875em` so chips don't shrink against headings. Tables inherit the body size — only `figcaption` / `li::marker` stay at `sm` (14px).
 
 **Visual reference**: `pnpm storybook` → _Design System / Tokens / TypographyTokens_.
 
@@ -338,7 +339,7 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 ### Page widths
 
 - **Outer shell** — `Container` (`src/components/Container.tsx`) wraps with `max-w-7xl` (1280px) + horizontal padding.
-- **Article / prose body** — `max-w-2xl` (672px) on small screens, expanding to `max-w-5xl` (1024px) at `lg:` for inner content blocks. Never wider for reading flow.
+- **Article / prose body** — `max-w-[60rem]` (960px) reading column inside the `max-w-5xl` (1024px) Container at `lg:` (~32px gutters either side, matching tkdodo.eu). Smaller screens collapse to the parent's full width. Prose's internal `max-w` is `none` — width is controlled by the layout wrapper.
 - **Hero intro block** — `<Box maxW="2xl">` so the lead paragraph stays at ~50–60 chars/line.
 
 ### Home page — 2-column grid

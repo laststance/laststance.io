@@ -6,6 +6,13 @@ import type { ArticleWithSlug } from './articles'
 
 export const articlesManifest: ArticleWithSlug[] = [
   {
+    "slug": "Cutting-Claude-Code-Initial-Context-Bloat",
+    "author": "Ryota Murakami",
+    "title": "Cutting Claude Code's Initial Context Bloat — MCP, Skills, and Plugin Tactics",
+    "date": "2026-05-21",
+    "description": "A field guide to what Claude Code loads into context at startup, why it balloons to 50–70K tokens before you type anything, and three concrete levers (MCP isolation, skillOverrides, plugin localization) that brought my session down without losing functionality."
+  },
+  {
     "slug": "How-to-stop-VS-Code-MDX-Extension-from-showing-TypeScript-errors-in-mdx-files",
     "author": "Ryota Murakami",
     "title": "How to stop VS Code MDX Extension from showing TypeScript errors in .mdx files",
