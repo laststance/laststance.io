@@ -88,7 +88,7 @@ flowchart LR
     A --> L3[Lever 3<br/>Plugin localization]
 
     L1 --> R1[--strict-mcp-config<br/>+ mcp-local.json<br/>blocks claude.ai connectors]
-    L2 --> R2[per-skill name-only<br/>+ maxSkillDescriptionChars 100]
+    L2 --> R2[per-skill name-only<br/>+ maxSkillDescriptionChars 0]
     L3 --> R3[copy plugin assets<br/>to ~/.claude/, disable plugin]
 
     R1 --> Saved1[~100K saved when<br/>Pro/Max connectors were attached]
@@ -224,7 +224,7 @@ OVERRIDES=$(echo "$SKILLS" | jq -R . | jq -s 'map({(.): "name-only"}) | add')
 
 jq --argjson o "$OVERRIDES" '
   .skillOverrides = $o |
-  .maxSkillDescriptionChars = 100 |
+  .maxSkillDescriptionChars = 0 |
   .skillListingBudgetFraction = 0.005
 ' ~/.claude/settings.json > /tmp/s.json && mv /tmp/s.json ~/.claude/settings.json
 ```
@@ -234,7 +234,7 @@ Three settings, three purposes:
 | Setting | Default | My value | Why |
 |---|---|---|---|
 | `skillOverrides` | `{}` | `{ <every-skill>: "name-only" }` | Drop descriptions, keep auto/subagent invocation |
-| `maxSkillDescriptionChars` | `1536` | `100` | Truncates descriptions on any skill I leave at `on` — a safety net |
+| `maxSkillDescriptionChars` | `1536` | `0` | Drops descriptions entirely — only names remain, hard safety net against any skill I forget to override |
 | `skillListingBudgetFraction` | `0.01` | `0.005` | Hard ceiling on how much of the window the skill listing can consume |
 
 Restart Claude Code completely after editing — the skill listing is cached for the current session. Verify with `/context` and look at the `Skills` row.
@@ -331,7 +331,7 @@ The plugin loads only when you `cd` into that project.
   "skillOverrides": {
     "<every-skill-name>": "name-only"
   },
-  "maxSkillDescriptionChars": 100,
+  "maxSkillDescriptionChars": 0,
   "skillListingBudgetFraction": 0.005,
   "enabledPlugins": {
     "figma@claude-plugins-official": false,
