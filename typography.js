@@ -51,9 +51,6 @@ export default function typographyStyles({ theme }) {
         ':is(h2, h3) + *': {
           marginTop: 0,
         },
-        ':is(h2, h3) code': {
-          fontWeight: theme('fontWeight.bold'),
-        },
         ':is(tbody, tfoot) td': {
           paddingBottom: theme('spacing.2'),
           paddingTop: theme('spacing.2'),
@@ -103,6 +100,13 @@ export default function typographyStyles({ theme }) {
           fontWeight: theme('fontWeight.semibold'),
           paddingLeft: theme('spacing.1'),
           paddingRight: theme('spacing.1'),
+        },
+        // Must follow the base `code` rule so that — with equal `:where`-zeroed
+        // specificity — source order wins and inline code inside h2/h3 scales
+        // with the heading instead of staying at the fixed 14px above.
+        ':is(h2, h3) code': {
+          fontSize: '0.875em',
+          fontWeight: theme('fontWeight.bold'),
         },
 
         // Base
@@ -179,16 +183,13 @@ export default function typographyStyles({ theme }) {
         },
         // Improved line height for better readability
         lineHeight: '1.6',
-        // Responsive body size: mobile 16px → tablet 18px → desktop 20px
-        fontSize: '1rem',
-        '@media (min-width: 768px)': {
-          fontSize: '1.125rem',
-        },
-        '@media (min-width: 1024px)': {
-          fontSize: '1.25rem',
-        },
-        // Maximum width for optimal reading (60-75 characters)
-        maxWidth: '65ch',
+        // Body size: flat 20px across breakpoints — large enough for comfortable
+        // reading on desktop, and 20px on mobile still fits ~30 chars/line at 375px
+        // which is fine for prose.
+        fontSize: '1.25rem',
+        // Width is controlled by the article layout wrapper, not by prose
+        // internals (matches the tkdodo.eu blog measurements — ~960px at lg).
+        maxWidth: 'none',
         ol: {
           listStyleType: 'decimal',
         },
@@ -200,17 +201,6 @@ export default function typographyStyles({ theme }) {
           marginTop: theme('spacing.5'),
           // Inherit responsive prose body size
           fontSize: 'inherit',
-        },
-        // Lead paragraphs — first paragraph and paragraphs after h2
-        // Responsive: mobile 18px → tablet 20px → desktop 22px
-        '> p:first-child, h2 + p': {
-          fontSize: '1.125rem',
-          '@media (min-width: 768px)': {
-            fontSize: '1.25rem',
-          },
-          '@media (min-width: 1024px)': {
-            fontSize: '1.375rem',
-          },
         },
 
         // Code blocks — line-height 1.45 for vertical code scanning
@@ -242,7 +232,9 @@ export default function typographyStyles({ theme }) {
 
         // Tables
         table: {
-          fontSize: theme('fontSize.sm')[0],
+          // Inherit responsive prose body size (18px → 20px → 22px) so cells
+          // stay at body scale; only captions/markers stay at sm.
+          fontSize: 'inherit',
           tableLayout: 'auto',
           textAlign: 'left',
           width: '100%',

@@ -57,7 +57,7 @@ flowchart TB
 
     PLG --> PLC[plugins/cache/<br/>enabled marketplace plugins]
 
-    classDef culprit fill:#ffe0e0,stroke:#cc3333,stroke-width:2px
+    classDef culprit fill:#ffe0e0,stroke:#cc3333,stroke-width:2px,color:#000
     class MCP,SKL,PLG,CONN culprit
 ```
 
@@ -112,7 +112,10 @@ The documented workaround is the `--strict-mcp-config` flag.
 
 ### Flow before and after
 
+The sequence diagram below contrasts two startup paths: the default flow (steps 1–5) pulls both account-level claude.ai connectors and local MCP servers into context, while the `--strict-mcp-config` flow (steps 6–8) reads only the file you pass and ignores the connectors entirely.
+
 ```mermaid
+%%{init: {'themeVariables': {'signalColor': '#1a1a1a', 'signalTextColor': '#1a1a1a', 'noteTextColor': '#1a1a1a', 'noteBkgColor': '#f8f8f8', 'noteBorderColor': '#666'}}}%%
 sequenceDiagram
     autonumber
     participant CLI as claude (CLI launch)
@@ -142,7 +145,7 @@ sequenceDiagram
 
 ### Setup
 
-1. **Carve out a local-only MCP config.** I run cc-dashboard for catalog management and the canonical copy lives in `~/.claude.json`; the carve-out is just `mcpServers`:
+1. **Carve out a local-only MCP config.** Your canonical MCP server list lives in `~/.claude.json`; the carve-out is just `mcpServers`:
 
    ```bash
    jq '{mcpServers}' ~/.claude.json > ~/.claude/mcp-local.json
@@ -167,27 +170,9 @@ The `claude --help` excerpt that authorizes this:
 
 > `--strict-mcp-config` — Only use MCP servers from `--mcp-config`, ignoring all other MCP configurations.
 
-### Watch out: cc-dashboard sync
+### Watch out: catalog-tool drift
 
-I use [cc-dashboard](https://github.com/ryota-murakami/claudia/tree/main/tools/cc-dashboard) as the catalog UI for MCP servers, and it writes to `~/.claude.json` directly. The strict-mcp-config wrapper reads `~/.claude/mcp-local.json`. Those two files **drift**, so I keep them in sync manually for now (a sync hook is on the TODO list). If you don't use a catalog tool you'll never notice this.
-
-While we're here: cc-dashboard used to *delete* a server outright on "disable", which destroyed any API keys you had typed in. The fixed behavior — which I would recommend stealing if you build similar tooling — is a **shadow store**: move the disabled config into a `disabledMcpServers` sibling field instead of deleting it, and restore from there when re-enabling.
-
-```ts
-// disable: move aside instead of delete
-config.disabledMcpServers ??= {}
-config.disabledMcpServers[name] = activeConfig
-delete config.mcpServers[name]
-
-// enable: prefer the shadow over defaults
-const serverConfig =
-  customConfig ??
-  config.mcpServers[name] ??
-  config.disabledMcpServers?.[name] ??
-  MCP_SERVER_DEFAULTS[name]
-config.mcpServers[name] = serverConfig
-delete config.disabledMcpServers?.[name]
-```
+If you use any GUI/catalog tool to manage MCP servers, it almost certainly writes to `~/.claude.json` (the canonical file), while the strict-mcp-config wrapper now reads from `~/.claude/mcp-local.json`. Those two files **drift** every time the tool adds or removes a server, and a re-`jq` is needed to resync. If you don't use a catalog tool you'll never notice this.
 
 ---
 
@@ -200,6 +185,8 @@ Every `SKILL.md` discovered at startup contributes a `name` (a few tokens) and a
 ### The four states (corrected May 2026)
 
 `skillOverrides` is a **per-skill object** keyed by directory name. A previously published recommendation in one of my own research notes used a *string* form (`"skillOverrides": "user-invocable-only"`) — that form **fails JSON schema validation**; the object form is the only one supported.
+
+The state diagram below maps the four legal values and the transitions that progressively reduce cost: the default `on` state, two cost-reduced states (`name-only` keeps auto-invocation; `user-invocable-only` requires explicit slash invocation), and the fully hidden `off` state.
 
 ```mermaid
 stateDiagram-v2
@@ -280,9 +267,9 @@ flowchart LR
 
     PD[settings.json<br/>enabledPlugins.foo = false]:::cfg --> Disable[Plugin disabled<br/>cache stops loading]
 
-    classDef plug fill:#fff3cd,stroke:#c79100
-    classDef user fill:#d4f8d4,stroke:#2e7d32
-    classDef cfg fill:#e3f2fd,stroke:#1565c0
+    classDef plug fill:#fff3cd,stroke:#c79100,color:#000
+    classDef user fill:#d4f8d4,stroke:#2e7d32,color:#000
+    classDef cfg fill:#e3f2fd,stroke:#1565c0,color:#000
 ```
 
 ### Steps
@@ -453,7 +440,6 @@ A few options I considered and rejected:
 
 ### Tools mentioned
 
-- [cc-dashboard](https://github.com/ryota-murakami/claudia/tree/main/tools/cc-dashboard) — my MCP catalog UI with the shadow-store fix
 - [agent skills CLI](https://agentskills.io) — `npx skills` for cross-client skill installation
 
 If you go through the exercise and end up with a different cost distribution, I would genuinely like to hear about it — the leak paths shift with every Claude Code release, and the next 6 months of changelog entries will likely change which lever pays back the most.
