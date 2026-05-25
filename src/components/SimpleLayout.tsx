@@ -12,9 +12,10 @@ export function SimpleLayout({
   intro: string
 }) {
   return (
-    <Container className="mt-16 sm:mt-32">
+    <Container className="mt-16 sm:mt-24">
       <Box as="header" maxW="2xl">
-        <Text as="h1" variant="h1">
+        {/* text-balance: let the browser even out line widths on long, wrapping titles */}
+        <Text as="h1" variant="h1" className="text-balance">
           {title}
         </Text>
         <Text variant="body" color="muted" mt={6}>
