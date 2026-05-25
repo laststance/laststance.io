@@ -81,8 +81,18 @@ export default async function ArticlesIndex({
 
   return (
     <SimpleLayout
-      title="Writing about new release, update and thought of Web Application Development."
-      intro={`In particular, I often write about React, CSS, JavaScript, TypeScript,and Node.js. collected in chronological order.`}
+      title={
+        <>
+          Writing about new release, update and thought of{' '}
+          {/* From the `sm` breakpoint up, keep this phrase on one line so "Web" never
+              strands at a line end. On phones we let it wrap normally — forcing one line
+              there would push the text off the right edge of the screen. */}
+          <span className="sm:whitespace-nowrap">
+            Web Application Development.
+          </span>
+        </>
+      }
+      intro={`In particular, I often write about React, CSS, JavaScript, TypeScript, and Node.js. collected in chronological order.`}
     >
       <Box className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
         <Box className="max-w-3xl">

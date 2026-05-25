@@ -15,10 +15,11 @@ export function ArticleLayout({
   //const router = useRouter()
   //const { previousPathname } = useContext(AppContext)
 
+  // 96px top offset (mt-16 sm:mt-24) to match the listing pages and /about.
   return (
-    <Container className="mt-16 lg:mt-32">
+    <Container className="mt-16 sm:mt-24">
       <div className="xl:relative">
-        <div className="mx-auto max-w-[60rem]">
+        <div className="mx-auto max-w-240">
           {/* {previousPathname && ( */}
           {/*   <button */}
           {/*     type="button" */}

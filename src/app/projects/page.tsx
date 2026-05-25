@@ -29,8 +29,10 @@ export const metadata: Metadata = {
  * so the Featured section deliberately has no "Featured" heading.
  */
 export default function Projects() {
+  // Match SimpleLayout's header offset (mt-16 sm:mt-24) so /projects lines up
+  // with /uses and /articles — the earlier md:mt-32 left a visibly wider gap here.
   return (
-    <Box as="main" mt={16} className="sm:mt-24 md:mt-32">
+    <Box as="main" mt={16} className="sm:mt-24">
       <Container>
         <Box as="header" maxW="3xl">
           <Text as="h1" variant="h1">
