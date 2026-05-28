@@ -8,9 +8,9 @@ export const articlesManifest: ArticleWithSlug[] = [
   {
     "slug": "Cutting-Claude-Code-Initial-Context-Bloat",
     "author": "Ryota Murakami",
-    "title": "Cutting Claude Code's Initial Context Bloat — MCP, Skills, and Plugin Tactics",
+    "title": "Cutting Claude Code's Initial Context Bloat — Skills, Plugins, and MCP Tactics",
     "date": "2026-05-21",
-    "description": "A field guide to what Claude Code loads into context at startup, why it balloons to 50–70K tokens before you type anything, and three concrete levers (MCP isolation, skillOverrides, plugin localization) that brought my session down without losing functionality."
+    "description": "What Claude Code actually loads into context at startup once Tool Search defers MCP and built-in tool definitions on demand — why the live window is far smaller than the raw totals imply, and why Skills (not MCP) is now the biggest line you can cut, plus the plugin and MCP-instruction levers that trim the rest."
   },
   {
     "slug": "How-to-stop-VS-Code-MDX-Extension-from-showing-TypeScript-errors-in-mdx-files",
