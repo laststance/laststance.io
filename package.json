@@ -84,8 +84,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^5.0.2",
-    "@argos-ci/playwright": "^7.0.3",
+    "@argos-ci/cli": "^5.0.3",
+    "@argos-ci/playwright": "^7.0.4",
     "@chromatic-com/storybook": "^5.2.1",
     "@clack/prompts": "^1.4.0",
     "@eslint/js": "^10.0.1",
