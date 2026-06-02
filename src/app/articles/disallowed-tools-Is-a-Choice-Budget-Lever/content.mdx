@@ -1,0 +1,165 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",
+  date: '2026-05-28',
+  description:
+    "Claude Code v2.1.152 quietly added `disallowed-tools` to Skill frontmatter. My first reaction was to file it as a 4th Skills lever for trimming initial context — that turned out to be wrong, but the thing it actually does is more interesting: it spends Claude's reasoning budget more carefully by shrinking the tool selection space.",
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+> **Draft notice.** This article is a working draft, transcribed roughly from a real conversation. The reasoning is intentionally exposed — I'm leaving the "I thought X, then I realized Y" beats in because the reframe is the point. Names and example syntax verified against the Claude Code v2.1.153 bundle.
+
+## The thing I almost got wrong
+
+Reading the v2.1.152 release notes I noticed a new field had landed in Skill frontmatter: `disallowed-tools`. Skill frontmatter already had `allowed-tools` (an allowlist), so this looked like the symmetric denylist. My immediate instinct: _"Another lever for cutting Claude Code's initial context — I should add it to my recent article on the topic as a 4th Skills cost lever."_
+
+I went to verify the mechanism in the v2.1.153 bundle. The strings dump told me exactly what the field does:
+
+```
+disallowed-tools
+  → "Tools removed from the model while this file is active.
+     Comma-separated string or YAML list. Cleared when the user
+     sends the next message."
+```
+
+Two phrases in that description killed my context-cutter framing on contact:
+
+1. **"while this file is active"** — scoped to the Skill invocation.
+2. **"Cleared when the user sends the next message"** — ephemeral, not persistent.
+
+So even on the most generous reading, `disallowed-tools` can shave space for at most one turn — and then the tools (and their definitions) come right back. That's not a context cut. It's a per-request filter.
+
+And there's a more fundamental issue: **the thing I actually wanted to cut isn't a tool.**
+
+## Why it can't shrink MCP instructions
+
+The Skills/MCP context bloat story has two distinct kinds of payload sitting in your context window:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ What Claude Code sends to the API for one request            │
+├──────────────────────────────────────────────────────────────┤
+│ system: "[...]"                                              │
+│                                                              │
+│ tools: [                                                     │
+│   { name: "mcp__foo__do_thing", description, input_schema }, │  ← disallowed-tools filters HERE
+│   { name: "mcp__foo__other",   description, input_schema }, │
+│ ]                                                            │
+│                                                              │
+│ messages: [                                                  │
+│   { role: "user", content: [                                 │
+│     { type: "text",                                          │
+│       text: "# MCP Server Instructions                       │  ← MCP instructions live HERE
+│              ## foo                                          │     (injected at connection time
+│              <hundreds of tokens of guidance>",              │     as an isMeta:true block,
+│       isMeta: true }                                         │     bypassing both the /context
+│   ]},                                                        │     "System prompt" and "Messages"
+│   ...                                                        │     counters)
+│ ]                                                            │
+└──────────────────────────────────────────────────────────────┘
+```
+
+`disallowed-tools` operates on the `tools` array. The MCP server's `# MCP Server Instructions` block sits in the `messages` array, and it was injected once at connection time via the internal `mcp_instructions_delta` channel. Nothing about the tool filter touches the messages history.
+
+So even if you blocked every single tool from a chatty MCP server, the server's full instructions block is **still there**, consuming the same tokens it was before. The agent just can't call any of the tools the instructions are telling it how to use. That's the worst of both worlds, not a fix.
+
+The summary as a table:
+
+| Goal | Achievable with `disallowed-tools`? |
+|---|---|
+| Trim **initial context** at startup | ❌ Not applicable — initial context is fixed before any Skill runs |
+| Cut **MCP server instruction tokens** | ❌ Out of scope — instructions aren't tools |
+| Permanently remove tool definitions | ❌ Filter clears on the next user message |
+| Lock down a Skill's blast radius | ✅ This is what it's for |
+| Make Claude reason better with fewer options | ✅ Less obviously — this is the interesting one |
+
+## The reframe: a choice budget lever
+
+Here's where the conversation got more interesting. Even if `disallowed-tools` isn't a context-size lever, it might be a **choice-budget lever** — and choice budget is something the Claude Code community talks about much less than context budget.
+
+An LLM agent's per-step loop looks roughly like this:
+
+```
+1. Read the current state (what just happened, what the goal is)
+2. Scan the available tool list — every single tool, every step
+3. Reason about which tool best fits the next action
+4. Call it
+```
+
+Steps 2 and 3 scale with the tool count. When you go from ten tools to a hundred, you don't just pay for the tokens in the `tools` array (which is the only part `/context` shows) — you pay for the **reasoning tokens** the agent spends weighing "should I use `mcp__a__search` or `mcp__b__search` or `WebSearch` or `Bash` to run grep manually?" at every step where the answer might be ambiguous.
+
+This is the agent-quality cost of a fat tool list, and it's not visible in any token counter. It shows up as:
+
+| Symptom | Underlying cause |
+|---|---|
+| Picks the wrong tool when several have similar names or descriptions | Selection confidence drops as overlap grows |
+| Tries a fancy MCP tool when a one-line `bash` would have worked | Specific names attract; presence biases trial |
+| Falls into a loop trying tool A → fail → tool B → fail → tool C | "If the tool exists, it must be the right move" |
+| Long reasoning chains where it visibly debates between candidates | More comparisons fit into the thinking budget |
+
+Anthropic's own tool-use guidance acknowledges this — the recommended posture is to expose the smallest sufficient toolset, and to avoid alternatives that look semantically overlapping. `disallowed-tools` is a clean way to enforce that on a per-Skill basis.
+
+## Two patterns that pay for themselves
+
+**Pattern 1: Focused debug, no escape hatches.** You want Claude to root-cause a specific failing test by reading the code, not by going off and asking the web what the error means.
+
+```yaml
+---
+name: focused-debug
+description: Investigate the root cause of a specific failing test
+disallowed-tools:
+  - WebSearch
+  - WebFetch
+  - mcp__firecrawl__*
+  - mcp__exa__*
+  - mcp__perplexity__*
+---
+```
+
+Remove web research as an option at all. Whatever Claude reasons toward has to come from `Read`, `Grep`, `Bash`, and the actual codebase. The agent stops considering "should I look this error up?" because there's nothing to look up with.
+
+**Pattern 2: Read-only review.** You want a code review pass where Claude can't pre-emptively "fix" anything it noticed. Just observe and report.
+
+```yaml
+---
+name: read-only-review
+disallowed-tools:
+  - Write
+  - Edit
+  - NotebookEdit
+  - Bash(git commit *)
+  - Bash(git push *)
+  - Bash(rm *)
+---
+```
+
+Now "I'll just patch this real quick while I'm here" isn't a path in the search tree. The agent has to produce a report rather than a diff. Discipline imposed by absence, not by polite instruction.
+
+## The two-axis framing
+
+If you only think about context size, `disallowed-tools` looks like the wrong tool for the job. If you also think about the agent's **choice budget** — the reasoning capacity it spends on selecting among options before it spends any on solving the actual task — then `disallowed-tools` is exactly the right tool, just on a different axis.
+
+| Lever | What it cuts | What it improves |
+|---|---|---|
+| `maxSkillDescriptionChars` and friends | Skill description bytes | Initial context size |
+| MCP server toggle off | Tool defs + instructions | Initial + ongoing context size |
+| `disallowed-tools` | **Number of options in scope** | **Selection accuracy + reasoning efficiency per step** |
+
+Context budget is what fits. Choice budget is what gets considered. Treating them as the same axis is what made me misfile the field in the first place. They aren't.
+
+## What I'd actually do with it
+
+For myself, going forward:
+
+- Stop reaching for `disallowed-tools` as a "trim initial context" knob — it cannot do that, and pretending it can will just produce frustrated benchmark runs.
+- Start reaching for it whenever a Skill has a **specific** job and a large fraction of the available tool list is irrelevant noise that would tempt a confused step.
+- Treat the v2.1.152 addition as Anthropic shipping a **steering primitive**, not a **shrinking primitive**.
+
+That's a smaller claim than my first reading and a more useful one.
+
+---
+
+_Draft. Pulled from a real-time reasoning trail; will tighten on a second pass once the framing settles._

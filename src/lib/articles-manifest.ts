@@ -6,6 +6,13 @@ import type { ArticleWithSlug } from './articles'
 
 export const articlesManifest: ArticleWithSlug[] = [
   {
+    "slug": "disallowed-tools-Is-a-Choice-Budget-Lever",
+    "author": "Ryota Murakami",
+    "title": "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",
+    "date": "2026-05-28",
+    "description": "Claude Code v2.1.152 quietly added `disallowed-tools` to Skill frontmatter. My first reaction was to file it as a 4th Skills lever for trimming initial context — that turned out to be wrong, but the thing it actually does is more interesting: it spends Claude's reasoning budget more carefully by shrinking the tool selection space."
+  },
+  {
     "slug": "Cutting-Claude-Code-Initial-Context-Bloat",
     "author": "Ryota Murakami",
     "title": "Cutting Claude Code's Initial Context Bloat — Skills, Plugins, and MCP Tactics",
