@@ -16,6 +16,22 @@ I made a small VS Code extension called **Go To Definition for JSDoc**.
 - [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc)
 - [Open VSX Registry](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc)
 
+<video
+  aria-label="Animated demo showing Go to Definition jumping from a JSDoc link target to a TypeScript symbol"
+  controls
+  muted
+  playsInline
+  preload="metadata"
+  poster="/videos/go-to-definition-for-jsdoc/code-jump-demo-poster.png"
+  style={{ width: '100%', borderRadius: 12, margin: '2rem 0' }}
+>
+  <source
+    src="/videos/go-to-definition-for-jsdoc/code-jump-demo.mp4"
+    type="video/mp4"
+  />
+  Your browser does not support the video tag.
+</video>
+
 It solves one narrow itch: when a JSDoc comment says “see this symbol”, I want **Go to Definition** to jump there even if the current file does not import that symbol.
 
 ```ts
