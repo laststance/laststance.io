@@ -6,6 +6,13 @@ import type { ArticleWithSlug } from './articles'
 
 export const articlesManifest: ArticleWithSlug[] = [
   {
+    "slug": "Go-To-Definition-for-JSDoc-Released",
+    "author": "Ryota Murakami",
+    "title": "Go To Definition for JSDoc: symbol jumps without throwaway imports",
+    "date": "2026-06-15",
+    "description": "A small VS Code extension for jumping from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding imports just for navigation."
+  },
+  {
     "slug": "disallowed-tools-Is-a-Choice-Budget-Lever",
     "author": "Ryota Murakami",
     "title": "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",

@@ -25,3 +25,6 @@ bun.lockb
 coverage
 storybook-static
 .all-contributorsrc
+
+# Generated
+src/lib/articles-manifest.ts
