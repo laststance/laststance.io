@@ -1,0 +1,141 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Go To Definition for JSDoc: symbol jumps without throwaway imports',
+  date: '2026-06-15',
+  description:
+    'A small VS Code extension for jumping from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding imports just for navigation.',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+I made a small VS Code extension called **Go To Definition for JSDoc**.
+
+- [GitHub repository](https://github.com/laststance/go-to-definition-for-jsdoc)
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc)
+- [Open VSX Registry](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc)
+
+<video
+  aria-label="Animated demo showing Go to Definition jumping from a JSDoc link target to a TypeScript symbol"
+  controls
+  muted
+  playsInline
+  preload="metadata"
+  poster="/videos/go-to-definition-for-jsdoc/code-jump-demo-poster.png"
+  style={{ width: '100%', borderRadius: 12, margin: '2rem 0' }}
+>
+  <source
+    src="/videos/go-to-definition-for-jsdoc/code-jump-demo.mp4"
+    type="video/mp4"
+  />
+  Your browser does not support the video tag.
+</video>
+
+It solves one narrow itch: when a JSDoc comment says “see this symbol”, I want **Go to Definition** to jump there even if the current file does not import that symbol.
+
+```ts
+/**
+ * Reads drawing settings from the shared query.
+ * See {@link 'useReadableDrawingItemSettingsQuery'}.
+ */
+export function readDrawingSettings() {
+  // ...
+}
+```
+
+Put the cursor inside the link target, run VS Code's **Go to Definition**, and the extension tries to resolve the symbol from the workspace.
+
+---
+
+## Why this exists
+
+There is a long-running TypeScript discussion about linking to other files from JSDoc comments:
+
+[microsoft/TypeScript#47718 — Provide way to link to other files from JSDoc comments](https://github.com/microsoft/TypeScript/issues/47718)
+
+That thread is mostly about relative file links, rendered hover links, and TypeScript protocol support. This extension is not a replacement for that native feature. It is more modest:
+
+> If the link target is a symbol name, make Go to Definition useful today.
+
+The pain point is familiar in TypeScript projects. You can make JSDoc links work by importing a type or value purely so TypeScript can see it:
+
+```ts
+import type { useReadableDrawingItemSettingsQuery } from './queries'
+
+/**
+ * See {@link useReadableDrawingItemSettingsQuery}.
+ */
+```
+
+That works, but it turns documentation into dependency wiring. It can also fight auto-organize-imports, lint rules, or a simple preference to keep comments from forcing imports into a file.
+
+I wanted the comment to stay a comment.
+
+---
+
+## What it supports
+
+The extension recognizes common JSDoc inline link forms:
+
+```ts
+/**
+ * {@link SymbolName}
+ * {@link 'SymbolName'}
+ * {@link "SymbolName"}
+ * {@link Namespace.SymbolName}
+ * {@linkplain SymbolName}
+ * {@linkcode SymbolName}
+ */
+```
+
+It activates for TypeScript, TSX, JavaScript, and JSX files.
+
+The lookup flow is intentionally simple:
+
+1. Ask VS Code's workspace symbol provider for an exact match.
+2. If that fails, scan TypeScript and JavaScript files with the TypeScript AST.
+3. Skip generated and dependency folders such as `node_modules`, `dist`, `out`, `.next`, and `.git`.
+
+That fallback is useful in codebases where the symbol provider has not indexed the symbol yet, or where the symbol is present in source but does not surface cleanly through the workspace symbol API.
+
+---
+
+## What it does not try to solve
+
+This extension does **not** make relative file links fully native in TypeScript or VS Code:
+
+```ts
+/**
+ * See {@link ./some-file.ts}.
+ */
+```
+
+That is still the TypeScript / VS Code design space from the issue above. It needs editor and language-service-level decisions about where a path is relative to, how hover markdown should encode it, and how rename/move refactors should update it.
+
+This extension stays on the symbol-navigation side of the problem. The tradeoff keeps it small and predictable.
+
+---
+
+## Install
+
+Install it from either registry:
+
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc)
+- [Open VSX Registry](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc)
+
+The source is here:
+
+[laststance/go-to-definition-for-jsdoc](https://github.com/laststance/go-to-definition-for-jsdoc)
+
+After installing, place the cursor inside a supported JSDoc link target and run **Go to Definition**.
+
+---
+
+## Why I like this shape
+
+Documentation links should be cheap to write.
+
+If I have to add imports, maintain extra alias types, or remember a platform-specific `file://` trick just to make a comment navigable, I will stop writing those links. A tiny editor extension is not as good as native support, but it makes the good habit low-friction again.
+
+That is enough for v0.0.3.
