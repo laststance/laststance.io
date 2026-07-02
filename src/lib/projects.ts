@@ -69,15 +69,6 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
     status: 'Active',
   },
   {
-    name: 'Skills',
-    description:
-      'Agent skills for AI coding assistants. Reusable skill modules for Claude Code, Cursor, Codex, Gemini CLI, and more.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/skills',
-    logo: shellLogo,
-    status: 'Daily tool',
-  },
-  {
     name: 'Tailwind CSS Canonical Classes',
     description:
       'Automatically convert non-canonical Tailwind CSS v4 classes to their canonical equivalents. Prettier plugin, CLI, and core library.',
@@ -121,6 +112,15 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
     href: 'https://github.com/laststance/electron-mcp-server',
     logo: mcpLogo,
     status: 'Experiment',
+  },
+  {
+    name: 'react-flow-scrollbar',
+    description:
+      'Viewport-synced custom scrollbars and zoom-aware bounded panning for React Flow / @xyflow/react v12.',
+    category: 'React Library',
+    href: 'https://github.com/laststance/react-flow-scrollbar',
+    logo: reactLogo,
+    status: 'Active',
   },
 ]
 
