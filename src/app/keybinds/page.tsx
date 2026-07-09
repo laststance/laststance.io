@@ -62,9 +62,9 @@ const keybinds: KeybindsList = {
       cursorTopBlockSelect: '^ P Option',
       cursorBottomBlockSelect: '^ N Option',
       'Rectangular Selection on Mouse Drag': 'Option Click',
-      'Select Inner Bracket(Cursor)': '^ CMD M',
+      'Select Inner Bracket(Cursor/Zed)': '^ CMD M',
       'Toggle Sticky Selection(WebStorm)': 'Option A',
-      'Select bracet(Cursor)': 'Option A',
+      'Select bracket(Cursor/Zed)': 'Option A',
     },
     Scroll: {
       cursorPageDown: '^ V',
@@ -80,8 +80,8 @@ const keybinds: KeybindsList = {
       Undo: 'CMD Z',
       Redo: 'CMD Shift Z',
       'Duplicate Line': 'CMD D',
-      'Insert line Above(Cursor)': '^ CMD Enter',
-      'Insert line Below(Cursor)': 'CMD Enter',
+      'Insert line Above(Cursor/Zed)': '^ CMD Enter',
+      'Insert line Below(Cursor/Zed)': 'CMD Enter',
       'Delete matched bracket or tag': '^-x ^-m',
       'Cut All Right': '^ K',
       'Rename selected symbol': '^ R',
@@ -148,8 +148,8 @@ const keybinds: KeybindsList = {
     AI: {
       'Toggle Chat Tab': 'CMD L',
       'New AI Chat': 'CMD Shift L',
-      'Toggle Cursor Tab': '^-x ^-c',
-      'Toggle Cursor Agents Window': 'CMD Shift J',
+      'Toggle Cursor/Zed Agent Tab': '^-x ^-c',
+      'Toggle Cursor/Zed Agents Window': 'CMD Shift J',
     },
     Git: {
       'Git Blame(WebStorm)': '^-g ^-b',
@@ -159,7 +159,8 @@ const keybinds: KeybindsList = {
         'ctrlCmd',
       'Rectangular Multiple Cursor Select(WebStorm)': 'Option Drag',
       'Rectangular Multiple Cursor Select(Cursor)': 'Option Shift Drag',
-      'Add or Remove caret (with multiCursorModifier ctrlCmd on macOS)': 'CMD Click',
+      'Add or Remove caret (with multiCursorModifier ctrlCmd on macOS)':
+        'CMD Click',
       'Clone Cursor Above': 'Option CMD ↑',
       'Clone Cursor Bellow': 'Option CMD ↓',
       'Vertical cursor fillin(Cursor)': 'CMD Shift mouse',
@@ -172,7 +173,7 @@ export default function Keybinds() {
     <SimpleLayout
       title={
         <div className="text-balance lg:text-nowrap">
-          My Raycast, Cursor, WebStorm, Chrome Keybinds.
+          My Raycast, Cursor, Zed, WebStorm, Chrome Keybinds.
         </div>
       }
       intro="I'm always keeping this page open as my cheat sheet. 😅 (MacOS US Keyboard Layout)"
