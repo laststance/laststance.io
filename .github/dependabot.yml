@@ -14,3 +14,6 @@ updates:
     ignore:
       - dependency-name: 'storybook'
       - dependency-name: '@storybook/*'
+      # TypeScript 7 removes the programmatic API that typescript-eslint and Next.js still rely on.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
