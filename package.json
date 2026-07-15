@@ -116,7 +116,7 @@
     "baseline-browser-mapping": "^2.10.43",
     "code-inspector-plugin": "^2.0.1",
     "eslint": "^10.7.0",
-    "eslint-config-ts-prefixer": "^4.2.0",
+    "eslint-config-ts-prefixer": "^4.2.1",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-storybook": "10.5.0",
