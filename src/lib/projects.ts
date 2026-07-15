@@ -53,7 +53,7 @@ export type FeaturedProject = ArchiveProject & {
 }
 
 /**
- * Featured 7 — hand-curated, status-labeled, large display.
+ * Featured 8 — hand-curated, status-labeled, large display.
  * Order is intentional (author-curated importance), NOT alphabetical.
  *
  * Updated 2026-05-17 (Phase 3 Step 0 worksheet — Preset A: recent-skewed).
@@ -66,6 +66,15 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
     category: 'Desktop App',
     href: 'https://skills-desktop.vercel.app/',
     logo: electronLogo,
+    status: 'Active',
+  },
+  {
+    name: 'Go To Definition for JSDoc',
+    description:
+      'Jump from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding throwaway imports for navigation.',
+    category: 'VS Code Extension',
+    href: 'https://github.com/laststance/go-to-definition-for-jsdoc',
+    logo: vscodeLogo,
     status: 'Active',
   },
   {

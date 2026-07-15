@@ -83,17 +83,21 @@ test('archive Coffee Timer renders with Web App category', async ({ page }) => {
   await expect(coffeeTimerLink).toContainText(/web app/i)
 })
 
-test('featured section shows 7 projects and archive section shows 22', async ({
+test('featured section shows 8 projects and stable section shows 22', async ({
   page,
 }) => {
   // Arrange
   await page.goto('/projects')
 
-  // Act: featured cards are <article>; archive items are <li> inside the archive list.
+  // Act: featured cards are <article>; stable items are <li> inside the stable list.
   const featuredCards = page.locator('section[aria-label="Featured projects"] article')
-  const archiveItems = page.locator('section[aria-label="Archive projects"] li')
+  const stableSection = page.locator('section[aria-label="Stable projects"]')
+  const stableItems = stableSection.locator('li')
 
-  // Assert: structural counts catch accidental featured ↔ archive misplacement.
-  await expect(featuredCards).toHaveCount(7)
-  await expect(archiveItems).toHaveCount(22)
+  // Assert: structural counts catch accidental featured ↔ stable misplacement.
+  await expect(featuredCards).toHaveCount(8)
+  await expect(
+    stableSection.getByRole('heading', { name: 'Stable', exact: true }),
+  ).toBeVisible()
+  await expect(stableItems).toHaveCount(22)
 })

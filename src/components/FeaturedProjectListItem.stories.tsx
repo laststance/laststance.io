@@ -38,7 +38,7 @@ Large, hover-expandable project row used by \`/projects\` Featured section.
 - Hover/focus: spring accordion reveals \`description\`; arrow translates +4px.
 
 Each variant below is a single row so you can see the per-status treatment in
-isolation. \`FullList\` renders the actual seven \`FEATURED_PROJECTS\` for a
+isolation. \`FullList\` renders the actual eight \`FEATURED_PROJECTS\` for a
 visual integration check.
         `,
       },
@@ -111,7 +111,7 @@ export const StatusPaused: Story = {
 }
 
 /**
- * The real seven `FEATURED_PROJECTS` rendered top-to-bottom. Use this to
+ * The real eight `FEATURED_PROJECTS` rendered top-to-bottom. Use this to
  * eyeball whether the `Active`-only-accent rule still reads as hierarchy when
  * statuses are mixed in author-curated order.
  */
