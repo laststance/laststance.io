@@ -14,3 +14,6 @@ updates:
     ignore:
       - dependency-name: 'storybook'
       - dependency-name: '@storybook/*'
+      # TypeScript 7 is blocked until Next.js and typescript-eslint support its compiler API.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
