@@ -89,11 +89,15 @@ test('featured section shows 8 projects and stable section shows 22', async ({
   // Arrange
   await page.goto('/projects')
 
-  // Act: featured cards are <article>; archive items are <li> inside the archive list.
+  // Act: featured cards are <article>; stable items are <li> inside the stable list.
   const featuredCards = page.locator('section[aria-label="Featured projects"] article')
-  const archiveItems = page.locator('section[aria-label="Stable projects"] li')
+  const stableSection = page.locator('section[aria-label="Stable projects"]')
+  const stableItems = stableSection.locator('li')
 
-  // Assert: structural counts catch accidental featured ↔ archive misplacement.
+  // Assert: structural counts catch accidental featured ↔ stable misplacement.
   await expect(featuredCards).toHaveCount(8)
-  await expect(archiveItems).toHaveCount(22)
+  await expect(
+    stableSection.getByRole('heading', { name: 'Stable', exact: true }),
+  ).toBeVisible()
+  await expect(stableItems).toHaveCount(22)
 })
