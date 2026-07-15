@@ -83,7 +83,7 @@ test('archive Coffee Timer renders with Web App category', async ({ page }) => {
   await expect(coffeeTimerLink).toContainText(/web app/i)
 })
 
-test('featured section shows 7 projects and archive section shows 22', async ({
+test('featured section shows 8 projects and stable section shows 22', async ({
   page,
 }) => {
   // Arrange
@@ -91,9 +91,9 @@ test('featured section shows 7 projects and archive section shows 22', async ({
 
   // Act: featured cards are <article>; archive items are <li> inside the archive list.
   const featuredCards = page.locator('section[aria-label="Featured projects"] article')
-  const archiveItems = page.locator('section[aria-label="Archive projects"] li')
+  const archiveItems = page.locator('section[aria-label="Stable projects"] li')
 
   // Assert: structural counts catch accidental featured ↔ archive misplacement.
-  await expect(featuredCards).toHaveCount(7)
+  await expect(featuredCards).toHaveCount(8)
   await expect(archiveItems).toHaveCount(22)
 })

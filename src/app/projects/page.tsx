@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  * Projects page — Featured (status-labeled) / Archive (compressed reference) split.
  *
  * Layout intent (DESIGN.md §7 + Walking Skeleton Phase 3):
- * - Featured 7 — large expanded layout, status label drives single-accent hierarchy.
+ * - Featured 8 — large expanded layout, status label drives single-accent hierarchy.
  * - Archive 22 — 1-line compressed list, alphabetical, no motion / no status.
  *
  * The visual jump from large rows → compressed rows is the hierarchy signal,
@@ -67,12 +67,12 @@ export default function Projects() {
           ))}
         </Box>
 
-        {/* Archive section — divider + heading + compressed list */}
+        {/* Stable section — divider + heading + compressed list */}
         <Box
           as="section"
           mt={16}
           className="sm:mt-20 md:mt-24"
-          aria-label="Archive projects"
+          aria-label="Stable projects"
         >
           <Text
             as="h2"
@@ -81,7 +81,7 @@ export default function Projects() {
             mb={6}
             className="text-zinc-500 dark:text-zinc-400"
           >
-            Archive
+            Stable
           </Text>
           <ul className="border-t border-zinc-200/60 dark:border-zinc-700/40">
             {ARCHIVE_PROJECTS.map((project) => (
