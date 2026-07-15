@@ -136,11 +136,13 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@code-inspector/core",
       "@parcel/watcher",
       "@sentry/cli",
       "@tailwindcss/oxide",
       "core-js-pure",
       "esbuild",
+      "node-pty",
       "sharp",
       "unrs-resolver"
     ],
