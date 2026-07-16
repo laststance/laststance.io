@@ -17,7 +17,7 @@ export const NavItem: React.FC<ComponentProps<'a'>> = ({
       <Link
         href={href}
         className={clsx(
-          'relative block px-3 py-2 transition',
+          'relative inline-flex min-h-11 items-center px-3 py-2 transition',
           isActive ? 'text-teal-500 dark:text-teal-400' : 'link-hover',
         )}
         {...rest}

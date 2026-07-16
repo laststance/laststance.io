@@ -37,12 +37,16 @@ export function Card<T extends React.ElementType = 'div'>({
 
 export function CardLink({
   children,
+  className,
   ...props
 }: React.ComponentPropsWithoutRef<typeof Link>) {
   return (
     <>
       <div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
-      <Link {...props}>
+      <Link
+        className={clsx('inline-flex min-h-11 items-center', className)}
+        {...props}
+      >
         <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
         <span className="relative z-10">{children}</span>
       </Link>

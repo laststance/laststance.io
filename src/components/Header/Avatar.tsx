@@ -15,7 +15,13 @@ export function Avatar({
     <Link
       href="/"
       aria-label="Home"
-      className={clsx(className, 'pointer-events-auto')}
+      className={clsx(
+        className,
+        'pointer-events-auto',
+        large
+          ? 'block size-16'
+          : 'inline-flex size-11 items-center justify-center',
+      )}
       {...props}
     >
       <Image

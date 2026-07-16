@@ -43,7 +43,7 @@ function SocialLink({
     <li className={clsx(className, 'flex')}>
       <Link
         href={href}
-        className="group flex text-base font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500 sm:text-lg"
+        className="group flex min-h-11 items-center text-base font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500 sm:text-lg"
         {...(isExternalLink && !isEmailLink
           ? {
               target: '_blank',
