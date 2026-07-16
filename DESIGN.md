@@ -339,7 +339,7 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 ### Page widths
 
 - **Outer shell** — `Container` (`src/components/Container.tsx`) wraps with `max-w-7xl` (1280px) + horizontal padding.
-- **Article / prose body** — `max-w-[60rem]` (960px) reading column inside the `max-w-5xl` (1024px) Container at `lg:` (~32px gutters either side, matching tkdodo.eu). Smaller screens collapse to the parent's full width. Prose's internal `max-w` is `none` — width is controlled by the layout wrapper.
+- **Article / prose body** — `max-w-[72ch]` reading column inside the `max-w-5xl` (1024px) Container at `lg:`. This keeps long-form paragraphs near the 45–75 character reading range; smaller screens collapse to the parent's full width. Prose's internal `max-w` is `none` — width is controlled by the layout wrapper, while wide tables use local horizontal scrolling.
 - **Hero intro block** — `<Box maxW="2xl">` so the lead paragraph stays at ~50–60 chars/line.
 
 ### Home page — 2-column grid
