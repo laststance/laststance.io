@@ -98,6 +98,8 @@ export default function typographyStyles({ theme }) {
           display: 'inline-block',
           fontSize: theme('fontSize.sm')[0],
           fontWeight: theme('fontWeight.semibold'),
+          // Long configuration keys wrap on narrow screens instead of widening the article.
+          overflowWrap: 'anywhere',
           paddingLeft: theme('spacing.1'),
           paddingRight: theme('spacing.1'),
         },
@@ -223,6 +225,7 @@ export default function typographyStyles({ theme }) {
           display: 'inline',
           fontSize: 'inherit',
           fontWeight: 'inherit',
+          overflowWrap: 'normal',
           padding: 0,
         },
         strong: {

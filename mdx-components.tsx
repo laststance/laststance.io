@@ -13,6 +13,9 @@ import { Mermaid } from '@/components/Mermaid'
  */
 type PreProps = ComponentPropsWithoutRef<'pre'>
 
+/** Props that MDX hands to a native table generated from Markdown. */
+type TableProps = ComponentPropsWithoutRef<'table'>
+
 /** Shape of the `<code>` element nested inside an MDX `<pre>` block. */
 type CodeChildProps = {
   className?: string
@@ -44,6 +47,25 @@ function extractText(children: unknown): string {
   return ''
 }
 
+/**
+ * Keeps wide MDX tables readable on narrow screens when the MDX renderer emits a native table.
+ * @param props - Native table props generated from the article's Markdown table.
+ * @returns A full-width table inside a locally scrollable mobile container.
+ * @example
+ * <ResponsiveTable><tbody><tr><td>Value</td></tr></tbody></ResponsiveTable>
+ */
+function ResponsiveTable({ className, ...props }: TableProps): ReactElement {
+  const tableClassName = className
+    ? `w-max min-w-full border-collapse ${className}`
+    : 'w-max min-w-full border-collapse'
+
+  return (
+    <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 pb-2 sm:mx-0 sm:px-0">
+      <table className={tableClassName} {...props} />
+    </div>
+  )
+}
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
@@ -57,5 +79,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       }
       return <pre {...props} />
     },
+    table: ResponsiveTable,
   }
 }
