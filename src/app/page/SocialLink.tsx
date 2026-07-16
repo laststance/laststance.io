@@ -16,7 +16,7 @@ export function SocialLink({
   return (
     <Link
       href={href}
-      className="group -m-1 p-1"
+      className="group inline-flex size-11 items-center justify-center"
       {...(isExternalLink
         ? {
             target: '_blank',

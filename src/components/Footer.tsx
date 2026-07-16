@@ -12,7 +12,7 @@ const NavLink: React.FC<ComponentProps<'a'>> = ({
   <Link
     {...rest}
     href={href}
-    className="transition hover:text-teal-500 dark:hover:text-teal-400"
+    className="inline-flex min-h-11 min-w-11 items-center justify-center transition hover:text-teal-500 dark:hover:text-teal-400"
   >
     {children}
   </Link>

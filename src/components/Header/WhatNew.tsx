@@ -36,7 +36,11 @@ const WhatNew: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" aria-label="Open What's New dialog">
+        <Button
+          variant="ghost"
+          aria-label="Open What's New dialog"
+          className="h-11"
+        >
           What's New?
         </Button>
       </DialogTrigger>
