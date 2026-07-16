@@ -125,7 +125,13 @@ export default function typographyStyles({ theme }) {
           margin: 0,
         },
         h2: {
-          fontSize: '2.25rem', // 36px — matches design-tokens h2 desktop
+          fontSize: '1.5rem', // 24px → 30px → 36px — matches design-tokens h2
+          '@media (min-width: 640px)': {
+            fontSize: '1.875rem',
+          },
+          '@media (min-width: 1024px)': {
+            fontSize: '2.25rem',
+          },
           lineHeight: '1.2',
           marginBottom: theme('spacing.8'),
           marginTop: theme('spacing.10'),
@@ -137,7 +143,13 @@ export default function typographyStyles({ theme }) {
           color: 'var(--tw-prose-headings)',
         },
         h3: {
-          fontSize: '1.75rem', // 28px — matches design-tokens h3 desktop
+          fontSize: '1.25rem', // 20px → 24px → 28px — matches design-tokens h3
+          '@media (min-width: 640px)': {
+            fontSize: '1.5rem',
+          },
+          '@media (min-width: 1024px)': {
+            fontSize: '1.75rem',
+          },
           lineHeight: '1.3',
           marginBottom: theme('spacing.4'),
           marginTop: theme('spacing.16'),
