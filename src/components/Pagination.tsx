@@ -37,7 +37,7 @@ export function Pagination({
   return (
     <nav
       aria-label="Pagination"
-      className="mt-12 flex items-center justify-center gap-1 sm:gap-2"
+      className="mt-12 grid w-full grid-cols-[auto_1fr_auto] items-center gap-1 sm:flex sm:justify-center sm:gap-2"
     >
       <PaginationItem
         href={hrefForPage(basePath, prevPage)}
@@ -48,26 +48,31 @@ export function Pagination({
         <span aria-hidden="true">←</span>
         <span className="sr-only sm:not-sr-only sm:ml-1">Previous</span>
       </PaginationItem>
-      {pages.map((entry, index) =>
-        entry === 'ellipsis' ? (
-          <span
-            key={`ellipsis-${index}`}
-            aria-hidden="true"
-            className="px-2 text-sm text-zinc-400 dark:text-zinc-500"
-          >
-            …
-          </span>
-        ) : (
-          <PaginationItem
-            key={entry}
-            href={hrefForPage(basePath, entry)}
-            current={entry === currentPage}
-            ariaLabel={`Go to page ${entry}`}
-          >
-            {entry}
-          </PaginationItem>
-        ),
-      )}
+      <span className="text-center text-sm tabular-nums text-zinc-500 sm:hidden dark:text-zinc-400">
+        Page {currentPage} of {totalPages}
+      </span>
+      <div className="hidden items-center gap-1 sm:flex sm:gap-2">
+        {pages.map((entry, index) =>
+          entry === 'ellipsis' ? (
+            <span
+              key={`ellipsis-${index}`}
+              aria-hidden="true"
+              className="px-2 text-sm text-zinc-400 dark:text-zinc-500"
+            >
+              …
+            </span>
+          ) : (
+            <PaginationItem
+              key={entry}
+              href={hrefForPage(basePath, entry)}
+              current={entry === currentPage}
+              ariaLabel={`Go to page ${entry}`}
+            >
+              {entry}
+            </PaginationItem>
+          ),
+        )}
+      </div>
       <PaginationItem
         href={hrefForPage(basePath, nextPage)}
         disabled={isLastPage}
