@@ -26,7 +26,12 @@ const List: React.FC<Props> = ({ date, li }) => (
     <h3 className="font-bold text-lg">{date}</h3>
     <ul className="mt-4 ml-6 list-disc text-base">
       {li.map((v, i) => (
-        <li key={i}>{v}</li>
+        <li
+          key={i}
+          className="min-h-11 [&>a]:inline-flex [&>a]:min-h-11 [&>a]:items-center [&>a]:py-2"
+        >
+          {v}
+        </li>
       ))}
     </ul>
   </div>
