@@ -339,7 +339,7 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 ### Page widths
 
 - **Outer shell** — `Container` (`src/components/Container.tsx`) wraps with `max-w-7xl` (1280px) + horizontal padding.
-- **Article / prose body** — `max-w-[60rem]` (960px) reading column inside the `max-w-5xl` (1024px) Container at `lg:` (~32px gutters either side, matching tkdodo.eu). Smaller screens collapse to the parent's full width. Prose's internal `max-w` is `none` — width is controlled by the layout wrapper.
+- **Article / prose body** — `max-w-[72ch]` reading column inside the `max-w-5xl` (1024px) Container at `lg:`. This keeps long-form paragraphs near the 45–75 character reading range; smaller screens collapse to the parent's full width. Prose's internal `max-w` is `none` — width is controlled by the layout wrapper, while wide tables use local horizontal scrolling.
 - **Hero intro block** — `<Box maxW="2xl">` so the lead paragraph stays at ~50–60 chars/line.
 
 ### Home page — 2-column grid
@@ -347,16 +347,16 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 `src/app/page.tsx`:
 
 ```tsx
-<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
+<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 xl:max-w-none xl:grid-cols-2">
   <VStack gap={16}>{/* Left: Recent Articles */}</VStack>
-  <div className="space-y-10 lg:pl-16 xl:pl-24">
-    {/* Right: NowPanel (planned for Phase 2). Currently GithubFeedList. */}
+  <div className="space-y-10 xl:pl-24">
+    <NowPanel />
   </div>
 </div>
 ```
 
 - Mobile / tablet: single column, right-column content stacks below the left.
-- `lg:` and up: 50/50 columns with extra left-padding on the right column (`lg:pl-16 xl:pl-24`) for visual breathing.
+- `xl:` and up: 50/50 columns with extra left-padding on the right column (`xl:pl-24`) for visual breathing.
 
 ### Projects page (post-Phase 3 refactor)
 

@@ -1,8 +1,9 @@
 import { type Metadata } from 'next'
 
-import { Card, CardTitle, CardDescription } from '@/components/Card'
+import { Card, CardTitle } from '@/components/Card'
 import { Section } from '@/components/Section'
 import { SimpleLayout } from '@/components/SimpleLayout'
+import { Text } from '@/components/ui/primitives'
 
 function ToolsSection({
   children,
@@ -25,11 +26,13 @@ function Tool({
   href?: string
 }) {
   return (
-    <Card as="li">
+    <Card as="li" className="gap-4">
       <CardTitle as="h3" href={href}>
         {title}
       </CardTitle>
-      <CardDescription>{children}</CardDescription>
+      <Text as="p" variant="body" color="muted" className="relative z-10">
+        {children}
+      </Text>
     </Card>
   )
 }

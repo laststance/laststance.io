@@ -69,13 +69,15 @@ const renderNestedCategorySection = (
         {subcategoryName}
       </h2>
     </button>
-    <table className="min-w-full border-collapse">
-      <tbody>
-        {Object.entries(subcategoryData).map(([action, shortcut]) =>
-          renderKeybindRow(action, shortcut),
-        )}
-      </tbody>
-    </table>
+    <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 pb-2 sm:mx-0 sm:px-0">
+      <table className="w-max min-w-full border-collapse">
+        <tbody>
+          {Object.entries(subcategoryData).map(([action, shortcut]) =>
+            renderKeybindRow(action, shortcut),
+          )}
+        </tbody>
+      </table>
+    </div>
   </div>
 )
 
@@ -133,17 +135,19 @@ export default function KeybindsClient({ keybinds }: KeybindsClientProps) {
               </>
             ) : (
               // Category without nested subcategories: render flat structure
-              <table className="min-w-full border-collapse">
-                <tbody>
-                  {Object.entries(categoryData).map(([action, value]) => {
-                    if (isNestedCategory(value)) {
-                      // This shouldn't happen for categories without nested subcategories, but handle it gracefully
-                      return null
-                    }
-                    return renderKeybindRow(action, value)
-                  })}
-                </tbody>
-              </table>
+              <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 pb-2 sm:mx-0 sm:px-0">
+                <table className="w-max min-w-full border-collapse">
+                  <tbody>
+                    {Object.entries(categoryData).map(([action, value]) => {
+                      if (isNestedCategory(value)) {
+                        // This shouldn't happen for categories without nested subcategories, but handle it gracefully
+                        return null
+                      }
+                      return renderKeybindRow(action, value)
+                    })}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )

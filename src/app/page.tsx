@@ -38,7 +38,7 @@ export default async function Home() {
               React/Node/TypeScript developer. Here is my independent OSS
               organization.
             </Text>
-            <HStack gap={6}>
+            <HStack gap={2}>
               <SocialLink
                 href="https://twitter.com/malloc007"
                 aria-label="Follow on Twitter"
@@ -65,13 +65,14 @@ export default async function Home() {
       </Container>
       <Photos />
       <Container className="mt-24 md:mt-28">
-        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
+        {/* Keep one column until 1280px so the sidebar never compresses article copy. */}
+        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 xl:max-w-none xl:grid-cols-2">
           <VStack gap={16}>
             {articles.map((article) => (
               <Article key={article.slug} article={article} />
             ))}
           </VStack>
-          <div className="space-y-10 lg:pl-16 xl:pl-24">
+          <div className="space-y-10 xl:pl-24">
             <NowPanel />
           </div>
         </div>

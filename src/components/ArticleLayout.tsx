@@ -19,7 +19,7 @@ export function ArticleLayout({
   return (
     <Container className="mt-16 sm:mt-24">
       <div className="xl:relative">
-        <div className="mx-auto max-w-240">
+        <div className="mx-auto max-w-[72ch]">
           {/* {previousPathname && ( */}
           {/*   <button */}
           {/*     type="button" */}

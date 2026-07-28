@@ -16,7 +16,7 @@ export function NowPanel() {
   return (
     <section
       data-react-component="NowPanel"
-      className="max-xs:w-85 max-sm:w-90 md:w-95 max-lg:m-auto"
+      className="mx-auto w-full md:max-w-95 xl:mx-0"
     >
       <header className="mb-8 flex items-baseline justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
