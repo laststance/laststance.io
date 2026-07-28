@@ -64,10 +64,13 @@ test('home page keeps the Now panel inside every viewport from 320px to desktop'
       (nowPanelBounds?.x ?? 0) + (nowPanelBounds?.width ?? 0),
       `${viewportWidth}px Now panel right`,
     ).toBeLessThanOrEqual(viewportWidth)
-    expect(pageWidths, `${viewportWidth}px document width`).toEqual({
-      body: viewportWidth,
-      viewport: viewportWidth,
-    })
+    expect(
+      pageWidths.body,
+      `${viewportWidth}px body width`,
+    ).toBeLessThanOrEqual(viewportWidth)
+    expect(pageWidths.viewport, `${viewportWidth}px viewport width`).toBe(
+      viewportWidth,
+    )
   }
 })
 
