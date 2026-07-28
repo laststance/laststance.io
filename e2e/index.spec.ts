@@ -79,7 +79,7 @@ test('home page waits until 1280px before placing Now beside articles', async ({
 }) => {
   // Arrange
   await page.setViewportSize({ width: 1024, height: 900 })
-  await page.goto('/')
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
   const articles = page.locator('main article')
   const nowPanel = page.locator('[data-react-component="NowPanel"]')
 
