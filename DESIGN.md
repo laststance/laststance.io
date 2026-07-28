@@ -350,7 +350,7 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 xl:max-w-none xl:grid-cols-2">
   <VStack gap={16}>{/* Left: Recent Articles */}</VStack>
   <div className="space-y-10 xl:pl-24">
-    {/* Right: NowPanel (planned for Phase 2). Currently GithubFeedList. */}
+    <NowPanel />
   </div>
 </div>
 ```
