@@ -347,16 +347,16 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 `src/app/page.tsx`:
 
 ```tsx
-<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
+<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 xl:max-w-none xl:grid-cols-2">
   <VStack gap={16}>{/* Left: Recent Articles */}</VStack>
-  <div className="space-y-10 lg:pl-16 xl:pl-24">
+  <div className="space-y-10 xl:pl-24">
     {/* Right: NowPanel (planned for Phase 2). Currently GithubFeedList. */}
   </div>
 </div>
 ```
 
 - Mobile / tablet: single column, right-column content stacks below the left.
-- `lg:` and up: 50/50 columns with extra left-padding on the right column (`lg:pl-16 xl:pl-24`) for visual breathing.
+- `xl:` and up: 50/50 columns with extra left-padding on the right column (`xl:pl-24`) for visual breathing.
 
 ### Projects page (post-Phase 3 refactor)
 
