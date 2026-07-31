@@ -1,0 +1,129 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import Image from 'next/image'
+import demoGif from './demo.gif'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Native {@link} Stops at Imports — Help Push TypeScript Past It',
+  date: '2026-07-31',
+  description:
+    'VS Code already resolves {@link} for symbols the current file imports, and gives up on everything else. Go To Definition for JSDoc closes that gap today — and if enough projects adopt it, that is evidence TypeScript could support it natively.',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+<Image
+  src={demoGif}
+  alt="Go to Definition jumping from a JSDoc {@link} reference to a symbol that the current file never imports"
+  sizes="100vw"
+  unoptimized
+  style={{
+    width: '100%',
+    height: 'auto',
+    borderRadius: 12,
+    margin: '2rem 0',
+  }}
+/>
+
+A while ago I released [Go To Definition for JSDoc](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc), a small VS Code extension for jumping from `{@link}` references to workspace symbols. This post is about the part I explained badly the first time — and about what I would like to happen next.
+
+---
+
+## What TypeScript already does
+
+`{@link}` navigation is not missing from TypeScript. It works right now, with no extension at all, as long as the symbol is imported into the file you are reading:
+
+```ts
+import { anySymbol } from './foo'
+
+/**
+ * {@link anySymbol}
+ */
+function bar() {
+  const res = anySymbol()
+}
+```
+
+Put the cursor on `anySymbol` inside the comment, hit **Go to Definition**, and you land on the declaration in `./foo`. That is the language service resolving the link against the file's own scope.
+
+## Where it stops
+
+Remove the import and the same comment goes dead:
+
+```ts
+/**
+ * {@link anySymbol}
+ */
+function bar() {
+  // nothing here imports anySymbol
+}
+```
+
+Nothing resolves, because there is nothing in scope to resolve against.
+
+This is the whole problem. A documentation link is most valuable exactly when the reader does **not** already have the symbol in front of them — "this mirrors `CommentCard`", "see `fetchPokemonSpeciesQuery` for the query shape". Those are the references worth writing, and those are the ones the language service cannot follow.
+
+You can force it to work by importing the symbol purely so the comment resolves:
+
+```ts
+import type { fetchPokemonSpeciesQuery } from './queries'
+
+/**
+ * See {@link fetchPokemonSpeciesQuery}.
+ */
+```
+
+That import is not a dependency. It is navigation plumbing pretending to be a dependency, and it will get stripped by organize-imports or flagged by lint sooner or later. Once you have paid that tax a few times, you stop writing `{@link}` at all — which is how a genuinely good documentation feature ends up unused.
+
+---
+
+## What the extension does
+
+Go To Definition for JSDoc extends the resolution step past file scope. When the cursor sits inside a link target, it:
+
+1. Asks VS Code's workspace symbol provider for an exact match.
+2. Falls back to scanning TypeScript and JavaScript files with the TypeScript AST.
+3. Skips generated and dependency folders such as `node_modules`, `dist`, `out`, `.next`, and `.git`.
+
+So the unimported case above just works, across TypeScript, TSX, JavaScript, and JSX, for the link forms you already write:
+
+```ts
+/**
+ * {@link SymbolName}
+ * {@link 'SymbolName'}
+ * {@link "SymbolName"}
+ * {@link Namespace.SymbolName}
+ * {@linkplain SymbolName}
+ * {@linkcode SymbolName}
+ */
+```
+
+It is a narrow change. It does not touch relative-file links, hover rendering, or rename refactors. It only makes the symbol case behave the way you already expected it to.
+
+---
+
+## Why I built it instead of waiting
+
+There is a long-running discussion about JSDoc link navigation in TypeScript:
+
+[microsoft/TypeScript#47718 — Provide way to link to other files from JSDoc comments](https://github.com/microsoft/TypeScript/issues/47718)
+
+The thread has been open for years. It covers relative paths, hover markdown, and protocol-level concerns, and it has not converged. I do not think that is anyone's fault — designing it properly means answering questions about what a path is relative to and how refactors should rewrite links, and those answers are genuinely hard.
+
+But the symbol case does not need any of those answers. It needs a lookup that does not stop at the import list. So I shipped that as an extension rather than waiting for the general problem to be solved.
+
+---
+
+## The part where I ask for something
+
+Here is my actual hope for this post.
+
+Feature requests are cheap; usage is not. An issue thread with a hundred 👍 is weak evidence. A thread where someone can point at an extension that a lot of real projects rely on is a much better argument that the behavior belongs in the language service. That kind of adoption signal is often what moves a stalled design discussion, because it turns "would be nice" into "people are already routing around the gap."
+
+So if `{@link}` navigation is something you want in TypeScript proper:
+
+- [Install it from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc) or [Open VSX](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc)
+- Try it on a real codebase, not a toy one — the value shows up when you have cross-module references worth documenting
+- File issues on [the repository](https://github.com/laststance/go-to-definition-for-jsdoc) when it fails to resolve something it should
+
+Best case, this extension eventually becomes redundant because TypeScript ships it. That would be a completely fine outcome. Until then, your comments can stay comments.

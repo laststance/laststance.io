@@ -6,6 +6,13 @@ import type { ArticleWithSlug } from './articles'
 
 export const articlesManifest: ArticleWithSlug[] = [
   {
+    "slug": "Native-link-Stops-at-Imports-Help-Push-TypeScript-Past-It",
+    "author": "Ryota Murakami",
+    "title": "Native {@link} Stops at Imports — Help Push TypeScript Past It",
+    "date": "2026-07-31",
+    "description": "VS Code already resolves {@link} for symbols the current file imports, and gives up on everything else. Go To Definition for JSDoc closes that gap today — and if enough projects adopt it, that is evidence TypeScript could support it natively."
+  },
+  {
     "slug": "Go-To-Definition-for-JSDoc-Released",
     "author": "Ryota Murakami",
     "title": "Go To Definition for JSDoc: symbol jumps without throwaway imports",
