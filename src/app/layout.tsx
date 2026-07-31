@@ -4,7 +4,7 @@ import { type Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { HydrationFix } from '@/components/HydrationFix'
-import { env } from '@/env.mjs'
+import { SITE_URL } from '@/lib/siteUrl'
 
 import { ProvidersClient } from './providers.client'
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     types: {
-      'application/rss+xml': `${env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'}/feed.xml`,
+      'application/rss+xml': `${SITE_URL}/feed.xml`,
     },
   },
   description: 'An independent OSS organization for coding projects.',

@@ -1,7 +1,7 @@
 import { Feed } from 'feed'
 
-import { env } from '@/env.mjs'
 import { getAllArticles } from '@/lib/articles'
+import { SITE_URL } from '@/lib/siteUrl'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-static'
@@ -14,31 +14,29 @@ export const dynamic = 'force-static'
  * @returns RSS 2.0 XML response
  */
 export async function GET() {
-  const siteUrl = env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'
-
   const author = {
     name: 'Laststance.io',
     email: 'contact@laststance.io',
   }
 
   const feed = new Feed({
-    id: siteUrl,
+    id: SITE_URL,
     title: author.name,
     author,
     copyright: `All rights reserved ${new Date().getFullYear()}`,
     description: 'Laststance.io Blog',
-    favicon: `${siteUrl}/favicon.ico`,
+    favicon: `${SITE_URL}/favicon.ico`,
     feedLinks: {
-      rss2: `${siteUrl}/feed.xml`,
+      rss2: `${SITE_URL}/feed.xml`,
     },
-    image: `${siteUrl}/favicon.ico`,
-    link: siteUrl,
+    image: `${SITE_URL}/favicon.ico`,
+    link: SITE_URL,
   })
 
   const articles = await getAllArticles()
 
   for (const article of articles) {
-    const publicUrl = `${siteUrl}/articles/${article.slug}`
+    const publicUrl = `${SITE_URL}/articles/${article.slug}`
 
     feed.addItem({
       id: publicUrl,

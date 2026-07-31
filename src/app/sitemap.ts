@@ -1,9 +1,7 @@
 import type { MetadataRoute } from 'next'
 
-import { env } from '@/env.mjs'
 import { getAllArticles } from '@/lib/articles'
-
-const SITE_URL = env.NEXT_PUBLIC_SITE_URL || 'https://laststance.io'
+import { SITE_URL } from '@/lib/siteUrl'
 
 interface StaticRoute {
   changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']
