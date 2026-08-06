@@ -84,8 +84,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^6.6.0",
-    "@argos-ci/playwright": "^7.4.1",
+    "@argos-ci/cli": "^6.6.1",
+    "@argos-ci/playwright": "^7.4.2",
     "@chromatic-com/storybook": "^5.2.1",
     "@clack/prompts": "^1.7.0",
     "@eslint/js": "^10.0.1",
@@ -113,7 +113,7 @@
     "@vitest/browser": "4.1.10",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "4.1.10",
-    "baseline-browser-mapping": "^2.11.10",
+    "baseline-browser-mapping": "^2.11.11",
     "code-inspector-plugin": "^2.0.7",
     "eslint": "^10.8.0",
     "eslint-config-ts-prefixer": "^4.2.1",
