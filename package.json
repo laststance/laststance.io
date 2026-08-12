@@ -113,7 +113,7 @@
     "@vitest/browser": "4.1.10",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "4.1.10",
-    "baseline-browser-mapping": "^2.11.12",
+    "baseline-browser-mapping": "^2.11.13",
     "code-inspector-plugin": "^2.0.7",
     "eslint": "^10.8.1",
     "eslint-config-ts-prefixer": "^4.2.1",
