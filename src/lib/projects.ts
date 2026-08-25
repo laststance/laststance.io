@@ -9,11 +9,9 @@ import npmLogo from '@/images/logos/icons8-npm-48.png'
 import reactLogo from '@/images/logos/icons8-react-a-javascript-library-for-building-user-interfaces-32.png'
 import reduxLogo from '@/images/logos/icons8-redux-48.png'
 import shellLogo from '@/images/logos/icons8-shell-40.png'
-import storybookLogo from '@/images/logos/icons8-storybook-48.png'
 import tailwindLogo from '@/images/logos/icons8-tailwindcss-48.png'
 import viteLogo from '@/images/logos/icons8-vite-48.png'
 import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
-import mcpLogo from '@/images/logos/mcp.svg'
 
 /**
  * Author-decided status vocabulary for featured projects.
@@ -114,21 +112,21 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
     status: 'Maintained',
   },
   {
-    name: 'electron-mcp-server',
-    description:
-      'A Model Context Protocol server for Electron applications. Bridge AI agents with desktop applications seamlessly.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/electron-mcp-server',
-    logo: mcpLogo,
-    status: 'Experiment',
-  },
-  {
     name: 'react-flow-scrollbar',
     description:
       'Viewport-synced custom scrollbars and zoom-aware bounded panning for React Flow / @xyflow/react v12.',
     category: 'React Library',
     href: 'https://github.com/laststance/react-flow-scrollbar',
     logo: reactLogo,
+    status: 'Active',
+  },
+  {
+    name: 'eslint-config-ts-prefixer',
+    description:
+      'Opinionated ESLint config with meaningful runtime rules and beautiful formatters.',
+    category: 'NPM Package',
+    href: 'https://github.com/laststance/eslint-config-ts-prefixer',
+    logo: npmLogo,
     status: 'Active',
   },
 ]
@@ -147,22 +145,6 @@ export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
     logo: npmLogo,
   },
   {
-    name: 'Bookmark XP Explorer',
-    description:
-      'Manage Chrome bookmarks with a classic Windows XP explorer interface. Nostalgic yet functional.',
-    category: 'Chrome Extension',
-    href: 'https://chromewebstore.google.com/detail/bookmark-xp-explorer/bafnmajgbpafgeoafooklkfgamjbobpa',
-    logo: chromeLogo,
-  },
-  {
-    name: 'Claude Plugin Dashboard',
-    description:
-      'CLI dashboard for managing Claude Code plugins. Monitor and control your AI workflow.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/claude-plugin-dashboard',
-    logo: npmLogo,
-  },
-  {
     name: 'Clean URL',
     description:
       'Remove tracking parameters from URLs automatically, protecting your privacy while browsing.',
@@ -177,14 +159,6 @@ export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
     category: 'Web App',
     href: 'https://github.com/laststance/coffee-timer',
     logo: nextLogo,
-  },
-  {
-    name: 'Copy to',
-    description:
-      'A VSCode extension that adds a "Copy to..." option to the File Explorer context menu.',
-    category: 'VS Code Extension',
-    href: 'https://github.com/laststance/copy-to',
-    logo: vscodeLogo,
   },
   {
     name: 'Create React App Vite',
@@ -211,42 +185,12 @@ export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
     logo: shellLogo,
   },
   {
-    name: 'eslint-config-ts-prefixer',
-    description:
-      'Opinionated ESLint config with meaningful runtime rules and beautiful formatters.',
-    category: 'NPM Package',
-    href: 'https://github.com/laststance/eslint-config-ts-prefixer',
-    logo: npmLogo,
-  },
-  {
     name: 'git-commit-gpt',
     description:
       "AI-powered Git extension that generates commit messages using OpenAI's GPT models.",
     category: 'NPM Package',
     href: 'https://github.com/laststance/git-commit-gpt',
     logo: npmLogo,
-  },
-  {
-    name: 'Laststance.io',
-    description: 'This website. Built with Next.js, Tailwind, and MDX.',
-    category: 'Web App',
-    href: 'https://github.com/laststance/laststance.io',
-    logo: nextLogo,
-  },
-  {
-    name: 'mac-mcp-server',
-    description: 'MacOS MCP Server',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/mac-mcp-server',
-    logo: mcpLogo,
-  },
-  {
-    name: 'mui-storybook',
-    description:
-      'Storybook for MUI v5 default components. Visual component documentation.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/mui-storybook',
-    logo: storybookLogo,
   },
   {
     name: 'next-msw-integration',
@@ -286,14 +230,6 @@ export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
     category: 'Template',
     href: 'https://github.com/laststance/react-typescript-todomvc-2022',
     logo: reactLogo,
-  },
-  {
-    name: 'Redux Front Page',
-    description:
-      'Solving Redux documentation fragmentation. One source of truth.',
-    category: 'Developer Tool',
-    href: 'https://github.com/laststance/Redux-Front-Page',
-    logo: reduxLogo,
   },
   {
     name: 'signage',
