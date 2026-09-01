@@ -29,6 +29,133 @@ const repoRoot = path.resolve(import.meta.dirname, '..')
 const articlesDir = path.join(repoRoot, 'src/app/articles')
 const outputPath = path.join(repoRoot, 'src/lib/articles-manifest.ts')
 
+/** Frontmatter keys every article object literal is expected to declare. */
+const ARTICLE_STRING_FIELD_NAMES = ['author', 'title', 'date', 'description']
+
+/** Digits in `\xHH` and `\uHHHH` JS string escapes. */
+const JS_HEX_ESCAPE_LENGTH = 2
+const JS_UNICODE_ESCAPE_LENGTH = 4
+
+/** Single-character JS escapes that are not a hex/unicode form. */
+const JS_SINGLE_CHAR_ESCAPES = {
+  0: '\0',
+  b: '\b',
+  f: '\f',
+  n: '\n',
+  r: '\r',
+  t: '\t',
+  v: '\v',
+  "'": "'",
+  '"': '"',
+  '\\': '\\',
+}
+
+/**
+ * Decodes one JS string escape starting at a backslash.
+ * Needed because dropping the `\` would turn `\n` into `n` in the manifest.
+ * @param {string} source
+ * @param {number} backslashIndex
+ * @returns {{ character: string, nextIndex: number }}
+ */
+function decodeJsStringEscape(source, backslashIndex) {
+  const escapeKind = source[backslashIndex + 1]
+  if (escapeKind === undefined) {
+    return { character: '\\', nextIndex: backslashIndex + 1 }
+  }
+
+  const singleCharacter = JS_SINGLE_CHAR_ESCAPES[escapeKind]
+  if (singleCharacter !== undefined) {
+    return { character: singleCharacter, nextIndex: backslashIndex + 2 }
+  }
+
+  if (escapeKind === 'x') {
+    const hex = source.slice(
+      backslashIndex + 2,
+      backslashIndex + 2 + JS_HEX_ESCAPE_LENGTH,
+    )
+    if (/^[0-9A-Fa-f]{2}$/.test(hex)) {
+      return {
+        character: String.fromCodePoint(Number.parseInt(hex, 16)),
+        nextIndex: backslashIndex + 2 + JS_HEX_ESCAPE_LENGTH,
+      }
+    }
+  }
+
+  if (escapeKind === 'u') {
+    if (source[backslashIndex + 2] === '{') {
+      const closingBraceIndex = source.indexOf('}', backslashIndex + 3)
+      const hex = source.slice(backslashIndex + 3, closingBraceIndex)
+      if (closingBraceIndex !== -1 && /^[0-9A-Fa-f]+$/.test(hex)) {
+        return {
+          character: String.fromCodePoint(Number.parseInt(hex, 16)),
+          nextIndex: closingBraceIndex + 1,
+        }
+      }
+    } else {
+      const hex = source.slice(
+        backslashIndex + 2,
+        backslashIndex + 2 + JS_UNICODE_ESCAPE_LENGTH,
+      )
+      if (/^[0-9A-Fa-f]{4}$/.test(hex)) {
+        return {
+          character: String.fromCodePoint(Number.parseInt(hex, 16)),
+          nextIndex: backslashIndex + 2 + JS_UNICODE_ESCAPE_LENGTH,
+        }
+      }
+    }
+  }
+
+  return { character: escapeKind, nextIndex: backslashIndex + 2 }
+}
+
+/**
+ * Reads a quoted string that starts at `source[startIndex]`.
+ * Understands `'` / `"` and JS escapes so titles like `"I've …"` and `\n` survive.
+ * @param {string} source
+ * @param {number} startIndex - Index of the opening quote.
+ * @returns {{ value: string, endIndex: number } | null}
+ */
+function readQuotedString(source, startIndex) {
+  const quote = source[startIndex]
+  if (quote !== "'" && quote !== '"') {
+    return null
+  }
+
+  let value = ''
+  for (let index = startIndex + 1; index < source.length; index += 1) {
+    const character = source[index]
+    if (character === '\\') {
+      const decoded = decodeJsStringEscape(source, index)
+      value += decoded.character
+      index = decoded.nextIndex - 1
+      continue
+    }
+    if (character === quote) {
+      return { value, endIndex: index }
+    }
+    value += character
+  }
+
+  return null
+}
+
+/**
+ * Pulls one string field out of an object literal without evaluating it.
+ * @param {string} objectLiteral - The `{ ... }` block from `export const article`.
+ * @param {string} fieldName
+ * @returns {string | null}
+ */
+function extractQuotedStringField(objectLiteral, fieldName) {
+  const fieldPrefix = objectLiteral.match(new RegExp(`${fieldName}\\s*:\\s*`))
+  if (!fieldPrefix || fieldPrefix.index === undefined) {
+    return null
+  }
+
+  const quoteStartIndex = fieldPrefix.index + fieldPrefix[0].length
+  const quoted = readQuotedString(objectLiteral, quoteStartIndex)
+  return quoted?.value ?? null
+}
+
 const articleFilenames = await glob('*/content.mdx', { cwd: articlesDir })
 
 // Fail loud at build time if discovery fails — better here than producing an
@@ -60,9 +187,21 @@ function extractArticle(mdxSource, filename) {
       `Could not find \`export const article = { ... }\` block in ${filename}`,
     )
   }
-  // Build-time eval of an object literal authored in our own repo. First-party
-  // input only — never run this on untrusted content.
-  return new Function(`return ${match[1]}`)()
+
+  // Parse the four string fields without `new Function` / `eval`. The object
+  // literal is first-party, but browser-security/no-eval still flags the
+  // constructor, and a field extractor is enough for this shape.
+  const objectLiteral = match[1]
+  /** @type {Record<string, string>} */
+  const article = {}
+  for (const fieldName of ARTICLE_STRING_FIELD_NAMES) {
+    const fieldValue = extractQuotedStringField(objectLiteral, fieldName)
+    if (fieldValue === null) {
+      throw new Error(`Missing \`${fieldName}\` in ${filename}`)
+    }
+    article[fieldName] = fieldValue
+  }
+  return article
 }
 
 const entries = await Promise.all(
@@ -78,7 +217,9 @@ const entries = await Promise.all(
 
 // Newest first — matches the previous runtime sort so /articles ordering doesn't shift.
 entries.sort(
-  (a, z) => +new Date(/** @type {string} */ (z.date)) - +new Date(/** @type {string} */ (a.date)),
+  (a, z) =>
+    +new Date(/** @type {string} */ (z.date)) -
+    +new Date(/** @type {string} */ (a.date)),
 )
 
 const fileContent = `// This file is auto-generated by scripts/generate-articles-manifest.mjs.
