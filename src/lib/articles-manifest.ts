@@ -6,6 +6,13 @@ import type { ArticleWithSlug } from './articles'
 
 export const articlesManifest: ArticleWithSlug[] = [
   {
+    "slug": "What-does-T-keyof-T-mean",
+    "author": "Ryota Murakami",
+    "title": "What does T[keyof T] mean?",
+    "date": "2026-09-01",
+    "description": "Indexed access distributes over unions. That single rule turns T[keyof T] from noise into the union of every value type in T."
+  },
+  {
     "slug": "Native-link-Stops-at-Imports-Help-Push-TypeScript-Past-It",
     "author": "Ryota Murakami",
     "title": "Native {@link} Stops at Imports — Help Push TypeScript Past It",

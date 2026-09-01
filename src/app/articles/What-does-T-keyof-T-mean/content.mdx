@@ -1,0 +1,171 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'What does T[keyof T] mean?',
+  date: '2026-09-01',
+  description:
+    'Indexed access distributes over unions. That single rule turns T[keyof T] from noise into the union of every value type in T.',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+I have read `T[keyof T]` in library type definitions for years and nodded along without ever being able to say out loud what it does. It turns out to be two operators stacked on top of each other, plus one rule that nobody bothers to state.
+
+## Two operators, stacked
+
+`keyof T` gives you the **union of the keys**:
+
+```ts
+interface User {
+  id: number
+  name: string
+  isAdmin: boolean
+}
+
+type UserKeys = keyof User
+// 'id' | 'name' | 'isAdmin'
+```
+
+`T[K]` is **indexed access** — the type-level version of `obj[key]`:
+
+```ts
+type Id = User['id'] // number
+type Name = User['name'] // string
+```
+
+Stack them and you get the union of the **value** types:
+
+```ts
+type UserValues = User[keyof User]
+// number | string | boolean
+```
+
+## The rule that makes it click
+
+Indexed access **distributes over unions**. `T[A | B]` is `T[A] | T[B]`:
+
+```ts
+type Two = User['id' | 'name']
+// number | string
+```
+
+That is the whole trick. Since `keyof User` is already the union `'id' | 'name' | 'isAdmin'`, writing `User[keyof User]` is just the compiler expanding it for you:
+
+```ts
+User[keyof User]
+// → User['id' | 'name' | 'isAdmin']
+// → User['id'] | User['name'] | User['isAdmin']
+// → number | string | boolean
+```
+
+Once you see it as distribution, every other use of this pattern reads itself.
+
+## Why people actually search for this
+
+The pattern shows up most often as `typeof OBJ[keyof typeof OBJ]` — the way to get a union of literal values out of a plain object, i.e. an `enum` replacement that erases to nothing at runtime:
+
+```ts
+const ROUTES = {
+  home: '/',
+  about: '/about',
+  blog: '/blog',
+} as const
+
+type Route = (typeof ROUTES)[keyof typeof ROUTES]
+// '/' | '/about' | '/blog'
+```
+
+`typeof ROUTES` moves the value into type space, `keyof` collects the keys, indexed access maps them back to values.
+
+**`as const` is load-bearing.** Drop it and every property widens to `string`, so the union collapses before it is formed:
+
+```ts
+const ROUTES = {
+  home: '/',
+  about: '/about',
+  blog: '/blog',
+}
+
+type Route = (typeof ROUTES)[keyof typeof ROUTES]
+// string  ← the literals are gone
+```
+
+The payoff is one source of truth that works in both worlds — the object is the runtime data, and the type is derived from it rather than hand-maintained next to it:
+
+```ts
+function isRoute(value: string): value is Route {
+  return (Object.values(ROUTES) as string[]).includes(value)
+}
+```
+
+Add a route to the object and the type updates. There is no second list to forget.
+
+## The sibling: `T[number]`
+
+Arrays and tuples index by number, so the same operator with a different key gives you the element type:
+
+```ts
+const LEVELS = ['debug', 'info', 'warn', 'error'] as const
+
+type Level = (typeof LEVELS)[number]
+// 'debug' | 'info' | 'warn' | 'error'
+```
+
+Same operator, different key — and note this one is _not_ distribution: `number` is a single type, not the union `0 | 1 | 2 | 3`. Indexing an array or tuple by `number` is its own rule, and it resolves straight to the union of the element types.
+
+## Three edge cases
+
+**Optional properties pull `undefined` into the union.** The `?` is part of the property type, and indexed access does not strip it:
+
+```ts
+interface Config {
+  host: string
+  port?: number
+}
+
+type ConfigValues = Config[keyof Config]
+// string | number | undefined
+```
+
+**An index signature collapses to the value type**, because there is only one value type to collect:
+
+```ts
+interface Dict {
+  [key: string]: number
+}
+
+type DictKeys = keyof Dict // string | number
+type DictValues = Dict[keyof Dict] // number
+```
+
+(`keyof` on a string index signature includes `number` too, since `obj[0]` and `obj['0']` are the same lookup in JavaScript.)
+
+**An empty object gives you `never`.** `keyof {}` is `never`, and indexing by `never` is `never`:
+
+```ts
+type Nothing = {}[keyof {}] // never
+```
+
+Worth remembering when a generic silently resolves to `never` — an over-constrained `T` is usually the cause.
+
+## Where you will meet it
+
+The generic accessor is the canonical case. `K extends keyof T` narrows the key, and `T[K]` returns exactly the matching value type instead of a union:
+
+```ts
+function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]
+}
+
+const name = getValue({ id: 1, name: 'Raphtalia' }, 'name')
+// string, not string | number
+```
+
+Note the difference: `T[K]` with a single narrowed `K` gives you **one** type, while `T[keyof T]` — every key at once — gives you the union of **all** of them. Same operator, different key.
+
+## The one-line version
+
+**`keyof T` is the union of keys. `T[K]` is a lookup. Lookups distribute over unions. So `T[keyof T]` is the union of every value type in `T`.**
+
+Every example above was type-checked against TypeScript 6.0 with `strict` on.
