@@ -32,9 +32,85 @@ const outputPath = path.join(repoRoot, 'src/lib/articles-manifest.ts')
 /** Frontmatter keys every article object literal is expected to declare. */
 const ARTICLE_STRING_FIELD_NAMES = ['author', 'title', 'date', 'description']
 
+/** Digits in `\xHH` and `\uHHHH` JS string escapes. */
+const JS_HEX_ESCAPE_LENGTH = 2
+const JS_UNICODE_ESCAPE_LENGTH = 4
+
+/** Single-character JS escapes that are not a hex/unicode form. */
+const JS_SINGLE_CHAR_ESCAPES = {
+  0: '\0',
+  b: '\b',
+  f: '\f',
+  n: '\n',
+  r: '\r',
+  t: '\t',
+  v: '\v',
+  "'": "'",
+  '"': '"',
+  '\\': '\\',
+}
+
+/**
+ * Decodes one JS string escape starting at a backslash.
+ * Needed because dropping the `\` would turn `\n` into `n` in the manifest.
+ * @param {string} source
+ * @param {number} backslashIndex
+ * @returns {{ character: string, nextIndex: number }}
+ */
+function decodeJsStringEscape(source, backslashIndex) {
+  const escapeKind = source[backslashIndex + 1]
+  if (escapeKind === undefined) {
+    return { character: '\\', nextIndex: backslashIndex + 1 }
+  }
+
+  const singleCharacter = JS_SINGLE_CHAR_ESCAPES[escapeKind]
+  if (singleCharacter !== undefined) {
+    return { character: singleCharacter, nextIndex: backslashIndex + 2 }
+  }
+
+  if (escapeKind === 'x') {
+    const hex = source.slice(
+      backslashIndex + 2,
+      backslashIndex + 2 + JS_HEX_ESCAPE_LENGTH,
+    )
+    if (/^[0-9A-Fa-f]{2}$/.test(hex)) {
+      return {
+        character: String.fromCodePoint(Number.parseInt(hex, 16)),
+        nextIndex: backslashIndex + 2 + JS_HEX_ESCAPE_LENGTH,
+      }
+    }
+  }
+
+  if (escapeKind === 'u') {
+    if (source[backslashIndex + 2] === '{') {
+      const closingBraceIndex = source.indexOf('}', backslashIndex + 3)
+      const hex = source.slice(backslashIndex + 3, closingBraceIndex)
+      if (closingBraceIndex !== -1 && /^[0-9A-Fa-f]+$/.test(hex)) {
+        return {
+          character: String.fromCodePoint(Number.parseInt(hex, 16)),
+          nextIndex: closingBraceIndex + 1,
+        }
+      }
+    } else {
+      const hex = source.slice(
+        backslashIndex + 2,
+        backslashIndex + 2 + JS_UNICODE_ESCAPE_LENGTH,
+      )
+      if (/^[0-9A-Fa-f]{4}$/.test(hex)) {
+        return {
+          character: String.fromCodePoint(Number.parseInt(hex, 16)),
+          nextIndex: backslashIndex + 2 + JS_UNICODE_ESCAPE_LENGTH,
+        }
+      }
+    }
+  }
+
+  return { character: escapeKind, nextIndex: backslashIndex + 2 }
+}
+
 /**
  * Reads a quoted string that starts at `source[startIndex]`.
- * Understands `'` / `"` and `\\` escapes so titles like `"I've …"` survive.
+ * Understands `'` / `"` and JS escapes so titles like `"I've …"` and `\n` survive.
  * @param {string} source
  * @param {number} startIndex - Index of the opening quote.
  * @returns {{ value: string, endIndex: number } | null}
@@ -49,8 +125,9 @@ function readQuotedString(source, startIndex) {
   for (let index = startIndex + 1; index < source.length; index += 1) {
     const character = source[index]
     if (character === '\\') {
-      value += source[index + 1] ?? ''
-      index += 1
+      const decoded = decodeJsStringEscape(source, index)
+      value += decoded.character
+      index = decoded.nextIndex - 1
       continue
     }
     if (character === quote) {
