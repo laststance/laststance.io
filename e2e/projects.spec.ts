@@ -32,21 +32,22 @@ test('featured Skills Desktop renders with Active status label', async ({
   await expect(skillsDesktopCard).toContainText('Active')
 })
 
-test('featured electron-mcp-server renders with Experiment status label', async ({
+test('featured react-lightbox renders with Maintained status label', async ({
   page,
 }) => {
   // Arrange
   await page.goto('/projects')
 
   // Act
-  const electronMcpCard = page.locator('article').filter({
-    has: page.locator('h2', { hasText: 'electron-mcp-server' }),
+  const reactLightboxCard = page.locator('article').filter({
+    has: page.locator('h2', { hasText: 'react-lightbox' }),
   })
 
-  // Assert: present + EXPERIMENT label (uppercase via CSS).
-  // Same desktop/mobile DOM-duplication caveat as the Active-label test above.
-  await expect(electronMcpCard).toBeVisible()
-  await expect(electronMcpCard).toContainText('Experiment')
+  // Assert: present + MAINTAINED label (uppercase via CSS). Exercises the
+  // non-Active status branch of FeaturedProjectListItem, which the Active test
+  // above cannot reach. Same desktop/mobile DOM-duplication caveat as that test.
+  await expect(reactLightboxCard).toBeVisible()
+  await expect(reactLightboxCard).toContainText('Maintained')
 })
 
 test('archive Clean URL renders with Chrome Extension category', async ({
@@ -83,7 +84,7 @@ test('archive Coffee Timer renders with Web App category', async ({ page }) => {
   await expect(coffeeTimerLink).toContainText(/web app/i)
 })
 
-test('featured section shows 8 projects and stable section shows 22', async ({
+test('featured section shows 8 projects and stable section shows 14', async ({
   page,
 }) => {
   // Arrange
@@ -99,5 +100,5 @@ test('featured section shows 8 projects and stable section shows 22', async ({
   await expect(
     stableSection.getByRole('heading', { name: 'Stable', exact: true }),
   ).toBeVisible()
-  await expect(stableItems).toHaveCount(22)
+  await expect(stableItems).toHaveCount(14)
 })

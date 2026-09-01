@@ -37,7 +37,7 @@ Compressed 1-line row used by \`/projects\` Archive section.
 - \`title={description}\` provides native tooltip context without an accordion.
 - \`aria-label\` is composed from name + category for clean screen-reader output.
 
-\`FullList\` renders the 22 live \`ARCHIVE_PROJECTS\` so the alphabetical
+\`FullList\` renders the 14 live \`ARCHIVE_PROJECTS\` so the alphabetical
 density of the section can be eyeballed in one place.
         `,
       },
@@ -73,7 +73,7 @@ export const Default: Story = {
 }
 
 /**
- * The real 22 `ARCHIVE_PROJECTS` rendered alphabetically. Use this to check
+ * The real 14 `ARCHIVE_PROJECTS` rendered alphabetically. Use this to check
  * the density / readability rhythm of the compressed list.
  */
 export const FullList: Story = {
