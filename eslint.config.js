@@ -3,6 +3,7 @@ import nextNext from '@next/eslint-plugin-next'
 import { defineConfig } from 'eslint/config'
 import tsPreFixer from 'eslint-config-ts-prefixer'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+import browserSecurity from 'eslint-plugin-browser-security'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import storybook from 'eslint-plugin-storybook'
 
@@ -62,6 +63,48 @@ export default defineConfig([
       '@next/next/no-title-in-document-head': 'warn',
       '@next/next/no-typos': 'warn',
       '@next/next/no-unwanted-polyfillio': 'warn',
+    },
+  },
+  // Browser security — eight runtime XSS / token-storage rules.
+  // Mirrors eslint-config-ts-prefixer#636. Added directly because that PR is
+  // not yet released; delete this block once eslint-config-ts-prefixer ships
+  // a version that already includes these rules.
+  // https://github.com/laststance/eslint-config-ts-prefixer/pull/636
+  {
+    files: ['**/*.{js,jsx,mjs,ts,tsx,mts,cts}'],
+    plugins: {
+      'browser-security': browserSecurity,
+    },
+    rules: {
+      // Disallow assigning to innerHTML/outerHTML — the most common XSS sink in
+      // browser code, and not something a type checker can catch.
+      'browser-security/no-innerhtml': 'error',
+
+      // Disallow eval() and its string-compiling relatives.
+      'browser-security/no-eval': 'error',
+
+      // Disallow storing a JWT in localStorage/sessionStorage: any XSS on the
+      // page can read it, unlike an HttpOnly cookie.
+      'browser-security/no-jwt-in-storage': 'error',
+
+      // Same reasoning for other secrets kept in Web Storage.
+      'browser-security/no-sensitive-localstorage': 'error',
+
+      // Disallow credentials in query strings — they land in browser history,
+      // Referer headers, and server access logs.
+      'browser-security/no-credentials-in-query-params': 'error',
+
+      // Require Secure and SameSite when setting cookies from JS. (HttpOnly is
+      // deliberately absent — a cookie set through document.cookie cannot be
+      // HttpOnly, by definition.)
+      'browser-security/require-cookie-secure-attrs': 'error',
+
+      // Disallow postMessage(..., '*') — an origin wildcard leaks the payload
+      // to whatever happens to be framed.
+      'browser-security/no-postmessage-wildcard-origin': 'error',
+
+      // Disallow redirects built from unvalidated input (open redirect).
+      'browser-security/no-insecure-redirects': 'error',
     },
   },
   ...storybook.configs['flat/recommended'],
