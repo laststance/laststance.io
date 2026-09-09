@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, test, expect } from 'vitest'
 
 import { stripTrailingSlash } from './stripTrailingSlash'
 
 describe('stripTrailingSlash', () => {
-  it('keeps sitemap and feed URLs free of a doubled separator', () => {
+  test('keeps sitemap and feed URLs free of a doubled separator', () => {
     // Arrange
     const configuredSiteUrl = 'https://laststance.io/'
 
@@ -14,7 +14,7 @@ describe('stripTrailingSlash', () => {
     expect(articleUrl).toBe('https://laststance.io/articles/my-post')
   })
 
-  it('leaves a URL without a trailing slash untouched', () => {
+  test('leaves a URL without a trailing slash untouched', () => {
     // Arrange
     const configuredSiteUrl = 'https://laststance.io'
 
@@ -25,7 +25,7 @@ describe('stripTrailingSlash', () => {
     expect(normalized).toBe('https://laststance.io')
   })
 
-  it('collapses repeated trailing slashes from a mistyped setting', () => {
+  test('collapses repeated trailing slashes from a mistyped setting', () => {
     // Arrange
     const configuredSiteUrl = 'https://laststance.io///'
 
@@ -36,7 +36,7 @@ describe('stripTrailingSlash', () => {
     expect(normalized).toBe('https://laststance.io')
   })
 
-  it('preserves slashes inside the path', () => {
+  test('preserves slashes inside the path', () => {
     // Arrange
     const configuredSiteUrl = 'https://laststance.io/blog/'
 

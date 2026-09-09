@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, test, expect, vi } from 'vitest'
 
 // Mock the build-time manifest so the test asserts behavior of `getAllArticles`
 // against a known, hard-coded fixture (DAMP) rather than the real article list.
@@ -24,7 +24,7 @@ vi.mock('./articles-manifest', () => ({
 import { getAllArticles } from './articles'
 
 describe('getAllArticles', () => {
-  it('returns every entry from the build-time manifest', async () => {
+  test('returns every entry from the build-time manifest', async () => {
     const articles = await getAllArticles()
 
     expect(articles).toHaveLength(2)
@@ -33,7 +33,7 @@ describe('getAllArticles', () => {
     )
   })
 
-  it('exposes each entry as ArticleWithSlug (slug + frontmatter)', async () => {
+  test('exposes each entry as ArticleWithSlug (slug + frontmatter)', async () => {
     const articles = await getAllArticles()
     const newer = articles.find((article) => article.slug === 'newer-post')
 

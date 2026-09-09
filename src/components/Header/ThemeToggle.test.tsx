@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import React from 'react'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, test, expect, vi, beforeEach } from 'vitest'
 
 import { ThemeToggle } from './ThemeToggle'
 
@@ -16,7 +16,7 @@ describe('ThemeToggle', () => {
     vi.clearAllMocks()
   })
 
-  it('should render with light theme', async () => {
+  test('should render with light theme', async () => {
     const { useTheme } = await import('next-themes')
     vi.mocked(useTheme).mockReturnValue({
       resolvedTheme: 'light',
@@ -36,7 +36,7 @@ describe('ThemeToggle', () => {
     })
   })
 
-  it('should render with dark theme', async () => {
+  test('should render with dark theme', async () => {
     const { useTheme } = await import('next-themes')
     vi.mocked(useTheme).mockReturnValue({
       resolvedTheme: 'dark',
@@ -56,7 +56,7 @@ describe('ThemeToggle', () => {
     })
   })
 
-  it('should toggle theme when clicked', async () => {
+  test('should toggle theme when clicked', async () => {
     const { useTheme } = await import('next-themes')
     vi.mocked(useTheme).mockReturnValue({
       resolvedTheme: 'light',
@@ -78,7 +78,7 @@ describe('ThemeToggle', () => {
     expect(mockSetTheme).toHaveBeenCalledWith('dark')
   })
 
-  it('should toggle from dark to light', async () => {
+  test('should toggle from dark to light', async () => {
     const { useTheme } = await import('next-themes')
     vi.mocked(useTheme).mockReturnValue({
       resolvedTheme: 'dark',
@@ -100,7 +100,7 @@ describe('ThemeToggle', () => {
     expect(mockSetTheme).toHaveBeenCalledWith('light')
   })
 
-  it('should have appropriate accessible label', async () => {
+  test('should have appropriate accessible label', async () => {
     const { useTheme } = await import('next-themes')
     vi.mocked(useTheme).mockReturnValue({
       resolvedTheme: 'light',
