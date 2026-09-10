@@ -89,8 +89,8 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
       lucide-react:
-        specifier: ^1.41.0
-        version: 1.41.0(react@19.2.8)
+        specifier: ^1.42.0
+        version: 1.42.0(react@19.2.8)
       mermaid:
         specifier: ^11.17.2
         version: 11.17.2
@@ -107,8 +107,8 @@ importers:
         specifier: ^3.9.17
         version: 3.9.17(next@16.3.4(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       node-html-parser:
-        specifier: ^9.0.3
-        version: 9.0.3
+        specifier: ^9.0.4
+        version: 9.0.4
       nuqs:
         specifier: ^2.10.1
         version: 2.10.1(next@16.3.4(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
@@ -4755,8 +4755,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@1.41.0:
-    resolution: {integrity: sha512-6lksP35l6KszDKUeRTi4LV7i6DEe0Yzl2ALJm9j4c5xEYN91GdW1xGsawGMOg2mgjF5GHBVX8pKX9kP+cWsP3Q==}
+  lucide-react@1.42.0:
+    resolution: {integrity: sha512-b3jprplnoLS8n5etw1z8xODe3hF/yjKATrTitsrKrnjUhCef5BdDct6Ppv3zVvzFwmtfWgLO6XNM3C9fAD93ug==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -5089,8 +5089,8 @@ packages:
       encoding:
         optional: true
 
-  node-html-parser@9.0.3:
-    resolution: {integrity: sha512-iaQ9rokcYNp99IY0h82q04Wtc27SObRT+OEytdJh0bFv2IN0fypnU63KUNVavkPSiwsmIELG1eUenajGhzrvpg==}
+  node-html-parser@9.0.4:
+    resolution: {integrity: sha512-reUSrZkF1rO7hEYe5mJwtbVcQ6mB5QrViCZH6Wv+iz3er/PA9Q50gol15dMLQRDfdli4VzqPMPR24HNRFgVKFw==}
 
   node-pty@1.1.0:
     resolution: {integrity: sha512-20JqtutY6JPXTUnL0ij1uad7Qe1baT46lyolh2sSENDd4sTzKZ4nmAFkeAARDKwmlLjPx6XKRlwRUxwjOy+lUg==}
@@ -10894,7 +10894,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.41.0(react@19.2.8):
+  lucide-react@1.42.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
@@ -11490,7 +11490,7 @@ snapshots:
     dependencies:
       whatwg-url: 5.0.0
 
-  node-html-parser@9.0.3:
+  node-html-parser@9.0.4:
     dependencies:
       css-select: 5.2.2
       entities: 8.0.0
