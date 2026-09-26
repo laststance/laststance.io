@@ -174,7 +174,7 @@ export default function Keybinds() {
     <SimpleLayout
       title={
         <div className="text-balance lg:text-nowrap">
-          My Raycast, Cursor, Zed, WebStorm, Chrome Keybinds.
+          My Raycast, Cursor, WebStorm, Chrome Keybinds.
         </div>
       }
       intro="I'm always keeping this page open as my cheat sheet. 😅 (MacOS US Keyboard Layout)"
