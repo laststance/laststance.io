@@ -239,8 +239,8 @@ export const articlesManifest: ArticleWithSlug[] = [
   {
     "slug": "laststance-recap-december-2025",
     "author": "ryota-murakami",
-    "date": "2026-01-06",
     "title": "Laststance Recap: December 2025",
+    "date": "2026-01-06",
     "description": "A massive month for Laststance with 768 commits across 34 active projects, featuring new releases for Signage, Complete, and the launch of GitBox and Claude Plugin Dashboard."
   },
   {
