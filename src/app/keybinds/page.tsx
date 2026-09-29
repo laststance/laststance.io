@@ -27,8 +27,6 @@ const keybinds: KeybindsList = {
     'Search Emoji & Symbols': '^ CMD Space',
     'EN to JP': 'CMD J',
     'Confetti with sound': 'Option D',
-    Terminal: 'CMD \\',
-    Obsidian: 'F1',
   },
   Chrome: {
     'Toggle Devtools': '^ Space',
