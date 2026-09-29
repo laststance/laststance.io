@@ -20,7 +20,7 @@ const createAnchorId = (text: string) => {
  * handleScrollToSection('Editor') // Scrolls to #editor
  * handleScrollToSection('Move Cursor') // Scrolls to #move-cursor
  */
-const handleScrollToSection = (sectionName: string) => {
+const handleScrollToSection = (sectionName: string): void => {
   const id = createAnchorId(sectionName)
   window.history.pushState(null, '', `#${id}`)
   const element = document.getElementById(id)
