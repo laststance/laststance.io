@@ -74,7 +74,7 @@ export const CustomSize: Story = {
 export const InHeader: Story = {
   decorators: [
     () => (
-      <header className="flex items-center gap-4 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+      <header className="flex items-center gap-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
         <AvatarContainer>
           <Image
             src="https://github.com/ryota-murakami.png"

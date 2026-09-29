@@ -323,11 +323,7 @@ Rationale: one focal point per view ("what I'm working on right now") gets the a
 ```ts
 // Planned location: src/lib/projects.ts (Phase 3 — file does not exist yet)
 type FeaturedStatus =
-  | 'Active'
-  | 'Daily tool'
-  | 'Experiment'
-  | 'Maintained'
-  | 'Paused'
+  'Active' | 'Daily tool' | 'Experiment' | 'Maintained' | 'Paused'
 ```
 
 The union will live next to the data once `src/lib/projects.ts` lands in Phase 3. Importing the type elsewhere is fine; redefining it is a documentation bug.

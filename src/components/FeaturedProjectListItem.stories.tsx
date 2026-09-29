@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-
 import electronLogo from '@/images/logos/icons8-electron-48.png'
 import { FEATURED_PROJECTS } from '@/lib/projects'
 

@@ -85,7 +85,7 @@ export const AllStates: Story = {
     () => (
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold mb-2 dark:text-white">
+          <h3 className="mb-2 text-lg font-semibold dark:text-white">
             As Button
           </h3>
           <div className="flex gap-4">
@@ -94,7 +94,7 @@ export const AllStates: Story = {
           </div>
         </div>
         <div>
-          <h3 className="text-lg font-semibold mb-2 dark:text-white">
+          <h3 className="mb-2 text-lg font-semibold dark:text-white">
             As Link
           </h3>
           <div className="flex gap-4">

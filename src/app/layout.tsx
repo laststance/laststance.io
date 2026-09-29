@@ -75,7 +75,7 @@ function BackGround() {
   // このコンポーネントはソースオーダーでコンテンツより先に配置することで
   // 自動的にコンテンツの背景として機能する
   return (
-    <div className="fixed inset-0 flex justify-center max-xs:w-screen sm:px-8">
+    <div className="max-xs:w-screen fixed inset-0 flex justify-center sm:px-8">
       {/* max-w-7xl: コンテンツエリアの最大幅に合わせた制限 */}
       <div className="flex w-full max-w-7xl lg:px-8">
         {/* 実際の背景カード: ライト=白、ダーク=zinc-900 */}

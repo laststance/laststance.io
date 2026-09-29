@@ -75,7 +75,7 @@ export const Navigation: Story = {
   },
   decorators: [
     () => (
-      <nav className="bg-zinc-50 dark:bg-zinc-900 p-4 rounded-lg">
+      <nav className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
         <ul className="flex gap-1">
           <NavItem href="/about">About</NavItem>
           <NavItem href="/articles">Articles</NavItem>
@@ -92,20 +92,20 @@ export const AllStates: Story = {
     () => (
       <div className="space-y-4">
         <div>
-          <p className="text-sm text-zinc-500 mb-2">
+          <p className="mb-2 text-sm text-zinc-500">
             Inactive state (current path: /about)
           </p>
-          <nav className="bg-zinc-50 dark:bg-zinc-900 p-4 rounded-lg">
+          <nav className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
             <ul className="flex gap-1">
               <NavItem href="/projects">Projects</NavItem>
             </ul>
           </nav>
         </div>
         <div>
-          <p className="text-sm text-zinc-500 mb-2">
+          <p className="mb-2 text-sm text-zinc-500">
             Active state (current path: /about)
           </p>
-          <nav className="bg-zinc-50 dark:bg-zinc-900 p-4 rounded-lg">
+          <nav className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
             <ul className="flex gap-1">
               <NavItem href="/about">About</NavItem>
             </ul>

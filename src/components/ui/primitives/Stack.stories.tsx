@@ -176,7 +176,7 @@ export const Alignment: Story = {
           <HStack
             gap={4}
             align="start"
-            className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="h-24 rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>Short</DemoItem>
             <DemoItem>Medium text</DemoItem>
@@ -190,7 +190,7 @@ export const Alignment: Story = {
           <HStack
             gap={4}
             align="center"
-            className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="h-24 rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>Short</DemoItem>
             <DemoItem>Medium text</DemoItem>
@@ -204,7 +204,7 @@ export const Alignment: Story = {
           <HStack
             gap={4}
             align="end"
-            className="h-24 bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="h-24 rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>Short</DemoItem>
             <DemoItem>Medium text</DemoItem>
@@ -228,7 +228,7 @@ export const Justification: Story = {
             gap={4}
             justify="start"
             fullWidth
-            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
@@ -243,7 +243,7 @@ export const Justification: Story = {
             gap={4}
             justify="center"
             fullWidth
-            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
@@ -258,7 +258,7 @@ export const Justification: Story = {
             gap={4}
             justify="between"
             fullWidth
-            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>
@@ -273,7 +273,7 @@ export const Justification: Story = {
             gap={4}
             justify="evenly"
             fullWidth
-            className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded"
+            className="rounded bg-zinc-100 p-4 dark:bg-zinc-800"
           >
             <DemoItem>A</DemoItem>
             <DemoItem>B</DemoItem>

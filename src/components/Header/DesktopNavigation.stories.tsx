@@ -67,7 +67,7 @@ export const InHeader: Story = {
   },
   decorators: [
     (Story) => (
-      <header className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+      <header className="flex items-center justify-between rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
         <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-700" />
         <Story />
         <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-700" />

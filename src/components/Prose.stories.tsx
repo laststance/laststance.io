@@ -131,7 +131,7 @@ export const WithTable: Story = {
 
 export const WithClassName: Story = {
   render: () => (
-    <Prose className="max-w-xl mx-auto">
+    <Prose className="mx-auto max-w-xl">
       <h2>Constrained Width</h2>
       <p>
         This prose block has an additional max-width constraint applied via

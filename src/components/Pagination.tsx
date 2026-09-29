@@ -48,7 +48,7 @@ export function Pagination({
         <span aria-hidden="true">←</span>
         <span className="sr-only sm:not-sr-only sm:ml-1">Previous</span>
       </PaginationItem>
-      <span className="text-center text-sm tabular-nums text-zinc-500 sm:hidden dark:text-zinc-400">
+      <span className="text-center text-sm text-zinc-500 tabular-nums sm:hidden dark:text-zinc-400">
         Page {currentPage} of {totalPages}
       </span>
       <div className="hidden items-center gap-1 sm:flex sm:gap-2">

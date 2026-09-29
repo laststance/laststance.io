@@ -24,11 +24,7 @@ import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
  * - `Paused`     — 一時停止 (deliberately on hold, not deprecated)
  */
 export type ProjectStatus =
-  | 'Active'
-  | 'Daily tool'
-  | 'Experiment'
-  | 'Maintained'
-  | 'Paused'
+  'Active' | 'Daily tool' | 'Experiment' | 'Maintained' | 'Paused'
 
 /**
  * Archive project — minimal metadata for compressed 1-line display.

@@ -91,7 +91,9 @@ test('featured section shows 8 projects and stable section shows 14', async ({
   await page.goto('/projects')
 
   // Act: featured cards are <article>; stable items are <li> inside the stable list.
-  const featuredCards = page.locator('section[aria-label="Featured projects"] article')
+  const featuredCards = page.locator(
+    'section[aria-label="Featured projects"] article',
+  )
   const stableSection = page.locator('section[aria-label="Stable projects"]')
   const stableItems = stableSection.locator('li')
 

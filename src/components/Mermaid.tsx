@@ -111,7 +111,7 @@ export function Mermaid({ chart }: MermaidProps) {
         type="button"
         onClick={() => setIsLightboxOpen(true)}
         aria-label="Open diagram in fullscreen viewer"
-        className="not-prose my-6 block w-full cursor-zoom-in rounded-2xl bg-zinc-50 p-4 text-left ring-1 ring-zinc-200/60 transition hover:ring-zinc-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-400 dark:bg-zinc-900/40 dark:ring-zinc-800/60 dark:hover:ring-zinc-700"
+        className="not-prose my-6 block w-full cursor-zoom-in rounded-2xl bg-zinc-50 p-4 text-left ring-1 ring-zinc-200/60 transition hover:ring-zinc-300 focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-hidden dark:bg-zinc-900/40 dark:ring-zinc-800/60 dark:hover:ring-zinc-700"
       >
         <div
           className="flex justify-center overflow-x-auto [&>svg]:h-auto [&>svg]:max-w-full"

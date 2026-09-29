@@ -26,7 +26,7 @@ export const Default: Story = {}
 export const InContext: Story = {
   decorators: [
     (Story) => (
-      <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-900">
+      <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-900">
         <main className="flex-1 p-8">
           <p className="text-zinc-600 dark:text-zinc-400">
             Page content would appear here...

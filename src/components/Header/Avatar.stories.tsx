@@ -70,7 +70,7 @@ export const WithCustomClassName: Story = {
 export const InHeader: Story = {
   decorators: [
     () => (
-      <header className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+      <header className="flex items-center justify-between rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
         <Avatar />
         <nav className="flex gap-4 text-sm text-zinc-600 dark:text-zinc-400">
           <span>About</span>

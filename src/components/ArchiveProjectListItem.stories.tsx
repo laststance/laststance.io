@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-
 import chromeLogo from '@/images/logos/icons8-chrome-48.png'
 import { ARCHIVE_PROJECTS } from '@/lib/projects'
 

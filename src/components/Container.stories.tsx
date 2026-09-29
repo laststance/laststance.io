@@ -25,8 +25,8 @@ export const Default: Story = {
   decorators: [
     () => (
       <Container>
-        <div className="bg-zinc-100 dark:bg-zinc-800 p-8 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4 dark:text-white">
+        <div className="rounded-lg bg-zinc-100 p-8 dark:bg-zinc-800">
+          <h2 className="mb-4 text-xl font-semibold dark:text-white">
             Container Example
           </h2>
           <p className="text-zinc-600 dark:text-zinc-400">
@@ -43,8 +43,8 @@ export const OuterOnly: Story = {
   decorators: [
     () => (
       <ContainerOuter>
-        <div className="bg-blue-100 dark:bg-blue-900 p-8 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4 dark:text-white">
+        <div className="rounded-lg bg-blue-100 p-8 dark:bg-blue-900">
+          <h2 className="mb-4 text-xl font-semibold dark:text-white">
             ContainerOuter Only
           </h2>
           <p className="text-zinc-600 dark:text-zinc-400">
@@ -61,8 +61,8 @@ export const InnerOnly: Story = {
   decorators: [
     () => (
       <ContainerInner>
-        <div className="bg-green-100 dark:bg-green-900 p-8 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4 dark:text-white">
+        <div className="rounded-lg bg-green-100 p-8 dark:bg-green-900">
+          <h2 className="mb-4 text-xl font-semibold dark:text-white">
             ContainerInner Only
           </h2>
           <p className="text-zinc-600 dark:text-zinc-400">
@@ -78,10 +78,10 @@ export const InnerOnly: Story = {
 export const Nested: Story = {
   decorators: [
     () => (
-      <ContainerOuter className="bg-zinc-50 dark:bg-zinc-900 py-8">
+      <ContainerOuter className="bg-zinc-50 py-8 dark:bg-zinc-900">
         <ContainerInner>
-          <div className="bg-white dark:bg-zinc-800 p-8 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4 dark:text-white">
+          <div className="rounded-lg bg-white p-8 shadow-sm dark:bg-zinc-800">
+            <h2 className="mb-4 text-xl font-semibold dark:text-white">
               Full Nested Structure
             </h2>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -130,11 +130,11 @@ export const ResponsiveDemo: Story = {
     () => (
       <div className="space-y-4">
         <Container>
-          <div className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded text-center">
+          <div className="rounded bg-zinc-100 p-4 text-center dark:bg-zinc-800">
             <p className="dark:text-white">
               Resize the viewport to see responsive padding changes
             </p>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
               Mobile: px-4 | Tablet: sm:px-8 | Desktop: lg:px-12
             </p>
           </div>

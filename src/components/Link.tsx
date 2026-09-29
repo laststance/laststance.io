@@ -7,7 +7,7 @@ const Link: React.FC<NextLinkProps & { children: ReactNode }> = memo(
   ({ children, ...rest }) => {
     return (
       // @ts-expect-error something wrong NextLinkProps?
-      <NextLink className="transition link-hover" {...rest}>
+      <NextLink className="link-hover transition" {...rest}>
         {children}
       </NextLink>
     )

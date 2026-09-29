@@ -55,15 +55,15 @@ flowchart TB
 
 ### 公式ドキュメントによる各ローダーの説明場所
 
-| ローダー | 挙動 | ソース |
-|---|---|---|
-| MCPサーバー+instructions | 接続された各サーバーはツール名・説明・*instructions文字列* を寄与する。instructionsはTool Searchで**遅延されない** | [Claude Code MCPドキュメント](https://code.claude.com/docs/en/mcp), [Issue #48680](https://github.com/anthropics/claude-code/issues/48680) |
-| claude.aiコネクタ | Pro/Maxサブスクで認証すると、アカウントレベルのコネクタ（Gmail、Linearなど）が自動アタッチされ、約100Kのツール定義が読み込まれる | [Issue #20412](https://github.com/anthropics/claude-code/issues/20412), [Issue #44112](https://github.com/anthropics/claude-code/issues/44112) |
-| Skills | 各 `SKILL.md` のフロントマター（`name` + `description`）が連結されてリストになり、システムプロンプトに含まれる | [Claude Code Skills](https://code.claude.com/docs/en/skills), [agentskills.io spec](https://agentskills.io/client-implementation/adding-skills-support) |
-| Skill発見パス | 4箇所をスキャン: `~/.<client>/skills/`、`~/.agents/skills/`、およびプロジェクトレベル相当 | [Agent Skills client implementation](https://agentskills.io/client-implementation/adding-skills-support#where-to-scan) |
-| プラグイン | マーケットプレースプラグインはhooks/agents/skills/commandsを `plugins/cache/` に配置する。**プラグインのスキルは `skillOverrides` で制御不可** | [Pluginドキュメント](https://code.claude.com/docs/en/plugins), [Skills overrideノート](https://code.claude.com/docs/en/skills) |
-| Autocompactバッファ | ウィンドウの先頭に33K予約。環境変数オーバーライドは*トリガー閾値*をずらすだけで、予約サイズは変わらない | [Issue #43928](https://github.com/anthropics/claude-code/issues/43928), [Issue #44536](https://github.com/anthropics/claude-code/issues/44536) |
-| Tool Search "auto" モード | コンテキスト圧力が10%を超えた時にツールの*定義*（instructionsではなく）を遅延する。ただし複数の既知のリークパスあり | [Tool Search SDK](https://code.claude.com/docs/en/agent-sdk/tool-search), [APIリファレンス](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool), [Issue #18370](https://github.com/anthropics/claude-code/issues/18370) |
+| ローダー                  | 挙動                                                                                                                                           | ソース                                                                                                                                                                                                                                              |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MCPサーバー+instructions  | 接続された各サーバーはツール名・説明・_instructions文字列_ を寄与する。instructionsはTool Searchで**遅延されない**                             | [Claude Code MCPドキュメント](https://code.claude.com/docs/en/mcp), [Issue #48680](https://github.com/anthropics/claude-code/issues/48680)                                                                                                          |
+| claude.aiコネクタ         | Pro/Maxサブスクで認証すると、アカウントレベルのコネクタ（Gmail、Linearなど）が自動アタッチされ、約100Kのツール定義が読み込まれる               | [Issue #20412](https://github.com/anthropics/claude-code/issues/20412), [Issue #44112](https://github.com/anthropics/claude-code/issues/44112)                                                                                                      |
+| Skills                    | 各 `SKILL.md` のフロントマター（`name` + `description`）が連結されてリストになり、システムプロンプトに含まれる                                 | [Claude Code Skills](https://code.claude.com/docs/en/skills), [agentskills.io spec](https://agentskills.io/client-implementation/adding-skills-support)                                                                                             |
+| Skill発見パス             | 4箇所をスキャン: `~/.<client>/skills/`、`~/.agents/skills/`、およびプロジェクトレベル相当                                                      | [Agent Skills client implementation](https://agentskills.io/client-implementation/adding-skills-support#where-to-scan)                                                                                                                              |
+| プラグイン                | マーケットプレースプラグインはhooks/agents/skills/commandsを `plugins/cache/` に配置する。**プラグインのスキルは `skillOverrides` で制御不可** | [Pluginドキュメント](https://code.claude.com/docs/en/plugins), [Skills overrideノート](https://code.claude.com/docs/en/skills)                                                                                                                      |
+| Autocompactバッファ       | ウィンドウの先頭に33K予約。環境変数オーバーライドは*トリガー閾値*をずらすだけで、予約サイズは変わらない                                        | [Issue #43928](https://github.com/anthropics/claude-code/issues/43928), [Issue #44536](https://github.com/anthropics/claude-code/issues/44536)                                                                                                      |
+| Tool Search "auto" モード | コンテキスト圧力が10%を超えた時にツールの*定義*（instructionsではなく）を遅延する。ただし複数の既知のリークパスあり                            | [Tool Search SDK](https://code.claude.com/docs/en/agent-sdk/tool-search), [APIリファレンス](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool), [Issue #18370](https://github.com/anthropics/claude-code/issues/18370) |
 
 この記事の元ネタとなった2つのコミュニティ記事: Scott Spence氏の[Optimising MCP Server Context Usage](https://scottspence.com/posts/optimising-mcp-server-context-usage-in-claude-code) (66K → 5.6K) と、atcyrus氏の[MCP Tool Search Context Pollution Guide](https://www.atcyrus.com/stories/mcp-tool-search-claude-code-context-pollution-guide)。
 
@@ -201,7 +201,7 @@ stateDiagram-v2
 
 2つのコスト削減値の決定的な違いは**自動呼び出し**です。`user-invocable-only` は名前通りのことしかしません — スキルは `/skill-name` 経由でだけ到達可能。自動呼び出しはオフなので、タスクが自然にそのスキルを呼ぶような場合でもモデルは自発的に手を伸ばしません。`name-only` はリストに名前を残し、自動呼び出しも生かしておくので、タスクが必要とすればモデルが自分でロードして実行できます。
 
-その差が、自分が全部 `name-only` を選んだ理由です。自分のフローの多くは `/goal "do X"` 形式の自然言語ディレクションで、モデル（あるいは産み出されたサブエージェント）が「あ、*qa-team* スキルがこれに合うな」と認識して、スラッシュコマンドをタイプしなくてもロードする必要があります。`user-invocable-only` だとそれを殺してしまい、スキル名を全部覚えてタイプしないといけなくなります。`user-invocable-only` は明示的呼び出しでゲートしたい稀なスキル用に取っておきますが、実際には今のところ自分にはそのバケツは空です。
+その差が、自分が全部 `name-only` を選んだ理由です。自分のフローの多くは `/goal "do X"` 形式の自然言語ディレクションで、モデル（あるいは産み出されたサブエージェント）が「あ、_qa-team_ スキルがこれに合うな」と認識して、スラッシュコマンドをタイプしなくてもロードする必要があります。`user-invocable-only` だとそれを殺してしまい、スキル名を全部覚えてタイプしないといけなくなります。`user-invocable-only` は明示的呼び出しでゲートしたい稀なスキル用に取っておきますが、実際には今のところ自分にはそのバケツは空です。
 
 ### セットアップ
 
@@ -221,11 +221,11 @@ jq --argjson o "$OVERRIDES" '
 
 3つの設定、3つの目的:
 
-| 設定 | デフォルト | 自分の値 | 理由 |
-|---|---|---|---|
-| `skillOverrides` | `{}` | `{ <every-skill>: "name-only" }` | descriptionを落とし、自動/サブエージェント呼び出しは残す |
-| `maxSkillDescriptionChars` | `1536` | `0` | descriptionを完全にドロップ — 名前だけ残る。オーバーライドし忘れたスキル用のハードな安全網 |
-| `skillListingBudgetFraction` | `0.01` | `0.005` | スキルリストがウィンドウのどれだけを消費できるかの上限 |
+| 設定                         | デフォルト | 自分の値                         | 理由                                                                                       |
+| ---------------------------- | ---------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
+| `skillOverrides`             | `{}`       | `{ <every-skill>: "name-only" }` | descriptionを落とし、自動/サブエージェント呼び出しは残す                                   |
+| `maxSkillDescriptionChars`   | `1536`     | `0`                              | descriptionを完全にドロップ — 名前だけ残る。オーバーライドし忘れたスキル用のハードな安全網 |
+| `skillListingBudgetFraction` | `0.01`     | `0.005`                          | スキルリストがウィンドウのどれだけを消費できるかの上限                                     |
 
 編集後はClaude Codeを完全に再起動してください — スキルリストは現在のセッションでキャッシュされます。`/context` で `Skills` 行を確認しましょう。
 
@@ -288,12 +288,12 @@ flowchart LR
 
 ### 最近ローカル化したもの
 
-| プラグイン | 残したもの | 無効化 | 回収トークン |
-|---|---|---|---|
-| `codex@openai-codex` | `codex-rescue` エージェント、`codex-cli-runtime` / `codex-result-handling` / `gpt-5-4-prompting` スキル | yes | 約1.4K (加えて `skillOverrides` のリーチ回復) |
-| `coderabbit@claude-plugins-official` | `code-reviewer` エージェント、`autofix` / `code-review` スキル | yes | 約1K |
-| `figma@claude-plugins-official` | グローバルでは何も — `zumen-fe` プロジェクト内でのみ `.claude/settings.local.json` で有効化 | yes (ユーザーレベル) | 約1.4K |
-| `claude-md-management@claude-plugins-official` | 何も — 使わなかった | yes | 小 |
+| プラグイン                                     | 残したもの                                                                                              | 無効化               | 回収トークン                                  |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------------------------- |
+| `codex@openai-codex`                           | `codex-rescue` エージェント、`codex-cli-runtime` / `codex-result-handling` / `gpt-5-4-prompting` スキル | yes                  | 約1.4K (加えて `skillOverrides` のリーチ回復) |
+| `coderabbit@claude-plugins-official`           | `code-reviewer` エージェント、`autofix` / `code-review` スキル                                          | yes                  | 約1K                                          |
+| `figma@claude-plugins-official`                | グローバルでは何も — `zumen-fe` プロジェクト内でのみ `.claude/settings.local.json` で有効化             | yes (ユーザーレベル) | 約1.4K                                        |
+| `claude-md-management@claude-plugins-official` | 何も — 使わなかった                                                                                     | yes                  | 小                                            |
 
 figmaのケースは触れる価値のある4つ目のパターンを示しています: **プラグインを1プロジェクトにスコープする**。ユーザーレベルで無効化し、単一プロジェクトの `.claude/settings.local.json` で再有効化:
 
@@ -379,16 +379,16 @@ jq '.enabledPlugins' ~/.claude/settings.json
 
 ## 注視すべき既知バグ
 
-| Issue | ステータス | なぜ重要か |
-|---|---|---|
-| [#48680](https://github.com/anthropics/claude-code/issues/48680) | OPEN | MCP **サーバーinstructions** はTool Search遅延されない — 長文instructions (Serenaの20行以上のガイド、DeepWikiのツールカタログ) は設定にかかわらず常駐し続ける |
-| [#40314](https://github.com/anthropics/claude-code/issues/40314) | CLOSED stale | HTTP/Streamable MCPサーバーは旧バージョンで全く遅延されない — アップグレード後 `/mcp` と `/context` で確認 |
-| [#54716](https://github.com/anthropics/claude-code/issues/54716) | OPEN | 組み込み遅延ツール (約25K) にはまだopt-outなし |
-| [#41809](https://github.com/anthropics/claude-code/issues/41809) | CLOSED | 無効化したMCPサーバーが以前は遅延リストに残っていた — 無効化後に確認 |
-| [#43928](https://github.com/anthropics/claude-code/issues/43928) | OPEN | Autocompactバッファ (33K) はハードコード。トリガー閾値だけ `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` で調整可能 |
-| [#50631](https://github.com/anthropics/claude-code/issues/50631) | v2.1.129で修正 | `skillOverrides` は旧ビルドではno-opだった — 計測前にアップグレード確認を |
-| [#20412](https://github.com/anthropics/claude-code/issues/20412), [#44112](https://github.com/anthropics/claude-code/issues/44112) | OPEN | claude.aiコネクタのクライアント単位トグルなし — `--strict-mcp-config` が唯一のドキュメント化された脱出口 |
-| [#18370](https://github.com/anthropics/claude-code/issues/18370) | OPEN | Tool Search `auto` モードが10%閾値を超えても起動失敗することがある — `ENABLE_TOOL_SEARCH=true` を明示的にセット |
+| Issue                                                                                                                              | ステータス     | なぜ重要か                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#48680](https://github.com/anthropics/claude-code/issues/48680)                                                                   | OPEN           | MCP **サーバーinstructions** はTool Search遅延されない — 長文instructions (Serenaの20行以上のガイド、DeepWikiのツールカタログ) は設定にかかわらず常駐し続ける |
+| [#40314](https://github.com/anthropics/claude-code/issues/40314)                                                                   | CLOSED stale   | HTTP/Streamable MCPサーバーは旧バージョンで全く遅延されない — アップグレード後 `/mcp` と `/context` で確認                                                    |
+| [#54716](https://github.com/anthropics/claude-code/issues/54716)                                                                   | OPEN           | 組み込み遅延ツール (約25K) にはまだopt-outなし                                                                                                                |
+| [#41809](https://github.com/anthropics/claude-code/issues/41809)                                                                   | CLOSED         | 無効化したMCPサーバーが以前は遅延リストに残っていた — 無効化後に確認                                                                                          |
+| [#43928](https://github.com/anthropics/claude-code/issues/43928)                                                                   | OPEN           | Autocompactバッファ (33K) はハードコード。トリガー閾値だけ `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` で調整可能                                                       |
+| [#50631](https://github.com/anthropics/claude-code/issues/50631)                                                                   | v2.1.129で修正 | `skillOverrides` は旧ビルドではno-opだった — 計測前にアップグレード確認を                                                                                     |
+| [#20412](https://github.com/anthropics/claude-code/issues/20412), [#44112](https://github.com/anthropics/claude-code/issues/44112) | OPEN           | claude.aiコネクタのクライアント単位トグルなし — `--strict-mcp-config` が唯一のドキュメント化された脱出口                                                      |
+| [#18370](https://github.com/anthropics/claude-code/issues/18370)                                                                   | OPEN           | Tool Search `auto` モードが10%閾値を超えても起動失敗することがある — `ENABLE_TOOL_SEARCH=true` を明示的にセット                                               |
 
 より深いテイクアウェイ: ほとんどがアーキテクチャ周りのリークパスで、アーキテクチャ自体は遅延を*サポートしている*。修正は「遅延を切る」ことではなく、「遅延がリークする余地を残さないようにする」こと。それが3つのレバーが達成することそのものです。
 

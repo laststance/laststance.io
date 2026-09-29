@@ -37,8 +37,8 @@ const handleScrollToSection = (sectionName: string): void => {
  */
 const renderKeybindRow = (action: string, shortcut: string) => (
   <tr key={action}>
-    <td className="py-2 px-4 border-b border-gray-300">{action}</td>
-    <td className="py-2 px-4 border-b border-gray-300">
+    <td className="border-b border-gray-300 px-4 py-2">{action}</td>
+    <td className="border-b border-gray-300 px-4 py-2">
       <div className="flex gap-2">
         {shortcut.split(' ').map((key, i) => (
           <KBD key={i} keyName={key} variant="small" />
@@ -61,11 +61,11 @@ const renderNestedCategorySection = (
     <Spacer size="h-3xs" />
     <button
       id={createAnchorId(subcategoryName)}
-      className="w-full text-left font-bold text-xl pb-3 border-b border-gray-300 cursor-pointe focus:outline-none"
+      className="cursor-pointe w-full border-b border-gray-300 pb-3 text-left text-xl font-bold focus:outline-none"
       aria-label={`Navigate to ${subcategoryName} section`}
       onClick={() => handleScrollToSection(subcategoryName)}
     >
-      <h2 className="inline hover:text-gray-600 transition-colors">
+      <h2 className="inline transition-colors hover:text-gray-600">
         {subcategoryName}
       </h2>
     </button>
@@ -105,7 +105,7 @@ const isNestedCategory = (
 
 export default function KeybindsClient({ keybinds }: KeybindsClientProps) {
   return (
-    <div className="w-full sm:w-100 lg:w-150 mx-auto">
+    <div className="mx-auto w-full sm:w-100 lg:w-150">
       {Object.keys(keybinds).map((category) => {
         const categoryData = keybinds[category]
         const hasNested = hasNestedSubcategories(categoryData)
@@ -115,11 +115,11 @@ export default function KeybindsClient({ keybinds }: KeybindsClientProps) {
             <Spacer size="h-3xs" />
             <button
               id={createAnchorId(category)}
-              className="w-full text-left font-bold text-2xl pb-3 border-b border-gray-300 cursor-pointe focus:outline-none"
+              className="cursor-pointe w-full border-b border-gray-300 pb-3 text-left text-2xl font-bold focus:outline-none"
               aria-label={`Navigate to ${category} section`}
               onClick={() => handleScrollToSection(category)}
             >
-              <h1 className="inline hover:text-gray-600 transition-colors">
+              <h1 className="inline transition-colors hover:text-gray-600">
                 {category}
               </h1>
             </button>

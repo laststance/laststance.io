@@ -2,7 +2,8 @@ import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
   author: 'Ryota Murakami',
-  title: "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",
+  title:
+    "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",
   date: '2026-05-28',
   description:
     "Claude Code v2.1.152 quietly added `disallowed-tools` to Skill frontmatter. My first reaction was to file it as a 4th Skills lever for trimming initial context — that turned out to be wrong, but the thing it actually does is more interesting: it spends Claude's reasoning budget more carefully by shrinking the tool selection space.",
@@ -68,13 +69,13 @@ So even if you blocked every single tool from a chatty MCP server, the server's 
 
 The summary as a table:
 
-| Goal | Achievable with `disallowed-tools`? |
-|---|---|
-| Trim **initial context** at startup | ❌ Not applicable — initial context is fixed before any Skill runs |
-| Cut **MCP server instruction tokens** | ❌ Out of scope — instructions aren't tools |
-| Permanently remove tool definitions | ❌ Filter clears on the next user message |
-| Lock down a Skill's blast radius | ✅ This is what it's for |
-| Make Claude reason better with fewer options | ✅ Less obviously — this is the interesting one |
+| Goal                                         | Achievable with `disallowed-tools`?                                |
+| -------------------------------------------- | ------------------------------------------------------------------ |
+| Trim **initial context** at startup          | ❌ Not applicable — initial context is fixed before any Skill runs |
+| Cut **MCP server instruction tokens**        | ❌ Out of scope — instructions aren't tools                        |
+| Permanently remove tool definitions          | ❌ Filter clears on the next user message                          |
+| Lock down a Skill's blast radius             | ✅ This is what it's for                                           |
+| Make Claude reason better with fewer options | ✅ Less obviously — this is the interesting one                    |
 
 ## The reframe: a choice budget lever
 
@@ -93,12 +94,12 @@ Steps 2 and 3 scale with the tool count. When you go from ten tools to a hundred
 
 This is the agent-quality cost of a fat tool list, and it's not visible in any token counter. It shows up as:
 
-| Symptom | Underlying cause |
-|---|---|
-| Picks the wrong tool when several have similar names or descriptions | Selection confidence drops as overlap grows |
-| Tries a fancy MCP tool when a one-line `bash` would have worked | Specific names attract; presence biases trial |
-| Falls into a loop trying tool A → fail → tool B → fail → tool C | "If the tool exists, it must be the right move" |
-| Long reasoning chains where it visibly debates between candidates | More comparisons fit into the thinking budget |
+| Symptom                                                              | Underlying cause                                |
+| -------------------------------------------------------------------- | ----------------------------------------------- |
+| Picks the wrong tool when several have similar names or descriptions | Selection confidence drops as overlap grows     |
+| Tries a fancy MCP tool when a one-line `bash` would have worked      | Specific names attract; presence biases trial   |
+| Falls into a loop trying tool A → fail → tool B → fail → tool C      | "If the tool exists, it must be the right move" |
+| Long reasoning chains where it visibly debates between candidates    | More comparisons fit into the thinking budget   |
 
 Anthropic's own tool-use guidance acknowledges this — the recommended posture is to expose the smallest sufficient toolset, and to avoid alternatives that look semantically overlapping. `disallowed-tools` is a clean way to enforce that on a per-Skill basis.
 
@@ -142,11 +143,11 @@ Now "I'll just patch this real quick while I'm here" isn't a path in the search 
 
 If you only think about context size, `disallowed-tools` looks like the wrong tool for the job. If you also think about the agent's **choice budget** — the reasoning capacity it spends on selecting among options before it spends any on solving the actual task — then `disallowed-tools` is exactly the right tool, just on a different axis.
 
-| Lever | What it cuts | What it improves |
-|---|---|---|
-| `maxSkillDescriptionChars` and friends | Skill description bytes | Initial context size |
-| MCP server toggle off | Tool defs + instructions | Initial + ongoing context size |
-| `disallowed-tools` | **Number of options in scope** | **Selection accuracy + reasoning efficiency per step** |
+| Lever                                  | What it cuts                   | What it improves                                       |
+| -------------------------------------- | ------------------------------ | ------------------------------------------------------ |
+| `maxSkillDescriptionChars` and friends | Skill description bytes        | Initial context size                                   |
+| MCP server toggle off                  | Tool defs + instructions       | Initial + ongoing context size                         |
+| `disallowed-tools`                     | **Number of options in scope** | **Selection accuracy + reasoning efficiency per step** |
 
 Context budget is what fits. Choice budget is what gets considered. Treating them as the same axis is what made me misfile the field in the first place. They aren't.
 

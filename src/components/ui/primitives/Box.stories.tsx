@@ -138,7 +138,7 @@ export const BorderRadiusScale: Story = {
               p={4}
               rounded={radius}
               bg="secondary"
-              className="h-20 w-20 flex items-center justify-center"
+              className="flex h-20 w-20 items-center justify-center"
             >
               <Text variant="caption">{radius}</Text>
             </Box>
@@ -235,7 +235,7 @@ export const MaxWidthConstraints: Story = {
 export const MarginVariants: Story = {
   decorators: [
     () => (
-      <div className="bg-zinc-100 dark:bg-zinc-800 p-4 rounded-lg">
+      <div className="rounded-lg bg-zinc-100 p-4 dark:bg-zinc-800">
         <Box mt={4} p={4} bg="elevated" rounded="lg">
           <Text variant="caption">mt=4 (16px top margin)</Text>
         </Box>

@@ -132,15 +132,15 @@ export const KeyboardShortcuts: Story = {
       ]
 
       return (
-        <div className="max-w-md mx-auto p-6 bg-white dark:bg-zinc-800 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4 dark:text-white">
+        <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md dark:bg-zinc-800">
+          <h2 className="mb-4 text-xl font-bold dark:text-white">
             Common Keyboard Shortcuts
           </h2>
           <ul className="space-y-2">
             {shortcuts.map((shortcut) => (
               <li
                 key={shortcut.action}
-                className="flex justify-between items-center"
+                className="flex items-center justify-between"
               >
                 <span className="dark:text-gray-200">{shortcut.action}</span>
                 <div className="flex items-center gap-1">
@@ -166,11 +166,11 @@ export const KeyboardShortcuts: Story = {
 export const BorderRadiusShowcase: Story = {
   decorators: [
     () => (
-      <div className="max-w-md mx-auto p-6 bg-white dark:bg-zinc-800 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold mb-4 dark:text-white">
+      <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md dark:bg-zinc-800">
+        <h2 className="mb-4 text-xl font-bold dark:text-white">
           Keyboard Shortcuts with Rounded Keys
         </h2>
-        <ul className="space-y-2 mb-8">
+        <ul className="mb-8 space-y-2">
           {[
             { action: 'Copy', keys: ['Ctrl', 'C'] },
             { action: 'Paste', keys: ['Ctrl', 'V'] },
@@ -178,7 +178,7 @@ export const BorderRadiusShowcase: Story = {
           ].map((shortcut) => (
             <li
               key={shortcut.action}
-              className="flex justify-between items-center"
+              className="flex items-center justify-between"
             >
               <span className="dark:text-gray-200">{shortcut.action}</span>
               <div className="flex items-center gap-1">
@@ -195,8 +195,8 @@ export const BorderRadiusShowcase: Story = {
           ))}
         </ul>
 
-        <div className="p-4 bg-gray-100 dark:bg-zinc-700 rounded-lg">
-          <h3 className="text-lg font-semibold mb-3 dark:text-white">
+        <div className="rounded-lg bg-gray-100 p-4 dark:bg-zinc-700">
+          <h3 className="mb-3 text-lg font-semibold dark:text-white">
             Different Border Radius Examples
           </h3>
           <div className="space-y-3">
@@ -233,7 +233,7 @@ export const VariantComparison: Story = {
     () => (
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold mb-2 dark:text-white">
+          <h3 className="mb-2 text-lg font-semibold dark:text-white">
             Default Variant
           </h3>
           <div className="flex gap-2">
@@ -243,7 +243,7 @@ export const VariantComparison: Story = {
           </div>
         </div>
         <div>
-          <h3 className="text-lg font-semibold mb-2 dark:text-white">
+          <h3 className="mb-2 text-lg font-semibold dark:text-white">
             Small Variant
           </h3>
           <div className="flex gap-2">
@@ -261,12 +261,12 @@ export const VariantComparison: Story = {
 export const Showcase: Story = {
   decorators: [
     () => (
-      <div className="space-y-8 max-w-2xl mx-auto p-6">
+      <div className="mx-auto max-w-2xl space-y-8 p-6">
         <div>
-          <h2 className="text-2xl font-bold mb-4 dark:text-white">
+          <h2 className="mb-4 text-2xl font-bold dark:text-white">
             KBD Component Showcase
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
+          <p className="mb-6 text-gray-600 dark:text-gray-300">
             A comprehensive display of the KBD component's capabilities
             including variants, border radius options, and practical usage
             examples.
@@ -274,7 +274,7 @@ export const Showcase: Story = {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-3 dark:text-white">
+          <h3 className="mb-3 text-lg font-semibold dark:text-white">
             Border Radius Options
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -287,7 +287,7 @@ export const Showcase: Story = {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-3 dark:text-white">
+          <h3 className="mb-3 text-lg font-semibold dark:text-white">
             Size Variants
           </h3>
           <div className="flex items-center gap-4">
@@ -303,7 +303,7 @@ export const Showcase: Story = {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-3 dark:text-white">
+          <h3 className="mb-3 text-lg font-semibold dark:text-white">
             Common Usage Patterns
           </h3>
           <div className="space-y-3">

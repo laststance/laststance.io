@@ -111,7 +111,7 @@ export function MermaidLightbox({
 
         {/* Toolbar — top-left so it does not collide with Radix's built-in
             close button at top-right (see src/components/ui/dialog.tsx). */}
-        <div className="absolute left-4 top-4 z-10 flex gap-1 rounded-lg border border-zinc-200/60 bg-white/90 p-1 shadow-sm backdrop-blur dark:border-zinc-800/60 dark:bg-zinc-950/80">
+        <div className="absolute top-4 left-4 z-10 flex gap-1 rounded-lg border border-zinc-200/60 bg-white/90 p-1 shadow-sm backdrop-blur dark:border-zinc-800/60 dark:bg-zinc-950/80">
           <ToolbarButton onClick={zoomOut} label="Zoom out (-)">
             <ZoomOut className="h-4 w-4" />
           </ToolbarButton>
@@ -128,7 +128,7 @@ export function MermaidLightbox({
             useZoomPan, so the viewport itself does not need to be focusable. */}
         <div
           ref={viewportRef}
-          className="relative cursor-grab touch-none select-none overflow-hidden active:cursor-grabbing"
+          className="relative cursor-grab touch-none overflow-hidden select-none active:cursor-grabbing"
           {...handlers}
         >
           <div
@@ -159,7 +159,7 @@ function ToolbarButton({ onClick, label, children }: ToolbarButtonProps) {
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="flex h-8 w-8 items-center justify-center rounded-md text-zinc-700 transition hover:bg-zinc-100 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-300 dark:hover:bg-zinc-800"
+      className="flex h-8 w-8 items-center justify-center rounded-md text-zinc-700 transition hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-hidden dark:text-zinc-300 dark:hover:bg-zinc-800"
     >
       {children}
     </button>

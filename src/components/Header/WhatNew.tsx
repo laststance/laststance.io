@@ -23,7 +23,7 @@ interface Props {
 const List: React.FC<Props> = ({ date, li }) => (
   <div className="mt-4">
     <Separator className="mb-4" />
-    <h3 className="font-bold text-lg">{date}</h3>
+    <h3 className="text-lg font-bold">{date}</h3>
     <ul className="mt-4 ml-6 list-disc text-base">
       {li.map((v, i) => (
         <li
@@ -50,7 +50,7 @@ const WhatNew: React.FC = () => {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-106.25 sm:min-h-106.25 max-h-150 overflow-y-scroll"
+        className="max-h-150 overflow-y-scroll sm:min-h-106.25 sm:max-w-106.25"
         aria-describedby="whats-new-description"
       >
         <DialogHeader>

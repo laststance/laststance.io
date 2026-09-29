@@ -46,7 +46,7 @@ export function ArchiveProjectListItem({
         rel="noopener noreferrer"
         title={description}
         aria-label={`${name} - ${category} (opens in new tab)`}
-        className="group flex min-h-[44px] items-center gap-3 py-4 outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:gap-4 dark:focus-visible:ring-offset-zinc-900"
+        className="group flex min-h-11 items-center gap-3 py-4 outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:gap-4 dark:focus-visible:ring-offset-zinc-900"
       >
         <Image
           src={logo}

@@ -151,7 +151,7 @@ export function Header() {
               >
                 <div className="relative">
                   <AvatarContainer
-                    className="absolute left-0 top-3 origin-left transition-opacity"
+                    className="absolute top-3 left-0 origin-left transition-opacity"
                     style={{
                       opacity: 'var(--avatar-border-opacity, 0)',
                       transform: 'var(--avatar-border-transform)',

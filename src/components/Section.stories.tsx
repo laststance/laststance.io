@@ -78,7 +78,7 @@ export const Skills: Story = {
         ].map((skill) => (
           <span
             key={skill}
-            className="px-3 py-1 text-sm bg-zinc-100 dark:bg-zinc-800 rounded-full text-zinc-700 dark:text-zinc-300"
+            className="rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
           >
             {skill}
           </span>
