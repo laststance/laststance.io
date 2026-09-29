@@ -15,11 +15,11 @@ export function ThemeToggle() {
     setMounted(true)
   }, [])
 
-  const handleToggle = () => {
+  const handleToggle = (): void => {
     setTheme(otherTheme)
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent): void => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
       handleToggle()

@@ -24,15 +24,15 @@ export function Header() {
     const downDelay = avatarRef.current?.offsetTop ?? 0
     const upDelay = 64
 
-    function setProperty(property: string, value: string) {
+    function setProperty(property: string, value: string): void {
       document.documentElement.style.setProperty(property, value)
     }
 
-    function removeProperty(property: string) {
+    function removeProperty(property: string): void {
       document.documentElement.style.removeProperty(property)
     }
 
-    function updateHeaderStyles() {
+    function updateHeaderStyles(): void {
       if (!headerRef.current) {
         return
       }
@@ -73,7 +73,7 @@ export function Header() {
       }
     }
 
-    function updateAvatarStyles() {
+    function updateAvatarStyles(): void {
       if (!isHomePage) {
         return
       }
@@ -104,7 +104,7 @@ export function Header() {
       setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
     }
 
-    function updateStyles() {
+    function updateStyles(): void {
       updateHeaderStyles()
       updateAvatarStyles()
       isInitial.current = false
@@ -114,7 +114,7 @@ export function Header() {
     window.addEventListener('scroll', updateStyles, { passive: true })
     window.addEventListener('resize', updateStyles)
 
-    return () => {
+    return (): void => {
       window.removeEventListener('scroll', updateStyles)
       window.removeEventListener('resize', updateStyles)
     }

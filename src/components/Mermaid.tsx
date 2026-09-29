@@ -43,7 +43,7 @@ export function Mermaid({ chart }: MermaidProps) {
   useEffect(() => {
     let cancelled = false
 
-    async function render() {
+    async function render(): Promise<void> {
       try {
         const { default: mermaid } = await import('mermaid')
 
@@ -76,7 +76,7 @@ export function Mermaid({ chart }: MermaidProps) {
 
     void render()
 
-    return () => {
+    return (): void => {
       cancelled = true
     }
   }, [chart, resolvedTheme, safeId])

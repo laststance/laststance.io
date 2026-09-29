@@ -14,7 +14,7 @@ function ThemeWatcher() {
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
 
-    function onMediaChange() {
+    function onMediaChange(): void {
       const systemTheme = media.matches ? 'dark' : 'light'
       if (resolvedTheme === systemTheme) {
         setTheme('system')
@@ -24,7 +24,7 @@ function ThemeWatcher() {
     onMediaChange()
     media.addEventListener('change', onMediaChange)
 
-    return () => {
+    return (): void => {
       media.removeEventListener('change', onMediaChange)
     }
   }, [resolvedTheme, setTheme])

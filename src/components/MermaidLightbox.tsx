@@ -304,7 +304,7 @@ function useZoomPan(enabled: boolean): UseZoomPanResult {
   useEffect(() => {
     if (!viewport) return
 
-    const handleWheel = (event: WheelEvent) => {
+    const handleWheel = (event: WheelEvent): void => {
       event.preventDefault()
       const rect = viewport.getBoundingClientRect()
       const cursorX = event.clientX - rect.left
@@ -322,7 +322,7 @@ function useZoomPan(enabled: boolean): UseZoomPanResult {
     }
 
     viewport.addEventListener('wheel', handleWheel, { passive: false })
-    return () => {
+    return (): void => {
       viewport.removeEventListener('wheel', handleWheel)
     }
   }, [viewport])
@@ -334,7 +334,7 @@ function useZoomPan(enabled: boolean): UseZoomPanResult {
   useEffect(() => {
     if (!enabled) return
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.key === '+' || event.key === '=') {
         event.preventDefault()
         setScale((current) => clamp(current * ZOOM_STEP, MIN_SCALE, MAX_SCALE))
@@ -350,7 +350,7 @@ function useZoomPan(enabled: boolean): UseZoomPanResult {
     }
 
     document.addEventListener('keydown', handleKeyDown)
-    return () => {
+    return (): void => {
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [enabled])
