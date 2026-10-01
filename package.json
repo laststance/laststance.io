@@ -128,7 +128,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "prettier-plugin-tailwindcss-canonical-classes": "0.1.6",
     "remark-gfm": "^4.0.1",
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
     "storybook": "^10.6.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
@@ -154,7 +154,7 @@
       "esbuild": "0.28.1",
       "postcss": "8.5.23",
       "prismjs": "^1.30.0",
-      "sharp": "0.35.4",
+      "sharp": "0.35.5",
       "valibot": "1.4.2"
     },
     "patchedDependencies": {
