@@ -68,7 +68,7 @@
     "fast-xml-parser": "^5.11.2",
     "feed": "^6.0.0",
     "import-in-the-middle": "^3.5.2",
-    "lucide-react": "^1.51.0",
+    "lucide-react": "^1.52.0",
     "mermaid": "^12.1.0",
     "motion": "^14.0.0",
     "next": "^16.3.8",
@@ -84,8 +84,8 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^6.9.5",
-    "@argos-ci/playwright": "^7.7.0",
+    "@argos-ci/cli": "^6.9.6",
+    "@argos-ci/playwright": "^7.7.1",
     "@chromatic-com/storybook": "^5.4.0",
     "@clack/prompts": "^1.8.1",
     "@eslint/js": "^10.0.1",
