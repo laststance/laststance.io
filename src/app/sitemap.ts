@@ -20,6 +20,7 @@ const STATIC_PAGES: StaticRoute[] = [
   { changeFrequency: 'monthly', path: '/projects', priority: 0.5 },
   { changeFrequency: 'monthly', path: '/uses', priority: 0.5 },
   { changeFrequency: 'monthly', path: '/keybinds', priority: 0.5 },
+  { changeFrequency: 'yearly', path: '/privacy', priority: 0.3 },
 ]
 
 const STATIC_ROUTES: MetadataRoute.Sitemap = STATIC_PAGES.map(
