@@ -9,7 +9,7 @@ test('Top Page', async ({ page }, testInfo) => {
   )
 })
 
-test('home articles stay left aligned and selected projects stack below on narrow screens', async ({
+test('home articles stay left aligned without a sidebar at every viewport', async ({
   page,
 }) => {
   // Arrange
@@ -22,16 +22,7 @@ test('home articles stay left aligned and selected projects stack below on narro
     // Assert
     expect(article?.x).toBe(hero?.x)
     expect(article?.width).toBeLessThanOrEqual(768)
-    const sidebar = await page.getByRole('complementary').boundingBox()
-    if (width < 1280) {
-      const lastArticle = await page
-        .locator('main article')
-        .last()
-        .boundingBox()
-      expect(sidebar!.y).toBeGreaterThan(lastArticle!.y + lastArticle!.height)
-    } else {
-      expect(sidebar!.y).toBe(article!.y)
-    }
+    await expect(page.getByRole('complementary')).toHaveCount(0)
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBe(width)

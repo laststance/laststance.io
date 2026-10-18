@@ -19,7 +19,9 @@ test('project descriptions stay visible and hidden Stable projects leave no sect
   await expect(page.getByRole('link', { name: /Clean URL/ })).toHaveCount(0)
 })
 
-test('Home shows selected projects instead of Now', async ({ page }) => {
+test('Home shows articles without Now or a replacement sidebar', async ({
+  page,
+}) => {
   // Arrange
   await page.goto('/')
   // Act
@@ -31,8 +33,8 @@ test('Home shows selected projects instead of Now', async ({ page }) => {
   ).toHaveCount(0)
   await expect(
     page.getByRole('heading', { name: 'Selected projects' }),
-  ).toBeVisible()
-  await expect(page.getByRole('complementary').locator('li')).toHaveCount(3)
+  ).toHaveCount(0)
+  await expect(page.getByRole('complementary')).toHaveCount(0)
 })
 
 test('Keybinds keeps one page heading, nested section anchors, and wrapping tables', async ({

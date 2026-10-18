@@ -294,7 +294,7 @@ onBlur={() => setIsExpanded(false)}
 
 Entrance motion communicates "new content has arrived." The following are not arrivals and intentionally omit stagger / entrance motion:
 
-- **Featured project rows and Selected projects** — descriptions are visible immediately; no entrance or hover animation gates access to content.
+- **Featured project rows** — descriptions are visible immediately; no entrance or hover animation gates access to content.
 - **Hero header** (`src/app/page.tsx` author intro block) — already in view above the fold; animating on every mount is theatrical.
 - **Layout primitives** (`Container`, `Box`, `Stack` themselves) — these wrap content; the content animates, not the wrapper.
 
@@ -326,7 +326,7 @@ These labels are **author-judgment-derived**. Promoting a metric (stars, commits
 
 Status values remain author-maintained metadata in `src/lib/projects.ts`. They are not rendered in project rows. Name, purpose, category, and destination identify each project.
 
-`PROJECT_DISPLAY.hiddenNames` controls publication without deleting source records. `homeNames` controls Home order; hidden entries are removed before the three-item limit. Stable is omitted when no entries are published.
+`PROJECT_DISPLAY.hiddenNames` controls publication without deleting source records. Stable is omitted when no entries are published.
 
 ---
 
@@ -340,7 +340,7 @@ Status values remain author-maintained metadata in `src/lib/projects.ts`. They a
 
 ### Home columns
 
-`HomeColumns` accepts an optional `aside`. Selected projects remains the current sidebar. At `xl`, articles and the supplied sidebar form two columns; below `xl`, the sidebar follows the articles. With no selected projects, Home omits the aside and uses a left-aligned `content-column` with no empty second column.
+`HomeColumns` accepts an optional `aside`. Home currently has no sidebar. At `xl`, articles and the supplied sidebar form two columns; below `xl`, the sidebar follows the articles. Without an aside, Home and uses a left-aligned `content-column` with no empty second column.
 
 ### Projects
 

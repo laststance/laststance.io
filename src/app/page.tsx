@@ -3,7 +3,6 @@ import { Photos } from '@/app/page/Photos'
 import { SocialLink } from '@/app/page/SocialLink'
 import { Container } from '@/components/Container'
 import { HomeColumns } from '@/components/HomeColumns'
-import { SelectedProjects } from '@/components/SelectedProjects'
 import {
   GitHubIcon,
   InstagramIcon,
@@ -12,10 +11,8 @@ import {
 } from '@/components/SocialIcons'
 import { Box, HStack, Text, VStack } from '@/components/ui/primitives'
 import { getAllArticles } from '@/lib/articles'
-import { getPublishedProjects } from '@/lib/projects'
 
 export default async function Home() {
-  const { selected } = getPublishedProjects()
   const articles = (await getAllArticles()).slice(0, 4)
 
   return (
@@ -68,13 +65,7 @@ export default async function Home() {
       </Container>
       <Photos />
       <Container className="section-start">
-        <HomeColumns
-          aside={
-            selected.length > 0 ? (
-              <SelectedProjects projects={selected} />
-            ) : undefined
-          }
-        >
+        <HomeColumns>
           <VStack gap={12} className="min-w-0">
             {articles.map((article) => (
               <Article key={article.slug} article={article} />

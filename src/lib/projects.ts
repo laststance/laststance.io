@@ -33,7 +33,6 @@ export type ProjectStatus =
 export type ArchiveProject = {
   name: string
   description: string
-  homeDescription?: string
   category: string
   href: string
   logo: StaticImageData
@@ -56,7 +55,6 @@ export type FeaturedProject = ArchiveProject & {
 export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   {
     name: 'Skills Desktop',
-    homeDescription: 'Manage installed skills and symlinks across AI agents.',
     description:
       'Visualize installed Skills and symlink status across AI agents. GUI for managing skills with 21 AI agents support and 26 themes.',
     category: 'Desktop App',
@@ -66,7 +64,6 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   },
   {
     name: 'Go To Definition for JSDoc',
-    homeDescription: 'Jump from JSDoc links to TypeScript symbols.',
     description:
       'Jump from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding throwaway imports for navigation.',
     category: 'VS Code Extension',
@@ -76,7 +73,6 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   },
   {
     name: 'Tailwind CSS Canonical Classes',
-    homeDescription: 'Convert Tailwind CSS v4 classes to canonical names.',
     description:
       'Automatically convert non-canonical Tailwind CSS v4 classes to their canonical equivalents. Prettier plugin, CLI, and core library.',
     category: 'NPM Package',
@@ -267,19 +263,13 @@ export const PROJECT_DISPLAY = {
     'signage',
     'vite-rtk-query',
   ] as readonly string[],
-  // Home uses this order after it removes hidden projects, up to three items.
-  homeNames: [
-    'Skills Desktop',
-    'Go To Definition for JSDoc',
-    'Tailwind CSS Canonical Classes',
-  ] as readonly string[],
 }
 
 /**
- * Selects the visible projects for Home and Projects from one display setting.
- * Called when these pages render; source records and status values stay intact.
+ * Selects visible projects from the shared publication setting.
+ * Called when the Projects page renders; source records and status values stay intact.
  * @example
- * const { featured, stable, selected } = getPublishedProjects()
+ * const { featured, stable } = getPublishedProjects()
  */
 export function getPublishedProjects(display = PROJECT_DISPLAY) {
   const featured = FEATURED_PROJECTS.filter(
@@ -288,9 +278,5 @@ export function getPublishedProjects(display = PROJECT_DISPLAY) {
   const stable = ARCHIVE_PROJECTS.filter(
     (project) => !display.hiddenNames.includes(project.name),
   )
-  const visible = [...featured, ...stable]
-  const selected = display.homeNames
-    .flatMap((name) => visible.filter((project) => project.name === name))
-    .slice(0, 3)
-  return { featured, stable, selected }
+  return { featured, stable }
 }

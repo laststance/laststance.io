@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 
 /**
  * Aligns Home's articles with the hero and adds a second column only if supplied.
- * Home passes {@link SelectedProjects} only when its published selection is nonempty.
+ * Home currently omits the sidebar; future callers can supply one explicitly.
  * @example
  * <HomeColumns><ArticleList /></HomeColumns>
  */

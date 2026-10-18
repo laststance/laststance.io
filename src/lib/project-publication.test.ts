@@ -7,51 +7,33 @@ describe('project publication', () => {
     // Arrange
     const display = PROJECT_DISPLAY
     // Act
-    const { featured, stable, selected } = getPublishedProjects(display)
+    const { featured, stable } = getPublishedProjects(display)
     // Assert
     expect(stable).toEqual([])
-    expect(featured).toHaveLength(8)
-    expect(selected.map((project) => project.name)).toEqual([
+    expect(featured.map((project) => project.name)).toEqual([
       'Skills Desktop',
       'Go To Definition for JSDoc',
       'Tailwind CSS Canonical Classes',
-    ])
-  })
-
-  it('removes hidden selections before applying the three-project Home limit', () => {
-    // Arrange
-    const display = {
-      hiddenNames: ['Skills Desktop'],
-      homeNames: [
-        'Skills Desktop',
-        'GitBox',
-        'react-lightbox',
-        'react-flow-scrollbar',
-        'Clean URL',
-      ],
-    }
-    // Act
-    const { featured, selected } = getPublishedProjects(display)
-    // Assert
-    expect(featured.map((project) => project.name)).not.toContain(
-      'Skills Desktop',
-    )
-    expect(selected.map((project) => project.name)).toEqual([
+      '@laststance/redux-storage-middleware',
       'GitBox',
       'react-lightbox',
       'react-flow-scrollbar',
+      'eslint-config-ts-prefixer',
     ])
   })
 
-  it('leaves no Home selections when all selected names are hidden or missing', () => {
+  it('hides only explicitly named projects and preserves other Stable entries', () => {
     // Arrange
-    const display = {
-      hiddenNames: ['Skills Desktop'],
-      homeNames: ['Skills Desktop', 'missing'],
-    }
+    const display = { hiddenNames: ['Skills Desktop', 'Clean URL'] }
     // Act
-    const { selected } = getPublishedProjects(display)
+    const { featured, stable } = getPublishedProjects(display)
     // Assert
-    expect(selected).toEqual([])
+    expect(featured).toHaveLength(7)
+    expect(featured.map((project) => project.name)).not.toContain(
+      'Skills Desktop',
+    )
+    expect(stable).toHaveLength(13)
+    expect(stable.map((project) => project.name)).not.toContain('Clean URL')
+    expect(stable.map((project) => project.name)).toContain('Coffee Timer')
   })
 })
