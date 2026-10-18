@@ -69,7 +69,7 @@ const keybinds: KeybindsList = {
       cursorPageUp: 'Option V',
       cursorTop: '^-x ^-[',
       cursorBottm: '^-x ^-]',
-      'Scroll to Center(WebStorm)': '^-x L',
+      'Scroll to Center': '^-x L',
     },
     'Code Edit': {
       'delete single charchtar': 'Delete',
