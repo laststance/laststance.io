@@ -23,9 +23,13 @@ test('home articles stay left aligned without a sidebar at every viewport', asyn
     expect(article?.x).toBe(hero?.x)
     expect(article?.width).toBeLessThanOrEqual(768)
     await expect(page.getByRole('complementary')).toHaveCount(0)
-    expect(
-      await page.evaluate(() => document.documentElement.scrollWidth),
-    ).toBe(width)
+    // Linux reserves scrollbar space; overflow is relative to the content viewport.
+    const horizontalOverflow = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    )
+    expect(horizontalOverflow).toBe(0)
   }
 })
 
