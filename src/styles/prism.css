@@ -1,47 +1,55 @@
-pre[class*='language-'] {
-  color: var(--color-zinc-100);
+/* Prism shares the article theme so code remains readable on both backgrounds. */
+:root {
+  --syntax-text: var(--color-zinc-800);
+  --syntax-pink: var(--color-pink-700);
+  --syntax-keyword: var(--color-violet-700);
+  --syntax-string: var(--color-teal-800);
+  --syntax-muted: var(--color-zinc-600);
+  --syntax-unit: var(--color-sky-800);
 }
 
+.dark {
+  --syntax-text: var(--color-zinc-100);
+  --syntax-pink: var(--color-pink-300);
+  --syntax-keyword: var(--color-violet-300);
+  --syntax-string: var(--color-teal-300);
+  --syntax-muted: var(--color-zinc-400);
+  --syntax-unit: var(--color-sky-200);
+}
+
+pre[class*='language-'] {
+  color: var(--syntax-text);
+}
 .token.tag,
 .token.class-name,
 .token.selector,
 .token.selector .class,
 .token.selector.class,
-.token.function {
-  color: var(--color-pink-400);
+.token.function,
+.token.module {
+  color: var(--syntax-pink);
 }
-
 .token.attr-name,
 .token.keyword,
 .token.rule,
 .token.pseudo-class,
 .token.important {
-  color: var(--color-zinc-300);
+  color: var(--syntax-keyword);
 }
-
-.token.module {
-  color: var(--color-pink-400);
-}
-
 .token.attr-value,
 .token.class,
 .token.string,
 .token.property {
-  color: var(--color-teal-300);
+  color: var(--syntax-string);
 }
-
 .token.punctuation,
-.token.attr-equals {
-  color: var(--color-zinc-500);
-}
-
-.token.unit,
-.language-css .token.function {
-  color: var(--color-sky-200);
-}
-
+.token.attr-equals,
 .token.comment,
 .token.operator,
 .token.combinator {
-  color: var(--color-zinc-400);
+  color: var(--syntax-muted);
+}
+.token.unit,
+.language-css .token.function {
+  color: var(--syntax-unit);
 }

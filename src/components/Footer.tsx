@@ -20,7 +20,7 @@ const NavLink: React.FC<ComponentProps<'a'>> = ({
 
 export function Footer() {
   return (
-    <footer className="mt-16 flex-none">
+    <footer className="mt-(--footer-gap) flex-none">
       <ContainerOuter>
         <div className="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40">
           <ContainerInner>
@@ -39,7 +39,7 @@ export function Footer() {
               <Text
                 as="p"
                 variant="caption"
-                className="text-zinc-400 dark:text-zinc-500"
+                className="text-zinc-600 dark:text-zinc-400"
               >
                 &copy; {new Date().getFullYear()} Laststance.io. All rights
                 reserved.

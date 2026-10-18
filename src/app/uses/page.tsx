@@ -11,7 +11,7 @@ function ToolsSection({
 }: React.ComponentPropsWithoutRef<typeof Section>) {
   return (
     <Section {...props}>
-      <ul className="space-y-16">{children}</ul>
+      <ul className="space-y-8">{children}</ul>
     </Section>
   )
 }
@@ -26,7 +26,7 @@ function Tool({
   href?: string
 }) {
   return (
-    <Card as="li" className="gap-4">
+    <Card as="li" className="gap-2">
       <CardTitle as="h3" href={href}>
         {title}
       </CardTitle>
@@ -50,15 +50,10 @@ export const metadata: Metadata = {
 export default function Uses() {
   return (
     <SimpleLayout
-      title={
-        <>
-          Hardware, Software I use. <br />
-          And I love other things.
-        </>
-      }
-      intro="Stay comfortable, Here’s a big list of all of my favorite stuff."
+      title="Uses"
+      intro="Hardware, software, and other things I love. Here’s a list of my favorite tools for a comfortable setup."
     >
-      <div className="space-y-20">
+      <div className="section-stack">
         <ToolsSection title="Hardware">
           <Tool
             title={

@@ -14,7 +14,7 @@ import viteLogo from '@/images/logos/icons8-vite-48.png'
 import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
 
 /**
- * Author-decided status vocabulary for featured projects.
+ * Author-decided status metadata for featured projects.
  * Fixed 5 values — see DESIGN.md §7 (Status Label Vocabulary).
  *
  * - `Active`     — pixel 単位で改善中 (the one project receiving daily polish)
@@ -27,7 +27,7 @@ export type ProjectStatus =
   'Active' | 'Daily tool' | 'Experiment' | 'Maintained' | 'Paused'
 
 /**
- * Archive project — minimal metadata for compressed 1-line display.
+ * Project metadata shared by the full list and Home selections.
  * No status label (Archive projects are intentionally label-less per design).
  */
 export type ArchiveProject = {
@@ -39,15 +39,15 @@ export type ArchiveProject = {
 }
 
 /**
- * Featured project — extends ArchiveProject with required status label.
- * Used by `FeaturedProjectListItem` which expects `status` to drive accent color.
+ * Featured project with retained status metadata.
+ * The site shows the project purpose instead of a status label.
  */
 export type FeaturedProject = ArchiveProject & {
   status: ProjectStatus
 }
 
 /**
- * Featured 8 — hand-curated, status-labeled, large display.
+ * Featured projects in the author-selected display order.
  * Order is intentional (author-curated importance), NOT alphabetical.
  *
  * Updated 2026-05-17 (Phase 3 Step 0 worksheet — Preset A: recent-skewed).
@@ -244,3 +244,39 @@ export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
     logo: reduxLogo,
   },
 ]
+
+/** Site display choices. Hidden names stay in the source data for later reuse. */
+export const PROJECT_DISPLAY = {
+  hiddenNames: [
+    '@laststance/react-next-eslint-plugin',
+    'Clean URL',
+    'Coffee Timer',
+    'Create React App Vite',
+    'do-i-need-umbrella',
+    'dotfiles',
+    'git-commit-gpt',
+    'next-msw-integration',
+    'npm-publish-tool',
+    'nsx',
+    'prettier-husky-lint-staged-installer',
+    'React TypeScript TodoMVC 2022',
+    'signage',
+    'vite-rtk-query',
+  ] as readonly string[],
+}
+
+/**
+ * Selects visible projects from the shared publication setting.
+ * Called when the Projects page renders; source records and status values stay intact.
+ * @example
+ * const { featured, stable } = getPublishedProjects()
+ */
+export function getPublishedProjects(display = PROJECT_DISPLAY) {
+  const featured = FEATURED_PROJECTS.filter(
+    (project) => !display.hiddenNames.includes(project.name),
+  )
+  const stable = ARCHIVE_PROJECTS.filter(
+    (project) => !display.hiddenNames.includes(project.name),
+  )
+  return { featured, stable }
+}

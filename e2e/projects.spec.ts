@@ -9,98 +9,24 @@ test('/projects', async ({ page }, testInfo) => {
   )
 })
 
-test('featured Skills Desktop renders with Active status label', async ({
+test('published projects show their purpose without status labels', async ({
   page,
 }) => {
   // Arrange
   await page.goto('/projects')
-
-  // Act: featured projects render inside <article> with h2 headings.
-  const skillsDesktopCard = page.locator('article').filter({
-    has: page.locator('h2', { hasText: 'Skills Desktop' }),
-  })
-
-  // Assert: card is present, links externally, and shows ACTIVE status (uppercase via CSS).
-  await expect(skillsDesktopCard).toBeVisible()
-  await expect(
-    skillsDesktopCard.locator('a[href="https://skills-desktop.vercel.app/"]'),
-  ).toHaveAttribute('target', '_blank')
-  // Status label is rendered "Active" but transformed to "ACTIVE" via Tailwind `uppercase`.
-  // The label is duplicated in DOM (desktop block + mobile-expansion block) so we
-  // assert containment rather than count — the spec is "status text is wired to this card",
-  // not "rendered exactly once".
-  await expect(skillsDesktopCard).toContainText('Active')
-})
-
-test('featured react-lightbox renders with Maintained status label', async ({
-  page,
-}) => {
-  // Arrange
-  await page.goto('/projects')
-
   // Act
-  const reactLightboxCard = page.locator('article').filter({
-    has: page.locator('h2', { hasText: 'react-lightbox' }),
-  })
-
-  // Assert: present + MAINTAINED label (uppercase via CSS). Exercises the
-  // non-Active status branch of FeaturedProjectListItem, which the Active test
-  // above cannot reach. Same desktop/mobile DOM-duplication caveat as that test.
-  await expect(reactLightboxCard).toBeVisible()
-  await expect(reactLightboxCard).toContainText('Maintained')
-})
-
-test('archive Clean URL renders with Chrome Extension category', async ({
-  page,
-}) => {
-  // Arrange
-  await page.goto('/projects')
-
-  // Act: archive items render as <li> inside the archive <ul>.
-  const cleanUrlLink = page.locator(
-    'a[href="https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl"]',
-  )
-
-  // Assert: link is present, external, and shows the category.
-  await expect(cleanUrlLink).toBeVisible()
-  await expect(cleanUrlLink).toHaveAttribute('target', '_blank')
-  await expect(cleanUrlLink).toContainText('Clean URL')
-  await expect(cleanUrlLink).toContainText(/chrome extension/i)
-})
-
-test('archive Coffee Timer renders with Web App category', async ({ page }) => {
-  // Arrange
-  await page.goto('/projects')
-
-  // Act
-  const coffeeTimerLink = page.locator(
-    'a[href="https://github.com/laststance/coffee-timer"]',
-  )
-
+  const skillsDesktop = page
+    .locator('article')
+    .filter({ has: page.getByRole('heading', { name: 'Skills Desktop' }) })
   // Assert
-  await expect(coffeeTimerLink).toBeVisible()
-  await expect(coffeeTimerLink).toHaveAttribute('target', '_blank')
-  await expect(coffeeTimerLink).toContainText('Coffee Timer')
-  await expect(coffeeTimerLink).toContainText(/web app/i)
-})
-
-test('featured section shows 8 projects and stable section shows 14', async ({
-  page,
-}) => {
-  // Arrange
-  await page.goto('/projects')
-
-  // Act: featured cards are <article>; stable items are <li> inside the stable list.
-  const featuredCards = page.locator(
-    'section[aria-label="Featured projects"] article',
-  )
-  const stableSection = page.locator('section[aria-label="Stable projects"]')
-  const stableItems = stableSection.locator('li')
-
-  // Assert: structural counts catch accidental featured ↔ stable misplacement.
-  await expect(featuredCards).toHaveCount(8)
+  await expect(skillsDesktop).toBeVisible()
+  await expect(skillsDesktop.locator('p').first()).toBeVisible()
+  await expect(skillsDesktop.locator('a')).toHaveAttribute('target', '_blank')
+  await expect(skillsDesktop).not.toContainText('Active')
   await expect(
-    stableSection.getByRole('heading', { name: 'Stable', exact: true }),
-  ).toBeVisible()
-  await expect(stableItems).toHaveCount(14)
+    page.locator('section[aria-label="Featured projects"] article'),
+  ).toHaveCount(8)
+  await expect(
+    page.locator('section[aria-label="Stable projects"]'),
+  ).toHaveCount(0)
 })

@@ -1,47 +1,35 @@
-'use client'
-
 import { KBD } from '@/components/KBD'
-import { Spacer } from '@/components/Spacer'
+import { Text } from '@/components/ui/primitives'
 
 import type { KeybindsList } from './page'
 
-interface KeybindsClientProps {
-  keybinds: KeybindsList
-}
-
-const createAnchorId = (text: string) => {
-  return text.toLowerCase().replace(/\s+/g, '-')
-}
-
 /**
- * Handles scrolling to a section by updating the URL hash and scrolling to the element.
- * @param sectionName - The name of the section to scroll to (category or subcategory name)
+ * Keeps section links stable for shared and saved shortcut URLs.
+ * Called by the category headings when the keybind table renders.
  * @example
- * handleScrollToSection('Editor') // Scrolls to #editor
- * handleScrollToSection('Move Cursor') // Scrolls to #move-cursor
+ * createAnchorId('Move Cursor') // 'move-cursor'
  */
-const handleScrollToSection = (sectionName: string): void => {
-  const id = createAnchorId(sectionName)
-  window.history.pushState(null, '', `#${id}`)
-  const element = document.getElementById(id)
-  element?.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-  })
-}
+const createAnchorId = (text: string): string =>
+  text.toLowerCase().replace(/\s+/g, '-')
 
 /**
- * Renders a keybind entry row.
- * @param action - The action name
- * @param shortcut - The keyboard shortcut string
+ * Shows an action and its keys without forcing the page wider on small screens.
+ * Called by {@link KeybindTable} for each shortcut.
+ * @example
+ * renderKeybindRow('Copy', 'CMD C')
  */
 const renderKeybindRow = (action: string, shortcut: string) => (
-  <tr key={action}>
-    <td className="border-b border-gray-300 px-4 py-2">{action}</td>
-    <td className="border-b border-gray-300 px-4 py-2">
-      <div className="flex gap-2">
-        {shortcut.split(' ').map((key, i) => (
-          <KBD key={i} keyName={key} variant="small" />
+  <tr key={action} className="border-b border-zinc-200 dark:border-zinc-800">
+    <th
+      scope="row"
+      className="w-3/5 py-3 pr-4 text-left align-top text-sm leading-6 font-normal wrap-anywhere text-zinc-700 sm:text-base dark:text-zinc-300"
+    >
+      {action}
+    </th>
+    <td className="py-3 align-top">
+      <div className="flex flex-wrap gap-1.5">
+        {shortcut.split(' ').map((key, index) => (
+          <KBD key={index} keyName={key} variant="small" />
         ))}
       </div>
     </td>
@@ -49,107 +37,91 @@ const renderKeybindRow = (action: string, shortcut: string) => (
 )
 
 /**
- * Renders a nested keybind category (subcategory) as a section with h2 heading.
- * @param subcategoryName - The name of the subcategory
- * @param subcategoryData - The keybind entries in this subcategory
+ * Gives each keybind group a named table with a fixed, wrapping column layout.
+ * Used for both top-level and Editor shortcut groups.
+ * @example
+ * <KeybindTable label="Chrome" entries={{ 'Duplicate tab': 'CMD D' }} />
  */
-const renderNestedCategorySection = (
-  subcategoryName: string,
-  subcategoryData: Record<string, string>,
-) => (
-  <div key={subcategoryName}>
-    <Spacer size="h-3xs" />
-    <button
-      id={createAnchorId(subcategoryName)}
-      className="cursor-pointe w-full border-b border-gray-300 pb-3 text-left text-xl font-bold focus:outline-none"
-      aria-label={`Navigate to ${subcategoryName} section`}
-      onClick={() => handleScrollToSection(subcategoryName)}
-    >
-      <h2 className="inline transition-colors hover:text-gray-600">
-        {subcategoryName}
-      </h2>
-    </button>
-    <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 pb-2 sm:mx-0 sm:px-0">
-      <table className="w-max min-w-full border-collapse">
-        <tbody>
-          {Object.entries(subcategoryData).map(([action, shortcut]) =>
-            renderKeybindRow(action, shortcut),
-          )}
-        </tbody>
-      </table>
-    </div>
-  </div>
-)
-
-/**
- * Checks if a category has nested subcategories.
- * @param categoryData - The category data to check
- * @returns True if the category has nested subcategories, false otherwise
- */
-const hasNestedSubcategories = (
-  categoryData: Record<string, string | Record<string, string>>,
-): boolean => {
-  return Object.values(categoryData).some((value) => isNestedCategory(value))
-}
-
-/**
- * Checks if a value is a nested keybind category (object) or a leaf keybind (string).
- * @param value - The value to check
- * @returns True if the value is a nested category object, false if it's a string shortcut
- */
-const isNestedCategory = (
-  value: string | Record<string, string>,
-): value is Record<string, string> => {
-  return typeof value === 'object' && value !== null
-}
-
-export default function KeybindsClient({ keybinds }: KeybindsClientProps) {
+function KeybindTable({
+  label,
+  entries,
+}: {
+  label: string
+  entries: Record<string, string>
+}) {
   return (
-    <div className="mx-auto w-full sm:w-100 lg:w-150">
-      {Object.keys(keybinds).map((category) => {
-        const categoryData = keybinds[category]
-        const hasNested = hasNestedSubcategories(categoryData)
+    <table
+      aria-label={`${label} shortcuts`}
+      className="w-full table-fixed border-collapse"
+    >
+      <tbody>
+        {Object.entries(entries).map(([action, shortcut]) =>
+          renderKeybindRow(action, shortcut),
+        )}
+      </tbody>
+    </table>
+  )
+}
 
+export default function KeybindsClient({
+  keybinds,
+}: {
+  keybinds: KeybindsList
+}) {
+  return (
+    <div className="content-column section-stack">
+      {Object.entries(keybinds).map(([category, entries]) => {
+        const flatEntries = Object.fromEntries(
+          Object.entries(entries).filter(
+            (entry): entry is [string, string] => typeof entry[1] === 'string',
+          ),
+        )
         return (
-          <div key={category}>
-            <Spacer size="h-3xs" />
-            <button
+          <section key={category} aria-labelledby={createAnchorId(category)}>
+            <Text
+              as="h2"
+              variant="h2"
               id={createAnchorId(category)}
-              className="cursor-pointe w-full border-b border-gray-300 pb-3 text-left text-2xl font-bold focus:outline-none"
-              aria-label={`Navigate to ${category} section`}
-              onClick={() => handleScrollToSection(category)}
+              className="mb-6 scroll-mt-8"
             >
-              <h1 className="inline transition-colors hover:text-gray-600">
+              <a
+                href={`#${createAnchorId(category)}`}
+                className="hover:text-teal-700 dark:hover:text-teal-400"
+              >
                 {category}
-              </h1>
-            </button>
-            {hasNested ? (
-              // Category with nested subcategories: render subcategories as separate sections
-              <>
-                {Object.entries(categoryData).map(([subcategory, value]) => {
-                  if (isNestedCategory(value)) {
-                    return renderNestedCategorySection(subcategory, value)
-                  }
-                  return null
-                })}
-              </>
-            ) : (
-              // Category without nested subcategories: render flat structure
-              <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 pb-2 sm:mx-0 sm:px-0">
-                <table className="w-max min-w-full border-collapse">
-                  <tbody>
-                    {Object.entries(categoryData).map(([action, value]) => {
-                      if (isNestedCategory(value)) {
-                        // This shouldn't happen for categories without nested subcategories, but handle it gracefully
-                        return null
-                      }
-                      return renderKeybindRow(action, value)
-                    })}
-                  </tbody>
-                </table>
-              </div>
+              </a>
+            </Text>
+            {Object.keys(flatEntries).length > 0 && (
+              <KeybindTable label={category} entries={flatEntries} />
             )}
-          </div>
+            <div className="space-y-8">
+              {Object.entries(entries).map(([subcategory, value]) => {
+                // Flat entries already appear in the category table above.
+                if (typeof value === 'string') return null
+                return (
+                  <section
+                    key={subcategory}
+                    aria-labelledby={createAnchorId(subcategory)}
+                  >
+                    <Text
+                      as="h3"
+                      variant="h3"
+                      id={createAnchorId(subcategory)}
+                      className="mb-3 scroll-mt-8"
+                    >
+                      <a
+                        href={`#${createAnchorId(subcategory)}`}
+                        className="hover:text-teal-700 dark:hover:text-teal-400"
+                      >
+                        {subcategory}
+                      </a>
+                    </Text>
+                    <KeybindTable label={subcategory} entries={value} />
+                  </section>
+                )
+              })}
+            </div>
+          </section>
         )
       })}
     </div>

@@ -29,7 +29,7 @@ export default function Privacy() {
       title="Privacy Policy"
       intro="Laststance.io is run by one person, Ryota Murakami. This page says what this website and my personal tools collect. Last updated: October 10, 2026."
     >
-      <div className="space-y-20">
+      <div className="section-stack">
         <Section title="This website">
           <div className="space-y-6">
             <Paragraph>

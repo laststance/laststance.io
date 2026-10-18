@@ -116,7 +116,7 @@ Responsive 3-step progression (mobile → tablet → desktop).
 
 8pt grid with 4pt micro adjustments.
 
-**Source of truth**: `src/lib/design-tokens.ts` (`spacing` + `spacingTokens`) + `src/components/ui/primitives/spacing.ts` (CVA variants).
+**Source of truth**: `src/lib/design-tokens.ts` (`spacing` + `spacingTokens`) and `src/components/ui/primitives/spacing.ts` define the primitive scale. Page layout tokens and utilities live in `src/styles/global.css`.
 
 ### Numeric scale (Tailwind-compatible)
 
@@ -151,6 +151,18 @@ Use these in design discussion. Use numeric keys in code (Tailwind classes / spa
 | `loose`     | `spacing[8]` = 32px  | Section break (within a column) |
 | `spacious`  | `spacing[12]` = 48px | Hero / feature internal         |
 | `expansive` | `spacing[16]` = 64px | Major page section              |
+
+### Shared page spacing
+
+| Utility                           | Mobile          | From `sm`       | Purpose                       |
+| --------------------------------- | --------------- | --------------- | ----------------------------- |
+| `page-start`                      | 64px            | 96px            | Page top offset               |
+| `page-intro`                      | 24px            | 24px            | Title to lead                 |
+| `page-content`                    | 40px            | 64px            | Header to content             |
+| `section-start` / `section-stack` | 64px            | 80px            | Major sections                |
+| `content-column`                  | 100%, max 768px | 100%, max 768px | Left-aligned lists and tables |
+
+`SimpleLayout` owns the standard page header (`max-w-2xl`, `Text variant="h1"`, muted body lead). About, article details, and 404 reuse `page-start`. Home retains its `mt-9` hero offset. Footer spacing is 64px / 96px.
 
 ### Breakpoints
 
@@ -282,7 +294,7 @@ onBlur={() => setIsExpanded(false)}
 
 Entrance motion communicates "new content has arrived." The following are not arrivals and intentionally omit stagger / entrance motion:
 
-- **`NowPanel`** (planned for Phase 2 — `src/app/page/NowPanel.tsx` does not exist yet) — represents stable, ongoing intent. Animating it implies it just changed; it didn't.
+- **Featured project rows** — descriptions are visible immediately; no entrance or hover animation gates access to content.
 - **Hero header** (`src/app/page.tsx` author intro block) — already in view above the fold; animating on every mount is theatrical.
 - **Layout primitives** (`Container`, `Box`, `Stack` themselves) — these wrap content; the content animates, not the wrapper.
 
@@ -310,23 +322,11 @@ Five fixed labels. **The vocabulary does not grow without a DESIGN.md edit.**
 
 These labels are **author-judgment-derived**. Promoting a metric (stars, commits, contributor count) into a label is **forbidden** — that re-introduces the marketing posture the site is built to avoid.
 
-### Visual treatment
+### Display policy
 
-- **`Active` only**: `text-teal-700 dark:text-teal-400` (= `Text` primitive `color="accent"`).
-- **Other four** (`Daily tool` / `Experiment` / `Maintained` / `Paused`): `text-zinc-400 dark:text-zinc-500`.
-- **All labels share**: `font-mono uppercase tracking-wider` (use `Text variant="caption" transform="uppercase"` with a `font-mono` className override).
+Status values remain author-maintained metadata in `src/lib/projects.ts`. They are not rendered in project rows. Name, purpose, category, and destination identify each project.
 
-Rationale: one focal point per view ("what I'm working on right now") gets the accent. The other four labels stay editorially uniform — same type, same color, same weight. Hierarchy without theatrics.
-
-### Type contract
-
-```ts
-// Planned location: src/lib/projects.ts (Phase 3 — file does not exist yet)
-type FeaturedStatus =
-  'Active' | 'Daily tool' | 'Experiment' | 'Maintained' | 'Paused'
-```
-
-The union will live next to the data once `src/lib/projects.ts` lands in Phase 3. Importing the type elsewhere is fine; redefining it is a documentation bug.
+`PROJECT_DISPLAY.hiddenNames` controls publication without deleting source records. Stable is omitted when no entries are published.
 
 ---
 
@@ -338,33 +338,21 @@ The union will live next to the data once `src/lib/projects.ts` lands in Phase 3
 - **Article / prose body** — `max-w-[72ch]` reading column inside the `max-w-5xl` (1024px) Container at `lg:`. This keeps long-form paragraphs near the 45–75 character reading range; smaller screens collapse to the parent's full width. Prose's internal `max-w` is `none` — width is controlled by the layout wrapper, while wide tables use local horizontal scrolling.
 - **Hero intro block** — `<Box maxW="2xl">` so the lead paragraph stays at ~50–60 chars/line.
 
-### Home page — 2-column grid
+### Home columns
 
-`src/app/page.tsx`:
+`HomeColumns` accepts an optional `aside`. Home currently has no sidebar. At `xl`, articles and the supplied sidebar form two columns; below `xl`, the sidebar follows the articles. Without an aside, Home and uses a left-aligned `content-column` with no empty second column.
 
-```tsx
-<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 xl:max-w-none xl:grid-cols-2">
-  <VStack gap={16}>{/* Left: Recent Articles */}</VStack>
-  <div className="space-y-10 xl:pl-24">
-    <NowPanel />
-  </div>
-</div>
-```
+### Projects
 
-- Mobile / tablet: single column, right-column content stacks below the left.
-- `xl:` and up: 50/50 columns with extra left-padding on the right column (`xl:pl-24`) for visual breathing.
+`SimpleLayout` supplies the header and body width. Featured rows use `py-8 sm:py-10`, wrapping titles, permanently visible descriptions, a quiet category, and an external link. Stable rows share the same neutral dividers and text colors, with denser spacing. No status labels are displayed.
 
-### Projects page (post-Phase 3 refactor)
+### Reading and reference columns
 
-- **Featured section** (top): no section heading — position is the cue.
-- **Divider**: 64px–96px top margin (`mt-24` / `lg:mt-32`) from Featured to the divider line.
-- **Archive section**: small `overline` heading "Archive", denser row spacing (`py-4`), `min-h-[44px]` per row for iOS HIG tap-target compliance.
+Article details retain a left-aligned `max-w-[72ch]` reading column. The date sits above the heading without shifting its baseline from other page headings. Articles and Uses share `reference-grid`: a 160px metadata/category column and a 32px gap from `md`. Keybind tables use the common 768px body column and wrap actions and key groups.
 
-### Vertical rhythm
+### Vertical rhythm and code
 
-- Section ↔ section gap: `spacingTokens.expansive` (64px) minimum on desktop, `loose` (32px) on mobile.
-- Heading ↔ first paragraph: `mt={6}` (24px).
-- Paragraph ↔ paragraph: rely on `leading-relaxed` baked into `Text` variants — do not stack `mt` between paragraphs.
+Use the shared page spacing table in section 4. Paragraphs and code blocks use the existing typography plugin; Prism colors in `src/styles/prism.css` follow light and dark themes. `/privacy` changes layout through these shared rules; its text and URL remain unchanged.
 
 ---
 

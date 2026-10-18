@@ -1,7 +1,6 @@
 import { Container } from '@/components/Container'
 import { Box, Text } from '@/components/ui/primitives'
 
-// TODO Add center layout
 export function SimpleLayout({
   title,
   children,
@@ -12,17 +11,19 @@ export function SimpleLayout({
   intro: string
 }) {
   return (
-    <Container className="mt-16 sm:mt-24">
+    <Container className="page-start">
       <Box as="header" maxW="2xl">
         {/* text-balance: let the browser even out line widths on long, wrapping titles */}
-        <Text as="h1" variant="h1" className="text-balance">
+        <Text as="h1" variant="h1" className="text-balance wrap-anywhere">
           {title}
         </Text>
-        <Text variant="body" color="muted" mt={6}>
+        <Text variant="body" color="muted" className="page-intro">
           {intro}
         </Text>
       </Box>
-      {children && <Box mt={10}>{children}</Box>}
+      {children && (
+        <Box className="page-content content-column">{children}</Box>
+      )}
     </Container>
   )
 }

@@ -14,7 +14,7 @@ test.describe('/articles pagination', () => {
     // ✅ Assert: page chrome and exactly ARTICLES_PER_PAGE article cards.
     await expect(
       page.getByRole('heading', {
-        name: /Writing about new release/i,
+        name: 'Articles',
         level: 1,
       }),
     ).toBeVisible()
