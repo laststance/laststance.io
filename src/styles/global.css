@@ -172,3 +172,60 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Shared spacing for page headers, content, sections, and the footer. */
+@layer base {
+  :root {
+    --page-start: 4rem;
+    --page-intro: 1.5rem;
+    --content-width: 48rem;
+    --page-content: 2.5rem;
+    --section-gap: 4rem;
+    --footer-gap: 4rem;
+  }
+  @media (min-width: 640px) {
+    :root {
+      --page-start: 6rem;
+      --page-content: 4rem;
+      --section-gap: 5rem;
+      --footer-gap: 6rem;
+    }
+  }
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-teal-600);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+}
+@utility page-start {
+  margin-top: var(--page-start);
+}
+@utility page-intro {
+  margin-top: var(--page-intro);
+}
+@utility page-content {
+  margin-top: var(--page-content);
+}
+@utility section-start {
+  margin-top: var(--section-gap);
+}
+@utility section-stack {
+  :where(& > * + *) {
+    margin-top: var(--section-gap);
+  }
+}
+@utility reference-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: baseline;
+  @media (min-width: 768px) {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    column-gap: 2rem;
+  }
+}
+
+@utility content-column {
+  width: 100%;
+  max-width: var(--content-width);
+}

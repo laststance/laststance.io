@@ -78,9 +78,9 @@ function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 export default function About() {
   // 96px top offset (mt-16 sm:mt-24) to match SimpleLayout, /projects, and the article pages.
   return (
-    <Container className="mt-16 sm:mt-24">
-      <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
-        <div className="lg:pl-20">
+    <Container className="page-start">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:grid-rows-[auto_1fr] lg:gap-x-16">
+        <div className="min-w-0">
           <Box maxW="xs" px={2} className="lg:max-w-none">
             <Image
               src={portraitImage}
@@ -90,12 +90,12 @@ export default function About() {
             />
           </Box>
         </div>
-        <div className="lg:order-first lg:row-span-2">
+        <div className="min-w-0 lg:order-first lg:row-span-2">
           <Text variant="h1">
             Laststance.io is my experimental laboratory for eliminate like this.
             ➡️
           </Text>
-          <VStack gap={6} className="mt-6">
+          <VStack gap={6} className="page-intro">
             <Text variant="body" color="muted">
               I'm{' '}
               <a
@@ -133,7 +133,7 @@ export default function About() {
             </Text>
           </VStack>
         </div>
-        <div className="lg:pl-20">
+        <div className="min-w-0">
           <ul>
             <SocialLink href="https://twitter.com/malloc007" icon={TwitterIcon}>
               Follow on Twitter

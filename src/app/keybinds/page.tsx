@@ -170,12 +170,8 @@ const keybinds: KeybindsList = {
 export default function Keybinds() {
   return (
     <SimpleLayout
-      title={
-        <div className="text-balance lg:text-nowrap">
-          My Raycast, Cursor, WebStorm, Chrome Keybinds.
-        </div>
-      }
-      intro="I'm always keeping this page open as my cheat sheet. 😅 (MacOS US Keyboard Layout)"
+      title="Keybinds"
+      intro="My Raycast, Cursor, WebStorm, and Chrome shortcuts. I keep this page open as a cheat sheet. (macOS US keyboard layout)"
     >
       <KeybindsClient keybinds={keybinds} />
     </SimpleLayout>

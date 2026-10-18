@@ -38,7 +38,7 @@ export default function typographyStyles({ theme }) {
         '--tw-prose-invert-th-borders': theme('colors.zinc.600'),
         '--tw-prose-invert-underline': theme('colors.teal.400 / 0.4'),
         '--tw-prose-invert-underline-hover': theme('colors.teal.300'),
-        '--tw-prose-links': theme('colors.teal.600'),
+        '--tw-prose-links': theme('colors.teal.700'),
         '--tw-prose-links-hover': theme('colors.teal.700'),
         '--tw-prose-pre-bg': theme('colors.zinc.50'),
         '--tw-prose-pre-border': theme('colors.zinc.200'),
@@ -62,8 +62,8 @@ export default function typographyStyles({ theme }) {
           paddingRight: theme('spacing.2'),
         },
         '> *': {
-          marginBottom: theme('spacing.10'),
-          marginTop: theme('spacing.10'),
+          marginBottom: theme('spacing.12'),
+          marginTop: theme('spacing.12'),
         },
 
         // Inline elements
@@ -134,7 +134,7 @@ export default function typographyStyles({ theme }) {
           },
           lineHeight: '1.2',
           marginBottom: theme('spacing.8'),
-          marginTop: theme('spacing.10'),
+          marginTop: theme('spacing.12'),
           fontWeight: theme('fontWeight.bold'),
         },
 
@@ -164,13 +164,13 @@ export default function typographyStyles({ theme }) {
           },
           borderColor: 'var(--tw-prose-hr)',
           borderTopWidth: '1px',
-          marginBottom: theme('spacing.14'),
-          marginTop: theme('spacing.14'),
+          marginBottom: theme('spacing.12'),
+          marginTop: theme('spacing.12'),
         },
 
         // Images
         img: {
-          borderRadius: theme('borderRadius.3xl'),
+          borderRadius: theme('borderRadius.lg'),
         },
         li: {
           marginBottom: theme('spacing.3'),
@@ -211,8 +211,8 @@ export default function typographyStyles({ theme }) {
           color: 'var(--tw-prose-counters)',
         },
         p: {
-          marginBottom: theme('spacing.5'),
-          marginTop: theme('spacing.5'),
+          marginBottom: theme('spacing.6'),
+          marginTop: theme('spacing.6'),
           // Inherit responsive prose body size
           fontSize: 'inherit',
         },
@@ -222,13 +222,13 @@ export default function typographyStyles({ theme }) {
           backgroundColor: 'var(--tw-prose-pre-bg)',
           border: '1px solid',
           borderColor: 'var(--tw-prose-pre-border)',
-          borderRadius: theme('borderRadius.3xl'),
+          borderRadius: theme('borderRadius.lg'),
           color: 'var(--tw-prose-pre-code)',
           fontSize: '1rem', // 16px — slightly smaller than body for code blocks
           fontWeight: theme('fontWeight.medium'),
           lineHeight: '1.45',
           overflowX: 'auto',
-          padding: theme('spacing.8'),
+          padding: theme('spacing.6'),
         },
         'pre code': {
           backgroundColor: 'transparent',

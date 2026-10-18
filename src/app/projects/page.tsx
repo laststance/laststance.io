@@ -1,10 +1,10 @@
 import { type Metadata } from 'next'
 
 import { ArchiveProjectListItem } from '@/components/ArchiveProjectListItem'
-import { Container } from '@/components/Container'
 import { FeaturedProjectListItem } from '@/components/FeaturedProjectListItem'
+import { SimpleLayout } from '@/components/SimpleLayout'
 import { Box, Text } from '@/components/ui/primitives'
-import { ARCHIVE_PROJECTS, FEATURED_PROJECTS } from '@/lib/projects'
+import { getPublishedProjects } from '@/lib/projects'
 
 const title = 'Projects'
 
@@ -18,104 +18,51 @@ export const metadata: Metadata = {
   },
 }
 
-/**
- * Projects page — Featured (status-labeled) / Archive (compressed reference) split.
- *
- * Layout intent (DESIGN.md §7 + Walking Skeleton Phase 3):
- * - Featured 8 — large expanded layout, status label drives single-accent hierarchy.
- * - Archive 22 — 1-line compressed list, alphabetical, no motion / no status.
- *
- * The visual jump from large rows → compressed rows is the hierarchy signal,
- * so the Featured section deliberately has no "Featured" heading.
- */
 export default function Projects() {
-  // Match SimpleLayout's header offset (mt-16 sm:mt-24) so /projects lines up
-  // with /uses and /articles — the earlier md:mt-32 left a visibly wider gap here.
+  const { featured, stable } = getPublishedProjects()
+
   return (
-    <Box as="main" mt={16} className="sm:mt-24">
-      <Container>
-        <Box as="header" maxW="3xl">
-          <Text as="h1" variant="h1">
-            Projects
-          </Text>
-          <Text variant="bodyLarge" color="muted" mt={6}>
-            Eliminating unnecessary complexity from web development.
-            <br className="hidden sm:block" />
-            Tools, libraries, and applications that solve real problems.
-          </Text>
-        </Box>
-
-        {/* Featured section — top, no heading (the typography itself signals importance) */}
-        <Box
-          as="section"
-          mt={16}
-          className="sm:mt-20 md:mt-24"
+    <SimpleLayout
+      title="Projects"
+      intro="Eliminating unnecessary complexity from web development. Tools, libraries, and applications that solve real problems."
+    >
+      {featured.length > 0 && (
+        <section
           aria-label="Featured projects"
+          className="border-t border-zinc-200 dark:border-zinc-800"
         >
-          <div className="border-t border-zinc-200/60 dark:border-zinc-700/40" />
-          {FEATURED_PROJECTS.map((project, index) => (
-            <FeaturedProjectListItem
-              key={project.name}
-              name={project.name}
-              description={project.description}
-              category={project.category}
-              href={project.href}
-              logo={project.logo}
-              status={project.status}
-              index={index}
-            />
+          {featured.map((project) => (
+            <FeaturedProjectListItem key={project.name} {...project} />
           ))}
-        </Box>
-
-        {/* Stable section — divider + heading + compressed list */}
-        <Box
-          as="section"
-          mt={16}
-          className="sm:mt-20 md:mt-24"
-          aria-label="Stable projects"
-        >
-          <Text
-            as="h2"
-            variant="overline"
-            color="muted"
-            mb={6}
-            className="text-zinc-500 dark:text-zinc-400"
-          >
-            Stable
-          </Text>
-          <ul className="border-t border-zinc-200/60 dark:border-zinc-700/40">
-            {ARCHIVE_PROJECTS.map((project) => (
-              <ArchiveProjectListItem
-                key={project.name}
-                name={project.name}
-                description={project.description}
-                category={project.category}
-                href={project.href}
-                logo={project.logo}
-              />
+        </section>
+      )}
+      {stable.length > 0 && (
+        <section aria-label="Stable projects" className="section-start">
+          <h2 className="mb-6 text-lg font-semibold">Stable</h2>
+          <ul className="border-t border-zinc-200 dark:border-zinc-800">
+            {stable.map((project) => (
+              <ArchiveProjectListItem key={project.name} {...project} />
             ))}
           </ul>
-        </Box>
-
-        {/* Icon Credits */}
-        <Box as="section" mt={16}>
-          <Text
-            as="p"
-            variant="caption"
-            className="text-xs text-zinc-400 dark:text-zinc-500"
+        </section>
+      )}
+      <Box className="section-start">
+        <Text
+          as="p"
+          variant="caption"
+          className="text-xs text-zinc-500 dark:text-zinc-400"
+        >
+          Icons by{' '}
+          <a
+            href="https://icons8.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4"
           >
-            Icons by{' '}
-            <a
-              href="https://icons8.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 transition-colors hover:text-zinc-600 dark:hover:text-zinc-400"
-            >
-              Icons8
-            </a>
-          </Text>
-        </Box>
-      </Container>
-    </Box>
+            Icons8
+          </a>
+        </Text>
+      </Box>
+    </SimpleLayout>
   )
 }

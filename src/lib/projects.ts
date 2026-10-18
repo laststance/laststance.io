@@ -14,7 +14,7 @@ import viteLogo from '@/images/logos/icons8-vite-48.png'
 import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
 
 /**
- * Author-decided status vocabulary for featured projects.
+ * Author-decided status metadata for featured projects.
  * Fixed 5 values — see DESIGN.md §7 (Status Label Vocabulary).
  *
  * - `Active`     — pixel 単位で改善中 (the one project receiving daily polish)
@@ -27,27 +27,28 @@ export type ProjectStatus =
   'Active' | 'Daily tool' | 'Experiment' | 'Maintained' | 'Paused'
 
 /**
- * Archive project — minimal metadata for compressed 1-line display.
+ * Project metadata shared by the full list and Home selections.
  * No status label (Archive projects are intentionally label-less per design).
  */
 export type ArchiveProject = {
   name: string
   description: string
+  homeDescription?: string
   category: string
   href: string
   logo: StaticImageData
 }
 
 /**
- * Featured project — extends ArchiveProject with required status label.
- * Used by `FeaturedProjectListItem` which expects `status` to drive accent color.
+ * Featured project with retained status metadata.
+ * The site shows the project purpose instead of a status label.
  */
 export type FeaturedProject = ArchiveProject & {
   status: ProjectStatus
 }
 
 /**
- * Featured 8 — hand-curated, status-labeled, large display.
+ * Featured projects in the author-selected display order.
  * Order is intentional (author-curated importance), NOT alphabetical.
  *
  * Updated 2026-05-17 (Phase 3 Step 0 worksheet — Preset A: recent-skewed).
@@ -55,6 +56,7 @@ export type FeaturedProject = ArchiveProject & {
 export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   {
     name: 'Skills Desktop',
+    homeDescription: 'Manage installed skills and symlinks across AI agents.',
     description:
       'Visualize installed Skills and symlink status across AI agents. GUI for managing skills with 21 AI agents support and 26 themes.',
     category: 'Desktop App',
@@ -64,6 +66,7 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   },
   {
     name: 'Go To Definition for JSDoc',
+    homeDescription: 'Jump from JSDoc links to TypeScript symbols.',
     description:
       'Jump from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding throwaway imports for navigation.',
     category: 'VS Code Extension',
@@ -73,6 +76,7 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   },
   {
     name: 'Tailwind CSS Canonical Classes',
+    homeDescription: 'Convert Tailwind CSS v4 classes to canonical names.',
     description:
       'Automatically convert non-canonical Tailwind CSS v4 classes to their canonical equivalents. Prettier plugin, CLI, and core library.',
     category: 'NPM Package',
@@ -244,3 +248,49 @@ export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
     logo: reduxLogo,
   },
 ]
+
+/** Site display choices. Hidden names stay in the source data for later reuse. */
+export const PROJECT_DISPLAY = {
+  hiddenNames: [
+    '@laststance/react-next-eslint-plugin',
+    'Clean URL',
+    'Coffee Timer',
+    'Create React App Vite',
+    'do-i-need-umbrella',
+    'dotfiles',
+    'git-commit-gpt',
+    'next-msw-integration',
+    'npm-publish-tool',
+    'nsx',
+    'prettier-husky-lint-staged-installer',
+    'React TypeScript TodoMVC 2022',
+    'signage',
+    'vite-rtk-query',
+  ] as readonly string[],
+  // Home uses this order after it removes hidden projects, up to three items.
+  homeNames: [
+    'Skills Desktop',
+    'Go To Definition for JSDoc',
+    'Tailwind CSS Canonical Classes',
+  ] as readonly string[],
+}
+
+/**
+ * Selects the visible projects for Home and Projects from one display setting.
+ * Called when these pages render; source records and status values stay intact.
+ * @example
+ * const { featured, stable, selected } = getPublishedProjects()
+ */
+export function getPublishedProjects(display = PROJECT_DISPLAY) {
+  const featured = FEATURED_PROJECTS.filter(
+    (project) => !display.hiddenNames.includes(project.name),
+  )
+  const stable = ARCHIVE_PROJECTS.filter(
+    (project) => !display.hiddenNames.includes(project.name),
+  )
+  const visible = [...featured, ...stable]
+  const selected = display.homeNames
+    .flatMap((name) => visible.filter((project) => project.name === name))
+    .slice(0, 3)
+  return { featured, stable, selected }
+}
