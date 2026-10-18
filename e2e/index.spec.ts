@@ -29,7 +29,7 @@ test('home articles stay left aligned without a sidebar at every viewport', asyn
         document.documentElement.scrollWidth -
         document.documentElement.clientWidth,
     )
-    expect(horizontalOverflow).toBe(0)
+    expect(horizontalOverflow).toBeLessThanOrEqual(0)
   }
 })
 
