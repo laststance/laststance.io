@@ -150,7 +150,7 @@ const WhatNew: React.FC = () => {
             date="2025-11-05"
             li={[
               <DialogClose asChild>
-                <Link href="/articles/-eslint-config-ts-prefixer-v410-Releasedy">
+                <Link href="/articles/-eslint-config-ts-prefixer-v410-Released">
                   🎉 eslint-config-ts-prefixer v4.1.0 released!
                 </Link>
               </DialogClose>,

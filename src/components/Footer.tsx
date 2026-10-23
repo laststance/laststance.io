@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react'
 import { ContainerInner, ContainerOuter } from '@/components/Container'
 import { HStack, Text } from '@/components/ui/primitives'
 
-const NavLink: React.FC<ComponentProps<'a'>> = ({
+const NavLink: React.FC<ComponentProps<typeof Link>> = ({
   children,
   href,
   ...rest

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ComponentProps } from 'react'
 
-export const NavItem: React.FC<ComponentProps<'a'>> = ({
+export const NavItem: React.FC<ComponentProps<typeof Link>> = ({
   children,
   href,
   ...rest
