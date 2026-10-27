@@ -32,6 +32,21 @@ pnpm dev
 
 Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
 
+## Local build credentials with 1Password
+
+`pnpm build` and `pnpm analyze` resolve `SENTRY_AUTH_TOKEN` using `op run`.
+Keep `.env.sentry.1password` ignored and store only a reference in it:
+
+```dotenv
+SENTRY_AUTH_TOKEN="op://vault/item/field"
+```
+
+Install 1Password CLI and enable its desktop integration. Remove the plaintext
+token from `.env.sentry-build-plugin` after verifying the reference. Explicit
+values take precedence; `SENTRY_AUTH_TOKEN="" pnpm build` intentionally disables
+source-map uploads. CI and Vercel use their injected environment without requiring
+local 1Password access. `pnpm dev` and `pnpm start` do not need the build-only token.
+
 ## Creating New Blog Posts
 
 You can easily generate a new blog post template using the built-in script:
