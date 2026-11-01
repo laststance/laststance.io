@@ -6,6 +6,13 @@ import type { ArticleWithSlug } from './articles'
 
 export const articlesManifest: ArticleWithSlug[] = [
   {
+    "slug": "Purging-Pythons-after-a-security-scan",
+    "author": "Ryota Murakami",
+    "title": "A security scan flagged Pillow. I ended up deleting three Pythons.",
+    "date": "2026-11-01",
+    "description": "What started as \"just update the vulnerable packages\" turned into a full audit of my Mac's Python chaos — Homebrew Pythons installed as dependencies, a forgotten python.org installer, pyenv, Xcode CLT stubs, and per-version user sites. This is the whole journey from findings to purge."
+  },
+  {
     "slug": "What-does-T-keyof-T-mean",
     "author": "Ryota Murakami",
     "title": "What does T[keyof T] mean?",

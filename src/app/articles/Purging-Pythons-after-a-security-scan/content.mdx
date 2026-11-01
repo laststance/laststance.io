@@ -1,0 +1,140 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'A security scan flagged Pillow. I ended up deleting three Pythons.',
+  date: '2026-11-01',
+  description:
+    'What started as "just update the vulnerable packages" turned into a full audit of my Mac\'s Python chaos — Homebrew Pythons installed as dependencies, a forgotten python.org installer, pyenv, Xcode CLT stubs, and per-version user sites. This is the whole journey from findings to purge.',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# A security scan flagged Pillow. I ended up deleting three Pythons.
+
+I run a periodic security sweep on my Mac that inventories installed software and queries OSV for known vulnerabilities. This week it flagged Python packages in my user site-packages:
+
+- **Pillow 12.1.0** — memory corruption on crafted images (multiple GHSAs)
+- **pypdf 6.19.0** — infinite loop on malformed PDFs
+- **certifi** — outdated CA bundle
+- Plus **Pillow 12.3.0**, **asyncssh 2.23.1**, and **cryptography 47.0.0** inside a `uv.lock` for one of my tools
+
+The plan was simple: find where these packages live and update them. It took about ten minutes to realize "where these packages live" was going to be the hard part.
+
+## Which Python even owns this?
+
+My first honest question: I never consciously installed most of these Pythons. An inventory turned up:
+
+| Python                            | Where it came from                                                                        |
+| --------------------------------- | ----------------------------------------------------------------------------------------- |
+| `/usr/bin/python3` (3.9)          | Xcode Command Line Tools — Apple's, untouchable                                           |
+| `/opt/homebrew/bin/python3.13`    | Homebrew, pulled in by `memo` and `git-filter-repo`                                       |
+| `/opt/homebrew/bin/python3.14`    | Homebrew, pulled in by `gcloud-cli` and 5 other tools                                     |
+| `/opt/homebrew/bin/python3.15`    | Homebrew, pulled in by `ansible`, `nmap`, `yt-dlp`, etc. — owns bare `python3` and `pip3` |
+| `/usr/local/bin/python3` (3.13.7) | A python.org `.pkg` installer I ran at some point and forgot                              |
+| pyenv                             | Homebrew, still a leaf package, shims intact                                              |
+| uv-managed environments           | `~/.local/share/uv/tools/` — isolated venvs per CLI tool                                  |
+
+Seven interpreters. And each one has its own pip, because pip ships _inside_ CPython (via `ensurepip`) — `pip3.13`, `pip3.14`, and `pip3.15` are separate binaries each bound to their own interpreter. Bare `pip` resolves to whatever the newest Homebrew Python is, which today is 3.15.
+
+The vulnerable packages were in **per-version user sites**:
+
+- `~/Library/Python/3.9/` — `requests`, `aiohttp`, `pyyaml`, `pypdf`, `certifi`, installed by _Xcode.app's_ bundled Python (the script shebangs gave it away)
+- `~/Library/Python/3.14/` — `pillow` and friends, this had become my de-facto "main" site
+
+So `pip install pypdf` in an article's instructions had, at various times, gone to whichever `pip` happened to win PATH that day.
+
+## The actual upgrades — and the PEP 668 wall
+
+Updating Pillow on the Homebrew 3.14 site immediately hit `externally-managed-environment`:
+
+```bash
+python3.14 -m pip install --user -U --break-system-packages pillow
+```
+
+PEP 668 is CPython deliberately breaking the old "just pip install into whatever's global" workflow — `--user` + `--break-system-packages` is the sanctioned way to say "my user site, my problem." Fair enough; that flag exists precisely so distro- and Homebrew-managed interpreters stay clean.
+
+For the repo lockfile (`uv.lock` for my `vmc` tool), `uv lock --upgrade-package certifi pillow` handled certifi → 2026.10.23 and Pillow → 13.0.0 after relaxing the pyproject constraint to `>=11,<14`.
+
+## The defective script, and the fix
+
+I want these libraries to stay current, so I wrote a shell snippet to batch-upgrade user-site packages — then converted it into a fish function in my dotfiles at `~/.config/fish/functions/pip_upgrade.fish`.
+
+The first version was broken: it hardcoded only Python 3.14 and the CLT 3.9. Bare `pip` actually resolves to **3.15**, so anything installed that way would never be touched. The corrected version discovers interpreters dynamically:
+
+```fish
+set -l interpreters /usr/bin/python3
+for py in /opt/homebrew/bin/python3.*
+    if string match -rq '^python3\.[0-9]+$' -- (basename "$py")
+        set -a interpreters "$py"
+    end
+end
+```
+
+For each interpreter it checks that `python -m pip` works, lists `--user --outdated` packages as freeze lines, and upgrades them — adding `--break-system-packages` only when that pip's `install --help` supports it (the 3.9 pip doesn't know the flag and would error). A future Homebrew `python3.16` gets picked up automatically.
+
+## pip vs uv — finally understanding the split
+
+While untangling this I also confirmed what each tool actually is:
+
+- **pip** is bundled per-interpreter. N Pythons means N pips, each loyal to its own site.
+- **uv** is a standalone Rust binary (Homebrew `uv` formula, installed on request, no Python needed at all). It manages Python _from the outside_ — `uv tool install` gives each CLI app an isolated venv, `uv lock`/`uv sync` handles project deps, `uv python install` can replace pyenv entirely.
+
+This reframed everything. The only thing `pip --user` is still good for in my setup is "libraries I want importable from anywhere" — exactly one user site, on 3.14. Everything else belongs to uv. `uv` is honestly the only sane actor in the whole Python toolchain right now.
+
+## The purge
+
+Once I could see the full inventory, the deletions were easy decisions:
+
+```bash
+# pyenv — a leftover leaf package I no longer use
+brew uninstall pyenv          # also autoremoved openjdk@25 (+388MB)
+rm -rf ~/.pyenv               # shims, versions, the works
+# + removed its lazy-load block from dotfiles conf.d
+
+# python.org 3.13.7 — forgotten .pkg install
+sudo rm -rf /Library/Frameworks/Python.framework        # 303MB
+sudo find /usr/local/bin -type l -lname '*Library/Frameworks/Python*' -delete   # 18 symlinks
+sudo rm -rf "/Applications/Python 3.13"
+sudo pkgutil --forget org.python.Python.{PythonDocumentation,PythonFramework,PythonApplications,PythonUnixTools}-3.13
+
+# Xcode-Python's user site — its pypdf/certifi were the flagged versions,
+# so deleting the site WAS the remediation
+rm -rf ~/Library/Python/3.9
+```
+
+One nice side-effect: `type -a python3` then showed `/opt/homebrew/bin/python3` twice — a real `fish_user_paths` + config double-prepend bug in my dotfiles' `10-path.fish`. Fixed with dedupe-then-prepend:
+
+```fish
+set -gx PATH /opt/homebrew/bin (string match -v /opt/homebrew/bin $PATH)
+```
+
+(Same pattern for bun, guarded by `set -q BUN_INSTALL`.)
+
+## The vulnerabilities I could NOT fix
+
+Two findings survived, deadlocked by a dependency chain:
+
+```text
+asyncssh fix (2.24.0)     → requires cryptography>=48.0.1
+cryptography 48+          → moved TripleDES to the decrepit module
+AsyncVNC 1.3.0 (latest)   → imports TripleDES from the old location → ImportError on 48+
+```
+
+The actual CVEs are real — an asyncio event-loop freeze via `max packet size = 0` in asyncssh, and four cryptography issues including a `permittedSubtrees` wildcard bypass and a Bleichenbacher oracle in PKCS#7. But my exposure is SSH'ing into my own VMs with a local tool, not running a Python server. Documented in the report, risk accepted, moving on. If AsyncVNC ever ships a 48-compatible release, the pin `cryptography>=44,<48` lifts and everything upgrades.
+
+## Final state
+
+```text
+python3        → /opt/homebrew/bin/python3   (3.15.2, Homebrew)
+python3.13/14  → Homebrew, kept as tool dependencies
+/usr/bin/python3 → Xcode CLT 3.9 (Apple's, ignored)
+python         → doesn't exist. good.
+pyenv          → gone
+python.org     → gone
+~/Library/Python/ → just 3.14, the one intentional user site
+uv             → all CLI tools + project locks
+pip_upgrade    → fish function covering every interpreter, dynamically
+```
+
+The lesson I actually took away: the security scan wasn't the hard part — knowing _which_ Python a vulnerability report was even about was. Python's packaging chaos is real, but most of mine was self-inflicted drift: a python.org installer I forgot, a pyenv I stopped using, user sites accumulating per-version. Now the rule is simple — apps go to `uv tool`, projects go to `uv lock`, one user site gets `pip_upgrade`, and everything else gets deleted.
