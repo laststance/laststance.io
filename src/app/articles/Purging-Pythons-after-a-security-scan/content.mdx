@@ -62,7 +62,7 @@ I want these libraries to stay current, so I wrote a shell snippet to batch-upgr
 
 The first version was broken: it hardcoded only Python 3.14 and the CLT 3.9. Bare `pip` actually resolves to **3.15**, so anything installed that way would never be touched. The corrected version discovers interpreters dynamically:
 
-```fish
+```bash
 set -l interpreters /usr/bin/python3
 for py in /opt/homebrew/bin/python3.*
     if string match -rq '^python3\.[0-9]+$' -- (basename "$py")
@@ -105,7 +105,7 @@ rm -rf ~/Library/Python/3.9
 
 One nice side-effect: `type -a python3` then showed `/opt/homebrew/bin/python3` twice — a real `fish_user_paths` + config double-prepend bug in my dotfiles' `10-path.fish`. Fixed with dedupe-then-prepend:
 
-```fish
+```bash
 set -gx PATH /opt/homebrew/bin (string match -v /opt/homebrew/bin $PATH)
 ```
 
