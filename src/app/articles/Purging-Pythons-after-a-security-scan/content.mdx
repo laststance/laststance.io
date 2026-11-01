@@ -14,9 +14,9 @@ export default (props) => <ArticleLayout article={article} {...props} />
 
 I run a periodic security sweep on my Mac that inventories installed software and queries OSV for known vulnerabilities. This week it flagged Python packages in my user site-packages:
 
-- **Pillow 12.1.0** — memory corruption on crafted images (multiple GHSAs)
-- **pypdf 6.19.0** — infinite loop on malformed PDFs
-- **certifi** — outdated CA bundle
+- **Pillow 12.1.0** — memory corruption on crafted images ([CVE-2026-96639](https://github.com/advisories/GHSA-v9pv-5gc8-w2m6) and friends)
+- **pypdf 6.19.0** — infinite loop on malformed PDFs ([CVE-2026-119203](https://github.com/advisories/GHSA-5849-834g-hvw5))
+- **certifi** — the bundled CA store shipped compromised emSign roots ([GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2))
 - Plus **Pillow 12.3.0**, **asyncssh 2.23.1**, and **cryptography 47.0.0** inside a `uv.lock` for one of my tools
 
 The plan was simple: find where these packages live and update them. It took about ten minutes to realize "where these packages live" was going to be the hard part.
@@ -121,7 +121,7 @@ cryptography 48+          → moved TripleDES to the decrepit module
 AsyncVNC 1.3.0 (latest)   → imports TripleDES from the old location → ImportError on 48+
 ```
 
-The actual CVEs are real — an asyncio event-loop freeze via `max packet size = 0` in asyncssh, and four cryptography issues including a `permittedSubtrees` wildcard bypass and a Bleichenbacher oracle in PKCS#7. But my exposure is SSH'ing into my own VMs with a local tool, not running a Python server. Documented in the report, risk accepted, moving on. If AsyncVNC ever ships a 48-compatible release, the pin `cryptography>=44,<48` lifts and everything upgrades.
+The actual CVEs are real — an asyncio event-loop freeze via `max packet size = 0` in asyncssh ([CVE-2026-62949](https://github.com/advisories/GHSA-rw4j-r22c-9gc3)), and four cryptography issues: vulnerable OpenSSL bundled in the wheels ([GHSA-537c-gmf6-5ccf](https://github.com/advisories/GHSA-537c-gmf6-5ccf)), exponential certificate path building ([CVE-2026-69249](https://github.com/advisories/GHSA-jwv3-5hgf-82ww)), a `permittedSubtrees` wildcard bypass ([CVE-2026-69248](https://github.com/advisories/GHSA-m2h6-j472-rp4c)), and a Bleichenbacher oracle in PKCS#7 ([CVE-2026-69247](https://github.com/advisories/GHSA-g6cj-pr64-35w5)). But my exposure is SSH'ing into my own VMs with a local tool, not running a Python server. Documented in the report, risk accepted, moving on. If AsyncVNC ever ships a 48-compatible release, the pin `cryptography>=44,<48` lifts and everything upgrades.
 
 ## Final state
 
