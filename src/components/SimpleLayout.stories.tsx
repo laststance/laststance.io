@@ -60,9 +60,9 @@ export const WithChildren: Story = {
               key={project}
               className="rounded-lg border border-zinc-200 p-6 dark:border-zinc-700"
             >
-              <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
+              <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {project}
-              </h3>
+              </h2>
               <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                 Project description goes here.
               </p>
@@ -97,7 +97,7 @@ export const WithReactNodeTitle: Story = {
         title={
           <span>
             Hello{' '}
-            <span className="text-teal-500 dark:text-teal-400">World</span>
+            <span className="text-teal-600 dark:text-teal-400">World</span>
           </span>
         }
         intro="The title prop can accept React nodes for custom styling and formatting."

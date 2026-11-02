@@ -29,22 +29,25 @@ const meta: Meta<typeof NavItem> = {
     },
   },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <nav>
-        <ul className="flex gap-1">
-          <Story />
-        </ul>
-      </nav>
-    ),
-  ],
 }
 
 export default meta
 
 type Story = StoryObj<typeof NavItem>
 
+/** Wraps a single NavItem in the list it needs; stories with their own nav skip it. */
+const inNavList: NonNullable<Story['decorators']> = [
+  (Story) => (
+    <nav aria-label="Story frame">
+      <ul className="flex gap-1">
+        <Story />
+      </ul>
+    </nav>
+  ),
+]
+
 export const Default: Story = {
+  decorators: inNavList,
   args: {
     href: '/projects',
     children: 'Projects',
@@ -52,6 +55,7 @@ export const Default: Story = {
 }
 
 export const Active: Story = {
+  decorators: inNavList,
   args: {
     href: '/about',
     children: 'About',
@@ -75,7 +79,10 @@ export const Navigation: Story = {
   },
   decorators: [
     () => (
-      <nav className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
+      <nav
+        aria-label="Example navigation"
+        className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900"
+      >
         <ul className="flex gap-1">
           <NavItem href="/about">About</NavItem>
           <NavItem href="/articles">Articles</NavItem>
@@ -95,7 +102,10 @@ export const AllStates: Story = {
           <p className="mb-2 text-sm text-zinc-500">
             Inactive state (current path: /about)
           </p>
-          <nav className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
+          <nav
+            aria-label="Inactive example"
+            className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900"
+          >
             <ul className="flex gap-1">
               <NavItem href="/projects">Projects</NavItem>
             </ul>
@@ -105,7 +115,10 @@ export const AllStates: Story = {
           <p className="mb-2 text-sm text-zinc-500">
             Active state (current path: /about)
           </p>
-          <nav className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
+          <nav
+            aria-label="Active example"
+            className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900"
+          >
             <ul className="flex gap-1">
               <NavItem href="/about">About</NavItem>
             </ul>

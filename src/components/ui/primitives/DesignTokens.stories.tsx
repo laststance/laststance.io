@@ -186,6 +186,10 @@ export const SpacingTokens: Story = {
 
 export const ColorTokens: Story = {
   name: 'Colors',
+  // The swatches show each token's raw color, including ones meant for icons and large text.
+  parameters: {
+    a11y: { config: { rules: [{ id: 'color-contrast', enabled: false }] } },
+  },
   render: () => (
     <VStack gap={8}>
       <Box>
@@ -349,7 +353,9 @@ export const ContrastCheck: Story = {
         {/* Light Mode */}
         <Box p={6} rounded="xl" className="border border-zinc-200 bg-white">
           <VStack gap={4}>
-            <Text variant="h4">Light Mode</Text>
+            <Text variant="h4" as="h3">
+              Light Mode
+            </Text>
             <Text variant="body" color="default">
               Default — zinc-900 (primary content)
             </Text>
@@ -368,7 +374,7 @@ export const ContrastCheck: Story = {
         {/* Dark Mode */}
         <Box p={6} rounded="xl" className="border border-zinc-700 bg-zinc-900">
           <VStack gap={4}>
-            <Text variant="h4" className="text-zinc-50">
+            <Text variant="h4" as="h3" className="text-zinc-50">
               Dark Mode
             </Text>
             <Text variant="body" className="text-zinc-50">
@@ -415,7 +421,7 @@ export const MigrationPatterns: Story = {
       <VStack gap={6}>
         {/* Pattern 1: Page Title */}
         <Box p={4} rounded="lg" border="default">
-          <Text variant="h4" className="mb-3">
+          <Text variant="h4" as="h3" className="mb-3">
             Page Title
           </Text>
           <HStack gap={4} wrap>
@@ -448,7 +454,7 @@ export const MigrationPatterns: Story = {
 
         {/* Pattern 2: Muted Description */}
         <Box p={4} rounded="lg" border="default">
-          <Text variant="h4" className="mb-3">
+          <Text variant="h4" as="h3" className="mb-3">
             Muted Description
           </Text>
           <HStack gap={4} wrap>
@@ -481,7 +487,7 @@ export const MigrationPatterns: Story = {
 
         {/* Pattern 3: Layout Container */}
         <Box p={4} rounded="lg" border="default">
-          <Text variant="h4" className="mb-3">
+          <Text variant="h4" as="h3" className="mb-3">
             Layout Container
           </Text>
           <HStack gap={4} wrap>
@@ -514,7 +520,7 @@ export const MigrationPatterns: Story = {
 
         {/* Pattern 4: Flex Layout */}
         <Box p={4} rounded="lg" border="default">
-          <Text variant="h4" className="mb-3">
+          <Text variant="h4" as="h3" className="mb-3">
             Flex Layout
           </Text>
           <HStack gap={4} wrap>
@@ -563,7 +569,7 @@ export const SpacingApplications: Story = {
 
       {/* Section Layout */}
       <Box border="default" rounded="xl" p={6}>
-        <Text variant="h4" className="mb-4">
+        <Text variant="h4" as="h3" className="mb-4">
           Section Layout
         </Text>
         <Box
@@ -585,7 +591,7 @@ export const SpacingApplications: Story = {
 
       {/* Card Layout */}
       <Box border="default" rounded="xl" p={6}>
-        <Text variant="h4" className="mb-4">
+        <Text variant="h4" as="h3" className="mb-4">
           Card Pattern
         </Text>
         <Box
@@ -613,7 +619,7 @@ export const SpacingApplications: Story = {
 
       {/* List Layout */}
       <Box border="default" rounded="xl" p={6}>
-        <Text variant="h4" className="mb-4">
+        <Text variant="h4" as="h3" className="mb-4">
           List Pattern
         </Text>
         <VStack gap={4}>

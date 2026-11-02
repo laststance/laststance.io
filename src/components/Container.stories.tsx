@@ -134,7 +134,7 @@ export const ResponsiveDemo: Story = {
             <p className="dark:text-white">
               Resize the viewport to see responsive padding changes
             </p>
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
               Mobile: px-4 | Tablet: sm:px-8 | Desktop: lg:px-12
             </p>
           </div>
