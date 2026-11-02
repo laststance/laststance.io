@@ -10,14 +10,13 @@ const handleI18nRouting = createMiddleware(routing)
  * `/ja/about` internally, so the browser URL never changes.
  *
  * Next runs it for every page and RSC request that {@link config} matches.
- * `Vary: Accept-Language` tells caches that one URL has a copy per language.
+ * Each language is cached under its rewritten path, so no `Vary` header is
+ * needed (Next overwrites one set here anyway).
  *
  * @returns next-intl's rewrite, or a redirect for a stray `/ja/...` URL.
  */
 export default function proxy(request: NextRequest): NextResponse {
-  const response = handleI18nRouting(request)
-  response.headers.append('Vary', 'Accept-Language')
-  return response
+  return handleI18nRouting(request)
 }
 
 export const config = {
