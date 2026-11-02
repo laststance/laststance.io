@@ -180,6 +180,42 @@ test.describe('Japanese browser', () => {
     ).toBeVisible()
     expect(problems).toEqual([])
   })
+
+  test('keeps the Japanese menu and 更新履歴 header buttons on one line on a 375px phone', async ({
+    page,
+  }) => {
+    // Arrange
+    await page.setViewportSize({ width: 375, height: 667 })
+    // Japanese can break between any two characters, so a label without nowrap splits mid-word.
+    const textLineCount = (element: Element): number => {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+      const lineTops = new Set<number>()
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if (!node.textContent?.trim()) continue
+        const range = document.createRange()
+        range.selectNodeContents(node)
+        for (const rect of range.getClientRects()) {
+          lineTops.add(Math.round(rect.top))
+        }
+      }
+      return lineTops.size
+    }
+
+    // Act
+    await page.goto('/about')
+    const menuButton = page.getByRole('button', {
+      name: 'ナビゲーションメニューを開閉',
+    })
+    const whatsNewButton = page.getByRole('button', {
+      name: '更新履歴ダイアログを開く',
+    })
+
+    // Assert
+    await expect(menuButton).toBeVisible()
+    await expect(whatsNewButton).toBeVisible()
+    expect(await menuButton.evaluate(textLineCount)).toBe(1)
+    expect(await whatsNewButton.evaluate(textLineCount)).toBe(1)
+  })
 })
 
 test.describe('Browser in a language other than Japanese', () => {
