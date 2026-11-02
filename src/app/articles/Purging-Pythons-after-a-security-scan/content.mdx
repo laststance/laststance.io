@@ -10,8 +10,6 @@ export const article = {
 
 export default (props) => <ArticleLayout article={article} {...props} />
 
-# A security scan flagged Pillow. I ended up deleting three Pythons.
-
 I run a periodic security sweep on my Mac that inventories installed software and queries OSV for known vulnerabilities. This week it flagged Python packages in my user site-packages:
 
 - **Pillow 12.1.0** — memory corruption on crafted images ([CVE-2026-96639](https://github.com/advisories/GHSA-v9pv-5gc8-w2m6) and friends)
