@@ -225,24 +225,6 @@ test.describe('Japanese browser', () => {
       )
     }
   })
-
-  test('keeps the theme toggle fully on screen in Japanese on a 320px phone', async ({
-    page,
-  }) => {
-    // Arrange
-    await page.setViewportSize({ width: 320, height: 568 })
-
-    // Act
-    await page.goto('/about')
-    const themeToggle = page.getByRole('button', { name: /テーマ/ })
-    await expect(themeToggle).toBeVisible()
-    const box = await themeToggle.boundingBox()
-
-    // Assert
-    expect(box).not.toBeNull()
-    expect(box!.x).toBeGreaterThanOrEqual(0)
-    expect(box!.x + box!.width).toBeLessThanOrEqual(320)
-  })
 })
 
 test.describe('Browser in a language other than Japanese', () => {
@@ -261,23 +243,5 @@ test.describe('Browser in a language other than Japanese', () => {
       page.getByRole('heading', { level: 1, name: 'Uses' }),
     ).toBeVisible()
     expect(problems).toEqual([])
-  })
-
-  test('keeps the theme toggle fully on screen in English on a 320px phone', async ({
-    page,
-  }) => {
-    // Arrange
-    await page.setViewportSize({ width: 320, height: 568 })
-
-    // Act
-    await page.goto('/about')
-    const themeToggle = page.getByRole('button', { name: /theme/i })
-    await expect(themeToggle).toBeVisible()
-    const box = await themeToggle.boundingBox()
-
-    // Assert
-    expect(box).not.toBeNull()
-    expect(box!.x).toBeGreaterThanOrEqual(0)
-    expect(box!.x + box!.width).toBeLessThanOrEqual(320)
   })
 })

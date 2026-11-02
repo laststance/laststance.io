@@ -28,7 +28,7 @@ if (!externallyConfigured && keys.some((key) => env[key] === undefined)) {
     references = parseEnv(readFileSync(referenceFile, 'utf8'))
   } catch {
     console.error(
-      'Configure .env.sentry.1password with op:// references, or supply the required environment variables.',
+      'Configure .env.sentry.1password with op:// references, or supply the required environment variables. To build without uploading source maps (for example in a git worktree), run `SENTRY_AUTH_TOKEN= pnpm build`.',
     )
     process.exit(1)
   }

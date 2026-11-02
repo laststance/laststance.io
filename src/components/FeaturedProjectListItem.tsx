@@ -28,9 +28,6 @@ export function FeaturedProjectListItem({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={common('opensInNewTab', {
-          label: `${name} — ${categoryLabel}`,
-        })}
         className="group grid grid-cols-[2rem_minmax(0,1fr)_1rem] items-start gap-4 rounded-sm py-8 sm:gap-6 sm:py-10"
       >
         <Image src={logo} alt="" className="mt-1 h-8 w-8" unoptimized />
@@ -44,6 +41,7 @@ export function FeaturedProjectListItem({
           <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400">
             {categoryLabel}
           </p>
+          <span className="sr-only">{common('newTabHint')}</span>
         </div>
         <span
           aria-hidden="true"

@@ -32,6 +32,7 @@ const en = {
 
   Common: {
     opensInNewTab: '{label} (opens in new tab)',
+    newTabHint: '(opens in new tab)',
     sendEmailTo: 'Send email to {email}',
     readArticle: 'Read article',
     personalSiteLabel: "Ryota Murakami's personal website (opens in new tab)",

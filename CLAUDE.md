@@ -2,9 +2,10 @@
 
 ## Project Structure & Module Organization
 
-- `src/app` hosts Next.js routes, layouts, and server components in file-system segments.
+- Pages live under `src/app/[locale]`; `src/proxy.ts` picks `en` or `ja` from Accept-Language and rewrites there, so URLs never change. `api/`, `feed.xml`, and `sitemap.ts` stay at the top of `src/app`.
+- Adding or changing UI copy: read the README "i18n" section first.
 - `src/components` contains reusable components grouped by feature (e.g., `Header`, `Spacer`), while `src/lib` and `src/hooks` contain shared utilities and hooks.
-- Page content (MDX, images) lives in `src/images`, `public`, and `typography.ts`; keep them aligned when adding visuals.
+- Page content (MDX, images) lives in `src/images`, `public`, and `typography.js`; keep them aligned when adding visuals.
 - Integration helpers and blog tooling live in `scripts/`; end-to-end specs live in `e2e/`, and unit tests sit beside their source as `*.test.ts[x]`.
 
 ## Build, Test, and Development Commands
@@ -14,6 +15,7 @@
 - `pnpm lint` and `pnpm lint:fix` enforce ESLint rules, while `pnpm prettier` handles one-off formatting sweeps.
 - `pnpm test` runs the Vitest suite; `pnpm test:storybook` exercises Storybook stories, and `pnpm test:watch` supports rapid TDD cycles.
 - `pnpm playwright` runs browser e2e checks defined in `e2e/*.spec.ts`; use `pnpm storybook` for manual visual review.
+- `node scripts/verify-locale.mjs <url>` checks Japanese/English negotiation on a running deployment; CI runs it after every Vercel deploy.
 
 ## Coding Style & Naming Conventions
 
@@ -25,9 +27,10 @@
 ## Testing Guidelines
 
 - Write unit tests with Vitest + Testing Library; mimic examples in `src/components/Header/ThemeToggle.test.tsx` and keep filenames `${name}.test.tsx`.
-- Reuse `setupTests.ts` for shared mocks; add MSW handlers under `msw-setup-next.md` guidance when HTTP mocking is required.
-- For e2e flows, extend helpers in `e2e/helper.ts` and scope scenarios per route; run `pnpm playwright:headed` when debugging UI states.
+- Reuse `setupTests.ts` for shared mocks.
+- Scope e2e scenarios per route; run `pnpm playwright:headed` when debugging UI states. Specs run as an `en-US` browser; Japanese-browser scenarios go in `e2e/i18n.spec.ts`.
 - Aim to update or create Storybook stories alongside component changes so `pnpm test:storybook` covers new surfaces.
+- Visual diffs: each e2e workflow sets an `Argos (<device>)` commit status and uploads an `argos-result-<device>` artifact (build plus snapshots needing review); read it with `gh run download <run-id> -n argos-result-chrome`.
 
 ## Commit & Pull Request Guidelines
 

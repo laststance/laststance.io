@@ -1,0 +1,22 @@
+name: Verify Locale
+on:
+  deployment_status: ~
+jobs:
+  verify-locale:
+    # Vercel reports every Preview and Production deploy here; only check the ones that finished.
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment_url != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+      - name: Check Japanese and English negotiation on the deployment
+        env:
+          DEPLOYMENT_URL: ${{ github.event.deployment_status.environment_url }}
+        run: node scripts/verify-locale.mjs "$DEPLOYMENT_URL"

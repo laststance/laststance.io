@@ -61,7 +61,7 @@ export const WithText: Story = {
 export const InContext: Story = {
   render: () => (
     <div className="max-w-lg">
-      <button className="group mb-8 flex items-center text-sm font-medium text-zinc-400 transition hover:text-teal-500 dark:text-zinc-500 dark:hover:text-teal-500">
+      <button className="group mb-8 flex items-center text-sm font-medium text-zinc-600 transition hover:text-teal-500 dark:text-zinc-500 dark:hover:text-teal-500">
         <ArrowLeftIcon className="mr-2 h-4 w-4 stroke-current" />
         Back to articles
       </button>
