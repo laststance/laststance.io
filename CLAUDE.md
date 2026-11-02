@@ -30,6 +30,7 @@
 - Reuse `setupTests.ts` for shared mocks.
 - Scope e2e scenarios per route; run `pnpm playwright:headed` when debugging UI states. Specs run as an `en-US` browser; Japanese-browser scenarios go in `e2e/i18n.spec.ts`.
 - Aim to update or create Storybook stories alongside component changes so `pnpm test:storybook` covers new surfaces.
+- Visual diffs: each e2e workflow sets an `Argos (<device>)` commit status and uploads an `argos-result-<device>` artifact (build plus snapshots needing review); read it with `gh run download <run-id> -n argos-result-chrome`.
 
 ## Commit & Pull Request Guidelines
 

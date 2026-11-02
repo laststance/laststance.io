@@ -8,6 +8,9 @@ jobs:
   iPad-Pro-11-e2e-test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,10 +19,11 @@ jobs:
       - name: Install dependencies
         run: npm install -g pnpm && pnpm install
       - run: |
-          touch .env
-          echo "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}" >> .env
-          echo "PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }}" >> .env
-          echo "ARGOS_TOKEN=${{ secrets.ARGOS_TOKEN }}" >> .env
+          {
+            echo "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}"
+            echo "PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+            echo "ARGOS_TOKEN=${{ secrets.ARGOS_TOKEN }}"
+          } >> .env
       - name: Build Next
         run: pnpm build
       - name: Install Playwright Browsers
@@ -34,7 +38,22 @@ jobs:
             echo "UPLOAD_TO_ARGOS=true" >> .env
           fi
       - name: Playwright tests
-        run: pnpm exec playwright test --project='iPad Pro 11' --project='iPad Pro 11 landscape'
+        shell: bash
+        run: pnpm exec playwright test --project='iPad Pro 11' --project='iPad Pro 11 landscape' 2>&1 | tee playwright-output.txt
+      - name: Report the Argos result as a commit status
+        if: ${{ !cancelled() && github.actor != 'dependabot[bot]' }}
+        continue-on-error: true
+        env:
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          STATUS_CONTEXT: Argos (iPad Pro 11)
+        run: node scripts/argos-status.mjs playwright-output.txt
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && hashFiles('argos-result.json') != '' }}
+        with:
+          name: argos-result-ipad-pro-11
+          path: argos-result.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
