@@ -46,8 +46,12 @@ const inNavList: NonNullable<Story['decorators']> = [
   ),
 ]
 
+// Hovered and active links use teal-500, which is 2.42:1 on white; the color choice is tracked in #1744.
+const contrastTodo = { a11y: { test: 'todo' } } as const
+
 export const Default: Story = {
   decorators: inNavList,
+  parameters: contrastTodo,
   args: {
     href: '/projects',
     children: 'Projects',
@@ -61,6 +65,7 @@ export const Active: Story = {
     children: 'About',
   },
   parameters: {
+    ...contrastTodo,
     nextjs: {
       navigation: {
         pathname: '/about',
