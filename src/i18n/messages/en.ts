@@ -17,6 +17,8 @@ const en = {
     description: "Sorry, we couldn't find the page you're looking for.",
     backHome: 'Go back home',
   },
+
+  pages: {},
 } as const
 
 export default en

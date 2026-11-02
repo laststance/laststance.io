@@ -61,7 +61,7 @@ export default Content
 const wordList = title.split(' ')
 const folderName = wordList.length === 1 ? title : wordList.join('-')
 
-const folderPath = `./src/app/articles/${folderName.replace(/[^\w|-]/g, '')}`
+const folderPath = `./src/app/[locale]/articles/${folderName.replace(/[^\w|-]/g, '')}`
 
 const s = spinner()
 s.start('processing...')

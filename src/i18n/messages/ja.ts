@@ -18,6 +18,8 @@ const ja = {
     description: 'お探しのページは見つかりませんでした。',
     backHome: 'ホームに戻る',
   },
+
+  pages: {},
 } satisfies CatalogShape
 
 export default ja

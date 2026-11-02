@@ -1,6 +1,3 @@
-import { Article } from '@/app/page/Article'
-import { Photos } from '@/app/page/Photos'
-import { SocialLink } from '@/app/page/SocialLink'
 import { Container } from '@/components/Container'
 import { HomeColumns } from '@/components/HomeColumns'
 import {
@@ -11,6 +8,10 @@ import {
 } from '@/components/SocialIcons'
 import { Box, HStack, Text, VStack } from '@/components/ui/primitives'
 import { getAllArticles } from '@/lib/articles'
+
+import { Article } from './page/Article'
+import { Photos } from './page/Photos'
+import { SocialLink } from './page/SocialLink'
 
 export default async function Home() {
   const articles = (await getAllArticles()).slice(0, 4)
