@@ -107,6 +107,32 @@ export default defineConfig([
       'browser-security/no-insecure-redirects': 'error',
     },
   },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/i18n/**', '**/*.test.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'next/navigation',
+              importNames: ['usePathname'],
+              message:
+                'Use usePathname from @/i18n/navigation: it strips the internal /en|/ja prefix, so prerendered HTML and the hydrated client agree.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['@/i18n/messages/*', '@/i18n/catalogs'],
+              message:
+                'Read copy with useTranslations/getTranslations so Japanese visitors get the ja catalog.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   ...storybook.configs['flat/recommended'],
   jsxA11y.flatConfigs.recommended,
 ])

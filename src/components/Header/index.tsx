@@ -1,7 +1,8 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
+
+import { usePathname } from '@/i18n/navigation'
 
 import { clamp } from '../../lib/utils'
 import { Container } from '../Container'

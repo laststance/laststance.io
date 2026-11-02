@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generates `src/lib/articles-manifest.ts` from each `src/app/articles/*\/content.mdx`.
+ * Generates `src/lib/articles-manifest.ts` from each `src/app/[locale]/articles/*\/content.mdx`.
  *
  * Why this exists:
  * Previously `src/lib/articles.ts` did a runtime `fast-glob` over the articles
@@ -26,7 +26,7 @@ import path from 'node:path'
 import glob from 'fast-glob'
 
 const repoRoot = path.resolve(import.meta.dirname, '..')
-const articlesDir = path.join(repoRoot, 'src/app/articles')
+const articlesDir = path.join(repoRoot, 'src/app/[locale]/articles')
 const outputPath = path.join(repoRoot, 'src/lib/articles-manifest.ts')
 
 /** Frontmatter keys every article object literal is expected to declare. */

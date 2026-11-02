@@ -1,6 +1,7 @@
 'use client'
 
 import { Maximize2, ZoomIn, ZoomOut } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
@@ -74,6 +75,7 @@ export function MermaidLightbox({
   safeId,
   triggerRef,
 }: MermaidLightboxProps) {
+  const t = useTranslations('Mermaid')
   const lightboxSvg = useMemo(
     () => svg.replaceAll(safeId, `${safeId}-lb`),
     [svg, safeId],
@@ -100,25 +102,21 @@ export function MermaidLightbox({
         }}
         className="grid h-[90vh] w-[95vw] max-w-none gap-0 overflow-hidden border-zinc-200/60 bg-zinc-50 p-0 dark:border-zinc-800/60 dark:bg-zinc-900"
       >
-        <DialogTitle className="sr-only">
-          Mermaid diagram (zoomable)
-        </DialogTitle>
+        <DialogTitle className="sr-only">{t('lightboxTitle')}</DialogTitle>
         <DialogDescription className="sr-only">
-          Use the toolbar buttons, mouse wheel, drag, pinch, or the keyboard
-          shortcuts plus, minus, and zero to zoom and pan the diagram. Press
-          Escape to close.
+          {t('lightboxDescription')}
         </DialogDescription>
 
         {/* Toolbar — top-left so it does not collide with Radix's built-in
             close button at top-right (see src/components/ui/dialog.tsx). */}
         <div className="absolute top-4 left-4 z-10 flex gap-1 rounded-lg border border-zinc-200/60 bg-white/90 p-1 shadow-sm backdrop-blur dark:border-zinc-800/60 dark:bg-zinc-950/80">
-          <ToolbarButton onClick={zoomOut} label="Zoom out (-)">
+          <ToolbarButton onClick={zoomOut} label={t('zoomOut')}>
             <ZoomOut className="h-4 w-4" />
           </ToolbarButton>
-          <ToolbarButton onClick={reset} label="Reset zoom (0)">
+          <ToolbarButton onClick={reset} label={t('resetZoom')}>
             <Maximize2 className="h-4 w-4" />
           </ToolbarButton>
-          <ToolbarButton onClick={zoomIn} label="Zoom in (+)">
+          <ToolbarButton onClick={zoomIn} label={t('zoomIn')}>
             <ZoomIn className="h-4 w-4" />
           </ToolbarButton>
         </div>

@@ -295,7 +295,7 @@ onBlur={() => setIsExpanded(false)}
 Entrance motion communicates "new content has arrived." The following are not arrivals and intentionally omit stagger / entrance motion:
 
 - **Featured project rows** — descriptions are visible immediately; no entrance or hover animation gates access to content.
-- **Hero header** (`src/app/page.tsx` author intro block) — already in view above the fold; animating on every mount is theatrical.
+- **Hero header** (`src/app/[locale]/page.tsx` author intro block) — already in view above the fold; animating on every mount is theatrical.
 - **Layout primitives** (`Container`, `Box`, `Stack` themselves) — these wrap content; the content animates, not the wrapper.
 
 When omitting motion, leave a single comment in the component so future-me doesn't "fix" it:
@@ -391,7 +391,8 @@ How copy is written across UI, prose, and project descriptions.
 - **No marketing vocabulary** — Banned phrases include _leverage_, _synergy_, _disrupt_, _seamless_, _ecosystem_, _empower_, _delight_. If the sentence still works without the word, the word was decoration.
 - **Numbers earn their place** — Showing a star count or download count requires asking "what does this prove?". If the answer is "popularity," reconsider. If shown: `font-mono` on the digits only, always include a unit (`★ 1,234`, `120 commits`, `port 3939`).
 - **No false certainty** — "Experiment" is honest. "Cutting-edge solution" is not.
-- **Author-author dialect** — Mixed Japanese + English is fine for author-only documents (this file, plan files in `~/.gstack/`). UI copy stays in English.
+- **Author-author dialect** — Mixed Japanese + English is fine for author-only documents (this file, plan files in `~/.gstack/`).
+- **English first, then Japanese** — UI copy is written in English and translated to Japanese, which visitors get when their browser prefers Japanese. Article bodies, article titles, and OG image text stay English. To add a string, add it to `src/i18n/messages/en.ts`, add its translation to `src/i18n/messages/ja.ts`, and read it with `useTranslations` or `getTranslations`. Japanese prose uses です・ます調, and labels are short noun phrases.
 - **Show, don't claim** — Instead of writing "high performance," show a Lighthouse score with the date next to it. Instead of writing "well-tested," link to the Storybook coverage.
 
 ---

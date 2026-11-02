@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 import React from 'react'
 
@@ -38,15 +39,16 @@ const List: React.FC<Props> = ({ date, li }) => (
 )
 
 const WhatNew: React.FC = () => {
+  const t = useTranslations('WhatsNew')
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          aria-label="Open What's New dialog"
-          className="h-11"
+          aria-label={t('openLabel')}
+          className="h-11 break-keep"
         >
-          What's New?
+          {t('trigger')}
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -54,15 +56,12 @@ const WhatNew: React.FC = () => {
         aria-describedby="whats-new-description"
       >
         <DialogHeader>
-          <DialogTitle>What's New?</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
           <p id="whats-new-description" className="sr-only">
-            Latest updates and changes to the website
+            {t('description')}
           </p>
         </DialogHeader>
-        <ScrollArea
-          className="mt-4 space-y-4"
-          aria-label="What's new updates list"
-        >
+        <ScrollArea className="mt-4 space-y-4" aria-label={t('listLabel')}>
           <List
             date="2026-02-14"
             li={[
@@ -87,9 +86,7 @@ const WhatNew: React.FC = () => {
             date="2025-12-31"
             li={[
               <DialogClose asChild key="projects-redesign">
-                <Link href="/projects">
-                  Add new projects to the Projects page
-                </Link>
+                <Link href="/projects">{t('items.addNewProjects')}</Link>
               </DialogClose>,
             ]}
           />
@@ -97,10 +94,7 @@ const WhatNew: React.FC = () => {
             date="2025-12-17"
             li={[
               <DialogClose asChild key="projects-redesign">
-                <Link href="/projects">
-                  🎨 Projects page redesign: Category-based layout with 9
-                  categories
-                </Link>
+                <Link href="/projects">{t('items.projectsRedesign')}</Link>
               </DialogClose>,
             ]}
           />
@@ -118,10 +112,7 @@ const WhatNew: React.FC = () => {
             date="2025-12-03"
             li={[
               <DialogClose asChild>
-                <Link href="/uses">
-                  📱 Updated MacBook Pro: Upgraded to M4 Max (16-core CPU,
-                  40-core GPU, 64GB RAM)
-                </Link>
+                <Link href="/uses">{t('items.updatedMacBookPro')}</Link>
               </DialogClose>,
             ]}
           />
@@ -145,7 +136,7 @@ const WhatNew: React.FC = () => {
               </DialogClose>,
             ]}
           />
-          <List date="2025-11-13" li={['Update Projects Page']} />
+          <List date="2025-11-13" li={[t('items.updateProjectsPage')]} />
           <List
             date="2025-11-05"
             li={[
@@ -156,10 +147,7 @@ const WhatNew: React.FC = () => {
               </DialogClose>,
             ]}
           />
-          <List
-            date="2025-10-07"
-            li={['Update Keybinds: Add Chrome, Raindrop and IDE shortcuts']}
-          />
+          <List date="2025-10-07" li={[t('items.keybindsChromeRaindropIde')]} />
           <List
             date="2025-06-08"
             li={[
@@ -185,7 +173,7 @@ const WhatNew: React.FC = () => {
               </DialogClose>,
             ]}
           />
-          <List date="2025-05-23" li={['Update Keybinds Style']} />
+          <List date="2025-05-23" li={[t('items.updateKeybindsStyle')]} />
           <List
             date="2025-05-08"
             li={[
@@ -206,9 +194,9 @@ const WhatNew: React.FC = () => {
               </DialogClose>,
             ]}
           />
-          <List date="2024-08-17" li={['Update Uses page']} />
-          <List date="2024-07-28" li={['Update Keybinds']} />
-          <List date="2024-07-27" li={['Increase Github Feed record']} />
+          <List date="2024-08-17" li={[t('items.updateUsesPage')]} />
+          <List date="2024-07-28" li={[t('items.updateKeybinds')]} />
+          <List date="2024-07-27" li={[t('items.increaseGithubFeedRecord')]} />
           <List
             date="2024-05-22"
             li={[
@@ -219,10 +207,7 @@ const WhatNew: React.FC = () => {
               </DialogClose>,
             ]}
           />
-          <List
-            date="2024-02-24"
-            li={['Keybind: VSCode Open Keybinding.json']}
-          />
+          <List date="2024-02-24" li={[t('items.keybindOpenKeybindingJson')]} />
           <List
             date="2024-01-29"
             li={[
@@ -241,66 +226,59 @@ const WhatNew: React.FC = () => {
               </DialogClose>,
             ]}
           />
-          <List
-            date="2023-12-18"
-            li={['Keybinds: update selection commands']}
-          />
+          <List date="2023-12-18" li={[t('items.keybindsUpdateSelection')]} />
           <List
             date="2023-11-20"
             li={[
-              <React.Fragment key="article-trying-less-energy-coding">
-                add article:{' '}
-                <DialogClose asChild>
-                  <Link href="/articles/Trying-less-energy-coding">
-                    Trying less energy coding
-                  </Link>
-                </DialogClose>
-              </React.Fragment>,
+              t.rich('items.addArticle', {
+                title: 'Trying less energy coding',
+                link: (chunks) => (
+                  <DialogClose asChild>
+                    <Link href="/articles/Trying-less-energy-coding">
+                      {chunks}
+                    </Link>
+                  </DialogClose>
+                ),
+              }),
             ]}
           />
-          <List
-            date="2023-11-05"
-            li={[
-              'projects: fix prettier-husky-lint-staged-installer broken link',
-            ]}
-          />
+          <List date="2023-11-05" li={[t('items.fixInstallerLink')]} />
           <List
             date="2023-10-29"
             li={[
-              <React.Fragment key="post-eslint-plugin-dropped">
-                add post{' '}
-                <DialogClose asChild>
-                  <Link href="/articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120">
-                    Dropped eslint-plugin-sort-keys-custom-order from
-                    eslint-config-ts-prefixer@v1.12.0
-                  </Link>
-                </DialogClose>
-              </React.Fragment>,
+              t.rich('items.addPost', {
+                title:
+                  'Dropped eslint-plugin-sort-keys-custom-order from eslint-config-ts-prefixer@v1.12.0',
+                link: (chunks) => (
+                  <DialogClose asChild>
+                    <Link href="/articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120">
+                      {chunks}
+                    </Link>
+                  </DialogClose>
+                ),
+              }),
             ]}
           />
           <List
             date="2023-10-25"
             li={[
-              'Update "Go to symbol" keybind to "CMD + Shift + O"',
-              'Remove incorrect keybinds',
+              t('items.updateGoToSymbolKeybind'),
+              t('items.removeIncorrectKeybinds'),
             ]}
           />
           <List
             date="2023-10-24"
-            li={['Fix broken blog post body style.', 'Add og image']}
+            li={[t('items.fixBlogPostBodyStyle'), t('items.addOgImage')]}
           />
-          <List
-            date="2023-10-17"
-            li={['Add Laststance.io and Dotfiles in Projects.']}
-          />
-          <List date="2023-10-16" li={['Fix Keybinds page typography.']} />
+          <List date="2023-10-17" li={[t('items.addLaststanceAndDotfiles')]} />
+          <List date="2023-10-16" li={[t('items.fixKeybindsTypography')]} />
           <List
             date="2023-10-07"
             li={[
-              "Add What's New?",
-              'Change shacdn "baseColor": "zinc"',
-              'Fix GithubFeed Style',
-              'Add 8icon Credit at Projects page',
+              t('items.addWhatsNew'),
+              t('items.changeShadcnBaseColor'),
+              t('items.fixGithubFeedStyle'),
+              t('items.addIcons8Credit'),
             ]}
           />
         </ScrollArea>

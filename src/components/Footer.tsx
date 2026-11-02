@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import type { ComponentProps } from 'react'
 
 import { ContainerInner, ContainerOuter } from '@/components/Container'
@@ -19,6 +20,8 @@ const NavLink: React.FC<ComponentProps<typeof Link>> = ({
 )
 
 export function Footer() {
+  const nav = useTranslations('Nav')
+  const t = useTranslations('Footer')
   return (
     <footer className="mt-(--footer-gap) flex-none">
       <ContainerOuter>
@@ -31,18 +34,17 @@ export function Footer() {
                 align="center"
                 className="justify-center text-sm font-medium text-zinc-800 dark:text-zinc-200"
               >
-                <NavLink href="/about">About</NavLink>
-                <NavLink href="/projects">Projects</NavLink>
-                <NavLink href="/uses">Uses</NavLink>
-                <NavLink href="/keybinds">Keybinds</NavLink>
+                <NavLink href="/about">{nav('about')}</NavLink>
+                <NavLink href="/projects">{nav('projects')}</NavLink>
+                <NavLink href="/uses">{nav('uses')}</NavLink>
+                <NavLink href="/keybinds">{nav('keybinds')}</NavLink>
               </HStack>
               <Text
                 as="p"
                 variant="caption"
                 className="text-zinc-600 dark:text-zinc-400"
               >
-                &copy; {new Date().getFullYear()} Laststance.io. All rights
-                reserved.
+                {t('copyright', { year: String(new Date().getFullYear()) })}
               </Text>
             </div>
           </ContainerInner>

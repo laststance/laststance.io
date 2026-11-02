@@ -2,8 +2,9 @@
 
 import clsx from 'clsx'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import type { ComponentProps } from 'react'
+
+import { usePathname } from '@/i18n/navigation'
 
 export const NavItem: React.FC<ComponentProps<typeof Link>> = ({
   children,
@@ -16,8 +17,9 @@ export const NavItem: React.FC<ComponentProps<typeof Link>> = ({
     <li>
       <Link
         href={href}
+        // Japanese text may break between any two characters, so keep each label on one line.
         className={clsx(
-          'relative inline-flex min-h-11 items-center px-3 py-2 transition',
+          'relative inline-flex min-h-11 items-center px-3 py-2 whitespace-nowrap transition',
           isActive ? 'text-teal-500 dark:text-teal-400' : 'link-hover',
         )}
         {...rest}

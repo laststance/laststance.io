@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { type Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { Container } from '@/components/Container'
 import {
@@ -12,29 +13,32 @@ import {
 } from '@/components/SocialIcons'
 import { Box, Text, VStack } from '@/components/ui/primitives'
 import { env } from '@/env.mjs'
+import { getPageMetadata } from '@/i18n/pageMetadata'
+import { proseTags } from '@/i18n/proseTags'
 import portraitImage from '@/images/gonnahell.jpeg'
 
-const title = 'About'
-export const metadata: Metadata = {
-  title: title,
-  description: 'An independent organization for OSS activity.',
-  openGraph: {
-    title,
-    images: [`/api/og?title=${title}`],
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageMetadata('about')
 }
 
+/**
+ * One contact link in the About sidebar.
+ *
+ * `label` is a string, not children, because the aria-label is composed from it
+ * in the visitor's language ("… (opens in new tab)" or "Send email to …").
+ */
 function SocialLink({
-  children,
+  label,
   className,
   href,
   icon: Icon,
 }: {
-  children: React.ReactNode
+  label: string
   className?: string
   href: string
   icon: React.ComponentType<{ className?: string }>
 }) {
+  const t = useTranslations('Common')
   const isExternalLink =
     href.startsWith('http') && !href.startsWith(env.NEXT_PUBLIC_SITE_URL || '')
   const isEmailLink = href.startsWith('mailto:')
@@ -48,17 +52,17 @@ function SocialLink({
           ? {
               target: '_blank',
               rel: 'noopener noreferrer',
-              'aria-label': `${children} (opens in new tab)`,
+              'aria-label': t('opensInNewTab', { label }),
             }
           : {})}
         {...(isEmailLink
           ? {
-              'aria-label': `Send email to ${children}`,
+              'aria-label': t('sendEmailTo', { email: label }),
             }
           : {})}
       >
         <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-teal-500" />
-        <span className="ml-4">{children}</span>
+        <span className="ml-4">{label}</span>
       </Link>
     </li>
   )
@@ -76,6 +80,8 @@ function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 export default function About() {
+  const t = useTranslations('pages.about')
+  const common = useTranslations('Common')
   // 96px top offset (mt-16 sm:mt-24) to match SimpleLayout, /projects, and the article pages.
   return (
     <Container className="page-start">
@@ -84,88 +90,73 @@ export default function About() {
           <Box maxW="xs" px={2} className="lg:max-w-none">
             <Image
               src={portraitImage}
-              alt="Ryota Murakami portrait photo"
+              alt={t('portraitAlt')}
               sizes="(min-width: 1024px) 32rem, 20rem"
               className="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
             />
           </Box>
         </div>
         <div className="min-w-0 lg:order-first lg:row-span-2">
-          <Text variant="h1">
-            Laststance.io is my experimental laboratory for eliminate like this.
-            ➡️
-          </Text>
+          <Text variant="h1">{t('heading')}</Text>
           <VStack gap={6} className="page-intro">
             <Text variant="body" color="muted">
-              I'm{' '}
-              <a
-                href="https://ryota-murakami.github.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ryota Murakami's personal website (opens in new tab)"
-                className="text-teal-500 hover:text-teal-600 dark:hover:text-teal-400"
-              >
-                Ryota Murakami live in Tokyo,
-              </a>
-              here is website of my personal Github organization.
-              <br />
-              <br />
-              Initially, Laststance.io was just a Github organization created
-              for use to name a NPM scoped name, such as "@foo/mylib", prevent
-              new package name already used others.
+              {t.rich('intro', {
+                ...proseTags,
+                link: (chunks) => (
+                  <a
+                    href="https://ryota-murakami.github.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={common('personalSiteLabel')}
+                    className="text-teal-500 hover:text-teal-600 dark:hover:text-teal-400"
+                  >
+                    {chunks}
+                  </a>
+                ),
+              })}
             </Text>
             <Text variant="body" color="muted">
-              But now it has become an important hub for me to co-locate all OSS
-              activities.
+              {t('hub')}
             </Text>
             <Text variant="body" color="muted">
-              Laststance.io is currently focusing on React and other web
-              development issues, as well as developing and researching
-              toolchains to improve the quality of software development and the
-              developer experience.
+              {t('focus')}
             </Text>
             <Text variant="body" color="muted">
-              Laststance.io final gig is making the best web application
-              framework. <br />
-              You have no time to do it within 8h 5days per week and your
-              exhausted by daily job"? Then work 3 days a week, inventing all
-              webdev/OSS things.
+              {t.rich('finalGig', proseTags)}
             </Text>
           </VStack>
         </div>
         <div className="min-w-0">
           <ul>
-            <SocialLink href="https://twitter.com/malloc007" icon={TwitterIcon}>
-              Follow on Twitter
-            </SocialLink>
+            <SocialLink
+              href="https://twitter.com/malloc007"
+              icon={TwitterIcon}
+              label={t('followOn.twitter')}
+            />
             <SocialLink
               href="https://www.instagram.com/ryota_murakam1/"
               icon={InstagramIcon}
               className="mt-4"
-            >
-              Follow on Instagram
-            </SocialLink>
+              label={t('followOn.instagram')}
+            />
             <SocialLink
               href="https://github.com/ryota-murakami"
               icon={GitHubIcon}
               className="mt-4"
-            >
-              Follow on GitHub
-            </SocialLink>
+              label={t('followOn.github')}
+            />
             <SocialLink
               href="https://www.linkedin.com/in/ryota-murakami-ba9206164/"
               icon={LinkedInIcon}
               className="mt-4"
-            >
-              Follow on LinkedIn
-            </SocialLink>
+              label={t('followOn.linkedin')}
+            />
             <SocialLink
               href="mailto:contact@laststance.io"
               icon={MailIcon}
               className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
-            >
-              contact@laststance.io
-            </SocialLink>
+              label="contact@laststance.io"
+            />
           </ul>
         </div>
       </div>

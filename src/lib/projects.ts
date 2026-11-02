@@ -1,4 +1,5 @@
 import { type StaticImageData } from 'next/image'
+import type { Messages } from 'next-intl'
 
 import chromeLogo from '@/images/logos/icons8-chrome-48.png'
 import electronLogo from '@/images/logos/icons8-electron-48.png'
@@ -26,14 +27,24 @@ import vscodeLogo from '@/images/logos/icons8-vscode-48.png'
 export type ProjectStatus =
   'Active' | 'Daily tool' | 'Experiment' | 'Maintained' | 'Paused'
 
+type ProjectMessages = Messages['pages']['projects']
+
+export type ProjectId = keyof ProjectMessages['items']
+
+export type ProjectCategory = keyof ProjectMessages['categories']
+
 /**
  * Project metadata shared by the full list and Home selections.
  * No status label (Archive projects are intentionally label-less per design).
+ *
+ * The description and category label are translated, so they live in the catalog
+ * under `id` and `category`. `name` is shown verbatim in every language and also
+ * identifies the project (React key, {@link PROJECT_DISPLAY} hidden names, tests).
  */
 export type ArchiveProject = {
+  id: ProjectId
   name: string
-  description: string
-  category: string
+  category: ProjectCategory
   href: string
   logo: StaticImageData
 }
@@ -54,73 +65,65 @@ export type FeaturedProject = ArchiveProject & {
  */
 export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
   {
+    id: 'skillsDesktop',
     name: 'Skills Desktop',
-    description:
-      'Visualize installed Skills and symlink status across AI agents. GUI for managing skills with 21 AI agents support and 26 themes.',
-    category: 'Desktop App',
+    category: 'desktopApp',
     href: 'https://skills-desktop.vercel.app/',
     logo: electronLogo,
     status: 'Active',
   },
   {
+    id: 'goToDefinitionForJsdoc',
     name: 'Go To Definition for JSDoc',
-    description:
-      'Jump from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding throwaway imports for navigation.',
-    category: 'VS Code Extension',
+    category: 'vscodeExtension',
     href: 'https://github.com/laststance/go-to-definition-for-jsdoc',
     logo: vscodeLogo,
     status: 'Active',
   },
   {
+    id: 'tailwindcssCanonicalClasses',
     name: 'Tailwind CSS Canonical Classes',
-    description:
-      'Automatically convert non-canonical Tailwind CSS v4 classes to their canonical equivalents. Prettier plugin, CLI, and core library.',
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/tailwindcss-canonical-classes-monrepo',
     logo: tailwindLogo,
     status: 'Active',
   },
   {
+    id: 'reduxStorageMiddleware',
     name: '@laststance/redux-storage-middleware',
-    description:
-      'SSR-safe Redux Toolkit middleware for localStorage persistence with selective slice hydration and performance optimization.',
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/redux-strorage-middeware',
     logo: reduxLogo,
     status: 'Maintained',
   },
   {
+    id: 'gitbox',
     name: 'GitBox',
-    description:
-      'A web application for managing GitHub repositories in Kanban board format. Organize your repos visually and boost productivity.',
-    category: 'Web App',
+    category: 'webApp',
     href: 'https://gitbox-laststance.vercel.app/',
     logo: git,
     status: 'Daily tool',
   },
   {
+    id: 'reactLightbox',
     name: 'react-lightbox',
-    description:
-      'A flexible and accessible React lightbox component for displaying images with keyboard navigation and touch support.',
-    category: 'React Library',
+    category: 'reactLibrary',
     href: 'https://github.com/laststance/react-lightbox',
     logo: reactLogo,
     status: 'Maintained',
   },
   {
+    id: 'reactFlowScrollbar',
     name: 'react-flow-scrollbar',
-    description:
-      'Viewport-synced custom scrollbars and zoom-aware bounded panning for React Flow / @xyflow/react v12.',
-    category: 'React Library',
+    category: 'reactLibrary',
     href: 'https://github.com/laststance/react-flow-scrollbar',
     logo: reactLogo,
     status: 'Active',
   },
   {
+    id: 'eslintConfigTsPrefixer',
     name: 'eslint-config-ts-prefixer',
-    description:
-      'Opinionated ESLint config with meaningful runtime rules and beautiful formatters.',
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/eslint-config-ts-prefixer',
     logo: npmLogo,
     status: 'Active',
@@ -133,113 +136,100 @@ export const FEATURED_PROJECTS: readonly FeaturedProject[] = [
  */
 export const ARCHIVE_PROJECTS: readonly ArchiveProject[] = [
   {
+    id: 'reactNextEslintPlugin',
     name: '@laststance/react-next-eslint-plugin',
-    description:
-      'A collection of ESLint plugins for React and Next.js. Enforce best practices automatically.',
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/react-next-eslint-plugin',
     logo: npmLogo,
   },
   {
+    id: 'cleanUrl',
     name: 'Clean URL',
-    description:
-      'Remove tracking parameters from URLs automatically, protecting your privacy while browsing.',
-    category: 'Chrome Extension',
+    category: 'chromeExtension',
     href: 'https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl',
     logo: chromeLogo,
   },
   {
+    id: 'coffeeTimer',
     name: 'Coffee Timer',
-    description:
-      'Simple timer PWA for coffee breaks with push notifications and customizable sounds.',
-    category: 'Web App',
+    category: 'webApp',
     href: 'https://github.com/laststance/coffee-timer',
     logo: nextLogo,
   },
   {
+    id: 'createReactAppVite',
     name: 'Create React App Vite',
-    description:
-      'Simple CRA-style Vite template. Familiar structure, modern tooling.',
-    category: 'Template',
+    category: 'template',
     href: 'https://github.com/laststance/create-react-app-vite',
     logo: viteLogo,
   },
   {
+    id: 'doINeedUmbrella',
     name: 'do-i-need-umbrella',
-    description:
-      'Weather-based decision helper. Simple answer to a daily question.',
-    category: 'Web App',
+    category: 'webApp',
     href: 'https://github.com/laststance/do-i-need-an-umbrella',
     logo: reactLogo,
   },
   {
+    id: 'dotfiles',
     name: 'dotfiles',
-    description:
-      'Personal Mac OS X setup manual. Reproducible development environment.',
-    category: 'Developer Tool',
+    category: 'developerTool',
     href: 'https://github.com/ryota-murakami/dotfiles',
     logo: shellLogo,
   },
   {
+    id: 'gitCommitGpt',
     name: 'git-commit-gpt',
-    description:
-      "AI-powered Git extension that generates commit messages using OpenAI's GPT models.",
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/git-commit-gpt',
     logo: npmLogo,
   },
   {
+    id: 'nextMswIntegration',
     name: 'next-msw-integration',
-    description:
-      'Next.js 16 + MSW integration demo. Mock Service Worker setup for browser and server environments.',
-    category: 'Template',
+    category: 'template',
     href: 'https://github.com/laststance/next-msw-integration',
     logo: nextLogo,
   },
   {
+    id: 'npmPublishTool',
     name: 'npm-publish-tool',
-    description:
-      'Streamlined tool for publishing npm packages with version management.',
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/npm-publish-tool',
     logo: npmLogo,
   },
   {
+    id: 'nsx',
     name: 'nsx',
-    description:
-      'Personal tech resource logger. Curate and revisit valuable reads.',
-    category: 'Web App',
+    category: 'webApp',
     href: 'https://github.com/laststance/nsx',
     logo: reactLogo,
   },
   {
+    id: 'prettierHuskyLintStagedInstaller',
     name: 'prettier-husky-lint-staged-installer',
-    description:
-      'One command to set up Prettier formatting on staged files at pre-commit.',
-    category: 'NPM Package',
+    category: 'npmPackage',
     href: 'https://github.com/laststance/prettier-husky-lint-staged-installer',
     logo: npmLogo,
   },
   {
+    id: 'reactTypescriptTodomvc2022',
     name: 'React TypeScript TodoMVC 2022',
-    description: 'Modern TodoMVC implementation. Clean code, modern patterns.',
-    category: 'Template',
+    category: 'template',
     href: 'https://github.com/laststance/react-typescript-todomvc-2022',
     logo: reactLogo,
   },
   {
+    id: 'signage',
     name: 'signage',
-    description:
-      'Dark self screen saver app for cooldown brain. Minimal distraction, maximum focus.',
-    category: 'macOS App',
+    category: 'macosApp',
     href: 'https://github.com/laststance/signage',
     logo: macosLogo,
   },
   {
+    id: 'viteRtkQuery',
     name: 'vite-rtk-query',
-    description:
-      'Vite template for React + TypeScript + Redux Toolkit with RTK Query.',
-    category: 'Template',
+    category: 'template',
     href: 'https://github.com/laststance/vite-rtk-query',
     logo: reduxLogo,
   },

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import type React from 'react'
 
 import { cn } from '@/lib/utils'
@@ -27,6 +28,7 @@ export const KBD = ({
   className,
   ...props
 }: KBDProps) => {
+  const t = useTranslations('Kbd')
   return (
     <kbd
       // TODO Refactor clutter tailwindCSS class
@@ -38,7 +40,7 @@ export const KBD = ({
         variant === 'small' && 'min-w-7 px-1.5 py-0.5 text-sm',
         className,
       )}
-      aria-label={`Keyboard key: ${keyName}`}
+      aria-label={t('keyLabel', { keyName })}
       {...props}
     >
       {keyName}

@@ -1,4 +1,5 @@
 import { Popover, Transition } from '@headlessui/react'
+import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
 import { ChevronDownIcon } from '../icons/ChevronDownIcon'
@@ -9,14 +10,16 @@ import { MobileNavItem } from './MobileNavItem'
 export function MobileNavigation(
   props: React.ComponentPropsWithoutRef<typeof Popover>,
 ) {
+  const t = useTranslations('Nav')
+  const common = useTranslations('Common')
   return (
     <Popover {...props}>
       <Popover.Button
-        aria-label="Toggle mobile navigation menu"
+        aria-label={t('toggleMenu')}
         aria-haspopup="menu"
-        className="group flex min-h-11 items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20"
+        className="group flex min-h-11 items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium whitespace-nowrap text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20"
       >
-        Menu
+        {t('menu')}
         <ChevronDownIcon
           className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400"
           aria-hidden="true"
@@ -46,35 +49,35 @@ export function MobileNavigation(
           <Popover.Panel
             focus
             role="menu"
-            aria-label="Mobile navigation menu"
+            aria-label={t('menuLabel')}
             className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800"
           >
             <div className="flex flex-row-reverse items-center justify-between">
               <Popover.Button
-                aria-label="Close menu"
+                aria-label={t('closeMenu')}
                 className="inline-flex size-11 items-center justify-center"
               >
                 <CloseIcon className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
               </Popover.Button>
               <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Navigation
+                {t('navigation')}
               </h2>
             </div>
             <nav className="mt-6">
               <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                <MobileNavItem href="/about">About</MobileNavItem>
-                <MobileNavItem href="/articles">Articles</MobileNavItem>
-                <MobileNavItem href="/projects">Projects</MobileNavItem>
+                <MobileNavItem href="/about">{t('about')}</MobileNavItem>
+                <MobileNavItem href="/articles">{t('articles')}</MobileNavItem>
+                <MobileNavItem href="/projects">{t('projects')}</MobileNavItem>
                 <MobileNavItem
                   href="https://nsx.malloc.tokyo/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="NSX (opens in new tab)"
+                  aria-label={common('opensInNewTab', { label: t('nsx') })}
                 >
-                  NSX
+                  {t('nsx')}
                 </MobileNavItem>
-                <MobileNavItem href="/uses">Uses</MobileNavItem>
-                <MobileNavItem href="/keybinds">Keybinds</MobileNavItem>
+                <MobileNavItem href="/uses">{t('uses')}</MobileNavItem>
+                <MobileNavItem href="/keybinds">{t('keybinds')}</MobileNavItem>
               </ul>
             </nav>
           </Popover.Panel>

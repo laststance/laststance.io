@@ -1,0 +1,29 @@
+import type { NextRequest, NextResponse } from 'next/server'
+import createMiddleware from 'next-intl/middleware'
+
+import { routing } from './i18n/routing'
+
+const handleI18nRouting = createMiddleware(routing)
+
+/**
+ * Picks the locale from Accept-Language and rewrites `/about` to `/en/about` or
+ * `/ja/about` internally, so the browser URL never changes.
+ *
+ * Next runs it for every page and RSC request that {@link config} matches.
+ * Each language is cached under its rewritten path, so no `Vary` header is
+ * needed (Next overwrites one set here anyway).
+ *
+ * @returns next-intl's rewrite, or a redirect for a stray `/ja/...` URL.
+ */
+export default function proxy(request: NextRequest): NextResponse {
+  return handleI18nRouting(request)
+}
+
+export const config = {
+  matcher: [
+    // Skip /api, /_next, /_vercel (Analytics), /monitoring (Sentry tunnel) and dotted files.
+    '/((?!api|_next|_vercel|monitoring|.*\\..*).*)',
+    // Two article slugs contain a dot and still need a locale.
+    '/articles/:path*',
+  ],
+}

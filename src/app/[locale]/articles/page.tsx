@@ -1,4 +1,6 @@
 import { type Metadata } from 'next'
+import { useLocale, useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { type SearchParams } from 'nuqs/server'
 
 import {
@@ -11,29 +13,25 @@ import {
 import { Pagination } from '@/components/Pagination'
 import { SimpleLayout } from '@/components/SimpleLayout'
 import { Box, VStack } from '@/components/ui/primitives'
+import { getPageMetadata } from '@/i18n/pageMetadata'
 import { type ArticleWithSlug, getAllArticles } from '@/lib/articles'
 import { ARTICLES_PER_PAGE } from '@/lib/constants'
 import { formatDate } from '@/lib/formatDate'
 
 import { loadArticlesSearchParams } from './searchParams'
 
-const title = 'Articles'
-export const metadata: Metadata = {
-  title: title,
-  description:
-    'All of my long-form thoughts on JavaScript OSS, new product, and more, collected in chronological order.',
-  openGraph: {
-    title,
-    images: [`/api/og?title=${title}`],
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageMetadata('articles')
 }
 
 function Article({ article }: { article: ArticleWithSlug }) {
+  const locale = useLocale()
+  const t = useTranslations('Common')
   return (
     <article className="reference-grid">
       <Card className="min-w-0">
         <CardTitle href={`/articles/${article.slug}`}>
-          {article.title}
+          <span lang="en">{article.title}</span>
         </CardTitle>
         <CardEyebrow
           as="time"
@@ -41,17 +39,19 @@ function Article({ article }: { article: ArticleWithSlug }) {
           className="md:hidden"
           decorate
         >
-          {formatDate(article.date)}
+          {formatDate(article.date, locale)}
         </CardEyebrow>
-        <CardDescription>{article.description}</CardDescription>
-        <CardCta>Read article</CardCta>
+        <CardDescription>
+          <span lang="en">{article.description}</span>
+        </CardDescription>
+        <CardCta>{t('readArticle')}</CardCta>
       </Card>
       <CardEyebrow
         as="time"
         dateTime={article.date}
         className="mt-1 hidden md:block"
       >
-        {formatDate(article.date)}
+        {formatDate(article.date, locale)}
       </CardEyebrow>
     </article>
   )
@@ -67,6 +67,7 @@ export default async function ArticlesIndex({
 }: ArticlesIndexProps) {
   const { page: requestedPage } = await loadArticlesSearchParams(searchParams)
   const articles = await getAllArticles()
+  const t = await getTranslations('pages.articles')
 
   // Clamp the requested page to the valid range so /articles?page=999 still
   // renders the last available page instead of an empty list or 404.
@@ -80,10 +81,7 @@ export default async function ArticlesIndex({
   )
 
   return (
-    <SimpleLayout
-      title="Articles"
-      intro="Releases, updates, and thoughts on web application development, with a focus on React, CSS, JavaScript, TypeScript, and Node.js. In chronological order."
-    >
+    <SimpleLayout title={t('meta.title')} intro={t('intro')}>
       <Box className="content-column">
         <VStack gap={12}>
           {paginatedArticles.map((article) => (

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 
@@ -7,6 +8,7 @@ import { MoonIcon } from '../icons/MoonIcon'
 import { SunIcon } from '../icons/SunIcon'
 
 export function ThemeToggle() {
+  const t = useTranslations('ThemeToggle')
   const { resolvedTheme, setTheme } = useTheme()
   const otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
   const [mounted, setMounted] = useState(false)
@@ -29,7 +31,11 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label={mounted ? `Switch to ${otherTheme} theme` : 'Toggle theme'}
+      aria-label={
+        mounted
+          ? t('switchTo', { theme: t(`themes.${otherTheme}`) })
+          : t('toggle')
+      }
       className="group min-h-11 min-w-11 rounded-full bg-white/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
       onClick={handleToggle}
       onKeyDown={handleKeyDown}

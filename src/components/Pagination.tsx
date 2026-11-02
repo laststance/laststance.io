@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/lib/utils'
 
@@ -25,6 +26,7 @@ export function Pagination({
   totalPages,
   basePath,
 }: PaginationProps) {
+  const t = useTranslations('Pagination')
   // Only one page total → nothing to navigate, skip rendering.
   if (totalPages <= 1) return null
 
@@ -36,20 +38,23 @@ export function Pagination({
 
   return (
     <nav
-      aria-label="Pagination"
+      aria-label={t('label')}
       className="mt-12 grid w-full grid-cols-[auto_1fr_auto] items-center gap-1 sm:flex sm:justify-center sm:gap-2"
     >
       <PaginationItem
         href={hrefForPage(basePath, prevPage)}
         disabled={isFirstPage}
-        ariaLabel="Go to previous page"
+        ariaLabel={t('previousLabel')}
         rel="prev"
       >
         <span aria-hidden="true">←</span>
-        <span className="sr-only sm:not-sr-only sm:ml-1">Previous</span>
+        <span className="sr-only sm:not-sr-only sm:ml-1">{t('previous')}</span>
       </PaginationItem>
       <span className="text-center text-sm text-zinc-500 tabular-nums sm:hidden dark:text-zinc-400">
-        Page {currentPage} of {totalPages}
+        {t('pageOf', {
+          current: String(currentPage),
+          total: String(totalPages),
+        })}
       </span>
       <div className="hidden items-center gap-1 sm:flex sm:gap-2">
         {pages.map((entry, index) =>
@@ -66,7 +71,7 @@ export function Pagination({
               key={entry}
               href={hrefForPage(basePath, entry)}
               current={entry === currentPage}
-              ariaLabel={`Go to page ${entry}`}
+              ariaLabel={t('goToPage', { page: String(entry) })}
             >
               {entry}
             </PaginationItem>
@@ -76,10 +81,10 @@ export function Pagination({
       <PaginationItem
         href={hrefForPage(basePath, nextPage)}
         disabled={isLastPage}
-        ariaLabel="Go to next page"
+        ariaLabel={t('nextLabel')}
         rel="next"
       >
-        <span className="sr-only sm:not-sr-only sm:mr-1">Next</span>
+        <span className="sr-only sm:not-sr-only sm:mr-1">{t('next')}</span>
         <span aria-hidden="true">→</span>
       </PaginationItem>
     </nav>
