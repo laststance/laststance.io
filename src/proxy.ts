@@ -9,8 +9,7 @@ const handleI18nRouting = createMiddleware(routing)
  * Picks the locale from Accept-Language and rewrites `/about` to `/en/about` or
  * `/ja/about` internally, so the browser URL never changes.
  *
- * Next runs it for every page and RSC request that {@link config} matches. It
- * lives next to `app/`, which is why the repo-root `proxy.ts` never runs.
+ * Next runs it for every page and RSC request that {@link config} matches.
  * `Vary: Accept-Language` tells caches that one URL has a copy per language.
  *
  * @returns next-intl's rewrite, or a redirect for a stray `/ja/...` URL.

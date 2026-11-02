@@ -107,7 +107,6 @@ export default defineConfig([
       'browser-security/no-insecure-redirects': 'error',
     },
   },
-  // i18n: one way to read copy and one way to read the pathname.
   {
     files: ['src/**/*.{ts,tsx}'],
     ignores: ['src/i18n/**', '**/*.test.{ts,tsx}'],

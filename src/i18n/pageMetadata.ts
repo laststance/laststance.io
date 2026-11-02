@@ -16,8 +16,7 @@ export type PageWithMeta = {
 /**
  * Localized `<title>` and description for one page, with an English OG image.
  *
- * Each page's `generateMetadata` calls it, so every page localizes its metadata
- * the same way. The OG image title stays English because `/api/og` ships a font
+ * Each page's `generateMetadata` calls it. The OG image title stays English because `/api/og` ships a font
  * without Japanese glyphs; `openGraph.title` follows the visitor's locale.
  *
  * @param page - Key under `pages` in the catalog, e.g. `'uses'`.

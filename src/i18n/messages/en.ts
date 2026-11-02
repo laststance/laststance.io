@@ -4,7 +4,7 @@
  *
  * Top-level `pages` holds server-only page prose that the `[locale]` layout
  * drops before `NextIntlClientProvider`. Every other namespace also reaches
- * Client Components. English values are byte-identical to the pre-i18n JSX.
+ * Client Components.
  */
 const en = {
   Metadata: {
@@ -323,9 +323,7 @@ const en = {
         description:
           'What laststance.io and the personal tools published under Laststance.io collect, and what they do with it.',
       },
-      // Empty in English; the page renders the notice only when a translation sets it.
       translationNotice: '',
-      // {date} is formatDate(PRIVACY_UPDATED_AT, locale).
       intro:
         'Laststance.io is run by one person, Ryota Murakami. This page says what this website and my personal tools collect. Last updated: {date}.',
       website: {
@@ -355,7 +353,6 @@ const en = {
       intro:
         'My Raycast, Cursor, WebStorm, and Chrome shortcuts. I keep this page open as a cheat sheet. (macOS US keyboard layout)',
       tableLabel: '{label} shortcuts',
-      // Keys are the URL anchors (#move-cursor) from before localization, so they never translate.
       groups: {
         raycast: 'Raycast',
         chrome: 'Chrome',

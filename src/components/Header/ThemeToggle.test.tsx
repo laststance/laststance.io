@@ -12,7 +12,6 @@ vi.mock('next-themes', () => ({
   useTheme: vi.fn(),
 }))
 
-/** Renders the toggle inside the same next-intl provider the layout gives it. */
 function renderInLocale(locale: 'en' | 'ja'): void {
   render(
     <NextIntlClientProvider locale={locale} messages={catalogs[locale]}>

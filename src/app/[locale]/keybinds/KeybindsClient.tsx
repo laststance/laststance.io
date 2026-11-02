@@ -59,11 +59,7 @@ function KeybindTable({
 }
 
 /**
- * Renders the keybind cheat sheet: an `<h2>` per group and an `<h3>` per
- * subgroup, each heading a self-link to `#${id}`.
- *
- * A Server Component despite its name. The keybinds page renders it with
- * {@link KEYBIND_GROUPS}; headings and action labels come from the catalog while
+ * The keybinds page renders it with {@link KEYBIND_GROUPS}; headings and action labels come from the catalog while
  * the anchor ids stay the same in every language.
  *
  * @example

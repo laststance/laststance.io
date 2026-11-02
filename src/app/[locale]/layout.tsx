@@ -62,8 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
  * Root layout: sits under `[locale]`, which makes `locale` a root param that
  * {@link getRequestConfig} reads through `next/root-params`.
  *
- * Props are typed by hand rather than with `LayoutProps`, because CI runs bare
- * `tsc` without `next typegen`. `pages.*` prose is dropped from the client
+ * `pages.*` prose is dropped from the client
  * messages so it never enters the RSC payload.
  */
 export default async function LocaleLayout({

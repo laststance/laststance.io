@@ -29,10 +29,8 @@ export type ProjectStatus =
 
 type ProjectMessages = Messages['pages']['projects']
 
-/** Catalog key of a project's description (`pages.projects.items.skillsDesktop`). */
 export type ProjectId = keyof ProjectMessages['items']
 
-/** Catalog key of a category label (`pages.projects.categories.desktopApp`). */
 export type ProjectCategory = keyof ProjectMessages['categories']
 
 /**

@@ -8,7 +8,6 @@ import en from '@/i18n/messages/en'
 import { KEYBIND_GROUPS } from './keybinds'
 import KeybindsClient from './KeybindsClient'
 
-/** Renders the cheat sheet with the catalog the visitor's locale would get. */
 function renderSheet(locale: 'en' | 'ja'): HTMLElement {
   return render(
     <NextIntlClientProvider locale={locale} messages={catalogs[locale]}>

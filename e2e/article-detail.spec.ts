@@ -1,8 +1,5 @@
 import { expect, test } from '@playwright/test'
 
-// Hard-coded fixtures per DAMP — chosen because the article exists in the
-// statically generated route table (src/app/[locale]/articles/Laststance-Recap-November-2025)
-// and its content is stable enough to assert against.
 const FIXTURE_SLUG = 'Laststance-Recap-November-2025'
 const FIXTURE_TITLE = 'Laststance Recap: November 2025'
 const FIXTURE_BODY_SNIPPET =

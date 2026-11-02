@@ -3,10 +3,8 @@ import type { Locale } from 'next-intl'
 /**
  * Formats a calendar date (`YYYY-MM-DD`) in the visitor's language.
  *
- * The site's one date formatter: {@link ArticleLayout} and the article cards on
- * the home and /articles pages call it with `useLocale()`. The locale is an
- * argument rather than read from context so the function stays pure. Dates are
- * pinned to UTC so the build machine's timezone never moves one to the day before.
+ * {@link ArticleLayout} and the article cards on the home and /articles pages
+ * call it with `useLocale()`. Dates are pinned to UTC so the build machine's timezone never moves one to the day before.
  *
  * @param dateString - ISO calendar date such as `'2024-01-01'`.
  * @param locale - Locale the visitor was served.

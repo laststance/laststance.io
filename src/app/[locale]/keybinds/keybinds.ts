@@ -5,29 +5,22 @@ type KeybindMessages = Messages['pages']['keybinds']
 /**
  * Section id that is both the URL anchor (`/keybinds#move-cursor`) and the
  * catalog key of its heading (`pages.keybinds.groups['move-cursor']`).
- *
- * Values equal what the pre-i18n page derived from the English heading, so links
- * shared before localization still land on the right section in every locale.
  */
 export type KeybindGroupId = keyof KeybindMessages['groups']
 
-/** Catalog key of one action label (`pages.keybinds.actions.cursorRight`). */
 export type KeybindActionId = keyof KeybindMessages['actions']
 
-/** One table row: a translated action label and its keys, which never translate. */
 export type KeybindRow = {
   readonly action: KeybindActionId
   /** Space-separated keys, rendered as one `<KBD>` each, e.g. `'^ CMD Space'`. */
   readonly keys: string
 }
 
-/** A heading with its shortcut table. */
 export type KeybindSection = {
   readonly id: KeybindGroupId
   readonly rows: readonly KeybindRow[]
 }
 
-/** A top-level `<h2>` section; its subgroups render as `<h3>` sections below the table. */
 export type KeybindGroup = KeybindSection & {
   readonly subgroups: readonly KeybindSection[]
 }

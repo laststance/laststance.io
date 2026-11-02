@@ -4,12 +4,8 @@ import { describe, expect, test } from 'vitest'
 import en from './en'
 import ja from './ja'
 
-// Missing or extra keys are already a tsc error (`ja.ts` satisfies CatalogShape).
-// These tests check what tsc cannot see inside the strings.
-
 const catalogs = { en, ja }
 
-/** Flattens a catalog into `['Nav.about', 'About']` pairs. */
 function leaves(node: object, prefix = ''): Array<[string, string]> {
   return Object.entries(node).flatMap(([key, value]) =>
     typeof value === 'string'

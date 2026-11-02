@@ -6,8 +6,7 @@ import { notFound } from 'next/navigation'
  *
  * Next renders `[locale]/not-found.tsx` only for a `notFound()` thrown inside a
  * segment, so without this page an unknown path would skip the localized 404.
- * It throws before streaming starts, so the status is a real 404. Static routes,
- * including all article folders, always win over it.
+ * It throws before streaming starts, so the status is a real 404.
  */
 export default function CatchAllPage(): never {
   notFound()
