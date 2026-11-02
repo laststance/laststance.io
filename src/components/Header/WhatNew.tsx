@@ -43,7 +43,11 @@ const WhatNew: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" aria-label={t('openLabel')} className="h-11">
+        <Button
+          variant="ghost"
+          aria-label={t('openLabel')}
+          className="h-11 whitespace-nowrap"
+        >
           {t('trigger')}
         </Button>
       </DialogTrigger>

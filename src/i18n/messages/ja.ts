@@ -274,7 +274,7 @@ const ja = {
         },
         expressKeyboardPlatform: {
           title: 'eXpress Keyboard Platform',
-          body: '外付けの Apple Magic Keyboard と Apple Magic Trackpad を、MacBook Pro と同じような配置で並べるためのガジェットです。これを使わずにキーボードの手前に Trackpad をただ置くだけだと、高さの差が大きすぎてキーボードをうまく打てません。このガジェットのおかげで、MacBook Pro のクラムシェルモードと通常のノートパソコンとしての使い方をスムーズに切り替えられます。',
+          body: '外付けの Apple Magic Keyboard と Apple Magic Trackpad を、MacBook Pro と同じような配置で並べるためのガジェットです。これを使わずにキーボードの手前にトラックパッドをただ置くだけだと、高さの差が大きすぎてキーボードをうまく打てません。このガジェットのおかげで、MacBook Pro のクラムシェルモードと通常のノートパソコンとしての使い方をスムーズに切り替えられます。',
         },
         lgUltragear: {
           title: 'LG 24 UltraGear FHD IPS 1ms 144Hz HDR モニター',
