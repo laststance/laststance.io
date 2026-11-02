@@ -46,7 +46,7 @@ const WhatNew: React.FC = () => {
         <Button
           variant="ghost"
           aria-label={t('openLabel')}
-          className="h-11 whitespace-nowrap"
+          className="h-11 break-keep"
         >
           {t('trigger')}
         </Button>

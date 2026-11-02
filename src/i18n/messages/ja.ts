@@ -48,7 +48,8 @@ const ja = {
   },
 
   WhatsNew: {
-    trigger: '更新履歴',
+    // \u200b lets 更新履歴 wrap between its two words on 320px phones, as What's New? does in English.
+    trigger: '更新\u200b履歴',
     openLabel: '更新履歴ダイアログを開く',
     title: '更新履歴',
     description: 'このサイトの最新の更新内容と変更点',
