@@ -32,6 +32,7 @@ const pages = [
 const missing = '/articles/this-article-does-not-exist'
 const untouched = ['/feed.xml', '/sitemap.xml', '/api/og?title=Laststance.io']
 const kana = /[぀-ヿ]/
+const japaneseDate = /\d{4}年\d{1,2}月\d{1,2}日/
 
 const results = []
 const record = (name, ok, detail = '') => results.push({ name, ok, detail })
@@ -53,16 +54,21 @@ for (const [label, header] of Object.entries(languages)) {
     const { response, body } = await get(path, header)
     const lang = body.match(/<html[^>]*\slang="([^"]+)"/)?.[1]
     const want = expectedLang[label]
-    const hasKana = kana.test(body.replace(/<script[\s\S]*?<\/script>/g, ''))
+    // Header and footer are already Japanese, so only the page's own <main> proves its copy was translated.
+    const main = (body.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '')
+      .replace(/<script[\s\S]*?<\/script>/g, '')
+      .replace(/<[^>]+>/g, ' ')
+    const isArticle = /^\/articles\/[^?]+$/.test(path)
+    const translated = isArticle ? japaneseDate.test(main) : kana.test(main)
     const ok =
       response.status === 200 &&
       lang === want &&
-      (want !== 'ja' || hasKana) &&
+      (want !== 'ja' || translated) &&
       new URL(response.url).pathname === new URL(`${baseUrl}${path}`).pathname
     record(
       `${label.padEnd(5)} ${path}`,
       ok,
-      `status=${response.status} lang=${lang} kana=${hasKana}`,
+      `status=${response.status} lang=${lang} mainJa=${translated}`,
     )
   }
   const notFound = await get(missing, header)
