@@ -1,3 +1,5 @@
+import { useLocale } from 'next-intl'
+
 import { Container } from '@/components/Container'
 import { Prose } from '@/components/Prose'
 import { Text } from '@/components/ui/primitives'
@@ -11,6 +13,7 @@ export function ArticleLayout({
   article: ArticleWithSlug
   children: React.ReactNode
 }) {
+  const locale = useLocale()
   return (
     <Container className="page-start">
       <div className="xl:relative">
@@ -25,7 +28,7 @@ export function ArticleLayout({
                 className="absolute bottom-full mb-6 flex items-center text-sm text-zinc-500 dark:text-zinc-400"
               >
                 <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
-                <span className="ml-3">{formatDate(article.date)}</span>
+                <span className="ml-3">{formatDate(article.date, locale)}</span>
               </time>
             </header>
             <Prose className="page-content" data-mdx-content>

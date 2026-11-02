@@ -1,4 +1,5 @@
 import { type Metadata } from 'next'
+import { useLocale } from 'next-intl'
 import { type SearchParams } from 'nuqs/server'
 
 import {
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
 }
 
 function Article({ article }: { article: ArticleWithSlug }) {
+  const locale = useLocale()
   return (
     <article className="reference-grid">
       <Card className="min-w-0">
@@ -41,7 +43,7 @@ function Article({ article }: { article: ArticleWithSlug }) {
           className="md:hidden"
           decorate
         >
-          {formatDate(article.date)}
+          {formatDate(article.date, locale)}
         </CardEyebrow>
         <CardDescription>{article.description}</CardDescription>
         <CardCta>Read article</CardCta>
@@ -51,7 +53,7 @@ function Article({ article }: { article: ArticleWithSlug }) {
         dateTime={article.date}
         className="mt-1 hidden md:block"
       >
-        {formatDate(article.date)}
+        {formatDate(article.date, locale)}
       </CardEyebrow>
     </article>
   )
