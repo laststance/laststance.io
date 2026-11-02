@@ -1,34 +1,30 @@
+import { useTranslations } from 'next-intl'
+
 import { KBD } from '@/components/KBD'
 import { Text } from '@/components/ui/primitives'
 
-import type { KeybindsList } from './page'
-
-/**
- * Keeps section links stable for shared and saved shortcut URLs.
- * Called by the category headings when the keybind table renders.
- * @example
- * createAnchorId('Move Cursor') // 'move-cursor'
- */
-const createAnchorId = (text: string): string =>
-  text.toLowerCase().replace(/\s+/g, '-')
+import type { KeybindGroup, KeybindRow } from './keybinds'
 
 /**
  * Shows an action and its keys without forcing the page wider on small screens.
  * Called by {@link KeybindTable} for each shortcut.
  * @example
- * renderKeybindRow('Copy', 'CMD C')
+ * renderKeybindRow({ action: 'copy', keys: 'CMD C' }, 'Copy')
  */
-const renderKeybindRow = (action: string, shortcut: string) => (
-  <tr key={action} className="border-b border-zinc-200 dark:border-zinc-800">
+const renderKeybindRow = (row: KeybindRow, label: string) => (
+  <tr
+    key={row.action}
+    className="border-b border-zinc-200 dark:border-zinc-800"
+  >
     <th
       scope="row"
       className="w-3/5 py-3 pr-4 text-left align-top text-sm leading-6 font-normal wrap-anywhere text-zinc-700 sm:text-base dark:text-zinc-300"
     >
-      {action}
+      {label}
     </th>
     <td className="py-3 align-top">
       <div className="flex flex-wrap gap-1.5">
-        {shortcut.split(' ').map((key, index) => (
+        {row.keys.split(' ').map((key, index) => (
           <KBD key={index} keyName={key} variant="small" />
         ))}
       </div>
@@ -40,83 +36,88 @@ const renderKeybindRow = (action: string, shortcut: string) => (
  * Gives each keybind group a named table with a fixed, wrapping column layout.
  * Used for both top-level and Editor shortcut groups.
  * @example
- * <KeybindTable label="Chrome" entries={{ 'Duplicate tab': 'CMD D' }} />
+ * <KeybindTable label="Chrome" rows={[{ action: 'duplicateTab', keys: 'CMD D' }]} />
  */
 function KeybindTable({
   label,
-  entries,
+  rows,
 }: {
   label: string
-  entries: Record<string, string>
+  rows: readonly KeybindRow[]
 }) {
+  const t = useTranslations('pages.keybinds')
   return (
     <table
-      aria-label={`${label} shortcuts`}
+      aria-label={t('tableLabel', { label })}
       className="w-full table-fixed border-collapse"
     >
       <tbody>
-        {Object.entries(entries).map(([action, shortcut]) =>
-          renderKeybindRow(action, shortcut),
-        )}
+        {rows.map((row) => renderKeybindRow(row, t(`actions.${row.action}`)))}
       </tbody>
     </table>
   )
 }
 
+/**
+ * Renders the keybind cheat sheet: an `<h2>` per group and an `<h3>` per
+ * subgroup, each heading a self-link to `#${id}`.
+ *
+ * A Server Component despite its name. The keybinds page renders it with
+ * {@link KEYBIND_GROUPS}; headings and action labels come from the catalog while
+ * the anchor ids stay the same in every language.
+ *
+ * @example
+ * ```tsx
+ * <KeybindsClient groups={KEYBIND_GROUPS} />
+ * ```
+ */
 export default function KeybindsClient({
-  keybinds,
+  groups,
 }: {
-  keybinds: KeybindsList
+  groups: readonly KeybindGroup[]
 }) {
+  const t = useTranslations('pages.keybinds')
   return (
     <div className="content-column section-stack">
-      {Object.entries(keybinds).map(([category, entries]) => {
-        const flatEntries = Object.fromEntries(
-          Object.entries(entries).filter(
-            (entry): entry is [string, string] => typeof entry[1] === 'string',
-          ),
-        )
+      {groups.map((group) => {
+        const label = t(`groups.${group.id}`)
         return (
-          <section key={category} aria-labelledby={createAnchorId(category)}>
+          <section key={group.id} aria-labelledby={group.id}>
             <Text
               as="h2"
               variant="h2"
-              id={createAnchorId(category)}
+              id={group.id}
               className="mb-6 scroll-mt-8"
             >
               <a
-                href={`#${createAnchorId(category)}`}
+                href={`#${group.id}`}
                 className="hover:text-teal-700 dark:hover:text-teal-400"
               >
-                {category}
+                {label}
               </a>
             </Text>
-            {Object.keys(flatEntries).length > 0 && (
-              <KeybindTable label={category} entries={flatEntries} />
+            {group.rows.length > 0 && (
+              <KeybindTable label={label} rows={group.rows} />
             )}
             <div className="space-y-8">
-              {Object.entries(entries).map(([subcategory, value]) => {
-                // Flat entries already appear in the category table above.
-                if (typeof value === 'string') return null
+              {group.subgroups.map((subgroup) => {
+                const subgroupLabel = t(`groups.${subgroup.id}`)
                 return (
-                  <section
-                    key={subcategory}
-                    aria-labelledby={createAnchorId(subcategory)}
-                  >
+                  <section key={subgroup.id} aria-labelledby={subgroup.id}>
                     <Text
                       as="h3"
                       variant="h3"
-                      id={createAnchorId(subcategory)}
+                      id={subgroup.id}
                       className="mb-3 scroll-mt-8"
                     >
                       <a
-                        href={`#${createAnchorId(subcategory)}`}
+                        href={`#${subgroup.id}`}
                         className="hover:text-teal-700 dark:hover:text-teal-400"
                       >
-                        {subcategory}
+                        {subgroupLabel}
                       </a>
                     </Text>
-                    <KeybindTable label={subcategory} entries={value} />
+                    <KeybindTable label={subgroupLabel} rows={subgroup.rows} />
                   </section>
                 )
               })}

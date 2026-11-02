@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server'
+
 import { Container } from '@/components/Container'
 import { HomeColumns } from '@/components/HomeColumns'
 import {
@@ -15,49 +17,49 @@ import { SocialLink } from './page/SocialLink'
 
 export default async function Home() {
   const articles = (await getAllArticles()).slice(0, 4)
+  const t = await getTranslations('pages.home')
+  const common = await getTranslations('Common')
 
   return (
     <>
       <Container className="mt-9">
         <Box maxW="2xl">
           <VStack gap={6}>
-            <Text variant="h1">
-              Go Straightforward Web Application Development.
-            </Text>
+            <Text variant="h1">{t('tagline')}</Text>
             <Text variant="body" color="muted">
-              I'm{' '}
-              <a
-                href="https://ryota-murakami.github.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ryota Murakami's personal website (opens in new tab)"
-                className="text-teal-500 hover:text-teal-600 dark:hover:text-teal-400"
-              >
-                Ryota Murakami
-              </a>{' '}
-              who lives in Tokyo. Currently working as a freelance
-              React/Node/TypeScript developer. Here is my independent OSS
-              organization.
+              {t.rich('bio', {
+                link: (chunks) => (
+                  <a
+                    href="https://ryota-murakami.github.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={common('personalSiteLabel')}
+                    className="text-teal-500 hover:text-teal-600 dark:hover:text-teal-400"
+                  >
+                    {chunks}
+                  </a>
+                ),
+              })}
             </Text>
             <HStack gap={2}>
               <SocialLink
                 href="https://twitter.com/malloc007"
-                aria-label="Follow on Twitter"
+                aria-label={t('followOn.twitter')}
                 icon={TwitterIcon}
               />
               <SocialLink
                 href="https://www.instagram.com/ryota_murakam1/"
-                aria-label="Follow on Instagram"
+                aria-label={t('followOn.instagram')}
                 icon={InstagramIcon}
               />
               <SocialLink
                 href="https://github.com/ryota-murakami"
-                aria-label="Follow on GitHub"
+                aria-label={t('followOn.github')}
                 icon={GitHubIcon}
               />
               <SocialLink
                 href="https://www.linkedin.com/in/ryota-murakami-ba9206164/"
-                aria-label="Follow on LinkedIn"
+                aria-label={t('followOn.linkedin')}
                 icon={LinkedInIcon}
               />
             </HStack>

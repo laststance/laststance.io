@@ -55,10 +55,9 @@ type Story = StoryObj<typeof ArchiveProjectListItem>
  */
 export const Default: Story = {
   args: {
+    id: 'cleanUrl',
     name: 'Clean URL',
-    description:
-      'Remove tracking parameters from URLs automatically, protecting your privacy while browsing.',
-    category: 'Chrome Extension',
+    category: 'chromeExtension',
     href: 'https://chromewebstore.google.com/detail/clean-url/konddpmmdjghlicegcfdjehalocbkmpl',
     logo: chromeLogo,
   },
@@ -82,8 +81,8 @@ export const FullList: Story = {
         {ARCHIVE_PROJECTS.map((project) => (
           <ArchiveProjectListItem
             key={project.name}
+            id={project.id}
             name={project.name}
-            description={project.description}
             category={project.category}
             href={project.href}
             logo={project.logo}

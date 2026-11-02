@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import image1 from '@/images/photos/image-1.jpg'
 import image2 from '@/images/photos/image-2.jpg'
@@ -8,6 +9,7 @@ import image4 from '@/images/photos/image-4.jpg'
 import image5 from '@/images/photos/image-5.jpg'
 
 export function Photos() {
+  const t = useTranslations('pages.home.photos')
   const rotations = [
     'rotate-2',
     '-rotate-2',
@@ -17,11 +19,11 @@ export function Photos() {
   ]
 
   const imageData = [
-    { src: image1, alt: 'Personal photo showcasing development work' },
-    { src: image2, alt: 'Creative coding project snapshot' },
-    { src: image3, alt: 'Technology workspace environment' },
-    { src: image4, alt: 'Software engineering collaboration' },
-    { src: image5, alt: 'Programming achievement highlight' },
+    { src: image1, alt: t('photo1') },
+    { src: image2, alt: t('photo2') },
+    { src: image3, alt: t('photo3') },
+    { src: image4, alt: t('photo4') },
+    { src: image5, alt: t('photo5') },
   ]
 
   return (

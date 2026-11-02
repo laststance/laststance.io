@@ -13,20 +13,24 @@ type FeaturedProjectListItemProps = FeaturedProject
  * <FeaturedProjectListItem {...project} />
  */
 export function FeaturedProjectListItem({
+  id,
   name,
-  description,
   category,
   href,
   logo,
 }: FeaturedProjectListItemProps) {
-  const t = useTranslations('Common')
+  const common = useTranslations('Common')
+  const t = useTranslations('pages.projects')
+  const categoryLabel = t(`categories.${category}`)
   return (
     <article className="border-b border-zinc-200 dark:border-zinc-800">
       <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={t('opensInNewTab', { label: `${name} — ${category}` })}
+        aria-label={common('opensInNewTab', {
+          label: `${name} — ${categoryLabel}`,
+        })}
         className="group grid grid-cols-[2rem_minmax(0,1fr)_1rem] items-start gap-4 rounded-sm py-8 sm:gap-6 sm:py-10"
       >
         <Image src={logo} alt="" className="mt-1 h-8 w-8" unoptimized />
@@ -35,10 +39,10 @@ export function FeaturedProjectListItem({
             {name}
           </h2>
           <p className="mt-2 max-w-2xl text-base leading-relaxed text-zinc-600 dark:text-zinc-300">
-            {description}
+            {t(`items.${id}`)}
           </p>
           <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400">
-            {category}
+            {categoryLabel}
           </p>
         </div>
         <span
