@@ -68,6 +68,21 @@ The script automatically:
 - Creates a URL-friendly folder name based on the title
 - Sets up the proper article layout and metadata
 
+## English and Japanese
+
+Visitors whose browser prefers Japanese get the site in Japanese. Everyone else gets English. The URLs are the same for both languages.
+
+- `src/proxy.ts` reads the `Accept-Language` header on every request and rewrites `/about` to `/en/about` or `/ja/about`. The browser URL does not change, and no cookie remembers the choice.
+- All UI copy lives in `src/i18n/messages/en.ts`. `src/i18n/messages/ja.ts` has the same keys with Japanese text. Copy under `pages` is read only by Server Components and never reaches the browser. Every other namespace also reaches Client Components.
+- Article bodies, article titles, and OG image text stay English.
+
+To add a string:
+
+1. Add the English text to `en.ts`. Write a link as `<link>…</link>` and a line break as `<br></br>`.
+2. Add the Japanese text under the same key in `ja.ts`. `pnpm typecheck` fails until the key exists.
+3. Read the string with `useTranslations('Namespace')` in a Server or Client Component, or with `await getTranslations('Namespace')` in an async component. Use `t.rich` for a message with tags, and pass `proseTags` from `src/i18n/proseTags.tsx` for `<br></br>`.
+4. Run `pnpm test src/i18n`. The tests fail if the Japanese text drops a `{placeholder}` or a tag, or if a message has an ICU syntax error.
+
 ## Design Language
 
 The visual system — color tokens, typography scale, spacing grid, motion patterns, and editorial voice — is documented in [DESIGN.md](./DESIGN.md). It surfaces decisions already baked into `src/lib/design-tokens.ts` and the component primitives in `src/components/ui/primitives/`.
