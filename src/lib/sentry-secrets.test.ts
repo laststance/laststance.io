@@ -113,6 +113,9 @@ test('missing local references stop the command before it can fall back to unrel
   expect(result.stderr).toContain(
     'Configure .env.sentry.1password with op:// references',
   )
+  expect(result.stderr).toContain(
+    'To build without uploading source maps (for example in a git worktree), run `SENTRY_AUTH_TOKEN= pnpm build`.',
+  )
 })
 
 test('a vault failure stops the command and preserves the failure status', () => {
