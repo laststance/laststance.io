@@ -181,40 +181,67 @@ test.describe('Japanese browser', () => {
     expect(problems).toEqual([])
   })
 
-  test('keeps the Japanese menu and 更新履歴 header buttons on one line on a 375px phone', async ({
+  test('breaks the Japanese menu and 更新履歴 header labels only between words on 320px and 375px phones', async ({
     page,
   }) => {
     // Arrange
-    await page.setViewportSize({ width: 375, height: 667 })
-    // Japanese can break between any two characters, so a label without nowrap splits mid-word.
-    const textLineCount = (element: Element): number => {
+    // Japanese can break between any two characters, so the visible lines are compared as text.
+    const visibleLines = (element: Element): string[] => {
       const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
-      const lineTops = new Set<number>()
+      const lines = new Map<number, string>()
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-        if (!node.textContent?.trim()) continue
-        const range = document.createRange()
-        range.selectNodeContents(node)
-        for (const rect of range.getClientRects()) {
-          lineTops.add(Math.round(rect.top))
+        const text = node.textContent ?? ''
+        for (let index = 0; index < text.length; index++) {
+          if (!text[index].trim() || text[index] === '\u200b') continue
+          const range = document.createRange()
+          range.setStart(node, index)
+          range.setEnd(node, index + 1)
+          const top = Math.round(range.getBoundingClientRect().top)
+          lines.set(top, (lines.get(top) ?? '') + text[index])
         }
       }
-      return lineTops.size
+      return [...lines.entries()]
+        .sort(([a], [b]) => a - b)
+        .map(([, line]) => line)
     }
+
+    for (const width of [320, 375]) {
+      // Act
+      await page.setViewportSize({ width, height: 667 })
+      await page.goto('/about')
+      const menuButton = page.getByRole('button', {
+        name: 'ナビゲーションメニューを開閉',
+      })
+      const whatsNewButton = page.getByRole('button', {
+        name: '更新履歴ダイアログを開く',
+      })
+      await expect(menuButton).toBeVisible()
+      await expect(whatsNewButton).toBeVisible()
+
+      // Assert
+      expect(await menuButton.evaluate(visibleLines)).toEqual(['メニュー'])
+      expect([['更新履歴'], ['更新', '履歴']]).toContainEqual(
+        await whatsNewButton.evaluate(visibleLines),
+      )
+    }
+  })
+
+  test('keeps the theme toggle fully on screen in Japanese on a 320px phone', async ({
+    page,
+  }) => {
+    // Arrange
+    await page.setViewportSize({ width: 320, height: 568 })
 
     // Act
     await page.goto('/about')
-    const menuButton = page.getByRole('button', {
-      name: 'ナビゲーションメニューを開閉',
-    })
-    const whatsNewButton = page.getByRole('button', {
-      name: '更新履歴ダイアログを開く',
-    })
+    const themeToggle = page.getByRole('button', { name: /テーマ/ })
+    await expect(themeToggle).toBeVisible()
+    const box = await themeToggle.boundingBox()
 
     // Assert
-    await expect(menuButton).toBeVisible()
-    await expect(whatsNewButton).toBeVisible()
-    expect(await menuButton.evaluate(textLineCount)).toBe(1)
-    expect(await whatsNewButton.evaluate(textLineCount)).toBe(1)
+    expect(box).not.toBeNull()
+    expect(box!.x).toBeGreaterThanOrEqual(0)
+    expect(box!.x + box!.width).toBeLessThanOrEqual(320)
   })
 })
 
@@ -234,5 +261,23 @@ test.describe('Browser in a language other than Japanese', () => {
       page.getByRole('heading', { level: 1, name: 'Uses' }),
     ).toBeVisible()
     expect(problems).toEqual([])
+  })
+
+  test('keeps the theme toggle fully on screen in English on a 320px phone', async ({
+    page,
+  }) => {
+    // Arrange
+    await page.setViewportSize({ width: 320, height: 568 })
+
+    // Act
+    await page.goto('/about')
+    const themeToggle = page.getByRole('button', { name: /theme/i })
+    await expect(themeToggle).toBeVisible()
+    const box = await themeToggle.boundingBox()
+
+    // Assert
+    expect(box).not.toBeNull()
+    expect(box!.x).toBeGreaterThanOrEqual(0)
+    expect(box!.x + box!.width).toBeLessThanOrEqual(320)
   })
 })
