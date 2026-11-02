@@ -2,13 +2,16 @@ import withBundleAnalyzerOriginal from '@next/bundle-analyzer'
 import nextMDX from '@next/mdx'
 import { withSentryConfig } from '@sentry/nextjs/config'
 import { codeInspectorPlugin } from 'code-inspector-plugin'
+import createNextIntlPlugin from 'next-intl/plugin'
 
 const withBundleAnalyzer = withBundleAnalyzerOriginal({
   enabled: process.env.ANALYZE === 'true',
 })
 
+const withNextIntl = createNextIntlPlugin()
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withNextIntl({
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -23,7 +26,7 @@ const nextConfig = {
     }),
   },
   productionBrowserSourceMaps: true,
-}
+})
 
 const withMDX = nextMDX({
   extension: /\.mdx?$/,
