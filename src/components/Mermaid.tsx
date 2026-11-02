@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import { useEffect, useId, useRef, useState } from 'react'
 
@@ -29,6 +30,7 @@ interface MermaidProps {
  * <Mermaid chart={`sequenceDiagram\n  A->>B: hi`} />
  */
 export function Mermaid({ chart }: MermaidProps) {
+  const t = useTranslations('Mermaid')
   // useId() returns values like ":r0:" which are not valid HTML id characters
   // for mermaid's internal SVG elements, so strip non-alphanumerics.
   const rawId = useId()
@@ -98,7 +100,7 @@ export function Mermaid({ chart }: MermaidProps) {
         className="not-prose my-6 flex min-h-30 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200/60 dark:bg-zinc-900/40 dark:ring-zinc-800/60"
       >
         <span className="text-sm text-zinc-500 dark:text-zinc-400">
-          Loading diagram…
+          {t('loading')}
         </span>
       </div>
     )
@@ -110,7 +112,7 @@ export function Mermaid({ chart }: MermaidProps) {
         ref={triggerRef}
         type="button"
         onClick={() => setIsLightboxOpen(true)}
-        aria-label="Open diagram in fullscreen viewer"
+        aria-label={t('openFullscreen')}
         className="not-prose my-6 block w-full cursor-zoom-in rounded-2xl bg-zinc-50 p-4 text-left ring-1 ring-zinc-200/60 transition hover:ring-zinc-300 focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-hidden dark:bg-zinc-900/40 dark:ring-zinc-800/60 dark:hover:ring-zinc-700"
       >
         <div

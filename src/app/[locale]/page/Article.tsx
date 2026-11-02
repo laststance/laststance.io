@@ -1,4 +1,4 @@
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 import {
   Card,
@@ -12,6 +12,7 @@ import { formatDate } from '@/lib/formatDate'
 
 export function Article({ article }: { article: ArticleWithSlug }) {
   const locale = useLocale()
+  const t = useTranslations('Common')
   return (
     <Card as="article">
       <CardTitle href={`/articles/${article.slug}`}>{article.title}</CardTitle>
@@ -19,7 +20,7 @@ export function Article({ article }: { article: ArticleWithSlug }) {
         {formatDate(article.date, locale)}
       </CardEyebrow>
       <CardDescription>{article.description}</CardDescription>
-      <CardCta>Read article</CardCta>
+      <CardCta>{t('readArticle')}</CardCta>
     </Card>
   )
 }

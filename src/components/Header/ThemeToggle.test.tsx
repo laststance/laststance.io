@@ -1,6 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
 import React from 'react'
 import { describe, test, expect, vi, beforeEach } from 'vitest'
+
+import { catalogs } from '@/i18n/catalogs'
 
 import { ThemeToggle } from './ThemeToggle'
 
@@ -8,6 +11,15 @@ import { ThemeToggle } from './ThemeToggle'
 vi.mock('next-themes', () => ({
   useTheme: vi.fn(),
 }))
+
+/** Renders the toggle inside the same next-intl provider the layout gives it. */
+function renderInLocale(locale: 'en' | 'ja'): void {
+  render(
+    <NextIntlClientProvider locale={locale} messages={catalogs[locale]}>
+      <ThemeToggle />
+    </NextIntlClientProvider>,
+  )
+}
 
 describe('ThemeToggle', () => {
   const mockSetTheme = vi.fn()
@@ -26,7 +38,7 @@ describe('ThemeToggle', () => {
       systemTheme: 'light',
     } as any)
 
-    render(<ThemeToggle />)
+    renderInLocale('en')
 
     await waitFor(() => {
       const button = screen.getByRole('button', {
@@ -46,7 +58,7 @@ describe('ThemeToggle', () => {
       systemTheme: 'dark',
     } as any)
 
-    render(<ThemeToggle />)
+    renderInLocale('en')
 
     await waitFor(() => {
       const button = screen.getByRole('button', {
@@ -66,7 +78,7 @@ describe('ThemeToggle', () => {
       systemTheme: 'light',
     } as any)
 
-    render(<ThemeToggle />)
+    renderInLocale('en')
 
     await waitFor(() => {
       const button = screen.getByRole('button', {
@@ -88,7 +100,7 @@ describe('ThemeToggle', () => {
       systemTheme: 'dark',
     } as any)
 
-    render(<ThemeToggle />)
+    renderInLocale('en')
 
     await waitFor(() => {
       const button = screen.getByRole('button', {
@@ -110,11 +122,34 @@ describe('ThemeToggle', () => {
       systemTheme: 'light',
     } as any)
 
-    render(<ThemeToggle />)
+    renderInLocale('en')
 
     await waitFor(() => {
       const button = screen.getByRole('button')
       expect(button).toHaveAttribute('aria-label', 'Switch to dark theme')
+    })
+  })
+
+  test('announces the switch to dark theme in Japanese for Japanese visitors', async () => {
+    // Arrange
+    const { useTheme } = await import('next-themes')
+    vi.mocked(useTheme).mockReturnValue({
+      resolvedTheme: 'light',
+      setTheme: mockSetTheme,
+      theme: 'light',
+      themes: ['light', 'dark'],
+      systemTheme: 'light',
+    } as any)
+
+    // Act
+    renderInLocale('ja')
+
+    // Assert
+    await waitFor(() => {
+      expect(screen.getByRole('button')).toHaveAttribute(
+        'aria-label',
+        'ダークテーマに切り替え',
+      )
     })
   })
 })

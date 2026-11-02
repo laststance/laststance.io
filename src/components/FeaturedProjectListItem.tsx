@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { type FeaturedProject } from '@/lib/projects'
 
@@ -18,13 +19,14 @@ export function FeaturedProjectListItem({
   href,
   logo,
 }: FeaturedProjectListItemProps) {
+  const t = useTranslations('Common')
   return (
     <article className="border-b border-zinc-200 dark:border-zinc-800">
       <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`${name} — ${category} (opens in new tab)`}
+        aria-label={t('opensInNewTab', { label: `${name} — ${category}` })}
         className="group grid grid-cols-[2rem_minmax(0,1fr)_1rem] items-start gap-4 rounded-sm py-8 sm:gap-6 sm:py-10"
       >
         <Image src={logo} alt="" className="mt-1 h-8 w-8" unoptimized />

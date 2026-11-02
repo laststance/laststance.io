@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { Text } from '@/components/ui/primitives'
 import { type ArchiveProject } from '@/lib/projects'
@@ -17,6 +18,7 @@ export function ArchiveProjectListItem({
   href,
   logo,
 }: ArchiveProject) {
+  const t = useTranslations('Common')
   return (
     <li className="border-b border-zinc-200 dark:border-zinc-800">
       <Link
@@ -24,7 +26,7 @@ export function ArchiveProjectListItem({
         target="_blank"
         rel="noopener noreferrer"
         title={description}
-        aria-label={`${name} - ${category} (opens in new tab)`}
+        aria-label={t('opensInNewTab', { label: `${name} - ${category}` })}
         className="group flex min-h-11 items-start gap-3 py-4 outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:gap-4 dark:focus-visible:ring-offset-zinc-900"
       >
         <Image

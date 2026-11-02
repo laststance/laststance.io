@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import avatarImage from '../../images/logo.png'
 
@@ -11,10 +12,11 @@ export function Avatar({
 }: Omit<React.ComponentPropsWithoutRef<typeof Link>, 'href'> & {
   large?: boolean
 }) {
+  const t = useTranslations('Header')
   return (
     <Link
       href="/"
-      aria-label="Home"
+      aria-label={t('homeLabel')}
       className={clsx(
         className,
         'pointer-events-auto',
@@ -26,7 +28,7 @@ export function Avatar({
     >
       <Image
         src={avatarImage}
-        alt="Ryota Murakami's profile avatar"
+        alt={t('avatarAlt')}
         sizes={large ? '4rem' : '2.25rem'}
         className={clsx(
           'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
