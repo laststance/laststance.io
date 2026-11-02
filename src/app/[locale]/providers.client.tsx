@@ -1,12 +1,12 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { ThemeProvider, useTheme } from 'next-themes'
 import NextTopLoader from 'nextjs-toploader'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { createContext, useEffect } from 'react'
 
 import { usePrevious } from '@/hooks/usePrevious'
+import { usePathname } from '@/i18n/navigation'
 
 function ThemeWatcher() {
   const { resolvedTheme, setTheme } = useTheme()

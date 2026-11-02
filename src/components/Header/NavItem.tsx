@@ -2,8 +2,9 @@
 
 import clsx from 'clsx'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import type { ComponentProps } from 'react'
+
+import { usePathname } from '@/i18n/navigation'
 
 export const NavItem: React.FC<ComponentProps<typeof Link>> = ({
   children,
