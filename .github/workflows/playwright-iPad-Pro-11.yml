@@ -34,7 +34,7 @@ jobs:
             echo "UPLOAD_TO_ARGOS=true" >> .env
           fi
       - name: Playwright tests
-        run: pnpm exec playwright test --project='iPad Pro 11'
+        run: pnpm exec playwright test --project='iPad Pro 11' --project='iPad Pro 11 landscape'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
