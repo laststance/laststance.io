@@ -6,6 +6,18 @@ import { Text } from '@/components/ui/primitives'
 import { type ArticleWithSlug } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
 
+/**
+ * Page shell for one article: title, date and the MDX body.
+ *
+ * Every article's `content.mdx` renders through it. Articles are written in
+ * English in every locale, so the article is marked `lang="en"` for screen
+ * readers on Japanese pages, while the date follows the visitor's locale.
+ *
+ * @example
+ * ```tsx
+ * <ArticleLayout article={article}>{children}</ArticleLayout>
+ * ```
+ */
 export function ArticleLayout({
   article,
   children,
@@ -18,12 +30,13 @@ export function ArticleLayout({
     <Container className="page-start">
       <div className="xl:relative">
         <div className="max-w-[72ch]">
-          <article>
+          <article lang="en">
             <header className="relative flex flex-col">
               <Text as="h1" variant="h1">
                 {article.title}
               </Text>
               <time
+                lang={locale}
                 dateTime={article.date}
                 className="absolute bottom-full mb-6 flex items-center text-sm text-zinc-500 dark:text-zinc-400"
               >

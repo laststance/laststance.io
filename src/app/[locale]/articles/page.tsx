@@ -31,7 +31,7 @@ function Article({ article }: { article: ArticleWithSlug }) {
     <article className="reference-grid">
       <Card className="min-w-0">
         <CardTitle href={`/articles/${article.slug}`}>
-          {article.title}
+          <span lang="en">{article.title}</span>
         </CardTitle>
         <CardEyebrow
           as="time"
@@ -41,7 +41,9 @@ function Article({ article }: { article: ArticleWithSlug }) {
         >
           {formatDate(article.date, locale)}
         </CardEyebrow>
-        <CardDescription>{article.description}</CardDescription>
+        <CardDescription>
+          <span lang="en">{article.description}</span>
+        </CardDescription>
         <CardCta>{t('readArticle')}</CardCta>
       </Card>
       <CardEyebrow
