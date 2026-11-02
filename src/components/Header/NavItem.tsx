@@ -17,8 +17,9 @@ export const NavItem: React.FC<ComponentProps<typeof Link>> = ({
     <li>
       <Link
         href={href}
+        // Japanese text may break between any two characters, so keep each label on one line.
         className={clsx(
-          'relative inline-flex min-h-11 items-center px-3 py-2 transition',
+          'relative inline-flex min-h-11 items-center px-3 py-2 whitespace-nowrap transition',
           isActive ? 'text-teal-500 dark:text-teal-400' : 'link-hover',
         )}
         {...rest}
