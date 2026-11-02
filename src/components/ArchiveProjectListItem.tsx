@@ -29,9 +29,6 @@ export function ArchiveProjectListItem({
         target="_blank"
         rel="noopener noreferrer"
         title={description}
-        aria-label={common('opensInNewTab', {
-          label: `${name} - ${categoryLabel}`,
-        })}
         className="group flex min-h-11 items-start gap-3 py-4 outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:gap-4 dark:focus-visible:ring-offset-zinc-900"
       >
         <Image
@@ -59,6 +56,7 @@ export function ArchiveProjectListItem({
         >
           {categoryLabel}
         </Text>
+        <span className="sr-only">{common('newTabHint')}</span>
       </Link>
     </li>
   )

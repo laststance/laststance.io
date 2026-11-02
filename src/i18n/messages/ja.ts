@@ -33,6 +33,7 @@ const ja = {
 
   Common: {
     opensInNewTab: '{label}（新しいタブで開きます）',
+    newTabHint: '（新しいタブで開きます）',
     sendEmailTo: '{email} にメールを送る',
     readArticle: '記事を読む',
     personalSiteLabel: 'Ryota Murakami の個人サイト（新しいタブで開きます）',
