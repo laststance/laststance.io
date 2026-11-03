@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
  * Checks that a running deployment serves Japanese to Japanese browsers and
- * English to everyone else, without changing URLs.
+ * English to everyone else, without changing URLs, and that the header language
+ * switch (a prefixed URL such as `/ja/about`) redirects to the unprefixed URL and
+ * stores the choice in the NEXT_LOCALE cookie, which then wins over Accept-Language.
  *
  * Usage: node scripts/verify-locale.mjs https://laststance.io
  * Exits non-zero when any check fails. Run it against `pnpm start`, a Vercel
@@ -37,8 +39,11 @@ const japaneseDate = /\d{4}年\d{1,2}月\d{1,2}日/
 const results = []
 const record = (name, ok, detail = '') => results.push({ name, ok, detail })
 
-const get = async (path, acceptLanguage) => {
-  const headers = acceptLanguage ? { 'accept-language': acceptLanguage } : {}
+const get = async (path, acceptLanguage, cookie) => {
+  const headers = {
+    ...(acceptLanguage && { 'accept-language': acceptLanguage }),
+    ...(cookie && { cookie }),
+  }
   const response = await fetch(`${baseUrl}${path}`, {
     headers,
     redirect: 'manual',
@@ -49,27 +54,32 @@ const get = async (path, acceptLanguage) => {
   return { response, body }
 }
 
+const htmlLang = (body) => body.match(/<html[^>]*\slang="([^"]+)"/)?.[1]
+
+const checkPage = async (name, path, want, acceptLanguage, cookie) => {
+  const { response, body } = await get(path, acceptLanguage, cookie)
+  const lang = htmlLang(body)
+  // Header and footer are already Japanese, so only the page's own <main> proves its copy was translated.
+  const main = (body.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '')
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/<[^>]+>/g, ' ')
+  const isArticle = /^\/articles\/[^?]+$/.test(path)
+  const translated = isArticle ? japaneseDate.test(main) : kana.test(main)
+  const ok =
+    response.status === 200 &&
+    lang === want &&
+    (want !== 'ja' || translated) &&
+    new URL(response.url).pathname === new URL(`${baseUrl}${path}`).pathname
+  record(
+    `${name} ${path}`,
+    ok,
+    `status=${response.status} lang=${lang} mainJa=${translated}`,
+  )
+}
+
 for (const [label, header] of Object.entries(languages)) {
   for (const path of pages) {
-    const { response, body } = await get(path, header)
-    const lang = body.match(/<html[^>]*\slang="([^"]+)"/)?.[1]
-    const want = expectedLang[label]
-    // Header and footer are already Japanese, so only the page's own <main> proves its copy was translated.
-    const main = (body.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '')
-      .replace(/<script[\s\S]*?<\/script>/g, '')
-      .replace(/<[^>]+>/g, ' ')
-    const isArticle = /^\/articles\/[^?]+$/.test(path)
-    const translated = isArticle ? japaneseDate.test(main) : kana.test(main)
-    const ok =
-      response.status === 200 &&
-      lang === want &&
-      (want !== 'ja' || translated) &&
-      new URL(response.url).pathname === new URL(`${baseUrl}${path}`).pathname
-    record(
-      `${label.padEnd(5)} ${path}`,
-      ok,
-      `status=${response.status} lang=${lang} mainJa=${translated}`,
-    )
+    await checkPage(label.padEnd(5), path, expectedLang[label], header)
   }
   const notFound = await get(missing, header)
   record(
@@ -84,14 +94,113 @@ for (const path of untouched) {
   record(`ja    ${path}`, response.status === 200, `status=${response.status}`)
 }
 
-// The same URL is cached once per language; alternate languages to catch a cache that ignores Accept-Language.
+const cookieName = 'NEXT_LOCALE'
+const cookieAttributes = ['Path=/', 'Max-Age=31536000', 'SameSite=lax']
+
+const checkSwitch = async (name, path, acceptLanguage, locale, location) => {
+  const { response } = await get(path, acceptLanguage)
+  const cookie = response.headers.get('set-cookie') ?? ''
+  const landed = response.headers.get('location')
+  const landedPath = landed && new URL(landed, baseUrl)
+  const ok =
+    response.status === 307 &&
+    `${landedPath?.pathname}${landedPath?.search}` === location &&
+    cookie.startsWith(`${cookieName}=${locale};`) &&
+    cookieAttributes.every((attribute) => cookie.includes(attribute))
+  record(
+    `switch ${name}`,
+    ok,
+    `status=${response.status} location=${landed} set-cookie=${cookie}`,
+  )
+}
+
+await checkSwitch('ja /about', '/ja/about', languages['en-US'], 'ja', '/about')
+await checkSwitch('en /about', '/en/about', languages.ja, 'en', '/about')
+await checkSwitch(
+  'keeps query',
+  '/ja/articles?page=2',
+  languages['en-US'],
+  'ja',
+  '/articles?page=2',
+)
+await checkSwitch('home', '/ja', languages['en-US'], 'ja', '/')
+await checkSwitch(
+  'dotted slug',
+  '/ja/articles/update-eslint-config-ts-prefixer@v0.23.3',
+  languages['en-US'],
+  'ja',
+  '/articles/update-eslint-config-ts-prefixer@v0.23.3',
+)
+// A CDN that caches the 307 without its Set-Cookie would silently stop switching, so ask twice.
+await checkSwitch(
+  'ja /about again',
+  '/ja/about',
+  languages['en-US'],
+  'ja',
+  '/about',
+)
+
+for (const path of pages) {
+  await checkPage(
+    'cookie ja',
+    path,
+    'ja',
+    languages['en-US'],
+    `${cookieName}=ja`,
+  )
+  await checkPage('cookie en', path, 'en', languages.ja, `${cookieName}=en`)
+}
+await checkPage('cookie fr', '/about', 'ja', languages.ja, `${cookieName}=fr`)
+
+// Visitors who never choose must stay on Accept-Language, never pinned by a cookie.
+for (const [label, header] of Object.entries(languages)) {
+  const { response } = await get('/about', header)
+  const cookie = response.headers.get('set-cookie')
+  record(
+    `unpinned ${label.padEnd(5)} /about`,
+    cookie === null,
+    `set-cookie=${cookie}`,
+  )
+}
+
+// No Vary: Cookie, so a browser that kept /about fresh would show the old language after a switch.
+const aboutHeaders = (await get('/about', languages.ja)).response.headers
+const cacheControl = aboutHeaders.get('cache-control') ?? ''
+const browserMustRevalidate =
+  /max-age=0|no-cache|no-store/.test(cacheControl) ||
+  (!/(^|[\s,])max-age=/.test(cacheControl) &&
+    !aboutHeaders.has('expires') &&
+    !aboutHeaders.has('last-modified'))
+record(
+  'browser revalidates /about',
+  browserMustRevalidate,
+  `cache-control=${cacheControl}`,
+)
+
+// The same URL is cached once per language; alternate to catch a cache that ignores Accept-Language or the cookie.
+const alternation = [
+  {
+    label: 'cookie ja',
+    want: 'ja',
+    header: languages['en-US'],
+    cookie: `${cookieName}=ja`,
+  },
+  {
+    label: 'cookie en',
+    want: 'en',
+    header: languages.ja,
+    cookie: `${cookieName}=en`,
+  },
+  { label: 'ja', want: 'ja', header: languages.ja },
+  { label: 'en-US', want: 'en', header: languages['en-US'] },
+]
 for (const round of [1, 2]) {
-  for (const label of ['ja', 'en-US']) {
-    const { body } = await get('/about', languages[label])
-    const lang = body.match(/<html[^>]*\slang="([^"]+)"/)?.[1]
+  for (const { label, want, header, cookie } of alternation) {
+    const { body } = await get('/about', header, cookie)
+    const lang = htmlLang(body)
     record(
-      `alternate #${round} ${label.padEnd(5)} /about`,
-      lang === expectedLang[label],
+      `alternate #${round} ${label.padEnd(9)} /about`,
+      lang === want,
       `lang=${lang}`,
     )
   }
