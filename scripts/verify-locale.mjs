@@ -131,9 +131,8 @@ await checkSwitch(
   'ja',
   '/articles/update-eslint-config-ts-prefixer@v0.23.3',
 )
-// A CDN that caches the 307 without its Set-Cookie would silently stop switching, so ask twice.
 await checkSwitch(
-  'ja /about again',
+  'ja /about twice keeps Set-Cookie',
   '/ja/about',
   languages['en-US'],
   'ja',
@@ -152,7 +151,6 @@ for (const path of pages) {
 }
 await checkPage('cookie fr', '/about', 'ja', languages.ja, `${cookieName}=fr`)
 
-// Visitors who never choose must stay on Accept-Language, never pinned by a cookie.
 for (const [label, header] of Object.entries(languages)) {
   const { response } = await get('/about', header)
   const cookie = response.headers.get('set-cookie')
@@ -163,22 +161,20 @@ for (const [label, header] of Object.entries(languages)) {
   )
 }
 
-// No Vary: Cookie, so a browser that kept /about fresh would show the old language after a switch.
 const aboutHeaders = (await get('/about', languages.ja)).response.headers
 const cacheControl = aboutHeaders.get('cache-control') ?? ''
-const browserMustRevalidate =
+const browserRevalidatesAfterSwitch =
   /max-age=0|no-cache|no-store/.test(cacheControl) ||
   (!/(^|[\s,])max-age=/.test(cacheControl) &&
     !aboutHeaders.has('expires') &&
     !aboutHeaders.has('last-modified'))
 record(
-  'browser revalidates /about',
-  browserMustRevalidate,
+  'browser revalidates /about after a switch',
+  browserRevalidatesAfterSwitch,
   `cache-control=${cacheControl}`,
 )
 
-// The same URL is cached once per language; alternate to catch a cache that ignores Accept-Language or the cookie.
-const alternation = [
+const cachePerLanguage = [
   {
     label: 'cookie ja',
     want: 'ja',
@@ -195,11 +191,11 @@ const alternation = [
   { label: 'en-US', want: 'en', header: languages['en-US'] },
 ]
 for (const round of [1, 2]) {
-  for (const { label, want, header, cookie } of alternation) {
+  for (const { label, want, header, cookie } of cachePerLanguage) {
     const { body } = await get('/about', header, cookie)
     const lang = htmlLang(body)
     record(
-      `alternate #${round} ${label.padEnd(9)} /about`,
+      `cached per language #${round} ${label.padEnd(9)} /about`,
       lang === want,
       `lang=${lang}`,
     )

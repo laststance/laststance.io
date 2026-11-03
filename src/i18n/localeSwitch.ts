@@ -2,7 +2,6 @@ import { hasLocale, type Locale } from 'next-intl'
 
 import { LOCALE_COOKIE, routing } from './routing'
 
-/** The parts of an address a switch keeps; `window.location` satisfies it. */
 type SwitchSource = Pick<Location, 'pathname' | 'search' | 'hash'>
 
 /**

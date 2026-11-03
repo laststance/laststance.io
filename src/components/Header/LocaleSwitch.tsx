@@ -22,6 +22,16 @@ const LINK_CLASS_NAMES = {
   menuRow: 'flex min-h-11 items-center py-2',
 } as const satisfies Record<Variant, string>
 
+function isModifiedClick(event: React.MouseEvent): boolean {
+  return (
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey
+  )
+}
+
 type LocaleSwitchProps = {
   variant: Variant
   className?: string
@@ -54,34 +64,32 @@ export function LocaleSwitch({
   const pathname = usePathname()
   const targets = routing.locales.filter((locale) => locale !== current)
 
-  const links = targets.map((target) => (
-    <a
-      key={target}
-      // Without JavaScript the click falls back to this href, which keeps the page but drops the query and hash.
-      href={buildLocaleSwitchHref(target, { pathname, search: '', hash: '' })}
-      hrefLang={target}
-      rel="nofollow"
-      className={LINK_CLASS_NAMES[variant]}
-      onClick={(event) => {
-        // Modified and middle clicks open the plain href in a new tab or window.
-        if (
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey
-        ) {
-          return
-        }
-        event.preventDefault()
-        // replace keeps the old-language page out of history, so Back never returns to it.
-        window.location.replace(buildLocaleSwitchHref(target, window.location))
-      }}
-    >
-      <span className="sr-only">{t('switchTo')} </span>
-      <span lang={target}>{LOCALE_ENDONYMS[target]}</span>
-    </a>
-  ))
+  const links = targets.map((target) => {
+    const noJavaScriptHref = buildLocaleSwitchHref(target, {
+      pathname,
+      search: '',
+      hash: '',
+    })
+    return (
+      <a
+        key={target}
+        href={noJavaScriptHref}
+        hrefLang={target}
+        rel="nofollow"
+        className={LINK_CLASS_NAMES[variant]}
+        onClick={(event) => {
+          if (isModifiedClick(event)) return
+          event.preventDefault()
+          window.location.replace(
+            buildLocaleSwitchHref(target, window.location),
+          )
+        }}
+      >
+        <span className="sr-only">{t('switchTo')} </span>
+        <span lang={target}>{LOCALE_ENDONYMS[target]}</span>
+      </a>
+    )
+  })
 
   if (variant === 'pill') {
     return <div className={clsx('flex gap-2', className)}>{links}</div>

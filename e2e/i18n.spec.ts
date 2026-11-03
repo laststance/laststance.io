@@ -232,10 +232,10 @@ test.describe('Japanese browser', () => {
     const problems = watchConsoleErrors(page)
     await page.setViewportSize({ width: 1280, height: 800 })
     await page.goto('/about')
-    // ThemeToggle names the theme it switches to only after hydration, when the switch's click handler is live.
-    await expect(
-      page.getByRole('button', { name: /^(ダーク|ライト)テーマに切り替え$/ }),
-    ).toBeVisible()
+    const hydratedThemeToggle = page.getByRole('button', {
+      name: /^(ダーク|ライト)テーマに切り替え$/,
+    })
+    await expect(hydratedThemeToggle).toBeVisible()
     // WebKit logs prefetches cut off by a page load as console errors.
     await page.waitForLoadState('networkidle')
 
