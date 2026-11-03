@@ -70,9 +70,10 @@ The script automatically:
 
 ## English and Japanese
 
-Visitors whose browser prefers Japanese get the site in Japanese. Everyone else gets English. The URLs are the same for both languages.
+Visitors whose browser prefers Japanese get the site in Japanese. Everyone else gets English. The URLs are the same for both languages. The header has a 日本語 / English switch (in the Menu panel below 640px) that overrides the browser language.
 
-- `src/proxy.ts` reads the `Accept-Language` header on every request and rewrites `/about` to `/en/about` or `/ja/about`. The browser URL does not change, and no cookie remembers the choice.
+- `src/proxy.ts` rewrites `/about` to `/en/about` or `/ja/about`. The browser URL does not change. It picks the language from the `NEXT_LOCALE` cookie when present, otherwise from `Accept-Language`.
+- The switch links to `/ja/about`. The proxy answers with a 307 to `/about` and sets `NEXT_LOCALE` for one year (`LOCALE_COOKIE` in `src/i18n/routing.ts`). Nothing else writes the cookie, so visitors who never switch get none. `node scripts/verify-locale.mjs <url>` checks the redirect and the cookie.
 - All UI copy lives in `src/i18n/messages/en.ts`. `src/i18n/messages/ja.ts` has the same keys with Japanese text. Copy under `pages` is read only by Server Components and never reaches the browser. Every other namespace also reaches Client Components.
 - Article bodies, article titles, and OG image text stay English.
 
