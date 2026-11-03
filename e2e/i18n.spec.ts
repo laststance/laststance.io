@@ -225,6 +225,40 @@ test.describe('Japanese browser', () => {
       )
     }
   })
+  test('switches to English from the header and stays English after reload', async ({
+    page,
+  }) => {
+    // Arrange
+    const problems = watchConsoleErrors(page)
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await page.goto('/about')
+    // ThemeToggle names the theme it switches to only after hydration, when the switch's click handler is live.
+    await expect(
+      page.getByRole('button', { name: /^(ダーク|ライト)テーマに切り替え$/ }),
+    ).toBeVisible()
+    // WebKit logs prefetches cut off by a page load as console errors.
+    await page.waitForLoadState('networkidle')
+
+    // Act
+    await page
+      .locator('header')
+      .getByRole('link', { name: '表示言語を切り替え: English' })
+      .click()
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+    await page.waitForLoadState('networkidle')
+    await page.reload()
+
+    // Assert
+    await expect(page).toHaveURL('/about')
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+    await expect(
+      page.getByRole('heading', {
+        level: 1,
+        name: 'Laststance.io is my experimental laboratory for eliminate like this. ➡️',
+      }),
+    ).toBeVisible()
+    expect(problems).toEqual([])
+  })
 })
 
 test.describe('Browser in a language other than Japanese', () => {
