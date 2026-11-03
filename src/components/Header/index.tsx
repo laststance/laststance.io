@@ -186,7 +186,7 @@ export function Header() {
                 'var(--header-inner-position)' as React.CSSProperties['position'],
             }}
           >
-            <div className="relative flex gap-4">
+            <div className="relative flex gap-3 sm:gap-4">
               <div className="flex flex-1">
                 {!isHomePage && (
                   <AvatarContainer>
@@ -194,11 +194,11 @@ export function Header() {
                   </AvatarContainer>
                 )}
               </div>
-              <div className="flex flex-1 justify-end md:justify-center">
-                <MobileNavigation className="pointer-events-auto md:hidden" />
-                <DesktopNavigation className="pointer-events-auto hidden md:block" />
+              <div className="flex flex-1 justify-end lg:justify-center">
+                <MobileNavigation className="pointer-events-auto lg:hidden" />
+                <DesktopNavigation className="pointer-events-auto hidden lg:block" />
               </div>
-              <div className="flex justify-end gap-x-[15%] md:flex-1">
+              <div className="flex justify-end gap-x-2 sm:gap-x-3 lg:flex-1">
                 <div className="pointer-events-auto">
                   <WhatNew />
                 </div>
