@@ -1,5 +1,6 @@
 'use client'
 
+import { useLocale } from 'next-intl'
 import { useEffect, useRef } from 'react'
 
 import { usePathname } from '@/i18n/navigation'
@@ -10,12 +11,14 @@ import { Container } from '../Container'
 import { Avatar } from './Avatar'
 import { AvatarContainer } from './AvatarContainer'
 import { DesktopNavigation } from './DesktopNavigation'
+import { LocaleSwitch, useStalePageGuard } from './LocaleSwitch'
 import { MobileNavigation } from './MobileNavigation'
 import { ThemeToggle } from './ThemeToggle'
 import WhatNew from './WhatNew'
 
 export function Header() {
   const isHomePage = usePathname() === '/'
+  useStalePageGuard(useLocale())
 
   const headerRef = useRef<React.ElementRef<'div'>>(null)
   const avatarRef = useRef<React.ElementRef<'div'>>(null)
@@ -199,6 +202,10 @@ export function Header() {
                 <div className="pointer-events-auto">
                   <WhatNew />
                 </div>
+                <LocaleSwitch
+                  variant="pill"
+                  className="pointer-events-auto hidden sm:flex"
+                />
                 <div className="pointer-events-auto">
                   <ThemeToggle />
                 </div>

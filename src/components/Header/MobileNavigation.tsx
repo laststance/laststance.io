@@ -5,6 +5,7 @@ import { Fragment } from 'react'
 import { ChevronDownIcon } from '../icons/ChevronDownIcon'
 import { CloseIcon } from '../icons/CloseIcon'
 
+import { LocaleSwitch } from './LocaleSwitch'
 import { MobileNavItem } from './MobileNavItem'
 
 export function MobileNavigation(
@@ -80,6 +81,7 @@ export function MobileNavigation(
                 <MobileNavItem href="/keybinds">{t('keybinds')}</MobileNavItem>
               </ul>
             </nav>
+            <LocaleSwitch variant="menuRow" className="sm:hidden" />
           </Popover.Panel>
         </Transition.Child>
       </Transition.Root>

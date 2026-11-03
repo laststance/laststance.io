@@ -47,6 +47,11 @@ const en = {
     },
   },
 
+  LocaleSwitch: {
+    switchTo: 'Switch language to',
+    menuHeading: 'Language',
+  },
+
   WhatsNew: {
     trigger: "What's New?",
     openLabel: "Open What's New dialog",
@@ -330,7 +335,7 @@ const en = {
       website: {
         title: 'This website',
         analytics:
-          'laststance.io has no accounts, no sign-in, and no forms. It uses Vercel Analytics to count page views without cookies, and Sentry to report errors so I can fix them. An error report can include your browser version, the page URL, and your IP address.',
+          'laststance.io has no accounts, no sign-in, and no forms. It uses Vercel Analytics to count page views without cookies, and Sentry to report errors so I can fix them. An error report can include your browser version, the page URL, and your IP address. If you pick a language with the switch in the header, a cookie named NEXT_LOCALE remembers that choice for one year. It holds only en or ja.',
         noSale: 'I do not sell this data, and I do not use it for advertising.',
       },
       google: {

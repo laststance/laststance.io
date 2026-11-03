@@ -48,6 +48,11 @@ const ja = {
     },
   },
 
+  LocaleSwitch: {
+    switchTo: '表示言語を切り替え:',
+    menuHeading: '言語',
+  },
+
   WhatsNew: {
     // \u200b lets 更新履歴 wrap between its two words on 320px phones, as What's New? does in English.
     trigger: '更新\u200b履歴',
@@ -333,7 +338,7 @@ const ja = {
       website: {
         title: 'このウェブサイト',
         analytics:
-          'laststance.io には、アカウント登録、サインイン、入力フォームはありません。Cookie を使わずにページビューを計測するために Vercel Analytics を、エラーを把握して修正するために Sentry を使用しています。エラーレポートには、お使いのブラウザーのバージョン、ページの URL、IP アドレスが含まれる場合があります。',
+          'laststance.io には、アカウント登録、サインイン、入力フォームはありません。Cookie を使わずにページビューを計測するために Vercel Analytics を、エラーを把握して修正するために Sentry を使用しています。エラーレポートには、お使いのブラウザーのバージョン、ページの URL、IP アドレスが含まれる場合があります。ヘッダーの切り替えで言語を選ぶと、その選択を 1 年間記憶するために NEXT_LOCALE という名前の Cookie を保存します。中身は en または ja だけです。',
         noSale:
           'これらのデータを販売することはなく、広告目的で利用することもありません。',
       },
