@@ -7,7 +7,7 @@ import { Text } from '@/components/ui/primitives'
 import { getPageMetadata } from '@/i18n/pageMetadata'
 import { formatDate } from '@/lib/formatDate'
 
-const PRIVACY_UPDATED_AT = '2026-10-10'
+const PRIVACY_UPDATED_AT = '2026-11-03'
 
 export async function generateMetadata(): Promise<Metadata> {
   return getPageMetadata('privacy')

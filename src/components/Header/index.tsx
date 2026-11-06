@@ -1,5 +1,6 @@
 'use client'
 
+import { useLocale } from 'next-intl'
 import { useEffect, useRef } from 'react'
 
 import { usePathname } from '@/i18n/navigation'
@@ -10,12 +11,14 @@ import { Container } from '../Container'
 import { Avatar } from './Avatar'
 import { AvatarContainer } from './AvatarContainer'
 import { DesktopNavigation } from './DesktopNavigation'
+import { LocaleSwitch, useStalePageGuard } from './LocaleSwitch'
 import { MobileNavigation } from './MobileNavigation'
 import { ThemeToggle } from './ThemeToggle'
 import WhatNew from './WhatNew'
 
 export function Header() {
   const isHomePage = usePathname() === '/'
+  useStalePageGuard(useLocale())
 
   const headerRef = useRef<React.ElementRef<'div'>>(null)
   const avatarRef = useRef<React.ElementRef<'div'>>(null)
@@ -183,7 +186,7 @@ export function Header() {
                 'var(--header-inner-position)' as React.CSSProperties['position'],
             }}
           >
-            <div className="relative flex gap-4">
+            <div className="relative flex gap-3 sm:gap-4">
               <div className="flex flex-1">
                 {!isHomePage && (
                   <AvatarContainer>
@@ -191,14 +194,18 @@ export function Header() {
                   </AvatarContainer>
                 )}
               </div>
-              <div className="flex flex-1 justify-end md:justify-center">
-                <MobileNavigation className="pointer-events-auto md:hidden" />
-                <DesktopNavigation className="pointer-events-auto hidden md:block" />
+              <div className="flex flex-1 justify-end lg:justify-center">
+                <MobileNavigation className="pointer-events-auto lg:hidden" />
+                <DesktopNavigation className="pointer-events-auto hidden lg:block" />
               </div>
-              <div className="flex justify-end gap-x-[15%] md:flex-1">
+              <div className="flex justify-end gap-x-2 sm:gap-x-3 lg:flex-1">
                 <div className="pointer-events-auto">
                   <WhatNew />
                 </div>
+                <LocaleSwitch
+                  variant="pill"
+                  className="pointer-events-auto hidden sm:flex"
+                />
                 <div className="pointer-events-auto">
                   <ThemeToggle />
                 </div>
