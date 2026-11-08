@@ -143,6 +143,7 @@
       "@code-inspector/core",
       "@parcel/watcher",
       "@sentry/cli",
+      "@swc/core",
       "@tailwindcss/oxide",
       "core-js-pure",
       "esbuild",
