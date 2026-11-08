@@ -147,7 +147,7 @@ export const KEYBIND_GROUPS: readonly KeybindGroup[] = [
         id: 'code-jump',
         rows: [
           { action: 'goToImplementation', keys: 'CMD B' },
-          { action: 'goToDefinition', keys: 'CMD Option B' },
+          { action: 'goToDefinition', keys: 'CMD B' },
           { action: 'goToTypeDeclaration', keys: 'CMD T' },
           { action: 'goToMatchingPairBraceBracket', keys: '^ M' },
           { action: 'goToMatchingHtmlJsxTag', keys: '^ CMD M' },
