@@ -190,7 +190,7 @@ export const KEYBIND_GROUPS: readonly KeybindGroup[] = [
           { action: 'keybindSettings', keys: 'Shift CMD ,' },
           { action: 'openCursorSettings', keys: 'Shift CMD N' },
           { action: 'eslintFix', keys: '^-x ^-x' },
-          { action: 'formatWithPrettier', keys: '^ Space' },
+          { action: 'formatDocument', keys: '^ Space' },
           { action: 'showMarkdownPreview', keys: 'CMD E' },
           { action: 'switchProject', keys: '^ W' },
           { action: 'togglePrimarySideBar', keys: '^-x ^-1' },
@@ -202,17 +202,12 @@ export const KEYBIND_GROUPS: readonly KeybindGroup[] = [
           { action: 'toggleChatTab', keys: 'CMD L' },
           { action: 'newAiChat', keys: 'CMD Shift L' },
           { action: 'toggleCursorZedAgentTab', keys: '^-x ^-c' },
-          { action: 'toggleCursorZedAgentsWindow', keys: 'CMD Shift J' },
+          { action: 'switchToAgentsWindow', keys: 'CMD Shift J' },
         ],
-      },
-      {
-        id: 'git',
-        rows: [{ action: 'gitBlame', keys: '^-g ^-b' }],
       },
       {
         id: 'multiple-cursor',
         rows: [
-          { action: 'multiCursorModifier', keys: 'ctrlCmd' },
           {
             action: 'rectangularMultiCursorSelectWebStorm',
             keys: 'Option Drag',

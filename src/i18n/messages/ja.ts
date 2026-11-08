@@ -69,6 +69,8 @@ const ja = {
       updateProjectsPage: 'プロジェクトページを更新',
       keybindsChromeRaindropIde:
         'キーバインドを更新：Chrome、Raindrop、IDE のショートカットを追加',
+      updateKeybindsAgentsAndFormatter:
+        'キーバインドを更新：Format Document、Switch to Agents Window。Git Blame と multiCursorModifier を削除',
       updateKeybindsStyle: 'キーバインドページのスタイルを更新',
       updateUsesPage: '愛用品ページを更新',
       updateKeybinds: 'キーバインドを更新',
@@ -378,7 +380,6 @@ const ja = {
         'file-explorer': 'ファイルエクスプローラー',
         'ide-feature': 'IDE の機能',
         ai: 'AI',
-        git: 'Git',
         'multiple-cursor': 'マルチカーソル',
       },
       actions: {
@@ -479,23 +480,18 @@ const ja = {
         keybindSettings: 'キーバインド設定',
         openCursorSettings: 'Cursor の設定を開く',
         eslintFix: 'ESLint —fix を実行',
-        formatWithPrettier: 'Prettier でフォーマット',
+        formatDocument: 'プロジェクトのデフォルトフォーマッターでフォーマット',
         showMarkdownPreview: 'Markdown プレビューを表示',
         switchProject: 'プロジェクトを切り替え',
         togglePrimarySideBar: 'プライマリサイドバーの表示切り替え',
         toggleChatTab: 'チャットタブの表示切り替え',
         newAiChat: '新しい AI チャット',
         toggleCursorZedAgentTab: 'Cursor/Zed のエージェントタブの表示切り替え',
-        toggleCursorZedAgentsWindow:
-          'Cursor/Zed のエージェントウィンドウの表示切り替え',
-        gitBlame: 'Git Blame を表示（WebStorm）',
-        multiCursorModifier:
-          'editor.multiCursorModifier（VS Code/Cursor の settings.json。macOS では ctrlCmd に設定すると、CMD+クリックでマルチカーソル、Option+ドラッグで矩形選択になります）',
+        switchToAgentsWindow: 'Agents Window に切り替え',
         rectangularMultiCursorSelectWebStorm:
           '矩形マルチカーソル選択（WebStorm）',
         rectangularMultiCursorSelectCursor: '矩形マルチカーソル選択（Cursor）',
-        addOrRemoveCaret:
-          'キャレットを追加/削除（macOS で multiCursorModifier を ctrlCmd にした場合）',
+        addOrRemoveCaret: 'キャレットを追加/削除',
         cloneCursorAbove: '上にカーソルを複製',
         cloneCursorBelow: '下にカーソルを複製',
         verticalCursorFill: '縦方向にカーソルを追加（Cursor）',

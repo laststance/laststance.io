@@ -63,6 +63,10 @@ const WhatNew: React.FC = () => {
         </DialogHeader>
         <ScrollArea className="mt-4 space-y-4" aria-label={t('listLabel')}>
           <List
+            date="2026-11-08"
+            li={[t('items.updateKeybindsAgentsAndFormatter')]}
+          />
+          <List
             date="2026-02-14"
             li={[
               <DialogClose asChild key="discontinuing-complete">

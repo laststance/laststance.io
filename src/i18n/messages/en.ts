@@ -68,6 +68,8 @@ const en = {
       updateProjectsPage: 'Update Projects Page',
       keybindsChromeRaindropIde:
         'Update Keybinds: Add Chrome, Raindrop and IDE shortcuts',
+      updateKeybindsAgentsAndFormatter:
+        'Update Keybinds: Format Document, Switch to Agents Window; drop Git Blame and multiCursorModifier',
       updateKeybindsStyle: 'Update Keybinds Style',
       updateUsesPage: 'Update Uses page',
       updateKeybinds: 'Update Keybinds',
@@ -374,7 +376,6 @@ const en = {
         'file-explorer': 'File Explorer',
         'ide-feature': 'IDE Feature',
         ai: 'AI',
-        git: 'Git',
         'multiple-cursor': 'Multiple Cursor',
       },
       // Labels that are editor command ids (cursorEndSelect) stay verbatim in every locale.
@@ -477,23 +478,19 @@ const en = {
         keybindSettings: 'Keybind Settings',
         openCursorSettings: 'Open Cursor Settings',
         eslintFix: 'ESLint  —fix',
-        formatWithPrettier: 'Format with Prettier',
+        formatDocument: 'Format Document',
         showMarkdownPreview: 'Show Markdown Preview',
         switchProject: 'Switch Project',
         togglePrimarySideBar: 'Toggle Primary Side Bar',
         toggleChatTab: 'Toggle Chat Tab',
         newAiChat: 'New AI Chat',
         toggleCursorZedAgentTab: 'Toggle Cursor/Zed Agent Tab',
-        toggleCursorZedAgentsWindow: 'Toggle Cursor/Zed Agents Window',
-        gitBlame: 'Git Blame(WebStorm)',
-        multiCursorModifier:
-          'editor.multiCursorModifier (VS Code/Cursor settings.json — use ctrlCmd on macOS so CMD+click is multi-cursor and Option+drag is column select)',
+        switchToAgentsWindow: 'Switch to Agents Window',
         rectangularMultiCursorSelectWebStorm:
           'Rectangular Multiple Cursor Select(WebStorm)',
         rectangularMultiCursorSelectCursor:
           'Rectangular Multiple Cursor Select(Cursor)',
-        addOrRemoveCaret:
-          'Add or Remove caret (with multiCursorModifier ctrlCmd on macOS)',
+        addOrRemoveCaret: 'Add or Remove caret',
         cloneCursorAbove: 'Clone Cursor Above',
         cloneCursorBelow: 'Clone Cursor Bellow',
         verticalCursorFill: 'Vertical cursor fillin(Cursor)',

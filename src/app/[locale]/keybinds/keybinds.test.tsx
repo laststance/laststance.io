@@ -45,7 +45,6 @@ describe('keybinds cheat sheet', () => {
       'file-explorer',
       'ide-feature',
       'ai',
-      'git',
       'multiple-cursor',
     ])
     expect(hrefs).toEqual(anchors.map((id) => `#${id}`))
