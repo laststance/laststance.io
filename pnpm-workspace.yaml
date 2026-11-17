@@ -23,3 +23,6 @@ packages:
 #   - '@laststance/redux-storage-middleware'
 #   - '@laststance/react-next-eslint-plugin'
 verifyStoreIntegrity: true
+
+overrides:
+  eslint-plugin-browser-security: 3.0.2
