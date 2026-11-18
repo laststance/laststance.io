@@ -25,4 +25,62 @@ packages:
 verifyStoreIntegrity: true
 
 overrides:
+  brace-expansion: 5.0.8
+  dompurify: 3.4.12
+  esbuild: 0.28.1
   eslint-plugin-browser-security: 3.0.2
+  postcss: 8.5.23
+  prismjs: ^1.30.0
+  sharp: 0.35.5
+  valibot: 1.4.2
+
+patchedDependencies:
+  minimatch@3.1.5: patches/minimatch@3.1.5.patch
+
+allowBuilds:
+  '@code-inspector/core': true
+  '@parcel/watcher': true
+  '@sentry/cli': true
+  '@swc/core': true
+  '@tailwindcss/oxide': true
+  core-js-pure: true
+  esbuild: true
+  node-pty: true
+  sharp: true
+  unrs-resolver: true
+
+# These exact releases were already locked before the pnpm 12 migration.
+minimumReleaseAgeExclude:
+  - '@rollup/rollup-android-arm-eabi@4.68.5'
+  - '@rollup/rollup-android-arm64@4.68.5'
+  - '@rollup/rollup-android-x64@4.68.5'
+  - '@rollup/rollup-darwin-arm64@4.68.5'
+  - '@rollup/rollup-darwin-x64@4.68.5'
+  - '@rollup/rollup-freebsd-arm64@4.68.5'
+  - '@rollup/rollup-freebsd-x64@4.68.5'
+  - '@rollup/rollup-linux-arm-gnueabihf@4.68.5'
+  - '@rollup/rollup-linux-arm-musleabihf@4.68.5'
+  - '@rollup/rollup-linux-arm64-gnu@4.68.5'
+  - '@rollup/rollup-linux-arm64-musl@4.68.5'
+  - '@rollup/rollup-linux-loong64-gnu@4.68.5'
+  - '@rollup/rollup-linux-loong64-musl@4.68.5'
+  - '@rollup/rollup-linux-ppc64-gnu@4.68.5'
+  - '@rollup/rollup-linux-ppc64-musl@4.68.5'
+  - '@rollup/rollup-linux-riscv64-gnu@4.68.5'
+  - '@rollup/rollup-linux-riscv64-musl@4.68.5'
+  - '@rollup/rollup-linux-s390x-gnu@4.68.5'
+  - '@rollup/rollup-linux-x64-gnu@4.68.5'
+  - '@rollup/rollup-linux-x64-musl@4.68.5'
+  - '@rollup/rollup-openbsd-x64@4.68.5'
+  - '@rollup/rollup-openharmony-arm64@4.68.5'
+  - '@rollup/rollup-win32-arm64-msvc@4.68.5'
+  - '@rollup/rollup-win32-ia32-msvc@4.68.5'
+  - '@rollup/rollup-win32-x64-gnu@4.68.5'
+  - '@rollup/rollup-win32-x64-msvc@4.68.5'
+  - csstype@3.2.4
+  - electron-to-chromium@1.5.487
+  - ignore@7.0.16
+  - intl-messageformat@12.2.0
+  - lucide-react@1.74.0
+  - node-releases@2.0.65
+  - rollup@4.68.5
