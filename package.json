@@ -3,7 +3,7 @@
   "author": "Ryota Murakami <dojce1048@gmail.com> (https://github.com/ryota-murakami)",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.21.0",
+  "packageManager": "pnpm@12.21.0+sha512.66fd8278ee28935ce951792d34367ff3af5c432a2756445823029533835b8da529bbe0be5130afd56ed0713fb8789e47bad82d93bd5ae2fe54b15562d6276ef0",
   "engines": {
     "node": "26.x"
   },
@@ -138,31 +138,5 @@
     "vite": "8.3.8",
     "vitest": "^5.1.0",
     "xml2js": "^0.6.2"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@code-inspector/core",
-      "@parcel/watcher",
-      "@sentry/cli",
-      "@swc/core",
-      "@tailwindcss/oxide",
-      "core-js-pure",
-      "esbuild",
-      "node-pty",
-      "sharp",
-      "unrs-resolver"
-    ],
-    "overrides": {
-      "brace-expansion": "5.0.8",
-      "dompurify": "3.4.12",
-      "esbuild": "0.28.1",
-      "postcss": "8.5.23",
-      "prismjs": "^1.30.0",
-      "sharp": "0.35.5",
-      "valibot": "1.4.2"
-    },
-    "patchedDependencies": {
-      "minimatch@3.1.5": "patches/minimatch@3.1.5.patch"
-    }
   }
 }
