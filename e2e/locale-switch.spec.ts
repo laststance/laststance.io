@@ -87,6 +87,12 @@ test.describe('English browser', () => {
     await page.setViewportSize(DESKTOP)
     await openHydrated(page, '/articles?page=2')
 
+    const englishCard = page.locator('article h2 a').first()
+    const href = await englishCard.getAttribute('href')
+    if (!href)
+      throw new Error('Expected the first article to link to its detail page')
+    const englishTitle = await englishCard.innerText()
+
     // Act
     await switchToJapanese(page)
 
@@ -95,6 +101,13 @@ test.describe('English browser', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: '記事' }),
     ).toBeVisible()
+    const japaneseCard = page.locator('article h2 a').first()
+    await expect(japaneseCard).toHaveAttribute('href', href)
+    await expect(japaneseCard).not.toHaveText(englishTitle)
+    const japaneseTitle = await japaneseCard.innerText()
+    await japaneseCard.click()
+    await expect(page.locator('article header h1')).toHaveText(japaneseTitle)
+    await expect(page.locator('[data-mdx-content]')).toContainText(/[ぁ-ヿ]/)
   })
 
   test('keeps #move-cursor when switching on keybinds', async ({ page }) => {
@@ -128,6 +141,42 @@ test.describe('English browser', () => {
     await expect(page.locator('article time')).toHaveText(
       /^\d{4}年\d{1,2}月\d{1,2}日$/,
     )
+  })
+
+  test('switches the article title, body and metadata in both directions on the same URL', async ({
+    page,
+  }) => {
+    // Arrange
+    const url = '/articles/What-does-T-keyof-T-mean'
+    await page.setViewportSize(DESKTOP)
+    await openHydrated(page, url)
+
+    // Act
+    await switchToJapanese(page)
+
+    // Assert
+    await expect(page).toHaveURL(url)
+    await expect(page).toHaveTitle(
+      'TypeScript の T[keyof T] は何を表すのか - Laststance.io',
+    )
+    await expect(
+      page.getByRole('heading', { name: '2つの演算子を重ねる' }),
+    ).toBeVisible()
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      /インデックスアクセス型はキーのユニオンに分配されます/,
+    )
+
+    // Act
+    await page.locator('header').getByRole('link', { name: TO_ENGLISH }).click()
+
+    // Assert
+    await expect(page).toHaveURL(url)
+    await expect(page).toHaveTitle('What does T[keyof T] mean? - Laststance.io')
+    await expect(
+      page.getByRole('heading', { name: 'Two operators, stacked' }),
+    ).toBeVisible()
+    await expect(page.locator('article')).toHaveAttribute('lang', 'en')
   })
 
   test('shows the chosen language on links prefetched before the switch', async ({

@@ -1,0 +1,24 @@
+import Image from 'next/image'
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Yarn は何を目指しているのだろう',
+  date: '2023-10-26',
+  description:
+    'Yarn v4 を試したものの、TypeScript プロジェクトの初期設定でつまずき、使うのをやめました。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+リリースされたばかりの [Yarn v4](https://yarnpkg.com/blog/release/4.0) で新しいプロジェクトを作り、`express` と TypeScript、続いて `@types/express` をインストールしました。
+ところが、@types/express は入れたはずなのに、TypeScript から型宣言ファイルが見つからないと言われます。
+不思議に思ってディレクトリを見ると、`node_modules` フォルダがありませんでした。
+
+パッケージを pnpm のように別の場所にまとめて保存すること自体は構いません。でも、インストールしたパッケージをそのまま使えないのは、パッケージマネージャーとして不思議な体験です。
+TypeScript のプロジェクトを始めるために、PnP という独自の仕組みを覚え、追加で設定する必要があるようです。
+
+この点で、私は pnpm の使い心地が好きです。
+依存関係の解決が分かりやすく、ストアでディスク容量も節約できます。そうした利点を、改めて何かを学ばずに得られます。
+
+開発者は皆忙しい。限られた勉強時間のうち、パッケージマネージャーに割ける時間はそう多くありません。

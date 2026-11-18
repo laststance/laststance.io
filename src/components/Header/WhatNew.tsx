@@ -71,7 +71,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild key="discontinuing-complete">
                 <Link href="/articles/Discontinuing-Complete-macOS-Autocomplete">
-                  Discontinuing Complete: Per-App Coordinate Calculation
+                  {t('articles.discontinuingComplete')}
                 </Link>
               </DialogClose>,
             ]}
@@ -81,7 +81,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild key="laststance-recap-december-2025">
                 <Link href="/articles/laststance-recap-december-2025">
-                  Laststance Recap: December 2025
+                  {t('articles.decemberRecap')}
                 </Link>
               </DialogClose>,
             ]}
@@ -107,7 +107,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/Laststance-Recap-November-2025">
-                  Laststance Recap: November 2025
+                  {t('articles.novemberRecap')}
                 </Link>
               </DialogClose>,
             ]}
@@ -125,7 +125,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/Cursor-built-in-browser-tool-list">
-                  Cursor built-in browser tool list
+                  {t('articles.cursorBrowserTools')}
                 </Link>
               </DialogClose>,
             ]}
@@ -135,7 +135,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/Understanding-CSS-fr-by-Reading-the-Original-Spec">
-                  Understanding CSS fr by Reading the Original Spec
+                  {t('articles.cssFr')}
                 </Link>
               </DialogClose>,
             ]}
@@ -146,7 +146,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/-eslint-config-ts-prefixer-v410-Released">
-                  🎉 eslint-config-ts-prefixer v4.1.0 released!
+                  {t('articles.eslintConfigRelease')}
                 </Link>
               </DialogClose>,
             ]}
@@ -157,12 +157,12 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/What-is-the-difference-between-position-fixed-and-sticky">
-                  Interactive Demo: Position Fixed vs Sticky
+                  {t('articles.fixedAndSticky')}
                 </Link>
               </DialogClose>,
               <DialogClose asChild>
                 <Link href="/articles/major-shadcn-ui-registry-libraries">
-                  Major Libraries Available in shadcn/ui Registry
+                  {t('articles.shadcnRegistries')}
                 </Link>
               </DialogClose>,
             ]}
@@ -172,7 +172,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/How-to-use-fakerseed">
-                  "How to use faker.seed()"
+                  {t('articles.fakerSeed')}
                 </Link>
               </DialogClose>,
             ]}
@@ -183,7 +183,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/Ive-just-released-git-gpt-commit-v090">
-                  "I've just released git-gpt-commit v0.9.0! 🎉"
+                  {t('articles.gitGptCommit')}
                 </Link>
               </DialogClose>,
             ]}
@@ -193,7 +193,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/I-created-Redux-Front-Page">
-                  I created Redux Front Page
+                  {t('articles.reduxFrontPage')}
                 </Link>
               </DialogClose>,
             ]}
@@ -206,7 +206,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/react-hook-form-examples">
-                  react-hook-form-offic-examples
+                  {t('articles.reactHookForm')}
                 </Link>
               </DialogClose>,
             ]}
@@ -217,7 +217,7 @@ const WhatNew: React.FC = () => {
             li={[
               <DialogClose asChild>
                 <Link href="/articles/Wanna-be-indie-hacker-an-ordinary-person">
-                  Wanna be indie hacker an ordinary person.
+                  {t('articles.indieHacker')}
                 </Link>
               </DialogClose>,
             ]}
@@ -226,7 +226,9 @@ const WhatNew: React.FC = () => {
             date="2024-01-18"
             li={[
               <DialogClose asChild>
-                <Link href="/articles/just-2024-list">Just 2024 list</Link>
+                <Link href="/articles/just-2024-list">
+                  {t('articles.list2024')}
+                </Link>
               </DialogClose>,
             ]}
           />
@@ -235,7 +237,7 @@ const WhatNew: React.FC = () => {
             date="2023-11-20"
             li={[
               t.rich('items.addArticle', {
-                title: 'Trying less energy coding',
+                title: t('articles.lessEnergy'),
                 link: (chunks) => (
                   <DialogClose asChild>
                     <Link href="/articles/Trying-less-energy-coding">
@@ -251,8 +253,7 @@ const WhatNew: React.FC = () => {
             date="2023-10-29"
             li={[
               t.rich('items.addPost', {
-                title:
-                  'Dropped eslint-plugin-sort-keys-custom-order from eslint-config-ts-prefixer@v1.12.0',
+                title: t('articles.eslintSortKeys'),
                 link: (chunks) => (
                   <DialogClose asChild>
                     <Link href="/articles/dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120">

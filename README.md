@@ -55,18 +55,11 @@ You can easily generate a new blog post template using the built-in script:
 pnpm gen
 ```
 
-This interactive CLI tool will:
-
-1. Prompt you for a post title
-2. Prompt you for a description
-3. Generate a new MDX file with the correct frontmatter
-4. Create the appropriate directory in `src/app/[locale]/articles/`
-
-The script automatically:
-
-- Uses the current date (JST timezone)
-- Creates a URL-friendly folder name based on the title
-- Sets up the proper article layout and metadata
+Enter the English title and description, then their Japanese translations.
+The generator creates a dated pair of MDX files and a page under
+`src/app/[locale]/articles/<slug>/`. Write the English body in `content.mdx`
+and the Japanese body in `content.ja.mdx`. Keep the author and publication
+date in sync. Run `pnpm gen:manifest` after editing the article metadata.
 
 ## English and Japanese
 
@@ -75,7 +68,7 @@ Visitors whose browser prefers Japanese get the site in Japanese. Everyone else 
 - `src/proxy.ts` rewrites `/about` to `/en/about` or `/ja/about`. The browser URL does not change. It picks the language from the `NEXT_LOCALE` cookie when present, otherwise from `Accept-Language`.
 - The switch links to `/ja/about`. The proxy answers with a 307 to `/about` and sets `NEXT_LOCALE` for one year (`LOCALE_COOKIE` in `src/i18n/routing.ts`). Nothing else writes the cookie, so visitors who never switch get none. `node scripts/verify-locale.mjs <url>` checks the redirect and the cookie.
 - All UI copy lives in `src/i18n/messages/en.ts`. `src/i18n/messages/ja.ts` has the same keys with Japanese text. Copy under `pages` is read only by Server Components and never reaches the browser. Every other namespace also reaches Client Components.
-- Article bodies, article titles, and OG image text stay English.
+- Article bodies, titles and summaries follow the selected language. Both editions share one URL. The RSS feed and the text rendered into OG images use English.
 
 To add a string:
 

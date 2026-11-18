@@ -1,0 +1,171 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'TypeScript の T[keyof T] は何を表すのか',
+  date: '2026-09-01',
+  description:
+    'インデックスアクセス型はキーのユニオンに分配されます。この規則を知ると、T[keyof T] が T のすべてのプロパティの値の型を集めたユニオンだと読み解けます。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+ライブラリの型定義で何年も `T[keyof T]` を目にして、そのたびに分かったつもりで読み流していました。でも、何をしているのか言葉にしようとすると詰まってしまう。実は、2つの演算子と、あまり明示されない1つの規則に分けて考えられます。
+
+## 2つの演算子を重ねる
+
+`keyof T` は**キーのユニオン**を返します。
+
+```ts
+interface User {
+  id: number
+  name: string
+  isAdmin: boolean
+}
+
+type UserKeys = keyof User
+// 'id' | 'name' | 'isAdmin'
+```
+
+`T[K]` は**インデックスアクセス型**です。値に対する `obj[key]` と同じことを、型の上で行います。
+
+```ts
+type Id = User['id'] // number
+type Name = User['name'] // string
+```
+
+この2つを重ねると、すべての**値の型**のユニオンが得られます。
+
+```ts
+type UserValues = User[keyof User]
+// number | string | boolean
+```
+
+## 読み解くための規則
+
+インデックスアクセスは**キーのユニオンに分配されます**。つまり、`T[A | B]` は `T[A] | T[B]` と同じです。
+
+```ts
+type Two = User['id' | 'name']
+// number | string
+```
+
+仕組みはそれだけです。`keyof User` はすでに `'id' | 'name' | 'isAdmin'` というユニオンなので、`User[keyof User]` と書くとコンパイラが次のように展開します。
+
+```ts
+User[keyof User]
+// → User['id' | 'name' | 'isAdmin']
+// → User['id'] | User['name'] | User['isAdmin']
+// → number | string | boolean
+```
+
+こう捉えると、ほかで同じパターンを見ても自分で読み解けます。
+
+## 実際に使う場面
+
+よく見かけるのは `typeof OBJ[keyof typeof OBJ]` という形です。普通のオブジェクトからリテラル値のユニオンを取り出せるので、`enum` の代わりに使えます。型を定義しても、実行時のコードは増えません。
+
+```ts
+const ROUTES = {
+  home: '/',
+  about: '/about',
+  blog: '/blog',
+} as const
+
+type Route = (typeof ROUTES)[keyof typeof ROUTES]
+// '/' | '/about' | '/blog'
+```
+
+`typeof ROUTES` で値から型を取り出し、`keyof` でキーを集め、インデックスアクセスで対応する値の型を取り出します。
+
+**`as const` が欠かせません。** 外すと各プロパティの型が `string` に広がり、ユニオンを作る前に個々のリテラル型が失われます。
+
+```ts
+const ROUTES = {
+  home: '/',
+  about: '/about',
+  blog: '/blog',
+}
+
+type Route = (typeof ROUTES)[keyof typeof ROUTES]
+// string  ← the literals are gone
+```
+
+利点は、実行時に使うデータと型を1か所で管理できることです。オブジェクトを定義すれば、型はそこから導けます。
+
+```ts
+function isRoute(value: string): value is Route {
+  return (Object.values(ROUTES) as string[]).includes(value)
+}
+```
+
+オブジェクトにルートを追加するだけで型にも反映されます。別の一覧を更新し忘れる心配がありません。
+
+## よく似た形の `T[number]`
+
+配列やタプルは数値でインデックスを指定するので、同じ演算子のキーを変えると要素の型が得られます。
+
+```ts
+const LEVELS = ['debug', 'info', 'warn', 'error'] as const
+
+type Level = (typeof LEVELS)[number]
+// 'debug' | 'info' | 'warn' | 'error'
+```
+
+ただし、ここは別の規則です。`number` は1つの型で、`0 | 1 | 2 | 3` というユニオンではありません。配列やタプルを `number` でインデックスすると、直接、その要素の型のユニオンになります。
+
+## 覚えておきたい3つのケース
+
+**オプショナルなプロパティがあると `undefined` も含まれます。** `?` はプロパティの型に影響し、インデックスアクセスでもその影響は残ります。
+
+```ts
+interface Config {
+  host: string
+  port?: number
+}
+
+type ConfigValues = Config[keyof Config]
+// string | number | undefined
+```
+
+**インデックスシグネチャでは、結果はその値の型になります。** 集める値の型が1種類だからです。
+
+```ts
+interface Dict {
+  [key: string]: number
+}
+
+type DictKeys = keyof Dict // string | number
+type DictValues = Dict[keyof Dict] // number
+```
+
+（文字列のインデックスシグネチャに `keyof` を使うと `number` も含まれます。JavaScript では `obj[0]` と `obj['0']` が同じプロパティを指すためです。）
+
+**空のオブジェクトでは `never` になります。** `keyof {}` は `never` で、`never` をキーにしても結果は `never` です。
+
+```ts
+type Nothing = {}[keyof {}] // never
+```
+
+ジェネリックがいつの間にか `never` になったら思い出してみてください。たいていは `T` を制約しすぎています。
+
+## ジェネリックなアクセサーとの違い
+
+典型例は次のアクセサーです。`K extends keyof T` でキーを絞ると、`T[K]` はそのキーに対応する値の型を返します。
+
+```ts
+function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]
+}
+
+const name = getValue({ id: 1, name: 'Raphtalia' }, 'name')
+// string, not string | number
+```
+
+`K` を1つのキーに絞った `T[K]` から得られるのは**1つ**の型です。一方、`T[keyof T]` はすべてのキーを一度に渡すので、**すべての値の型のユニオン**になります。同じ演算子でも、渡すキーで結果が変わります。
+
+## 一言でまとめると
+
+**`keyof T` はキーのユニオン、`T[K]` は型の参照です。参照はキーのユニオンに分配されるので、`T[keyof T]` は `T` のすべての値の型のユニオンになります。**
+
+上の例はすべて、TypeScript 6.0 で `strict` を有効にして型チェックしました。

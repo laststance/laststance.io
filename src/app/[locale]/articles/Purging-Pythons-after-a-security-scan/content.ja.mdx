@@ -1,0 +1,138 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Pillow の脆弱性を調べたら、Mac の Python を3つ片付けることになった',
+  date: '2026-11-01',
+  description:
+    '脆弱なパッケージを更新するつもりが、Homebrew、昔の python.org インストーラー、pyenv、Xcode CLT、バージョン別のユーザーサイトまで棚卸しすることに。検出から整理までの記録です。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+Mac に入っているソフトを定期的に棚卸しして、OSV の既知の脆弱性と照合しています。今週はユーザーの site-packages にある Python パッケージがいくつか引っかかりました。
+
+- **Pillow 12.1.0** では、不正な画像を処理するとメモリが破壊される問題（[CVE-2026-96639](https://github.com/advisories/GHSA-v9pv-5gc8-w2m6) ほか）。
+- **pypdf 6.19.0** では、壊れた PDF を処理すると無限ループに陥る問題（[CVE-2026-119203](https://github.com/advisories/GHSA-5849-834g-hvw5)）。
+- **certifi** では、同梱の CA ストアに侵害された emSign のルート証明書が含まれている問題（[GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2)）。
+- 自作ツールの `uv.lock` にも **Pillow 12.3.0**、**asyncssh 2.23.1**、**cryptography 47.0.0** が残っていました。
+
+最初は、どこに入っているかを調べて更新すれば終わると思っていました。10分ほどで、その「どこに」が一番難しいと気づきます。
+
+## そもそも、どの Python に入っている？
+
+こんなにたくさんの Python を自分で入れた覚えはありません。調べてみると、こうなっていました。
+
+| Python                            | インストールされた経緯                                                                                              |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `/usr/bin/python3` (3.9)          | Apple が Xcode Command Line Tools とともに提供するもの。ここは触りません。                                          |
+| `/opt/homebrew/bin/python3.13`    | Homebrew。`memo` と `git-filter-repo` の依存関係として入りました。                                                  |
+| `/opt/homebrew/bin/python3.14`    | Homebrew。`gcloud-cli` など計6つのツールが必要としています。                                                        |
+| `/opt/homebrew/bin/python3.15`    | Homebrew。`ansible`、`nmap`、`yt-dlp` などの依存です。バージョンを指定しない `python3` と `pip3` の実体もこれです。 |
+| `/usr/local/bin/python3` (3.13.7) | 昔入れて忘れていた、python.org の `.pkg` インストーラー由来です。                                                   |
+| pyenv                             | Homebrew で入れた単独のパッケージ。shim も残っていました。                                                          |
+| uv 管理の環境                     | `~/.local/share/uv/tools/` の中に CLI ツールごとに独立した venv があります。                                        |
+
+数えてみればインタープリターは7系統。pip は `ensurepip` 経由で CPython に同梱されるため、それぞれに専用の pip があります。`pip3.13`、`pip3.14`、`pip3.15` は別々の実行ファイルです。素の `pip` は一番新しい Homebrew の Python、このときは 3.15 を指していました。
+
+脆弱なパッケージがあったのは、**バージョンごとのユーザーサイト**でした。
+
+- `~/Library/Python/3.9/` には `requests`、`aiohttp`、`pyyaml`、`pypdf`、`certifi`。スクリプト先頭の shebang から、Xcode.app 同梱の Python がインストールしたと分かりました。
+- `~/Library/Python/3.14/` には `pillow` など。こちらが事実上のメイン環境になっていました。
+
+つまり、記事の手順を見て `pip install pypdf` を実行するたび、その日の PATH で先に見つかった `pip` にインストールしていたわけです。
+
+## 更新しようとすると PEP 668 にぶつかる
+
+Homebrew の 3.14 環境で Pillow を更新しようとすると、さっそく `externally-managed-environment` と表示されました。
+
+```bash
+python3.14 -m pip install --user -U --break-system-packages pillow
+```
+
+PEP 668 は、グローバルに見つかった環境へ手当たり次第に pip install する運用を防ぐための仕組みです。`--user` と `--break-system-packages` を組み合わせると、自分のユーザーサイトに入れることを明示できます。ディストリビューションや Homebrew が管理する環境に勝手に書き込まないための区別です。
+
+自作ツール `vmc` のロックファイル（`uv.lock`）は、pyproject の制約を `>=11,<14` に緩めてから `uv lock --upgrade-package certifi pillow` を実行し、certifi を 2026.10.23、Pillow を 13.0.0 に更新しました。
+
+## 更新スクリプトの見落とし
+
+今後も更新できるように、ユーザーサイトのパッケージをまとめて更新するシェルスクリプトを書き、dotfiles の `~/.config/fish/functions/pip_upgrade.fish` に fish 関数として置きました。
+
+最初の版は Python 3.14 と CLT の 3.9 を決め打ちしていました。ところが素の `pip` は **3.15** を指していて、そこに入れたものが永遠に更新されません。修正後はインタープリターを動的に列挙します。
+
+```bash
+set -l interpreters /usr/bin/python3
+for py in /opt/homebrew/bin/python3.*
+    if string match -rq '^python3\.[0-9]+$' -- (basename "$py")
+        set -a interpreters "$py"
+    end
+end
+```
+
+各インタープリターで `python -m pip` が動くことを確認し、`--user --outdated` に該当するパッケージを freeze 形式で列挙して更新します。`--break-system-packages` は、その pip の `install --help` に表示される場合だけ付けます。3.9 の pip はこのオプションを知らず、渡すとエラーになるためです。将来 Homebrew に `python3.16` が加わっても、自動で対象になります。
+
+## pip と uv、それぞれの役割
+
+調べるうちに、この2つが何を管理しているのかも整理できました。
+
+- **pip** はインタープリターごとの付属品です。Python が N 個あれば専用の pip も N 個あり、それぞれ自分の環境にパッケージを入れます。
+- **uv** は Rust 製の単独バイナリです。Homebrew の `uv` を明示的に入れていて、uv 自身に Python は要りません。外側から Python を管理し、`uv tool install` は CLI ごとに venv を作り、`uv lock` と `uv sync` はプロジェクトの依存を管理します。`uv python install` は pyenv の代わりにもなります。
+
+この整理で、自分の環境で `pip --user` が必要なのは、「どこからでも import したいライブラリ」を 3.14 のユーザーサイト1か所に入れるときだけだと分かりました。残りは uv に任せます。正直、いまの Python ツールチェーンで一番すんなり理解できたのは `uv` でした。
+
+## 不要になった環境を整理する
+
+何がどこにあるか分かると、自分の Mac からどれを消すかも判断できました。以下はそのときの作業記録です。
+
+```bash
+# pyenv — a leftover leaf package I no longer use
+brew uninstall pyenv          # also autoremoved openjdk@25 (+388MB)
+rm -rf ~/.pyenv               # shims, versions, the works
+# + removed its lazy-load block from dotfiles conf.d
+
+# python.org 3.13.7 — forgotten .pkg install
+sudo rm -rf /Library/Frameworks/Python.framework        # 303MB
+sudo find /usr/local/bin -type l -lname '*Library/Frameworks/Python*' -delete   # 18 symlinks
+sudo rm -rf "/Applications/Python 3.13"
+sudo pkgutil --forget org.python.Python.{PythonDocumentation,PythonFramework,PythonApplications,PythonUnixTools}-3.13
+
+# Xcode-Python's user site — its pypdf/certifi were the flagged versions,
+# so deleting the site WAS the remediation
+rm -rf ~/Library/Python/3.9
+```
+
+副産物もありました。`type -a python3` を実行すると `/opt/homebrew/bin/python3` が2回表示されたのです。dotfiles の `10-path.fish` で `fish_user_paths` と設定ファイルの両方が同じパスを先頭に足していました。重複を取り除いてから先頭に追加するよう修正しました。
+
+```bash
+set -gx PATH /opt/homebrew/bin (string match -v /opt/homebrew/bin $PATH)
+```
+
+（bun にも同じ方法を使い、`set -q BUN_INSTALL` で設定の有無を確認しています。）
+
+## 今回は更新できなかったもの
+
+依存関係がかみ合わず、2つの指摘が残りました。
+
+```text
+asyncssh fix (2.24.0)     → cryptography>=48.0.1 が必要
+cryptography 48+          → TripleDES を decrepit モジュールに移動
+AsyncVNC 1.3.0（当時の最新版）   → 古い場所から TripleDES を import するため、48 以降で ImportError
+```
+
+asyncssh には asyncio のイベントループが停止する問題（[CVE-2026-62949](https://github.com/advisories/GHSA-rw4j-r22c-9gc3)）があり、cryptography にも脆弱な OpenSSL を同梱した wheel（[GHSA-537c-gmf6-5ccf](https://github.com/advisories/GHSA-537c-gmf6-5ccf)）、証明書パス構築の計算量が指数的に増える問題（[CVE-2026-69249](https://github.com/advisories/GHSA-jwv3-5hgf-82ww)）、`permittedSubtrees` のワイルドカード検証の回避（[CVE-2026-69248](https://github.com/advisories/GHSA-m2h6-j472-rp4c)）、PKCS#7 の Bleichenbacher オラクル（[CVE-2026-69247](https://github.com/advisories/GHSA-g6cj-pr64-35w5)）がありました。私の用途はローカルツールから自分の VM へ SSH 接続することです。この利用範囲と残るリスクを記録し、今回は受け入れる判断をしました。AsyncVNC が 48 対応版を出せば `cryptography>=44,<48` の固定を外してまとめて更新できます。
+
+## 整理後の構成
+
+```text
+python3        → /opt/homebrew/bin/python3   (3.15.2, Homebrew)
+python3.13/14  → ツールが依存している Homebrew 版を維持
+/usr/bin/python3 → Xcode CLT 3.9（Apple 管理のため、そのまま）
+python         → 該当なし。これでよし。
+pyenv          → 削除済み
+python.org     → 削除済み
+~/Library/Python/ → 意図して使う 3.14 のユーザーサイトだけ
+uv             → CLI ツールとプロジェクトのロックファイルを管理
+pip_upgrade    → 各インタープリターを動的に探して更新する fish 関数
+```
+
+難しかったのはスキャンそのものより、報告に出たパッケージが**どの Python に属するのか**を突き止めることでした。Python のパッケージ管理は複雑ですが、今回の混乱の多くは、入れたまま忘れたインストーラー、使わなくなった pyenv、バージョンごとに増えたユーザーサイトの積み重ねでした。今はアプリを `uv tool`、プロジェクトを `uv lock`、唯一のユーザーサイトを `pip_upgrade` で管理し、それ以外は片付ける方針です。

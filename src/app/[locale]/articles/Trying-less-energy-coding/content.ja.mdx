@@ -1,0 +1,15 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'もっと肩の力を抜いてコードを書きたい',
+  date: '2023-11-19',
+  description: '手を動かすたびに全力で集中しなくても済むように。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+最近は、もっと少ないエネルギーでコードを書くにはどうすればいいかを考えています。
+
+[Joshua K. Goldberg の Twitch 配信](https://www.twitch.tv/joshuakgoldberg) を見て驚きました。息をするような速さで文章を打ち、次々と Issue を報告していたんです。
+あんなふうにコードを書いたり、PR の説明を書いたりできたら、仕事もはかどるし、もっと気楽にプログラミングを楽しめそうです。

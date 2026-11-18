@@ -1,14 +1,8 @@
-import type { Metadata } from 'next'
+import { createArticlePage } from '@/lib/createArticlePage'
 
-import Content, { article } from './content.mdx'
+import * as ja from './content.ja.mdx'
+import * as en from './content.mdx'
 
-export const metadata: Metadata = {
-  title: article.title,
-  description: article.description,
-  openGraph: {
-    title: article.title,
-    images: [`/api/og?title=${encodeURIComponent(article.title)}`],
-  },
-}
+const { ArticlePage, generateMetadata } = createArticlePage({ en, ja })
 
-export default Content
+export { ArticlePage as default, generateMetadata }

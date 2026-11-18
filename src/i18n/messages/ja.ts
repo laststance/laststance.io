@@ -60,6 +60,25 @@ const ja = {
     title: '更新履歴',
     description: 'このサイトの最新の更新内容と変更点',
     listLabel: '更新履歴の一覧',
+    articles: {
+      discontinuingComplete: 'Complete の開発終了とアプリごとの座標計算',
+      decemberRecap: 'Laststance 開発月報 2025年12月',
+      novemberRecap: 'Laststance 開発月報 2025年11月',
+      cursorBrowserTools: 'Cursor 内蔵ブラウザーのツール一覧',
+      cssFr: 'CSS の fr 単位を仕様書から読み解く',
+      eslintConfigRelease: '🎉 eslint-config-ts-prefixer v4.1.0 をリリース',
+      fixedAndSticky: 'デモで比べる position: fixed と sticky',
+      shadcnRegistries: 'shadcn/ui のレジストリで使える主要ライブラリ',
+      fakerSeed: 'faker.seed() の使い方',
+      gitGptCommit: 'git-gpt-commit v0.9.0 をリリースしました 🎉',
+      reduxFrontPage: 'Redux Front Page を作りました',
+      reactHookForm: 'React Hook Form の公式サンプル集',
+      indieHacker: '平凡な自分もインディーハッカーになりたい',
+      list2024: '2024年にやりたいことリスト',
+      lessEnergy: 'もっと肩の力を抜いてコードを書きたい',
+      eslintSortKeys:
+        'eslint-config-ts-prefixer v1.12.0 からキー並べ替えプラグインを削除',
+    },
     items: {
       addNewProjects: 'プロジェクトページに新しいプロジェクトを追加',
       projectsRedesign:

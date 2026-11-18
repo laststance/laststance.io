@@ -1,0 +1,142 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title:
+    'Go To Definition for JSDoc を公開しました。import を足さずに定義へ移動',
+  date: '2026-06-15',
+  description:
+    '移動のためだけに import を追加せず、JSDoc の {@link SymbolName} から TypeScript ワークスペース内のシンボルへ移動できる、小さな VS Code 拡張機能です。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+**Go To Definition for JSDoc** という小さな VS Code 拡張機能を作りました。
+
+- [GitHub リポジトリ](https://github.com/laststance/go-to-definition-for-jsdoc)
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc)
+- [Open VSX Registry](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc)
+
+<video
+  aria-label="JSDoc リンクから TypeScript のシンボルへ「定義へ移動」でジャンプするデモ"
+  controls
+  muted
+  playsInline
+  preload="metadata"
+  poster="/videos/go-to-definition-for-jsdoc/code-jump-demo-poster.png"
+  style={{ width: '100%', borderRadius: 12, margin: '2rem 0' }}
+>
+  <source
+    src="/videos/go-to-definition-for-jsdoc/code-jump-demo.mp4"
+    type="video/mp4"
+  />
+  お使いのブラウザーは video タグに対応していません。
+</video>
+
+解決したかったのは、JSDoc のコメントにシンボルへの参照があるとき、そのファイルで対象を import していなくても、**定義へ移動**（Go to Definition）でそこに飛びたい、という小さな不便です。
+
+```ts
+/**
+ * Reads drawing settings from the shared query.
+ * See {@link 'useReadableDrawingItemSettingsQuery'}.
+ */
+export function readDrawingSettings() {
+  // ...
+}
+```
+
+リンク先のシンボル名にカーソルを置いて VS Code の **定義へ移動**を実行すると、拡張機能がワークスペース内でシンボルの解決を試みます。
+
+---
+
+## なぜ作ったのか
+
+JSDoc コメントから別ファイルにリンクする方法について、TypeScript で長く続いている議論があります。
+
+[microsoft/TypeScript#47718（JSDoc コメントから他のファイルにリンクする方法の提案）](https://github.com/microsoft/TypeScript/issues/47718)
+
+そのスレッドでは主に、相対ファイルリンク、ホバー時に表示されるリンク、TypeScript のプロトコル対応が議論されています。この拡張機能が扱うのは、そのうちもっと小さな問題です。
+
+> リンク先がシンボル名なら、今すぐ「定義へ移動」を使えるようにしたい。
+
+TypeScript プロジェクトではよくある悩みです。TypeScript が参照を解決できるように型や値を import すれば、JSDoc リンクは機能します。
+
+```ts
+import type { useReadableDrawingItemSettingsQuery } from './queries'
+
+/**
+ * See {@link useReadableDrawingItemSettingsQuery}.
+ */
+```
+
+これでリンクは機能しますが、ドキュメントのために依存関係を追加することになります。import の自動整理や lint ルールと衝突することもありますし、コメントのためだけに import を増やしたくない場合もあります。
+
+私は、コメントはコメントのままにしておきたかったのです。
+
+---
+
+## 対応範囲
+
+よく使われる JSDoc のインラインリンク形式に対応しています。
+
+```ts
+/**
+ * {@link SymbolName}
+ * {@link 'SymbolName'}
+ * {@link "SymbolName"}
+ * {@link Namespace.SymbolName}
+ * {@linkplain SymbolName}
+ * {@linkcode SymbolName}
+ */
+```
+
+拡張機能が有効になるのは、TypeScript、TSX、JavaScript、JSX ファイルです。
+
+検索の流れはシンプルです。
+
+1. VS Code のワークスペースシンボルプロバイダーに、完全一致するシンボルを問い合わせる。
+2. 見つからなければ、TypeScript の AST を使って TypeScript と JavaScript のファイルを調べる。
+3. `node_modules`、`dist`、`out`、`.next`、`.git` など、生成物や依存関係のフォルダーは検索から除外する。
+
+このフォールバックは、プロバイダーがまだシンボルをインデックスに登録していない場合や、ソースにあるシンボルをワークスペースシンボル API でうまく取得できない場合に役立ちます。
+
+---
+
+## 相対ファイルリンクについて
+
+TypeScript や VS Code で次のような相対ファイルリンクをネイティブに扱えるようにするには、本体側の対応が必要です。
+
+```ts
+/**
+ * See {@link ./some-file.ts}.
+ */
+```
+
+これは先ほどの issue で議論されている、TypeScript と VS Code の設計上の課題です。何を基準にした相対パスか、ホバー表示の Markdown にどう表現するか、名前の変更や移動のリファクタリングでどう更新するか。エディターや言語サービスの側で決める必要があります。
+
+この拡張機能はシンボルへの移動に範囲を絞っています。その分、実装が小さく、動作も予測しやすくなっています。
+
+---
+
+## インストール
+
+次のいずれかのレジストリからインストールできます。
+
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc)
+- [Open VSX Registry](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc)
+
+ソースコードはこちらです。
+
+[laststance/go-to-definition-for-jsdoc](https://github.com/laststance/go-to-definition-for-jsdoc)
+
+インストール後、対応する JSDoc リンクのリンク先にカーソルを置き、**定義へ移動**を実行してください。
+
+---
+
+## この形にした理由
+
+ドキュメントのリンクは、気軽に書けるほうがいいと思います。
+
+コメントから移動できるようにするだけで import や型エイリアスの管理、環境ごとの `file://` の使い分けが必要なら、私はリンクを書かなくなるでしょう。ネイティブ対応には及びませんが、小さなエディター拡張でも、リンクを書く手間は減らせます。
+
+v0.0.3 では、ここまでで十分です。

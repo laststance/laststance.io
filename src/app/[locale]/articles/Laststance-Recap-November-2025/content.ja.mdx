@@ -1,0 +1,153 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Laststance 開発月報 2025年11月',
+  date: '2025-12-05',
+  description:
+    '18プロジェクトで350コミット、20件の PR をマージし、8件をリリース。新規プロジェクトと今月の変更を振り返ります。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+11月の Laststance では、18のプロジェクトで350コミット、20件の PR のマージ、8件のリリースがありました。新たに3つのプロジェクトを公開し、既存アプリにはテーマ機能を実装しました。フレームワークの移行も進んだ1か月を振り返ります。
+
+## <a href="https://laststance.github.io/complete/" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">complete</a>
+
+Swift で作った、macOS のアプリを横断して使える入力補完ツールです。
+
+**今月の変更**
+
+- [macOS 全体で使える入力補完アプリ v1.0.0 を公開](https://github.com/laststance/complete/commit/7f39c49ef3853cc23d11256dd77c1165b75e1354)
+  - キーボードで候補を選択でき、フォーカスも自動で管理する macOS ネイティブツールの初回リリースです。
+
+- [アプリ全体に依存性注入を導入](https://github.com/laststance/complete/commit/5b14006af05c696a96ea90c17903a6f8aba20522)
+  - すべてのコンポーネントで依存関係を外から渡せるようにし、テストとメンテナンスをしやすくしました。
+
+- [AccessibilityManager を役割ごとの5つのクラスに分割](https://github.com/laststance/complete/commit/4d7d76f2a399a1abe8b9fe15a6cbe94904a644d6)
+  - 機能が集中していた巨大なクラスを分割し、それぞれが1つの責任を持つよう整理しました。
+
+---
+
+## <a href="https://coffee-timer-laststance.vercel.app/en" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">coffee-timer</a>
+
+豊富なテーマとアクセシビリティ機能を備えた PWA のタイマーです。
+
+**今月の変更**
+
+- [Apple の Liquid Glass を取り入れたテーマを実装](https://github.com/laststance/coffee-timer/commit/cafec490d796b825b50c74b19af4d283f32c8d7f)
+  - ガラスの質感を生かしたデザインを7種類のバリエーションから選べるようにしました。
+
+- [高コントラストモードの文字色を OKLCH で算出](https://github.com/laststance/coffee-timer/pull/18)
+  - 人間の知覚に近い色空間を使い、どのテーマでも文字を読みやすくしました。
+
+- [見た目の変化を検出する回帰テストを追加](https://github.com/laststance/coffee-timer/commit/3aef79ebcb14f0297605b429b7ab6b8c79ff18f6)
+  - Playwright によるビジュアルテストで、意図しない表示の変化を検出できるようにしました。
+
+---
+
+## <a href="https://github.com/laststance/corelive" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">corelive</a>
+
+Electron で作った、個人用のタスク管理・ナビゲーションアプリです。
+
+**今月の変更**
+
+- [100種類以上のテーマに対応する CoreLive のデザインシステムを実装](https://github.com/laststance/corelive/commit/1ebbe64f5b5cb794b16677a2bae0227e6d2e4c35)
+  - テーマの基盤を整備し、利用者が幅広い選択肢から好みの表示を選べるようにしました。
+
+- [データベースアダプターを導入し、Prisma を v6 から v7 に移行](https://github.com/laststance/corelive/commit/dceaff4c419fa73cf3f1dae43816e45f8dccd499)
+  - ESM に対応し、データベースの扱いも改善しました。
+
+- [IPC で FloatingNavigator とメインウィンドウのタスクを同期](https://github.com/laststance/corelive/pull/9)
+  - どちらのウィンドウで操作しても、タスクの変更をもう一方に反映します。
+
+---
+
+## <a href="https://github.com/laststance/react-next-eslint-plugin" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">react-next-eslint-plugin</a>
+
+React と Next.js のコードをチェックする ESLint プラグインです。
+
+**今月の変更**
+
+- [v1.0.0 を公開し、useCallback・useMemo の安定性を検査するルールを追加](https://github.com/laststance/react-next-eslint-plugin/releases/tag/1.0.1)
+  - コミュニティからの貢献も取り入れ、React のパフォーマンスに関する推奨パターンを検査する初の安定版を公開しました。
+
+- [no-direct-use-effect ルールを追加](https://github.com/laststance/react-next-eslint-plugin/commit/1b0402f23ff63fa70c6ffe195fd734b4f95b90cc)
+  - コンポーネントから useEffect を直接呼ぶ箇所を検出し、カスタムフックへの切り出しを促します。
+
+- [ESLint 9.0 以降の flat config に対応](https://github.com/laststance/react-next-eslint-plugin/pull/8)
+  - ESLint の新しい設定形式で利用できるようにしました。
+
+---
+
+## <a href="https://nsx.malloc.tokyo/" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">nsx</a>
+
+コンテンツの配信を自動投稿できる Web プラットフォームです。
+
+**今月の変更**
+
+- [pnpm deploy でデプロイ先でのインストールを不要に](https://github.com/laststance/nsx/pull/3636)
+  - 依存パッケージを事前に同梱し、サーバーでインストールする時間を大幅に短縮しました。
+
+- [Prisma v7 に移行し、ESM に対応](https://github.com/laststance/nsx/commit/ff064ab51ed6fa85128016550c83ffd19a43432a)
+  - esbuild と Prisma 7 の組み合わせで ESM 対応を改善し、ビルドを高速化しました。
+
+- [名前とパスワードを更新できるプロフィール編集を追加](https://github.com/laststance/nsx/pull/3623)
+  - 設定パネルからプロフィールを変更できるようになりました。
+
+---
+
+## <a href="https://github.com/laststance/laststance.io" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">laststance.io</a>
+
+Laststance の公式サイト兼ブログです。
+
+**今月の変更**
+
+- [Sentry を組み込み、エラーを追跡](https://github.com/laststance/laststance.io/commit/e6a730bc6ed49bfaa3b8a70b53c33c7d0118d333)
+  - 本番で起きた問題にすぐ気づき、原因を調べられるようにしました。
+
+- [xml2js から fast-xml-parser に移行](https://github.com/laststance/laststance.io/commit/5c425607e6db7c53f80f8c0ea46a5f28eb4ec3a5)
+  - XML 解析ライブラリを入れ替え、処理を高速化して API の扱いも簡単にしました。
+
+- [Spec Kit の実用性と CSS の fr 単位についての記事を公開](https://github.com/laststance/laststance.io/commit/c41a6610ddda2a25bdbee2866c3b96581eefb6cd)
+  - Claude Code のツールと CSS Grid を題材に、開発で学んだことを紹介しました。
+
+---
+
+## <a href="https://website-eslint-config-ts-prefixer.vercel.app/" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">eslint-config-ts-prefixer</a>
+
+typescript-eslint の推奨ルールを拡張する、最小限の TypeScript 向け ESLint 設定です。
+
+**今月の変更**
+
+- [v4.1.0 で TypeScript のルールを強化し、依存関係を更新](https://github.com/laststance/eslint-config-ts-prefixer/releases/tag/4.1.0)
+  - 新しいルールを加え、TypeScript のコードをチェックする設定を改善しました。
+
+---
+
+## <a href="https://github.com/laststance/create-web-site" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">create-web-site</a>
+
+新しい Web プロジェクトのひな形を素早く作る CLI です。
+
+**今月の変更**
+
+- [Prettier と Husky を組み込んだ初回リリース v1.0.5](https://github.com/laststance/create-web-site/releases/tag/1.0.5)
+  - コード整形と Git フックの設定を済ませた状態でプロジェクトを始められます。
+
+---
+
+## <a href="https://github.com/laststance/npm-publish-tool" target="_blank" rel="noopener noreferrer" className="no-underline text-inherit hover:text-inherit">npm-publish-tool</a>
+
+npm パッケージの公開手順を簡単にする CLI です。
+
+**今月の変更**
+
+- [v1.6.13 で CLI テストを追加し、バージョン選択を修正](https://github.com/laststance/npm-publish-tool/releases/tag/v1.6.13)
+  - テストの範囲を広げ、リリース手順の一部で起きていた不具合を修正しました。
+
+---
+
+## 11月を振り返って
+
+11月は complete、react-next-eslint-plugin、create-web-site の3つが生まれました。coffee-timer の Liquid Glass や corelive の100種類以上のテーマなど、使う人が自分の好みに合わせて見た目を変えられるようになった月でもあります。
+react-next-eslint-plugin の JSDoc に貢献してくれた @shanaya-Gupta をはじめ、協力してくださった皆さんに感謝します。今月は8件をリリースできました。これからも Web とデスクトップの両方で開発を続けていきます。

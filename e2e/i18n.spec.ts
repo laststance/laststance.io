@@ -90,7 +90,7 @@ test.describe('Japanese browser', () => {
     expect(problems).toEqual([])
   })
 
-  test('shows the article date in Japanese while the article stays English', async ({
+  test('opens the Japanese article body, heading and date on a first visit', async ({
     page,
   }) => {
     // Arrange
@@ -100,12 +100,15 @@ test.describe('Japanese browser', () => {
     await page.goto('/articles/Laststance-Recap-November-2025')
 
     // Assert
-    const article = page.locator('article[lang="en"]')
+    const article = page.locator('article[lang="ja"]')
     await expect(
       article.getByRole('heading', {
         level: 1,
-        name: 'Laststance Recap: November 2025',
+        name: 'Laststance 開発月報 2025年11月',
       }),
+    ).toBeVisible()
+    await expect(
+      article.getByText(/11月の Laststance では、18のプロジェクトで/),
     ).toBeVisible()
     await expect(article.locator('time')).toHaveText('2025年12月5日')
     expect(problems).toEqual([])

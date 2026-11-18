@@ -2,427 +2,907 @@
 // DO NOT EDIT BY HAND — changes are overwritten on the next prebuild/predev.
 // Refresh after adding or editing an article: `pnpm gen:manifest`.
 
-import type { ArticleWithSlug } from './articles'
+import type { ArticleManifestEntry } from './articles'
 
-export const articlesManifest: ArticleWithSlug[] = [
+export const articlesManifest: ArticleManifestEntry[] = [
   {
     "slug": "Purging-Pythons-after-a-security-scan",
     "author": "Ryota Murakami",
-    "title": "A security scan flagged Pillow. I ended up deleting three Pythons.",
     "date": "2026-11-01",
-    "description": "What started as \"just update the vulnerable packages\" turned into a full audit of my Mac's Python chaos — Homebrew Pythons installed as dependencies, a forgotten python.org installer, pyenv, Xcode CLT stubs, and per-version user sites. This is the whole journey from findings to purge."
+    "editions": {
+      "en": {
+        "title": "A security scan flagged Pillow. I ended up deleting three Pythons.",
+        "description": "What started as \"just update the vulnerable packages\" turned into a full audit of my Mac's Python chaos — Homebrew Pythons installed as dependencies, a forgotten python.org installer, pyenv, Xcode CLT stubs, and per-version user sites. This is the whole journey from findings to purge."
+      },
+      "ja": {
+        "title": "Pillow の脆弱性を調べたら、Mac の Python を3つ片付けることになった",
+        "description": "脆弱なパッケージを更新するつもりが、Homebrew、昔の python.org インストーラー、pyenv、Xcode CLT、バージョン別のユーザーサイトまで棚卸しすることに。検出から整理までの記録です。"
+      }
+    }
   },
   {
     "slug": "What-does-T-keyof-T-mean",
     "author": "Ryota Murakami",
-    "title": "What does T[keyof T] mean?",
     "date": "2026-09-01",
-    "description": "Indexed access distributes over unions. That single rule turns T[keyof T] from noise into the union of every value type in T."
+    "editions": {
+      "en": {
+        "title": "What does T[keyof T] mean?",
+        "description": "Indexed access distributes over unions. That single rule turns T[keyof T] from noise into the union of every value type in T."
+      },
+      "ja": {
+        "title": "TypeScript の T[keyof T] は何を表すのか",
+        "description": "インデックスアクセス型はキーのユニオンに分配されます。この規則を知ると、T[keyof T] が T のすべてのプロパティの値の型を集めたユニオンだと読み解けます。"
+      }
+    }
   },
   {
     "slug": "Native-link-Stops-at-Imports-Help-Push-TypeScript-Past-It",
     "author": "Ryota Murakami",
-    "title": "Native {@link} Stops at Imports — Help Push TypeScript Past It",
     "date": "2026-07-31",
-    "description": "VS Code already resolves {@link} for symbols the current file imports, and gives up on everything else. Go To Definition for JSDoc closes that gap today — and if enough projects adopt it, that is evidence TypeScript could support it natively."
+    "editions": {
+      "en": {
+        "title": "Native {@link} Stops at Imports — Help Push TypeScript Past It",
+        "description": "VS Code already resolves {@link} for symbols the current file imports, and gives up on everything else. Go To Definition for JSDoc closes that gap today — and if enough projects adopt it, that is evidence TypeScript could support it natively."
+      },
+      "ja": {
+        "title": "TypeScript の {@link} で import していないシンボルにもジャンプしたい",
+        "description": "VS Code は、現在のファイルが import しているシンボルなら {@link} をたどれます。Go To Definition for JSDoc はその先も探します。実際に使うプロジェクトが増えれば、TypeScript 標準での対応を後押しできます。"
+      }
+    }
   },
   {
     "slug": "Go-To-Definition-for-JSDoc-Released",
     "author": "Ryota Murakami",
-    "title": "Go To Definition for JSDoc: symbol jumps without throwaway imports",
     "date": "2026-06-15",
-    "description": "A small VS Code extension for jumping from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding imports just for navigation."
+    "editions": {
+      "en": {
+        "title": "Go To Definition for JSDoc: symbol jumps without throwaway imports",
+        "description": "A small VS Code extension for jumping from JSDoc {@link SymbolName} references to TypeScript workspace symbols without adding imports just for navigation."
+      },
+      "ja": {
+        "title": "Go To Definition for JSDoc を公開しました。import を足さずに定義へ移動",
+        "description": "移動のためだけに import を追加せず、JSDoc の {@link SymbolName} から TypeScript ワークスペース内のシンボルへ移動できる、小さな VS Code 拡張機能です。"
+      }
+    }
   },
   {
     "slug": "disallowed-tools-Is-a-Choice-Budget-Lever",
     "author": "Ryota Murakami",
-    "title": "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",
     "date": "2026-05-28",
-    "description": "Claude Code v2.1.152 quietly added `disallowed-tools` to Skill frontmatter. My first reaction was to file it as a 4th Skills lever for trimming initial context — that turned out to be wrong, but the thing it actually does is more interesting: it spends Claude's reasoning budget more carefully by shrinking the tool selection space."
+    "editions": {
+      "en": {
+        "title": "`disallowed-tools` Isn't a Context Cutter — It's a Choice Budget Lever",
+        "description": "Claude Code v2.1.152 quietly added `disallowed-tools` to Skill frontmatter. My first reaction was to file it as a 4th Skills lever for trimming initial context — that turned out to be wrong, but the thing it actually does is more interesting: it spends Claude's reasoning budget more carefully by shrinking the tool selection space."
+      },
+      "ja": {
+        "title": "`disallowed-tools` が減らすのは、コンテキストよりツールの選択肢",
+        "description": "Claude Code v2.1.152 でスキルのフロントマターに追加された disallowed-tools。初期コンテキストを削る設定だと思いましたが、実際はツールの選択肢を絞り、推論に使う予算を節約するためのものでした。"
+      }
+    }
   },
   {
     "slug": "Cutting-Claude-Code-Initial-Context-Bloat",
     "author": "Ryota Murakami",
-    "title": "Cutting Claude Code's Initial Context Bloat — Skills, Plugins, and MCP Tactics",
     "date": "2026-05-21",
-    "description": "What Claude Code actually loads into context at startup once Tool Search defers MCP and built-in tool definitions on demand — why the live window is far smaller than the raw totals imply, and why Skills (not MCP) is now the biggest line you can cut, plus the plugin and MCP-instruction levers that trim the rest."
+    "editions": {
+      "en": {
+        "title": "Cutting Claude Code's Initial Context Bloat — Skills, Plugins, and MCP Tactics",
+        "description": "What Claude Code actually loads into context at startup once Tool Search defers MCP and built-in tool definitions on demand — why the live window is far smaller than the raw totals imply, and why Skills (not MCP) is now the biggest line you can cut, plus the plugin and MCP-instruction levers that trim the rest."
+      },
+      "ja": {
+        "title": "Claude Code の初期コンテキストを減らす。スキル、プラグイン、MCP の設定",
+        "description": "Tool Search が MCP と組み込みツールの定義を遅延読み込みするとき、起動時に実際に何が入るのかを調べます。表示された項目の合計より実際の使用量が少ない理由と、削減効果が大きいスキル一覧、プラグイン、MCP サーバーの指示文の調整方法を解説します。"
+      }
+    }
   },
   {
     "slug": "How-to-stop-VS-Code-MDX-Extension-from-showing-TypeScript-errors-in-mdx-files",
     "author": "Ryota Murakami",
-    "title": "How to stop VS Code MDX Extension from showing TypeScript errors in .mdx files",
     "date": "2026-05-12",
-    "description": "A practical fix for TS1434 and other false TypeScript errors in MDX files by using a local tsconfig, the MDX TypeScript plugin, and remark-frontmatter."
+    "editions": {
+      "en": {
+        "title": "How to stop VS Code MDX Extension from showing TypeScript errors in .mdx files",
+        "description": "A practical fix for TS1434 and other false TypeScript errors in MDX files by using a local tsconfig, the MDX TypeScript plugin, and remark-frontmatter."
+      },
+      "ja": {
+        "title": "VS Code の MDX 拡張機能が .mdx ファイルに TypeScript エラーを出すときの対処法",
+        "description": "MDX ファイルに出る TS1434 などの誤った TypeScript エラーを、ローカルの tsconfig、MDX 用 TypeScript プラグイン、remark-frontmatter で解消します。"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-26",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-26",
     "date": "2026-04-26",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-26",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月26日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-25",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-25",
     "date": "2026-04-25",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-25",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月25日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-24",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-24",
     "date": "2026-04-24",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-24",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月24日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-23",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-23",
     "date": "2026-04-23",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-23",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月23日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-22",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-22",
     "date": "2026-04-22",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-22",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月22日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-21",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-21",
     "date": "2026-04-21",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-21",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月21日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-20",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-20",
     "date": "2026-04-20",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-20",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月20日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-19",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-19",
     "date": "2026-04-19",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-19",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月19日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-18",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-18",
     "date": "2026-04-18",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-18",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月18日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-17",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-17",
     "date": "2026-04-17",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-17",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月17日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-15",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-15",
     "date": "2026-04-15",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-15",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月15日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-13",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-13",
     "date": "2026-04-13",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-13",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月13日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-12",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-12",
     "date": "2026-04-12",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-12",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月12日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-11",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-11",
     "date": "2026-04-11",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-11",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月11日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "Electron-Google-OAuth-with-Nextjs-16-App-Router-and-Clerk-v7",
     "author": "Ryota Murakami",
-    "title": "Electron Google OAuth with Next.js 16 App Router and Clerk v7",
     "date": "2026-04-08",
-    "description": "A practical guide to implementing Google OAuth for Electron using Next.js 16 App Router, Clerk v7, a system browser, deep links, and short-lived sign-in tokens."
+    "editions": {
+      "en": {
+        "title": "Electron Google OAuth with Next.js 16 App Router and Clerk v7",
+        "description": "A practical guide to implementing Google OAuth for Electron using Next.js 16 App Router, Clerk v7, a system browser, deep links, and short-lived sign-in tokens."
+      },
+      "ja": {
+        "title": "Next.js 16 App Router と Clerk v7 で Electron に Google OAuth を実装する",
+        "description": "Next.js 16 App Router と Clerk v7 を使い、システムブラウザー、ディープリンク、有効期間の短いサインイントークンで Electron アプリに Google OAuth を実装する手順です。"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-07",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-07",
     "date": "2026-04-07",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-07",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月7日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-04-01",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-04-01",
     "date": "2026-04-01",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-04-01",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年4月1日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-03-29",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-03-29",
     "date": "2026-03-29",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-03-29",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年3月29日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-03-28",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-03-28",
     "date": "2026-03-28",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-03-28",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年3月28日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-03-27",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-03-27",
     "date": "2026-03-27",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-03-27",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年3月27日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-03-26",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-03-26",
     "date": "2026-03-26",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-03-26",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年3月26日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "JavaScript-Weekly-778",
     "author": "Ryota Murakami",
-    "title": "JavaScript Weekly #778 Digest",
     "date": "2026-03-25",
-    "description": "TypeScript 6.0リリース、Edge.js WASMサンドボックス、pnpm 11 Beta、Next.js 16.2の400%高速化など、今週のJavaScriptエコシステムの注目ニュースまとめ"
+    "editions": {
+      "en": {
+        "title": "JavaScript Weekly #778 Digest",
+        "description": "This week in JavaScript: TypeScript 6.0, the Edge.js WebAssembly sandbox, pnpm 11 Beta, and faster startup in Next.js 16.2."
+      },
+      "ja": {
+        "title": "JavaScript Weekly 第778号のまとめ",
+        "description": "TypeScript 6.0リリース、Edge.js WASMサンドボックス、pnpm 11 Beta、Next.js 16.2の400%高速化など、今週のJavaScriptエコシステムの注目ニュースまとめ"
+      }
+    }
   },
   {
     "slug": "OSS-Feed-2026-03-25",
     "author": "Clawdbot",
-    "title": "OSS Feed: 2026-03-25",
     "date": "2026-03-25",
-    "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+    "editions": {
+      "en": {
+        "title": "OSS Feed: 2026-03-25",
+        "description": "Daily OSS activity digest — React, TanStack, Next.js ecosystem"
+      },
+      "ja": {
+        "title": "OSS Feed（2026年3月25日）",
+        "description": "React、TanStack、Next.js 周辺の OSS 活動を日ごとにまとめたダイジェスト"
+      }
+    }
   },
   {
     "slug": "How-to-Distribute-Electron-Apps-with-Code-Signing-on-Windows-and-Linux",
     "author": "Ryota Murakami",
-    "title": "How to Distribute Electron Apps with Code Signing on Windows and Linux",
     "date": "2026-02-17",
-    "description": "A comprehensive guide to distributing Electron applications on Windows and Linux with code signing. Covers traditional OV/EV certificates, Azure Trusted Signing, Linux package formats (AppImage, Snap, deb, rpm), and CI/CD automation with GitHub Actions."
+    "editions": {
+      "en": {
+        "title": "How to Distribute Electron Apps with Code Signing on Windows and Linux",
+        "description": "A comprehensive guide to distributing Electron applications on Windows and Linux with code signing. Covers traditional OV/EV certificates, Azure Trusted Signing, Linux package formats (AppImage, Snap, deb, rpm), and CI/CD automation with GitHub Actions."
+      },
+      "ja": {
+        "title": "Windows と Linux にコード署名付きの Electron アプリを配布する方法",
+        "description": "Electron アプリをコード署名して Windows と Linux に配布するためのガイド。従来の OV/EV 証明書、Azure Trusted Signing、Linux のパッケージ形式（AppImage、Snap、deb、rpm）、GitHub Actions による CI/CD の自動化を扱います。"
+      }
+    }
   },
   {
     "slug": "All-TypeScript-release-blog-list",
     "author": "Ryota Murakami",
-    "title": "All TypeScript release blog list",
     "date": "2026-02-16",
-    "description": "Update continues"
+    "editions": {
+      "en": {
+        "title": "All TypeScript release blog list",
+        "description": "Update continues"
+      },
+      "ja": {
+        "title": "TypeScript のリリース告知記事一覧",
+        "description": "新バージョンが出るたびに更新します。"
+      }
+    }
   },
   {
     "slug": "Discontinuing-Complete-macOS-Autocomplete",
     "author": "Ryota Murakami",
-    "title": "Discontinuing Complete: Why Per-App Coordinate Calculation Killed a macOS Autocomplete App",
     "date": "2026-02-14",
-    "description": "After reaching production-ready status with 156 tests and sub-50ms performance, I am discontinuing Complete — a macOS system-wide spell autocomplete app. The reason: per-application coordinate calculation for the floating completion window proved unsustainably complex."
+    "editions": {
+      "en": {
+        "title": "Discontinuing Complete: Why Per-App Coordinate Calculation Killed a macOS Autocomplete App",
+        "description": "After reaching production-ready status with 156 tests and sub-50ms performance, I am discontinuing Complete — a macOS system-wide spell autocomplete app. The reason: per-application coordinate calculation for the floating completion window proved unsustainably complex."
+      },
+      "ja": {
+        "title": "Complete の開発を終了します。macOS の入力補完を阻んだアプリごとの座標計算",
+        "description": "156 件のテストと 50 ms 未満の応答時間を達成した、macOS 全体で使えるスペル補完アプリ Complete の開発を終了します。候補ウィンドウの座標計算をアプリごとに保守し続けるのが難しかったためです。"
+      }
+    }
   },
   {
     "slug": "Laststance-Recap-January-2026",
     "author": "Ryota Murakami",
-    "title": "Laststance Recap: January 2026",
     "date": "2026-02-05",
-    "description": " "
+    "editions": {
+      "en": {
+        "title": "Laststance Recap: January 2026",
+        "description": "January brought 42 releases, including Electron app updates, new testing infrastructure, and a Claude Code plugin dashboard."
+      },
+      "ja": {
+        "title": "Laststance 開発月報 2026年1月",
+        "description": "1月は42件をリリース。Electron アプリやテスト環境、Claude Code プラグイン管理ツールの変更を振り返ります。"
+      }
+    }
   },
   {
     "slug": "laststance-recap-december-2025",
     "author": "ryota-murakami",
-    "title": "Laststance Recap: December 2025",
     "date": "2026-01-06",
-    "description": "A massive month for Laststance with 768 commits across 34 active projects, featuring new releases for Signage, Complete, and the launch of GitBox and Claude Plugin Dashboard."
+    "editions": {
+      "en": {
+        "title": "Laststance Recap: December 2025",
+        "description": "A massive month for Laststance with 768 commits across 34 active projects, featuring new releases for Signage, Complete, and the launch of GitBox and Claude Plugin Dashboard."
+      },
+      "ja": {
+        "title": "Laststance の振り返り・2025年12月",
+        "description": "34のプロジェクトで768件をコミット。Signage と Complete の新版を公開し、GitBox と Claude Plugin Dashboard を立ち上げました。"
+      }
+    }
   },
   {
     "slug": "Laststance-Recap-November-2025",
     "author": "Ryota Murakami",
-    "title": "Laststance Recap: November 2025",
     "date": "2025-12-05",
-    "description": " "
+    "editions": {
+      "en": {
+        "title": "Laststance Recap: November 2025",
+        "description": "A look at 350 commits, 20 merged pull requests, and 8 releases across 18 Laststance projects in November."
+      },
+      "ja": {
+        "title": "Laststance 開発月報 2025年11月",
+        "description": "18プロジェクトで350コミット、20件の PR をマージし、8件をリリース。新規プロジェクトと今月の変更を振り返ります。"
+      }
+    }
   },
   {
     "slug": "speckit-really-isnt-practical-yet-by-Claude-Code",
     "author": "Ryota Murakami",
-    "title": "speckit really isn’t practical yet. (by Claude Code)",
     "date": "2025-11-16",
-    "description": "A clip of conversation with Claude Code and Me"
+    "editions": {
+      "en": {
+        "title": "speckit really isn’t practical yet. (by Claude Code)",
+        "description": "A clip of conversation with Claude Code and Me"
+      },
+      "ja": {
+        "title": "Spec Kit はまだ実用には早い（Claude Code との会話）",
+        "description": "GitHub Spec Kit の課題について Claude Code と話したときの記録。"
+      }
+    }
   },
   {
     "slug": "Cursor-built-in-browser-tool-list",
     "author": "Ryota Murakami",
-    "title": "Cursor built-in browser tool list",
     "date": "2025-11-15",
-    "description": "A comprehensive guide to the 13 browser automation tools available in Cursor AI (v2.0.77) for automated testing, web scraping, and workflow automation."
+    "editions": {
+      "en": {
+        "title": "Cursor built-in browser tool list",
+        "description": "A comprehensive guide to the 13 browser automation tools available in Cursor AI (v2.0.77) for automated testing, web scraping, and workflow automation."
+      },
+      "ja": {
+        "title": "Cursor 内蔵ブラウザーのツール一覧",
+        "description": "Cursor AI（v2.0.77）で自動テストや Web スクレイピング、作業の自動化に使える、13 のブラウザー操作ツールを紹介します。"
+      }
+    }
   },
   {
     "slug": "Understanding-CSS-fr-by-Reading-the-Original-Spec",
     "author": "Ryota Murakami",
-    "title": "Understanding CSS fr by Reading the Original Spec",
     "date": "2025-11-14",
-    "description": " "
+    "editions": {
+      "en": {
+        "title": "Understanding CSS fr by Reading the Original Spec",
+        "description": "The CSS Grid specification explains how fr tracks divide the space left over in a container."
+      },
+      "ja": {
+        "title": "CSS の fr 単位を仕様書から読み解く",
+        "description": "Grid の余ったスペースを fr がどう分けるのか、W3C 仕様の定義から考えます。"
+      }
+    }
   },
   {
     "slug": "-eslint-config-ts-prefixer-v410-Released",
     "author": "Ryota Murakami",
-    "title": "🎉 eslint-config-ts-prefixer v4.1.0 Released!",
     "date": "2025-11-05",
-    "description": " "
+    "editions": {
+      "en": {
+        "title": "🎉 eslint-config-ts-prefixer v4.1.0 Released!",
+        "description": "Version 4.1.0 removes Prettier rules and documents the rules included in the ESLint configuration."
+      },
+      "ja": {
+        "title": "🎉 eslint-config-ts-prefixer v4.1.0 をリリースしました",
+        "description": "Prettier のルールを削除し、設定に含まれる各ルールのドキュメントを公開しました。"
+      }
+    }
   },
   {
     "slug": "What-is-the-difference-between-position-fixed-and-sticky",
     "author": "Ryota Murakami",
-    "title": "What is the difference between position: fixed and sticky?",
     "date": "2025-06-23",
-    "description": ""
+    "editions": {
+      "en": {
+        "title": "What is the difference between position: fixed and sticky?",
+        "description": "Scroll through an interactive demo to see where fixed and sticky elements attach."
+      },
+      "ja": {
+        "title": "CSS の position: fixed と sticky はどう違う？",
+        "description": "スクロールできるデモで、fixed と sticky がそれぞれどこに固定されるかを比べます。"
+      }
+    }
   },
   {
     "slug": "major-shadcn-ui-registry-libraries",
     "author": "Ryota Murakami",
-    "title": "Major Libraries Available in shadcn/ui Registry",
     "date": "2025-06-06",
-    "description": "A comprehensive guide to the major third-party component libraries available through the shadcn/ui registry system, including Magic UI, Aceternity UI, Origin UI, and more."
+    "editions": {
+      "en": {
+        "title": "Major Libraries Available in shadcn/ui Registry",
+        "description": "A comprehensive guide to the major third-party component libraries available through the shadcn/ui registry system, including Magic UI, Aceternity UI, Origin UI, and more."
+      },
+      "ja": {
+        "title": "shadcn/ui レジストリで使える主なライブラリ",
+        "description": "Magic UI、Aceternity UI、Origin UI など、shadcn/ui のレジストリで配布されているサードパーティー製のコンポーネント集を紹介します。"
+      }
+    }
   },
   {
     "slug": "100-English-with-Lucy",
     "author": "Ryota Murakami",
-    "title": "100の日常英語フレーズ - English with Lucy",
     "date": "2025-05-29",
-    "description": ""
+    "editions": {
+      "en": {
+        "title": "English with Lucy: 100 Everyday Phrases",
+        "description": "Practice pronunciation, rhythm and connected speech with 100 everyday British English phrases."
+      },
+      "ja": {
+        "title": "100の日常英語フレーズ - English with Lucy",
+        "description": "English with Lucy の動画で紹介する日常英語100フレーズを、使う場面ごとに日本語訳付きで掲載。"
+      }
+    }
   },
   {
     "slug": "How-to-use-fakerseed",
     "author": "Ryota Murakami",
-    "title": "How to use faker.seed()",
     "date": "2025-05-28",
-    "description": ""
+    "editions": {
+      "en": {
+        "title": "How to use faker.seed()",
+        "description": "Use a fixed seed in Faker to generate the same test data on every run."
+      },
+      "ja": {
+        "title": "faker.seed() の使い方",
+        "description": "Faker の乱数シードを固定して、毎回同じテストデータを生成する方法を紹介します。"
+      }
+    }
   },
   {
     "slug": "Ive-just-released-git-gpt-commit-v090",
     "author": "Ryota Murakami",
-    "title": "I've just released git-gpt-commit v0.9.0! 🎉",
     "date": "2025-05-08",
-    "description": "A commit message generation for CLI"
+    "editions": {
+      "en": {
+        "title": "I've just released git-gpt-commit v0.9.0! 🎉",
+        "description": "A commit message generation for CLI"
+      },
+      "ja": {
+        "title": "git-gpt-commit v0.9.0 をリリースしました 🎉",
+        "description": "CLI からコミットメッセージを生成する Git 拡張です。"
+      }
+    }
   },
   {
     "slug": "I-created-Redux-Front-Page",
     "author": "Ryota Murakami",
-    "title": "I created Redux Front Page",
     "date": "2025-05-01",
-    "description": ""
+    "editions": {
+      "en": {
+        "title": "I created Redux Front Page",
+        "description": "A single starting point for finding documentation across the Redux ecosystem."
+      },
+      "ja": {
+        "title": "Redux Front Page を作りました",
+        "description": "あちこちに分かれている Redux のドキュメントを、ひとつの入口から探せるようにしました。"
+      }
+    }
   },
   {
     "slug": "react-hook-form-examples",
     "author": "Ryota Murakami",
-    "title": "react-hook-form examples",
     "date": "2024-05-21",
-    "description": "from original repository"
+    "editions": {
+      "en": {
+        "title": "react-hook-form examples",
+        "description": "from original repository"
+      },
+      "ja": {
+        "title": "React Hook Form のサンプル集",
+        "description": "React Hook Form の公式リポジトリにあるサンプルを、用途別にまとめました。"
+      }
+    }
   },
   {
     "slug": "CSS-attribute-selector",
     "author": "Ryota Murakami",
-    "title": "CSS attribute selector",
     "date": "2024-04-13",
-    "description": "The underrated seclector form."
+    "editions": {
+      "en": {
+        "title": "CSS attribute selector",
+        "description": "The underrated seclector form."
+      },
+      "ja": {
+        "title": "CSS の属性セレクター",
+        "description": "地味だけれど便利なセレクター。"
+      }
+    }
   },
   {
     "slug": "Wanna-be-indie-hacker-an-ordinary-person",
     "author": "Ryota Murakami",
-    "title": "Wanna be indie hacker an ordinary person.",
     "date": "2024-01-29",
-    "description": "reaching capacity limit?"
+    "editions": {
+      "en": {
+        "title": "Wanna be indie hacker an ordinary person.",
+        "description": "reaching capacity limit?"
+      },
+      "ja": {
+        "title": "平凡な自分もインディーハッカーになりたい",
+        "description": "自分のキャパシティの限界なのかな。"
+      }
+    }
   },
   {
     "slug": "just-2024-list",
     "author": "Ryota Murakami",
-    "title": "Just 2024 list",
     "date": "2024-01-18",
-    "description": "Just a todo list"
+    "editions": {
+      "en": {
+        "title": "Just 2024 list",
+        "description": "Just a todo list"
+      },
+      "ja": {
+        "title": "2024年にやりたいこと",
+        "description": "2024年に取り組みたいことのリスト。"
+      }
+    }
   },
   {
     "slug": "Why-E2E-Testing-Matter",
     "author": "Ryota Murakami",
-    "title": "Why E2E Testing Matter",
     "date": "2023-12-07",
-    "description": "for a web application"
+    "editions": {
+      "en": {
+        "title": "Why E2E Testing Matter",
+        "description": "for a web application"
+      },
+      "ja": {
+        "title": "Web アプリに E2E テストが必要な理由",
+        "description": "E2E テストとビジュアルテストを導入するメリットと、手作業だけに頼るリスクを整理します。"
+      }
+    }
   },
   {
     "slug": "Trying-less-energy-coding",
     "author": "Ryota Murakami",
-    "title": "Trying less energy coding",
     "date": "2023-11-19",
-    "description": "generate with out extream focus by hand"
+    "editions": {
+      "en": {
+        "title": "Trying less energy coding",
+        "description": "generate with out extream focus by hand"
+      },
+      "ja": {
+        "title": "もっと肩の力を抜いてコードを書きたい",
+        "description": "手を動かすたびに全力で集中しなくても済むように。"
+      }
+    }
   },
   {
     "slug": "dropped-eslint-plugin-sort-keys-custom-order-from-eslint-config-ts-prefixerv1120",
     "author": "Ryota Murakami",
-    "title": "dropped eslint-plugin-sort-keys-custom-order from eslint-config-ts-prefixer@v1.12.0",
     "date": "2023-10-28",
-    "description": "I decide drop eslint-plugin-sort-keys-custom-order from ts-prefixer"
+    "editions": {
+      "en": {
+        "title": "dropped eslint-plugin-sort-keys-custom-order from eslint-config-ts-prefixer@v1.12.0",
+        "description": "I decide drop eslint-plugin-sort-keys-custom-order from ts-prefixer"
+      },
+      "ja": {
+        "title": "eslint-config-ts-prefixer v1.12.0 で eslint-plugin-sort-keys-custom-order を削除",
+        "description": "ts-prefixer の設定から eslint-plugin-sort-keys-custom-order を外した理由。"
+      }
+    }
   },
   {
     "slug": "What-does-Yarn-aim-to-achieve",
     "author": "Ryota Murakami",
-    "title": "What does Yarn aim to achieve?",
     "date": "2023-10-26",
-    "description": "I tried Yarn v4 but quit using it after being frustrated by the typescript project setup."
+    "editions": {
+      "en": {
+        "title": "What does Yarn aim to achieve?",
+        "description": "I tried Yarn v4 but quit using it after being frustrated by the typescript project setup."
+      },
+      "ja": {
+        "title": "Yarn は何を目指しているのだろう",
+        "description": "Yarn v4 を試したものの、TypeScript プロジェクトの初期設定でつまずき、使うのをやめました。"
+      }
+    }
   },
   {
     "slug": "Deno-npm-compatibility-is-not-perfect-yet",
     "author": "Ryota Murakami",
-    "title": "Deno npm compatibility is not perfect yet.",
     "date": "2023-09-02",
-    "description": "I can't run @clack/prompts on Deno"
+    "editions": {
+      "en": {
+        "title": "Deno npm compatibility is not perfect yet.",
+        "description": "I can't run @clack/prompts on Deno"
+      },
+      "ja": {
+        "title": "Deno の npm 互換性はまだ発展途上",
+        "description": "Deno で @clack/prompts を動かせなかったときの記録。"
+      }
+    }
   },
   {
     "slug": "access-nested-class-with-nodule-scss-file",
     "author": "Ryota Murakami",
-    "title": "Access nested class with `modules.scss` file",
     "date": "2023-08-21",
-    "description": "way to reach nested selector via `styles` object."
+    "editions": {
+      "en": {
+        "title": "Access nested class with `modules.scss` file",
+        "description": "way to reach nested selector via `styles` object."
+      },
+      "ja": {
+        "title": "modules.scss でネストしたクラスにアクセスする",
+        "description": "styles オブジェクトからネストしたセレクターを参照する方法。"
+      }
+    }
   },
   {
     "slug": "what-is-font-family",
     "author": "Ryota Murakami",
-    "title": "What is font-family?",
     "date": "2023-08-19",
-    "description": "explains the font-family property in CSS."
+    "editions": {
+      "en": {
+        "title": "What is font-family?",
+        "description": "explains the font-family property in CSS."
+      },
+      "ja": {
+        "title": "CSS の font-family とは？",
+        "description": "CSS の font-family プロパティを解説します。"
+      }
+    }
   },
   {
     "slug": "update-eslint-config-ts-prefixer@v0.23.3",
     "author": "Ryota Murakami",
-    "title": "Update eslint-config-ts-prefixer@v0.23.3",
     "date": "2023-08-17",
-    "description": "Further update async/await/Promise rules."
+    "editions": {
+      "en": {
+        "title": "Update eslint-config-ts-prefixer@v0.23.3",
+        "description": "Further update async/await/Promise rules."
+      },
+      "ja": {
+        "title": "eslint-config-ts-prefixer を v0.23.3 に更新",
+        "description": "async、await、Promise に関するルールを追加しました。"
+      }
+    }
   },
   {
     "slug": "vite-trk-query-update-v0.4.0",
     "author": "Ryota Murakami",
-    "title": "vite-trk-query-update-v0.4.0",
     "date": "2023-08-16",
-    "description": "React Router and CSS Modules implovement."
+    "editions": {
+      "en": {
+        "title": "vite-trk-query-update-v0.4.0",
+        "description": "React Router and CSS Modules implovement."
+      },
+      "ja": {
+        "title": "vite-rtk-query を v0.4.0 に更新",
+        "description": "React Router と CSS Modules の設定を改善しました。"
+      }
+    }
   },
   {
     "slug": "first-blog-post",
     "author": "Ryota Murakami",
-    "title": "A first blog Post",
     "date": "2023-08-04",
-    "description": "Explain what is the Laststance.io."
+    "editions": {
+      "en": {
+        "title": "A first blog Post",
+        "description": "Explain what is the Laststance.io."
+      },
+      "ja": {
+        "title": "はじめてのブログ記事",
+        "description": "Laststance.io を立ち上げた経緯と、これから作りたいもの。"
+      }
+    }
   }
 ]

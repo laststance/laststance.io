@@ -1,0 +1,110 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Spec Kit はまだ実用には早い（Claude Code との会話）',
+  date: '2025-11-16',
+  description:
+    'GitHub Spec Kit の課題について Claude Code と話したときの記録。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+**私** Constitution に書いたことが全然守られない 😭 Spec Kit はまだ実用には早いな…… [https://github.com/github/spec-kit](https://github.com/github/spec-kit)
+このリポジトリの Issues や Discussions では、どんな話が出てる？
+
+**Claude Code** GitHub Spec Kit の現状を確認します。Issues と Discussions を見てみます。
+
+⏺ tavily - tavily-search (MCP)(query: "github spec-kit issues discussions 2025", max_results: 10, include_domains: ["github.com"])
+⎿ 検索結果の詳細  
+タイトル：spec-kit Discussions!  
+ … 残り67行（ctrl+o で展開）
+
+⏺ Fetch([https://github.com/github/spec-kit](https://github.com/github/spec-kit))
+⎿ 495.3KB を受信（200 OK）
+
+⏺ Fetch([https://github.com/github/spec-kit/issues](https://github.com/github/spec-kit/issues))
+⎿ 266KB を受信（200 OK）
+
+⏺ Fetch([https://github.com/github/spec-kit/discussions](https://github.com/github/spec-kit/discussions))
+⎿ 474.9KB を受信（200 OK）
+
+⏺ 😭 私もそう思います……。調べた結果をまとめます。
+
+GitHub Spec Kit の現状
+
+📊 リポジトリの統計
+
+- ⭐ スター 4万8,800件 / 🍴 フォーク 4,200件
+- 🔴 オープンな Issue 402件。かなり多いです
+- 📝 オープンな PR 42件
+
+🚨 主な課題（今回の体験にも当てはまります）
+
+1. Constitution が守られない
+
+- Issue #1149「Constitution の原則と仕様の詳細の境界を明確にしてほしい」
+- Issue #1126「エージェントが初歩的なミスを繰り返す」。コンパイルエラーなど
+- Issue #737「質問に答えるだけでいい場面でも、勝手にコードを『修正』する」
+
+2. 仕様を更新して育てていくのが難しい
+
+- Issue #1191「既存の仕様を更新、改善しにくい」
+- Issue #1130「`/implement` の後に仕様を正しく変更する手順が明確でない」
+- Discussion #152「仕様を発展させるには」。戸惑っているユーザーが多い
+
+3. 作業の流れがわかりにくい
+
+多くのユーザーが「`/speckit.implement` の後は何をすればいいのか」と尋ねています。
+
+- 一つの仕様を実装し終えた後の案内がない
+- 繰り返し開発する場合の流れが不明確
+- 複数セッションにまたがる作業への対応が弱い
+
+4. 実装の品質と一貫性に課題がある
+
+- Issue #876「最大の問題は、仕様を更新していくと一貫性を保てないこと」
+- Issue #484「spec-kit のコマンドが突然チャットから消える」
+- テンプレートのエラーや、パスの不一致などがある
+
+5. ツール連携に課題がある
+
+- Issue #1166：Cursor 1.7.33 で `/speckit.implement` が動かない
+- Issue #1186：Codex 拡張との連携に問題がある
+- コマンドによってブランチ名の書式が異なる
+
+💬 Discussions に寄せられた声
+
+ユーザーが戸惑っていること
+
+- 「初期化済みのプロジェクトで Spec Kit を更新するには？」
+- 「Spec Kit を実際に使っているリポジトリやプロジェクトの例はある？」
+- 「ひな形プロジェクトを作るときのベストプラクティスは？」
+
+よく挙がる話題
+
+1. 一連の作業の案内が足りない（仕様 → 計画 → タスク → 実装 → その先は？）
+2. 実際にうまく使えている事例が見当たりにくい
+3. AI エージェントの品質が安定しない
+
+🎯 結論
+
+「Spec Kit はまだ実用には早い」という見立ては、そのとおりだと思います。
+
+特に気になるのは次の点です。
+
+- ✅ Constitution を守らせる仕組みが弱く、実際には指示が守られない
+- ✅ 仕様の発展や更新への対応が不十分
+- ✅ AI エージェントが指示を無視して勝手に実装する
+- ✅ 繰り返し開発するための手順が確立されていない
+- ✅ 実際にうまく活用できている事例が少ない
+
+📌 次にできること
+
+1. Issue を立てる。Constitution に違反した具体的な事例を報告する。
+2. Discussions に参加する。同じ問題を抱えるユーザーと話し、解決策を一緒に探す。
+3. 自分の作業手順を作る。Spec Kit だけに頼らず、自分で品質を確認する流れを作る。
+
+現時点で Spec Kit はまだ構想段階のツールです。本格的な開発に使うなら、自分で品質管理の仕組みを用意する必要があります。
+
+Constitution を設定しても守られないのは、AI エージェントに従わせる仕組みがないという設計上の問題です。プロジェクトの成熟を待つか、別のやり方を考える必要がありそうです…… 😔

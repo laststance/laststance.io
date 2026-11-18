@@ -1,0 +1,226 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title:
+    'VS Code の MDX 拡張機能が .mdx ファイルに TypeScript エラーを出すときの対処法',
+  date: '2026-05-12',
+  description:
+    'MDX ファイルに出る TS1434 などの誤った TypeScript エラーを、ローカルの tsconfig、MDX 用 TypeScript プラグイン、remark-frontmatter で解消します。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+VS Code に **MDX** 拡張機能を入れたら、`.mdx` ファイルに突然 `TS1434`、`TS2304`、`with statements are not allowed in strict mode` といった TypeScript エラーが出ることがあります。原因はたいてい **MDX の中身とは別のところ**にあります。
+
+私の場合は、YAML フロントマターもプレーンな Markdown 本文も、そのまま TypeScript として解析されていました。
+
+この記事では、実際に問題を解消できた設定を紹介します。
+
+---
+
+## 症状
+
+表示されたのは、次のようなエラーです。
+
+```text
+Unexpected keyword or identifier. ts-plugin(1434)
+Cannot find name 'start'. ts-plugin(2304)
+'with' statements are not allowed in strict mode.
+```
+
+エラーは、次のような内容に対して出ていました。
+
+```mdx
+---
+title: Installation
+description: Installing @dnd-kit/core
+---
+
+<Note>There is a new version available.</Note>
+```
+
+この状態になったら、MDX 拡張機能が対象フォルダーに MDX 対応の TypeScript 設定を適用できていない可能性があります。
+
+---
+
+## 原因
+
+VS Code の MDX 拡張機能は、MDX 言語サーバーと TypeScript プラグインを使っています。
+
+つまり、エディターでの動作は **`.mdx` ファイルがどの TypeScript プロジェクトに属しているか**で決まります。
+
+私の環境では、次のことが起きていました。
+
+- MDX ファイルは、ルートの `tsconfig.json` で除外されたディレクトリ配下にあった
+- MDX ファイルの近くに、そのディレクトリ用の TypeScript プロジェクトがなかった
+- フロントマターの対応が有効になっていなかった
+- 結果として `.mdx` ファイルが適切に解析されず、Markdown の本文が TypeScript の構文エラーとして表示された
+
+Markdown の書き方を直しても、設定の問題は解決しません。
+MDX を置いたディレクトリに、専用の TypeScript 設定を用意したら解消しました。
+
+---
+
+## 実際に解消できた手順
+
+### 1. MDX 用 TypeScript プラグインとフロントマター用プラグインをインストールする
+
+```bash
+pnpm add -D @mdx-js/typescript-plugin remark-frontmatter
+```
+
+`tsconfig.json` で指定する TypeScript プラグイン名は `@mdx-js/typescript-plugin` です。この名前のパッケージをプロジェクトにインストールしました。
+
+---
+
+### 2. MDX のあるディレクトリに `tsconfig.json` を追加する
+
+私の場合、MDX ファイルは `legacy/` 以下にあったので、`legacy/tsconfig.json` を追加しました。
+
+```json
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": false,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "plugins": [
+      {
+        "name": "@mdx-js/typescript-plugin"
+      }
+    ]
+  },
+  "include": ["**/*.d.ts", "**/*.mdx"],
+  "mdx": {
+    "plugins": [["remark-frontmatter", ["yaml"]]]
+  }
+}
+```
+
+ここでは、次の 2 つの設定が重要です。
+
+- `plugins` で TypeScript の MDX 対応を有効にする
+- `mdx.plugins` で YAML フロントマターの解析を有効にする
+
+MDX ファイルを別のフォルダーに置いている場合は、そちらにローカルの `tsconfig.json` を作成してください。
+
+---
+
+### 3. MDX のモジュール宣言ファイルを追加する
+
+続いて、`legacy/mdx-env.d.ts` も追加しました。
+
+```ts
+declare module '*.mdx' {
+  import type { ComponentType } from 'react'
+
+  const MDXComponent: ComponentType<Record<string, unknown>>
+
+  export default MDXComponent
+}
+```
+
+フォルダーに `.mdx` ファイルしかないと、しばしば `TS18003: No inputs were found in config file` が出ます。この宣言ファイルを追加すると、TypeScript プロジェクトに入力ファイルができるので、このエラーを回避できます。
+
+---
+
+### 4. VS Code を再読み込みするか、TypeScript サーバーを再起動する
+
+上のファイルを追加したら、VS Code のウィンドウを再読み込みするか、TypeScript サーバーを再起動します。
+
+拡張機能や TypeScript サーバーが古いプロジェクト構成を保持していることがあるためです。
+
+---
+
+## 動作を確認できた設定
+
+今回の対処に関係するファイルは、最終的に次のようになりました。
+
+### ルートの `package.json`
+
+```json
+{
+  "devDependencies": {
+    "@mdx-js/typescript-plugin": "^0.1.3",
+    "remark-frontmatter": "^5.0.0"
+  }
+}
+```
+
+### MDX ディレクトリの `tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": false,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "plugins": [
+      {
+        "name": "@mdx-js/typescript-plugin"
+      }
+    ]
+  },
+  "include": ["**/*.d.ts", "**/*.mdx"],
+  "mdx": {
+    "plugins": [["remark-frontmatter", ["yaml"]]]
+  }
+}
+```
+
+### MDX のモジュール宣言
+
+```ts
+declare module '*.mdx' {
+  import type { ComponentType } from 'react'
+
+  const MDXComponent: ComponentType<Record<string, unknown>>
+
+  export default MDXComponent
+}
+```
+
+これらを追加すると、`.mdx` ファイルに出ていた誤った TypeScript エラーが消えました。
+
+---
+
+## まだエラーが出る場合
+
+エラーが残る場合は、以下を確認してください。
+
+- `.mdx` ファイルが、ルートの `tsconfig.json` で除外されたディレクトリ内にないか
+- ローカルの `tsconfig.json` を MDX ファイルのあるディレクトリ配下に置いたか
+- `@mdx-js/typescript-plugin` をプロジェクトにインストールしたか
+- `**/*.mdx` に加えて `**/*.d.ts` も対象に含めたか
+- `mdx.plugins` に `remark-frontmatter` を追加したか
+- TypeScript の設定を変更したあと、VS Code のウィンドウを再読み込みしたか
+
+私の環境では、MDX ファイルの近くに `tsconfig.json` を置いたことが決め手でした。
+
+---
+
+## もっと簡単な回避策
+
+MDX の IntelliSense が不要で、エラーの赤い波線を消したいだけなら、VS Code で `*.mdx` を普通の Markdown として扱う方法もあります。
+
+MDX 拡張機能を有効にしたまま誤検出を解消したい場合は、上で紹介したローカルの `tsconfig.json` を使う方法が適しています。
+
+---
+
+## まとめ
+
+有効な Markdown に対して VS Code の MDX 拡張機能が TypeScript の構文エラーを出す場合、まず **プロジェクト設定**を疑ってみてください。
+
+私の環境では、次の手順で直りました。
+
+1. `@mdx-js/typescript-plugin` と `remark-frontmatter` をインストールする
+2. MDX ファイルの近くにローカルの `tsconfig.json` を作る
+3. `**/*.d.ts` と `**/*.mdx` を両方とも対象に含める
+4. `mdx-env.d.ts` を追加する
+5. VS Code を再読み込みする
+
+ルートの TypeScript プロジェクトから除外されたディレクトリに MDX ファイルを置いているなら、まずはこの方法を試します。

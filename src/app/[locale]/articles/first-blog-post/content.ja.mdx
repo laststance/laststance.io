@@ -1,0 +1,20 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'はじめてのブログ記事',
+  date: '2023-08-04',
+  description: 'Laststance.io を立ち上げた経緯と、これから作りたいもの。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+Laststance.io は、もともと [npm パッケージの名前空間](https://docs.npmjs.com/about-organization-scopes-and-packages)を確保するために作りました。当時は、まったく同じ名前のパッケージがすでに存在していたからです。
+
+公開済みのパッケージは [eslint-config-ts-prefixer](https://github.com/laststance/eslint-config-ts-prefixer) の一つです。作りかけのパッケージもいくつかあるので、完成させて公開したいと思っています。
+
+会社勤めで週五日、ってのは柄じゃない、\
+週三日の業務委託で生活費を稼ぎたい、\
+次世代の Web アプリフレームワークを作りたい、\
+Dan Abramov みたいに、中途半端にはやらない、\
+筋を通して名前を広め、まっとうに稼ぎたい。

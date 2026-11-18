@@ -1,0 +1,23 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title:
+    'eslint-config-ts-prefixer v1.12.0 で eslint-plugin-sort-keys-custom-order を削除',
+  date: '2023-10-28',
+  description:
+    'ts-prefixer の設定から eslint-plugin-sort-keys-custom-order を外した理由。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+ts-prefixer を使ってくださっている皆さん、ありがとうございます。
+
+v1.12.0 から、[ts-prefixer](https://github.com/laststance/eslint-config-ts-prefixer) の設定に含まれていた `eslint-plugin-sort-keys-custom-order` を外しました。
+
+`eslint-plugin-sort-keys-custom-order` は、オブジェクトや型の `id`、`title` などを先頭にそろえるのに便利でした。一方で、オブジェクトのプロパティ順序を書き換えるため、テストを書くときには扱いづらい面がありました。  
+順序が変わることで、期待値のオブジェクトと実際の結果が一致しなくなる場合があります。モックレスポンスのフィクスチャを大量に作るときは、特に手間がかかります。
+
+Lint がなくても `id` は先頭に書く人が多いので、テストでの不便さを考えて `eslint-plugin-sort-keys-custom-order` を外すことにしました。
+
+引き続き使いたい場合は、プロジェクトの ESLint 設定に `eslint-plugin-sort-keys-custom-order` のルールを追加できます。

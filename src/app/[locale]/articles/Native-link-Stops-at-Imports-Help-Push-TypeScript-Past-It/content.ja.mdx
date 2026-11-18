@@ -1,0 +1,129 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import Image from 'next/image'
+import demoGif from './demo.gif'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'TypeScript の {@link} で import していないシンボルにもジャンプしたい',
+  date: '2026-07-31',
+  description:
+    'VS Code は、現在のファイルが import しているシンボルなら {@link} をたどれます。Go To Definition for JSDoc はその先も探します。実際に使うプロジェクトが増えれば、TypeScript 標準での対応を後押しできます。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+<Image
+  src={demoGif}
+  alt="JSDoc の {@link} から、現在のファイルが import していないシンボルの定義へ移動する様子"
+  sizes="100vw"
+  unoptimized
+  style={{
+    width: '100%',
+    height: 'auto',
+    borderRadius: 12,
+    margin: '2rem 0',
+  }}
+/>
+
+少し前、`{@link}` からワークスペース内のシンボルへ移動できる、小さな VS Code 拡張 [Go To Definition for JSDoc](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc) を公開しました。今回は初回の説明でうまく伝えられなかった点と、この先どうなってほしいかを書きます。
+
+---
+
+## 今の TypeScript でできること
+
+`{@link}` からの移動はすでに TypeScript がサポートしています。読んでいるファイルがそのシンボルを import していれば、拡張は要りません。
+
+```ts
+import { anySymbol } from './foo'
+
+/**
+ * {@link anySymbol}
+ */
+function bar() {
+  const res = anySymbol()
+}
+```
+
+コメント内の `anySymbol` にカーソルを置き、**定義へ移動**を実行すると、`./foo` の宣言に飛びます。言語サービスが、そのファイルのスコープでリンクを解決しています。
+
+## どこで止まるのか
+
+`import` を消すと、同じコメントからは移動できなくなります。
+
+```ts
+/**
+ * {@link anySymbol}
+ */
+function bar() {
+  // nothing here imports anySymbol
+}
+```
+
+スコープの中に、参照先の候補がなくなるためです。
+
+ところが、「これは `CommentCard` と同じ作り」「クエリの形は `fetchPokemonSpeciesQuery` を参照」といったリンクは、対象のコードが手元に見えていないときにこそ役に立ちます。書いておきたい参照ほど、言語サービスからはたどれないのです。
+
+コメントのリンクを成立させるためだけに import を書く手もあります。
+
+```ts
+import type { fetchPokemonSpeciesQuery } from './queries'
+
+/**
+ * See {@link fetchPokemonSpeciesQuery}.
+ */
+```
+
+ただ、その import は実装には要りません。いずれ import の整理で削除されたり、lint で指摘されたりします。何度かそんな目に遭えば `{@link}` を書かなくなる。せっかくの機能が使われなくなるのはもったいないことです。
+
+---
+
+## 拡張が行うこと
+
+Go To Definition for JSDoc は、リンクの検索範囲をファイルの外まで広げます。リンク先の名前にカーソルを置くと、次のように探します。
+
+1. VS Code のワークスペースシンボルプロバイダーに完全一致する名前を問い合わせます。
+2. 見つからなければ、TypeScript の AST を使って TypeScript と JavaScript のファイルを調べます。
+3. `node_modules`、`dist`、`out`、`.next`、`.git` など、生成物や依存関係のディレクトリは対象から除きます。
+
+これで、先ほどのように import していないシンボルにも移動できます。TypeScript、TSX、JavaScript、JSX で、普段使っている次の書き方に対応します。
+
+```ts
+/**
+ * {@link SymbolName}
+ * {@link 'SymbolName'}
+ * {@link "SymbolName"}
+ * {@link Namespace.SymbolName}
+ * {@linkplain SymbolName}
+ * {@linkcode SymbolName}
+ */
+```
+
+変更したのはシンボルの検索範囲だけです。相対パスのリンクやホバー表示、名前変更のリファクタリングは、従来の動作をそのまま使えます。
+
+---
+
+## 標準での対応を待たずに作った理由
+
+TypeScript で JSDoc のリンクをどう扱うかは、以前から議論されています。
+
+[microsoft/TypeScript#47718：JSDoc コメントから別ファイルへリンクする方法を提供する](https://github.com/microsoft/TypeScript/issues/47718)
+
+この Issue は何年も前から開かれています。相対パス、ホバーの Markdown、プロトコル上の制約と幅が広く、結論はまだ出ていません。誰かのせいだとは思いません。何を基準に相対パスを解決するか、リファクタリングでリンクをどう書き換えるかは、きちんと設計しようとすると難しい問題です。
+
+一方、シンボル名だけなら、それらを先に解決する必要はありません。import 一覧の外まで名前を探せればよいので、その部分を拡張として公開しました。
+
+---
+
+## 使ってみてほしい理由
+
+この記事を書いた一番の理由はここです。
+
+機能をリクエストするのと、実際のプロジェクトで使い続けるのとでは重みが違います。Issue に100件の 👍 が付く以上に、多くのプロジェクトが拡張を必要としていると示せれば、言語サービスで対応する根拠になります。「できたらいいな」という話から、「すでに別の手段で不足を補っている」という話に変われば、止まっていた議論も動くかもしれません。
+
+TypeScript 標準の `{@link}` で同じことをしたいと感じたら、ぜひ試してみてください。
+
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=laststance.go-to-definition-for-jsdoc) または [Open VSX](https://open-vsx.org/extension/laststance/go-to-definition-for-jsdoc) からインストールできます。
+- ドキュメントに残したいモジュール間の参照がある、普段のコードベースで試してみてください。
+- たどれるはずの定義に飛べなかったときは、[リポジトリ](https://github.com/laststance/go-to-definition-for-jsdoc) に Issue をお願いします。
+
+いつか TypeScript 本体が対応し、この拡張が不要になったら、それが一番うれしい結末です。それまでは、コメントのためだけに import を足さずに済みます。

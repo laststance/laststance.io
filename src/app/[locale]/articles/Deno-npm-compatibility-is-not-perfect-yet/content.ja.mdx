@@ -1,0 +1,45 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Deno の npm 互換性はまだ発展途上',
+  date: '2023-09-02',
+  description: 'Deno で @clack/prompts を動かせなかったときの記録。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+最近のアップデートで Deno から npm パッケージを使えるようになったので、CLI アプリ向けのライブラリ `@clack/prompts` でスクリプトを書いてみることにしました。\
+ブログ記事のタイトルと抜粋を入力すると、`.md` のひな形が生成される、という仕組みです。\
+Deno は TypeScript をそのまま実行できます。ビルドの手間を省いて、TypeScript で気軽に CLI スクリプトを書けそうだと思いました。
+
+ところが、`error: Uncaught Error: Not implemented: net.Socket.prototype.constructor with fd option` というエラーが出て、Deno ではスクリプトを実行できませんでした。
+
+```csharp
+ryota.murakami@MacBook-Pro ~/l/blog (main)> deno task gen
+Warning Currently only basic package.json `scripts` are supported. Programs like `rimraf` or `cross-env` will not work correctly. This will be fixed in an upcoming release.
+Task gen deno run -A scripts/gen.ts
+┌  generate post markdown templete
+error: Uncaught Error: Not implemented: net.Socket.prototype.constructor with fd option
+   at notImplemented .notImplemented (ext:deno_node/_utils.ts:9:9 undefined)
+   at new Socket .new Socket (node:net:455:7 undefined)
+   at new WriteStream .new WriteStream (node:tty:18:8 undefined)
+   at oD.prompt (file:///Users/ryota.murakami/laststance/blog/node_modules/.deno/@clack+prompts@0.7.0/node_modules/@clack/core/dist/index.mjs:9:693 undefined)
+   at te .te (file:///Users/ryota.murakami/laststance/blog/node_modules/.deno/@clack+prompts@0.7.0/node_modules/@clack/prompts/dist/index.mjs:9:7 undefined)
+    at file:///Users/ryota.murakami/laststance/blog/scripts/gen.ts:5:21
+ryota.murakami@MacBook-Pro ~/l/blog (main) [1]> deno task gen
+Task gen deno run -A scripts/gen.ts
+┌  generate post markdown templete.
+error: Uncaught Error: Not implemented: net.Socket.prototype.constructor with fd option
+   at notImplemented .notImplemented (ext:deno_node/_utils.ts:9:9 undefined)
+   at new Socket .new Socket (node:net:455:7 undefined)
+   at new WriteStream .new WriteStream (node:tty:18:8 undefined)
+   at G.prompt (https://esm.sh/v131/@clack/core@0.3.3/denonext/core.mjs:11:687 undefined)
+   at ne .ne (https://esm.sh/v131/@clack/prompts@0.7.0/denonext/prompts.mjs:11:7 undefined)
+    at file:///Users/ryota.murakami/laststance/blog/scripts/gen.ts:5:21
+```
+
+[![](https://img.shields.io/badge/Formatted%20by-https%3A%2F%2Fst.elmah.io-%230da58e)](https://st.elmah.io)
+
+結局、`package.json` を作り、`pnpm` で `@clack/prompts` をインストールして、Deno Fresh 用のブログのひな形を生成するスクリプトを Node で書きました。\
+その結果、プロジェクトのファイル構成はだいぶ雑然としました。

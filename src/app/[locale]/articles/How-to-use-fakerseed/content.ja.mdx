@@ -1,0 +1,176 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'faker.seed() の使い方',
+  date: '2025-05-28',
+  description:
+    'Faker の乱数シードを固定して、毎回同じテストデータを生成する方法を紹介します。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+この記事で使う Faker のバージョンは `v.9.8.0` です。
+
+[公式ドキュメント](https://fakerjs.dev/api/faker#seed)を読んでも使い方がいまひとつつかめなかったので、  
+実際に試してわかった `faker.seed()` の使い方を詳しく紹介します。
+
+## faker.seed() の基本
+
+`faker.seed()` は、**再現できるランダムデータ**を生成するための機能です。同じシード値を指定すると、毎回同じデータが生成されます。
+
+## 基本的な使い方
+
+```typescript
+import { faker } from '@faker-js/faker'
+
+// Set seed (specify a number)
+faker.seed(123)
+
+// Data generated after this will be the same every time
+console.log(faker.person.firstName()) // Same name every time
+console.log(faker.location.city()) // Same city name every time
+```
+
+## テストファイルでの実践例
+
+React コンポーネントにシードを使う処理を追加してみましょう。
+
+```typescript
+import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
+import { faker } from '@faker-js/faker'
+
+import { Combobox } from './Combobox'
+
+// Set seed to generate reproducible data
+faker.seed(12345) // Set a fixed number
+
+const facilityPrefixes = ['Tokyo', 'Osaka', 'Nagoya', 'Fukuoka', 'Sapporo', 'Kobe', 'Yokohama']
+const facilitySuffixes = ['Center', 'Building', 'Tower', 'Plaza', 'Park', 'Hall', 'Facility']
+
+const generateFacility = (index: number) => {
+  const prefix = faker.helpers.arrayElement(facilityPrefixes)
+  const suffix = faker.helpers.arrayElement(facilitySuffixes)
+  const name = `${prefix}${suffix}${index + 1}`
+  return { value: name, label: name }
+}
+
+// Same data is generated every time
+export const facilities = Array.from({ length: 30 }, (_, index) =>
+  generateFacility(index)
+)
+
+test('renders', () => {
+  const { getByRole } = render(<Combobox />)
+  expect(getByRole('combobox')).toBeVisible()
+})
+
+test('generates consistent facility data', () => {
+  // Since the seed is the same, the same data is generated every time
+  console.log('First facility:', facilities[0])
+  // Example: { value: 'TokyoCenter1', label: 'TokyoCenter1' }
+
+  expect(facilities).toHaveLength(30)
+  expect(facilities[0].value).toBe('TokyoCenter1') // Same value every time
+})
+```
+
+## シードの使い方を詳しく見る
+
+### 1. 数値をシードにする
+
+```typescript
+faker.seed(123) // Single number
+faker.seed([123, 456]) // Array of multiple numbers
+```
+
+### 2. テストごとにシードをリセットする
+
+```typescript
+describe('Combobox tests', () => {
+  beforeEach(() => {
+    faker.seed(123) // Reset seed before each test
+  })
+
+  test('test 1', () => {
+    // Starts with the same data every time
+  })
+
+  test('test 2', () => {
+    // Starts with the same data every time
+  })
+})
+```
+
+### 3. 条件に応じてシードを設定する
+
+```typescript
+// Fixed seed in development, true random in production
+if (process.env.NODE_ENV === 'test') {
+  faker.seed(123)
+}
+```
+
+### 4. シードを動的に決める（日付を使う例）
+
+```typescript
+// Date-based seed (changes daily)
+const today = new Date().toDateString()
+const seed = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+faker.seed(seed)
+```
+
+## 実際の利用パターン
+
+### パターン 1：テストデータを固定する
+
+```typescript
+// Test-only fixtures
+export const createTestFacilities = () => {
+  faker.seed(999) // Fixed seed
+  return Array.from({ length: 10 }, (_, i) => ({
+    value: `Test Facility${i + 1}`,
+    label: `Test Facility${i + 1}`,
+  }))
+}
+```
+
+### パターン 2：スナップショットテストで使う
+
+```typescript
+test('facility list snapshot', () => {
+  faker.seed(123) // Fixed seed
+  const facilities = generateFacilities(5)
+  expect(facilities).toMatchSnapshot() // Same result every time
+})
+```
+
+### パターン 3：シード値を管理する
+
+```typescript
+const SEEDS = {
+  FACILITIES: 123,
+  USERS: 456,
+  PRODUCTS: 789,
+} as const
+
+// Separate seeds by purpose
+export const generateFacilities = () => {
+  faker.seed(SEEDS.FACILITIES)
+  // Generate facility data
+}
+
+export const generateUsers = () => {
+  faker.seed(SEEDS.USERS)
+  // Generate user data
+}
+```
+
+## 注意点
+
+1. **シードの設定はグローバルです。** 設定すると、それ以降の Faker の呼び出しすべてに影響します。
+2. **呼び出し順に注意してください。** 同じシードでも、`faker` のメソッドを呼ぶ順序が変わると結果も変わります。
+3. **結果はバージョンにも依存します。** Faker.js のバージョンが変わると、同じシードでも別の結果になることがあります。
+
+シードを使うとテスト結果を再現しやすくなり、デバッグも楽になります。

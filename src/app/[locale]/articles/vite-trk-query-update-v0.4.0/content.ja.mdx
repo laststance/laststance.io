@@ -1,0 +1,24 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'vite-rtk-query を v0.4.0 に更新',
+  date: '2023-08-16',
+  description: 'React Router と CSS Modules の設定を改善しました。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+[vite-rtk-query](https://github.com/laststance/vite-rtk-query) を更新しました。
+
+### React Router v6 の設定
+
+[React Router](https://reactrouter.com/en/main) と [redux-first-history](https://github.com/salvoravida/redux-first-history) を追加しました。\
+redux-first-history を使うと、Redux のアクションをディスパッチして React Router のページを遷移できます。
+
+### CSS Modules のネスト
+
+CSS Modules でスタイルを書きやすくするため、[postcss-nesting](https://www.npmjs.com/package/postcss-nesting) を追加しました。
+Redux のピア依存関係でエラーになる場合は、`npm i --force` を使ってインストールしてください。
+
+使ってくださっている皆さん、ありがとうございます。

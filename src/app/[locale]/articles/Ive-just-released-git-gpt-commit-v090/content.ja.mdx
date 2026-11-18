@@ -1,0 +1,102 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import Image from 'next/image'
+import previewGif from './preview.gif'
+import openApiKeyImage from './open-api-key.png'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'git-gpt-commit v0.9.0 をリリースしました 🎉',
+  date: '2025-05-08',
+  description: 'CLI からコミットメッセージを生成する Git 拡張です。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+<Image
+  src={previewGif}
+  alt="git-gpt-commit でコミットメッセージを生成する様子"
+  sizes="100vw"
+  unoptimized
+  style={{
+    width: '100%',
+    height: 'auto',
+  }}
+/>
+
+[git-gpt-commit v0.9.0](https://github.com/laststance/git-gpt-commit) をリリースしました！ OpenAI の GPT モデルで変更内容に合ったコミットメッセージを生成する Git 拡張です。
+
+## v0.9.0 の新機能 ✨
+
+メッセージを生成するモデルを更新し、言語や書式を CLI で設定できるようにしました。
+
+### 🚀 GPT-4o に対応
+
+デフォルトモデルを OpenAI の GPT-4o に変更しました。応答の速さを保ちながら、変更の意図をより正確に反映したメッセージを生成します。
+
+### 🌐 メッセージの言語を選ぶ
+
+```bash
+git gpt lang
+```
+
+英語、スペイン語、日本語、フランス語、ドイツ語、イタリア語、韓国語、中国語（簡体字・繁体字）、オランダ語、ロシア語、ブラジルポルトガル語の12言語から選べます。
+
+### 🏷️ プレフィックスの表示を切り替える
+
+```bash
+git gpt prefix
+```
+
+チームの規約に合わせて、`feat:`、`fix:`、`refactor:` などを付けるかどうかを切り替えられます。毎回手で整形する手間が省けます。
+
+### 🔑 API キーを管理する
+
+```bash
+git gpt open-api-key
+```
+
+<Image
+  src={openApiKeyImage}
+  alt="CLI で OpenAI の API キーを設定する画面"
+  sizes="100vw"
+  style={{
+    width: '100%',
+    height: 'auto',
+  }}
+/>
+CLI から OpenAI の API キーを安全に登録・管理できます。 従来の `.env`
+ファイルによる設定も 引き続き利用できます。
+
+### ⚙️ 設定を確認する
+
+```bash
+git gpt config
+```
+
+現在の設定を一覧で確認できます。
+
+## 使い方
+
+いつも通り `git add` で変更をステージし、次のコマンドを実行します。
+
+```bash
+git gpt commit
+```
+
+ステージされた変更が GPT モデルに送られ、差分に合ったコミットメッセージが提案されます。提案を採用することも、キャンセルして自分で書くこともできます。
+
+## インストール
+
+```bash
+npm install -g @laststance/git-gpt-commit
+```
+
+## git-gpt-commit を作った理由
+
+VS Code や Cursor では AI でコミットメッセージを生成できますが、私が普段 Git を使うのはコマンドラインです。CLI でも同じことをしたくて作りました。😅
+
+それでは、よいコミットを！ 🚀
+
+---
+
+_[GitHub](https://github.com/laststance/git-gpt-commit) | [npm](https://www.npmjs.com/package/@laststance/git-gpt-commit)_

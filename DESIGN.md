@@ -392,7 +392,7 @@ How copy is written across UI, prose, and project descriptions.
 - **Numbers earn their place** — Showing a star count or download count requires asking "what does this prove?". If the answer is "popularity," reconsider. If shown: `font-mono` on the digits only, always include a unit (`★ 1,234`, `120 commits`, `port 3939`).
 - **No false certainty** — "Experiment" is honest. "Cutting-edge solution" is not.
 - **Author-author dialect** — Mixed Japanese + English is fine for author-only documents (this file, plan files in `~/.gstack/`).
-- **English first, then Japanese** — UI copy is written in English and translated to Japanese, which visitors get when their browser prefers Japanese. Article bodies, article titles, and OG image text stay English. To add a string, add it to `src/i18n/messages/en.ts`, add its translation to `src/i18n/messages/ja.ts`, and read it with `useTranslations` or `getTranslations`. Japanese prose uses です・ます調, and labels are short noun phrases.
+- **English first, then Japanese** — UI copy is written in English and translated to Japanese, which visitors get when their browser prefers Japanese. Article bodies, titles, and summaries follow the selected language. OG image text stays English. To add a string, add it to `src/i18n/messages/en.ts`, add its translation to `src/i18n/messages/ja.ts`, and read it with `useTranslations` or `getTranslations`. Japanese prose uses です・ます調, and labels are short noun phrases.
 - **Show, don't claim** — Instead of writing "high performance," show a Lighthouse score with the date next to it. Instead of writing "well-tested," link to the Storybook coverage.
 
 ---
