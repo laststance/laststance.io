@@ -34,7 +34,6 @@ const pages = [
 const missing = '/articles/this-article-does-not-exist'
 const untouched = ['/feed.xml', '/sitemap.xml', '/api/og?title=Laststance.io']
 const kana = /[぀-ヿ]/
-const japaneseDate = /\d{4}年\d{1,2}月\d{1,2}日/
 
 const results = []
 const record = (name, ok, detail = '') => results.push({ name, ok, detail })
@@ -59,12 +58,18 @@ const htmlLang = (body) => body.match(/<html[^>]*\slang="([^"]+)"/)?.[1]
 const checkPage = async (name, path, want, acceptLanguage, cookie) => {
   const { response, body } = await get(path, acceptLanguage, cookie)
   const lang = htmlLang(body)
-  // Header and footer are already Japanese, so only the page's own <main> proves its copy was translated.
-  const main = (body.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '')
-    .replace(/<script[\s\S]*?<\/script>/g, '')
-    .replace(/<[^>]+>/g, ' ')
-  const isArticle = /^\/articles\/[^?]+$/.test(path)
-  const translated = isArticle ? japaneseDate.test(main) : kana.test(main)
+  // Run on a fresh CI checkout with Node alone. Skip the title and date on detail pages.
+  const main = body.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? ''
+  const content = path.startsWith('/articles/')
+    ? (main.match(
+        /<div\b[^>]*\bdata-mdx-content[^>]*>([\s\S]*?)<\/article>/,
+      )?.[1] ?? '')
+    : main
+  const translated = kana.test(
+    content
+      .replace(/<script\b[\s\S]*?<\/script>/g, '')
+      .replace(/<[^>]+>/g, ' '),
+  )
   const ok =
     response.status === 200 &&
     lang === want &&

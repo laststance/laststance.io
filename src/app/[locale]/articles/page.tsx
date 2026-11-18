@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
 import { useLocale, useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import { type SearchParams } from 'nuqs/server'
 
 import {
@@ -31,7 +31,7 @@ function Article({ article }: { article: ArticleWithSlug }) {
     <article className="reference-grid">
       <Card className="min-w-0">
         <CardTitle href={`/articles/${article.slug}`}>
-          <span lang="en">{article.title}</span>
+          {article.title}
         </CardTitle>
         <CardEyebrow
           as="time"
@@ -41,9 +41,7 @@ function Article({ article }: { article: ArticleWithSlug }) {
         >
           {formatDate(article.date, locale)}
         </CardEyebrow>
-        <CardDescription>
-          <span lang="en">{article.description}</span>
-        </CardDescription>
+        <CardDescription>{article.description}</CardDescription>
         <CardCta>{t('readArticle')}</CardCta>
       </Card>
       <CardEyebrow
@@ -66,7 +64,7 @@ export default async function ArticlesIndex({
   searchParams,
 }: ArticlesIndexProps) {
   const { page: requestedPage } = await loadArticlesSearchParams(searchParams)
-  const articles = await getAllArticles()
+  const articles = await getAllArticles(await getLocale())
   const t = await getTranslations('pages.articles')
 
   // Clamp the requested page to the valid range so /articles?page=999 still

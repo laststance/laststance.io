@@ -1,0 +1,23 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'modules.scss でネストしたクラスにアクセスする',
+  date: '2023-08-21',
+  description: 'styles オブジェクトからネストしたセレクターを参照する方法。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+CSS Modules では、ネストしたクラスをキャメルケースの名前で参照できます。この例では、`.container` の中の `.row`、さらにその中の `.item` を `styles.containerRowItem` で参照します。`.item` を適用するには、`index.jsx` を次のように書きます。
+
+```jsx
+import React from 'react'
+import styles from './index.modules.scss'
+
+const Foo = () => <div className={styles.containerRowItem}>text</div>
+
+export default Foo
+```
+
+プロジェクトで SCSS ファイルを CSS Modules として扱えるように設定しておきます。Create React App などの環境なら、そのまま動くはずです。必要に応じて、Webpack などのビルドツールで SCSS ファイルを CSS Modules として処理するように設定してください。

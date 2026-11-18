@@ -1,0 +1,102 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'shadcn/ui レジストリで使える主なライブラリ',
+  date: '2025-06-06',
+  description:
+    'Magic UI、Aceternity UI、Origin UI など、shadcn/ui のレジストリで配布されているサードパーティー製のコンポーネント集を紹介します。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+[shadcn/ui](https://ui.shadcn.com/docs/components) には、Accordion、Alert、Dialog などの基本コンポーネントがそろっています。
+
+さらに、レジストリを使うとサードパーティー製のコンポーネントも追加できます。`npx shadcn@latest init` で shadcn/ui を導入済みのプロジェクトなら、次のようなコマンドで追加できます。
+
+```bash
+npx shadcn-ui@latest add alert --registry https://registry.example.com/components.json
+```
+
+[shadcn/ui レジストリ](https://ui.shadcn.com/docs/registry)の仕組みを通じて、各 UI ライブラリが配布するコンポーネントを一つずつ取得できます。
+
+## 主なサードパーティーレジストリ
+
+### 1. Magic UI
+
+- **URL**　https://magicui.design
+- **特徴**　デザインエンジニア向けの UI ライブラリ。コンポーネントをコピーして貼り付け、動きのあるランディングページを作れます。
+- **主な内容**　無料で使えるオープンソースのコンポーネントが150点以上。
+
+Magic UI は、見た目にインパクトのあるランディングページ向けのコンポーネントが豊富です。マーケティングサイトや製品紹介ページに向いています。
+
+### 2. Aceternity UI
+
+- **URL**　https://ui.aceternity.com
+- **特徴**　Tailwind CSS と Framer Motion を使ったコンポーネント集。Next.js と TypeScript で構築されています。
+- **主な内容**　スポットライト、マスクで徐々に見せる演出、アニメーション付きのタブ、テキストのフェードインやタイピング演出、波打つ背景など。
+
+Aceternity UI は、なめらかな画面の変化や目を引く演出を取り入れた、動きの多いインタラクティブなコンポーネントを得意とします。
+
+### 3. Shadcn Blocks
+
+- **URL**　https://www.shadcnblocks.com
+- **特徴**　shadcn/ui、Tailwind、React 向けに作られた631点のブロックとコンポーネントを収録した有料ライブラリ。
+- **主な内容**　そのまま使えるページのセクションやレイアウトを多数収録。
+
+出来合いのブロックを使い、試作や開発にかかる時間を短縮したい開発者向けです。
+
+### 4. Origin UI
+
+- **URL**　https://originui.com
+- **特徴**　標準の shadcn/ui より機能を増やしたコンポーネント集。タイムライン表示や、多機能なダイアログなど。
+- **主な内容**　標準コンポーネントを拡張した部品。
+
+基本的な UI 部品では機能が足りない場面で、標準コンポーネントの代わりに使えます。
+
+### 5. Cult UI
+
+- **URL**　https://cult-ui.com
+- **特徴**　デザインエンジニア向けに作られた、大胆な見た目やアニメーションを持つコンポーネント。
+- **主な内容**　Dynamic Island や Dock など、Apple の OS に着想を得た部品や、そのほかのインタラクティブな部品。
+
+Apple のデザインを思わせる、細部まで作り込まれた使い心地を Web アプリに取り入れたいときに向いています。
+
+### 6. Kokonut UI
+
+- **URL**　https://kokonutui.com
+- **特徴**　Tailwind CSS と shadcn/ui を使い、Next.js 向けに作られた100点以上の UI コンポーネント。
+- **主な内容**　現代的なデザインパターンを採用し、Next.js に合わせて作られたコンポーネント。
+
+Next.js の構成になじむ、幅広いコンポーネント集を探している開発者に向いています。
+
+### 7. Neobrutalism Components
+
+- **URL**　https://neobrutalism.dev
+- **特徴**　ネオブルータリズムのスタイルで作られた、shadcn/ui ベースのコンポーネント集。
+- **主な内容**　大胆で飾り気が少なく、視覚的に強い印象を残すデザイン。
+
+定番のデザインから離れて、型にはまらない表現を取り入れたいプロジェクトに向いています。
+
+### 8. そのほかのライブラリ
+
+- **[Shadcn Form Builder](https://www.shadcn-form.com/)** は shadcn、react-hook-form、Zod を使い、数分でフォームを作成できるツールです。
+- **[StyleGlide](https://www.styleglide.ai/)** は配色やタイポグラフィのスタイルを生成し、shadcn を通じてプロジェクトに取り込めるようにします。
+- **[Kibo UI](https://www.kibo-ui.com/)** は、カスタマイズ可能でアクセシブルなオープンソースのコンポーネントを配布する独自レジストリです。
+
+## 役立つリソース
+
+### レジストリやコンポーネントを探す
+
+- **[registry.directory](https://registry.directory/)** では、shadcn/ui のレジストリを探したり、コンポーネントをプレビューしてコピーしたりできます。
+- **[Awesome Shadcn UI](https://github.com/birobirobiro/awesome-shadcn-ui)** は shadcn/ui 関連のリソースを13カテゴリ、200点以上にわたって集めたリストです。
+
+これらのリソースから、プロジェクトに取り入れたいコンポーネントやライブラリを探せます。
+
+## まとめ
+
+ここで紹介したライブラリはどれも shadcn CLI に対応しています。カスタムコンポーネント、フック、ページなどのファイルを React プロジェクトに追加できます。レジストリのおかげで、複数のライブラリから必要な部品を組み合わせて、ゼロから作らずに独自の UI を組み立てられます。
+
+目を引くアニメーションが必要なマーケティングサイトには Magic UI や Aceternity UI、機能の多いアプリには Origin UI、独自の見た目を出したいプロジェクトには Cult UI や Neobrutalism Components が候補になります。
+
+まずは shadcn/ui の基本コンポーネントで始め、必要になったところからサードパーティーレジストリの専用コンポーネントを加えていけるのが、この仕組みの便利なところです。

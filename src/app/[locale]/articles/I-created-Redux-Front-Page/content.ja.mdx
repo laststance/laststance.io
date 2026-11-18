@@ -1,0 +1,35 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Redux Front Page を作りました',
+  date: '2025-05-01',
+  description:
+    'あちこちに分かれている Redux のドキュメントを、ひとつの入口から探せるようにしました。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+Redux のドキュメントは、長い間いくつものサイトに分散しています。そこで、最初に開くページとして **[Redux Front Page](https://redux-front-page.vercel.app/)** を作りました。
+
+## 作った理由
+
+Redux は機能もコミュニティも成長してきました。その一方で、学ぶための資料はあちこちに散らばっています。
+
+- 公式・非公式のドキュメントサイトが複数ある
+- チュートリアルやガイドがブログ、フォーラム、SNS に分かれている
+- 資料どうしで説明が食い違ったり、情報が古かったりして、学び始めのハードルが高い
+
+初めて触る人も、経験のある開発者も、信頼できる最新の情報を探すのに苦労します。
+
+**Redux Front Page** には、Redux を構成する主なライブラリとドキュメントへの案内を、目的ごとに整理して載せています。
+
+## きっかけはコミュニティの声
+
+特に印象に残ったのは、Redux のメンテナーで開発体験の改善にも取り組んでいる [Mark Erikson の投稿](https://bsky.app/profile/acemarke.dev/post/3lngz256amc27) です。Redux の資料にたどり着く難しさについての指摘に多くの人が共感し、私もこのサイトを作ろうと思いました。
+
+## これから
+
+入門したばかりの人にも、応用的な話題を深く調べたい人にも頼れる入口になるよう、今後も内容を見直していきます。
+
+Redux のドキュメントを探して迷ったことのある人に、少しでも役立てばうれしいです。

@@ -1,0 +1,148 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'ryota-murakami',
+  date: '2026-01-06',
+  title: 'Laststance の振り返り・2025年12月',
+  description:
+    '34のプロジェクトで768件をコミット。Signage と Complete の新版を公開し、GitBox と Claude Plugin Dashboard を立ち上げました。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# Laststance の振り返り・2025年12月
+
+2025年12月は、Laststance でこれまで最も開発が進んだ月でした。34のプロジェクトで768件をコミットし、45件のプルリクエストをマージ、14件をリリースしました。新しいプロジェクトを立ち上げ、主要な機能を公開し、組織全体でセキュリティを強化しました。
+
+## 🎉 新しいプロジェクト
+
+### [claude-plugin-dashboard](https://github.com/laststance/claude-plugin-dashboard)
+
+Claude Code のプラグインを探し、インストールや管理ができる対話型の CLI ダッシュボードです。
+
+- [v0.1.0 の初回リリース](https://github.com/laststance/claude-plugin-dashboard/releases/tag/v0.1.0)
+  複数のマーケットプレイスから100件以上のプラグインを閲覧し、ダッシュボードでインストールやアンインストールができます。キーボード操作で有効・無効を切り替えられます。Emacs 風のショートカットを備え、ターミナル画面の見た目は Claude Code に合わせています。
+
+---
+
+### [gitbox](https://gitbox-laststance.vercel.app/)
+
+GitHub のリポジトリをカンバンボード形式で管理する Web アプリです。
+
+**主な変更**
+
+- [初回リリース](https://github.com/laststance/gitbox/releases/tag/v0.1.0)
+
+- [ボードのお気に入り機能と E2E テスト](https://github.com/laststance/gitbox/pull/16)
+  - よく使うボードをお気に入りに登録して開けるようにし、一通りの操作を E2E テストでカバーしました。
+
+- [ボード設定ダイアログにカードの表示設定を追加](https://github.com/laststance/gitbox/pull/21)
+  - ボード内のカードの表示方法を変更できるようになりました。
+
+---
+
+## 🖥️ デスクトップアプリ
+
+### signage
+
+頭を休めるために画面を暗くするスクリーンセーバーアプリです。今月は8回リリースしました！
+
+**主な変更**
+
+- [v1.4.0 の自動更新機能](https://github.com/laststance/signage/releases/tag/v1.4.0)
+  - VS Code や Slack のような自動更新を実装しました。バックグラウンドで静かにダウンロードし、操作をさえぎらないバナーで通知します。ワンクリックで再起動してインストールできます。
+
+- [v1.3.0 の設定ウィンドウ](https://github.com/laststance/signage/releases/tag/v1.3.0)
+  - メニューバーや Dock アイコンの表示、起動時の動作、グローバルショートカットを設定できるウィンドウを追加しました。
+
+- [v1.2.0 の Black Mirror モード](https://github.com/laststance/signage/releases/tag/v1.2.0)
+  - カーソルを動かしても演出が入らず、真っ黒な画面を表示し続けるモードです。視界に何も入れず、目を休めたいときに使えます。
+
+---
+
+### complete
+
+グローバルショートカットで呼び出せる、macOS 全体で使えるスペル補完アプリです。
+
+**主な変更**
+
+- [v0.1.0 の初回リリース](https://github.com/laststance/complete/releases/tag/v0.1.0)
+  - ⇧⌘I で呼び出し、カーソルの近くに候補を表示します。NSSpellChecker で TextEdit と同等の補完候補を出し、キーボードで選べます。複数のアプリで動作します。
+
+- [v0.1.2 でブラウザー内の表示位置を修正](https://github.com/laststance/complete/releases/tag/v0.1.2)
+  - ブラウザーの入力欄やテキストエリアで、ポップアップの表示位置がずれる問題を修正しました。Chrome のテキストエリア、入力欄、アドレスバーで正しい位置に表示されます。
+
+- [v0.1.3 で起動時のクラッシュを修正](https://github.com/laststance/complete/releases/tag/v0.1.3)
+  - SPM のリソースバンドルが欠けていたため、本番ビルドが起動時にクラッシュする問題を修正しました。
+
+---
+
+## 🌐 Chrome 拡張機能
+
+### clean-url
+
+URL からトラッキング用のパラメーターを取り除く Chrome 拡張機能です。
+
+**リリース**
+
+- [v1.0.6 の Amazon トラッキング対応とコンテキストメニュー修正](https://github.com/laststance/clean-url/releases/tag/v1.0.6)
+  - Amazon のアフィリエイト URL を正しく検出し、不要なパラメーターを削除できるようになりました。コンテキストメニューの「現在の URL をクリーンアップ」（Clean current URL）と「このリンクをクリーンアップ」（Clean this link）も正しく動作します。
+
+---
+
+## 📚 開発ツール
+
+### mui-storybook
+
+MUI v7 の標準コンポーネントを集めた Storybook です。
+
+**主な変更**
+
+- [30種類のレイアウトパターンとストーリーを追加](https://github.com/laststance/mui-storybook/pull/17)
+  - MUI を使ったアプリでよく出てくるレイアウトを一通りそろえました。
+
+- [Vitest アドオンで Storybook のテストを整備](https://github.com/laststance/mui-storybook/pull/6)
+  - コンポーネントのストーリーを直接テストできるように、Vitest と連携しました。
+
+- [未収録だった12点の MUI コンポーネントにストーリーとテストを追加](https://github.com/laststance/mui-storybook/pull/7)
+  - これまで対象外だった MUI コンポーネントにも範囲を広げました。
+
+---
+
+### semantic-react
+
+Custom Elements を利用して、React コンポーネントを DevTools で見つけやすくするラッパーです。
+
+**主な変更**
+
+- [DOM 構造を簡潔にする replaceDivRoot オプションを追加](https://github.com/laststance/semantic-react/pull/1)
+  - semantic-react コンポーネントを使ったときに、出力される DOM を簡潔にできます。
+
+---
+
+## 🔒 malware-safe-chain によるセキュリティ強化
+
+今月は Laststance の全リポジトリに **malware-safe-chain** ワークフローを展開しました。この GitHub Actions ワークフローを CI/CD パイプラインに組み込み、セキュリティチェックを追加しました。
+
+更新したリポジトリには、nsx、laststance.io、clean-url、utils、coffee-timer、create-react-app-vite、eslint-config-ts-prefixer、signage、react-next-eslint-plugin、next-msw-integration、mui-storybook、vite-rtk-query、usd-query、react-typescript-todomvc-2022、Engage、corelive、complete、Redux-Front-Page、do-i-need-an-umbrella、website-eslint-config-ts-prefixer、react-lightbox、bookmark-xp-explorer、swagger-node-codegen、git-gpt-commit、npm-publish-tool、create-web-site、copy-to、electron-mcp-server が含まれます。
+
+---
+
+## 📊 数字で見る12月
+
+| 指標                     | 件数    |
+| ------------------------ | ------- |
+| 活動のあったリポジトリ   | 34 / 36 |
+| コミット総数             | 768     |
+| マージしたプルリクエスト | 45      |
+| リリース数               | 14      |
+
+---
+
+## おわりに
+
+2025年12月は、Laststance にとって節目の月でした。GitBox と Claude Plugin Dashboard の二つを立ち上げ、デスクトップアプリの Signage と Complete を複数回リリースし、全リポジトリでセキュリティを強化しました。
+
+GitBox には、GitHub リポジトリをもっと管理しやすくしたいという Laststance の考えが詰まっています。Claude Plugin Dashboard には、開発ツール作りの経験を Claude Code のエコシステムで生かしました。
+
+---

@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { Container } from '@/components/Container'
 import { HomeColumns } from '@/components/HomeColumns'
@@ -16,7 +16,7 @@ import { Photos } from './page/Photos'
 import { SocialLink } from './page/SocialLink'
 
 export default async function Home() {
-  const articles = (await getAllArticles()).slice(0, 4)
+  const articles = (await getAllArticles(await getLocale())).slice(0, 4)
   const t = await getTranslations('pages.home')
   const common = await getTranslations('Common')
 

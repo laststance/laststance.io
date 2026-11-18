@@ -31,7 +31,7 @@ Distributing an Electron app is more than just building an executable. Without c
 
 ---
 
-## Choosing a Build Tool
+<h2 id="choosing-a-build-tool">Choosing a Build Tool</h2>
 
 Before diving into signing, you need to pick a build tool. The two main options in the Electron ecosystem are **electron-builder** and **Electron Forge**.
 
@@ -50,7 +50,7 @@ This guide shows configuration for **both** tools.
 
 ---
 
-## Windows Code Signing
+<h2 id="windows-code-signing">Windows Code Signing</h2>
 
 Without code signing, Windows shows a **SmartScreen warning** ("Windows protected your PC") that blocks users from running your app. This is the single biggest barrier to distributing Electron apps on Windows.
 
@@ -152,7 +152,7 @@ Even with an OV certificate, SmartScreen operates on a **reputation system**. A 
 
 ---
 
-## Azure Trusted Signing
+<h2 id="azure-trusted-signing">Azure Trusted Signing</h2>
 
 **Azure Trusted Signing** is Microsoft's cloud-based code signing service, launched in 2024 and now generally available. It is the **recommended approach** for new projects because it provides instant SmartScreen reputation at a fraction of the cost of traditional EV certificates.
 
@@ -246,7 +246,7 @@ The `metadata.json` file:
 
 ---
 
-## Linux Distribution
+<h2 id="linux-distribution">Linux Distribution</h2>
 
 Linux has multiple packaging formats, each with different trade-offs. Unlike Windows and macOS, **code signing on Linux is not enforced by the OS** but is still good practice for repository integrity.
 
@@ -381,7 +381,7 @@ snapcraft upload your-app.snap --release=stable
 
 ---
 
-## Auto-Update
+<h2 id="auto-update">Auto-Update</h2>
 
 A signed app needs automatic updates to deliver patches seamlessly.
 
@@ -449,7 +449,7 @@ This works with `@electron-forge/publisher-github` and the free [update.electron
 
 ---
 
-## CI/CD with GitHub Actions
+<h2 id="cicd-with-github-actions">CI/CD with GitHub Actions</h2>
 
 Here is a complete GitHub Actions workflow that builds and signs your Electron app for Windows and Linux, then publishes to GitHub Releases.
 
@@ -562,7 +562,7 @@ Add these secrets in your GitHub repository settings (`Settings > Secrets and va
 
 ---
 
-## Summary
+<h2 id="summary">Summary</h2>
 
 | Platform    | Signing                  | Recommended Approach         | Cost           |
 | ----------- | ------------------------ | ---------------------------- | -------------- |
@@ -589,7 +589,7 @@ Add these secrets in your GitHub repository settings (`Settings > Secrets and va
 
 ---
 
-## Important: 2026 Certificate Validity Changes
+<h2 id="important-2026-certificate-validity-changes">Important: 2026 Certificate Validity Changes</h2>
 
 Starting **March 1, 2026**, the CA/Browser Forum has reduced the maximum validity period for publicly trusted code signing certificates from **39 months to 460 days** (~15 months). This means:
 
@@ -601,7 +601,7 @@ This regulatory change further reinforces the advantage of Azure Trusted Signing
 
 ---
 
-## Known Issues and Gotchas
+<h2 id="known-issues-and-gotchas">Known Issues and Gotchas</h2>
 
 ### electron-builder + Azure Trusted Signing Race Condition
 

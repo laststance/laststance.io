@@ -1,0 +1,49 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'CSS の属性セレクター',
+  date: '2024-04-13',
+  description: '地味だけれど便利なセレクター。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+CSS の `[popover]` は「属性セレクター」です。
+書き方がいくつもあり、私も見かけるたびに意味を思い出すのに時間がかかります。
+でも、Tailwind CSS の[データ属性によるスタイル指定](https://tailwindcss.com/docs/hover-focus-and-other-states#data-attributes)では大いに役立ちます。
+
+### 基本の属性セレクター
+
+- **`[attribute]`** は、指定した属性を持つすべての要素にマッチします。属性の値は問いません。たとえば `[popover]` は、値が何であっても `popover` 属性の付いた要素をすべて選びます。
+
+### 使用例
+
+基本の `[popover]` セレクターを HTML と CSS で使ってみます。まず、次のような HTML を用意します。
+
+これらの要素にスタイルを適用する CSS は、以下のようになります。
+
+```html
+<div popover="true">This div has a popover.</div>
+<button popover>This button also has a popover.</button>
+```
+
+```css
+[popover] {
+  border: 1px solid blue;
+  padding: 10px;
+}
+```
+
+このルールは `popover` 属性を持つ要素に青い枠線と余白を付けます。このように属性セレクターを使うと、HTML 要素に特定の属性が付いているかどうかでスタイルを適用できます。
+
+### 属性セレクターのバリエーション
+
+属性の値まで見て、対象を絞り込む書き方もあります。
+
+- **`[attribute="value"]`** は、属性の値が指定した文字列と完全に一致する要素を選びます。
+- **`[attribute~="value"]`** は、空白区切りの属性値のリストに、指定した値が含まれる要素を選びます。
+- **`[attribute|="value"]`** は、属性値が指定した値と完全に一致するか、指定した値の直後にハイフンが続く要素を選びます。言語タグの地域指定などに便利です。
+- **`[attribute^="value"]`** は、属性値が指定した文字列で始まる要素を選びます。
+- **`[attribute$="value"]`** は、属性値が指定した文字列で終わる要素を選びます。
+- **`[attribute*="value"]`** は、属性値のどこかに指定した文字列が含まれる要素を選びます。

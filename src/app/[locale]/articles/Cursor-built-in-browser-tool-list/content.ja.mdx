@@ -1,0 +1,85 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Cursor 内蔵ブラウザーのツール一覧',
+  date: '2025-11-15',
+  description:
+    'Cursor AI（v2.0.77）で自動テストや Web スクレイピング、作業の自動化に使える、13 のブラウザー操作ツールを紹介します。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+## 概要
+
+Cursor AI（バージョン 2.0.77）には、[Playwright MCP（Model Context Protocol）](https://github.com/microsoft/playwright-mcp) をベースにした **13 のブラウザー操作ツール**があります。AI コーディングアシスタントがプログラムでブラウザーを操作し、自動テストや Web スクレイピング、フォーム入力、一連の作業の自動化に利用できます。
+
+## 13 のブラウザー操作ツール
+
+Cursor で使えるブラウザー操作ツールは以下のとおりです。
+
+### ページの移動と設定
+
+1. **mcp_cursor-ide-browser_browser_navigate**（URL を開く）
+   - 指定した URL をブラウザーで開く
+   - ページのアクセシビリティスナップショットを返す
+
+2. **mcp_cursor-ide-browser_browser_navigate_back**（戻る）
+   - ブラウザー履歴の前のページに戻る
+
+3. **mcp_cursor-ide-browser_browser_resize**（表示サイズを変える）
+   - ビューポートの大きさ（幅 × 高さ）を変える
+   - レスポンシブデザインの検証に欠かせない
+
+### ページの調査
+
+4. **mcp_cursor-ide-browser_browser_snapshot**（アクセシビリティスナップショットを取得する）
+   - ページのアクセシビリティツリーを YAML で取得する
+   - AI がページ構造を把握するには、スクリーンショットよりも適している
+   - 要素を操作するための参照（`ref`）が含まれる
+
+5. **mcp_cursor-ide-browser_browser_take_screenshot**（スクリーンショットを撮る）
+   - 現在のビューポートや特定の要素を PNG または JPEG で撮影する
+   - 見た目の確認やデバッグに使える
+
+### 待機
+
+6. **mcp_cursor-ide-browser_browser_wait_for**（指定した条件を待つ）
+   - テキストが表示されるまで待つ
+   - テキストが消えるまで待つ（読み込み中の表示など）
+   - 指定した秒数だけ待つ
+
+### ユーザー操作
+
+7. **mcp_cursor-ide-browser_browser_press_key**（キーを押す）
+   - キー入力を再現する（`Enter`、`ArrowDown`、`Escape` など）
+   - 特殊キーや修飾キーに対応する
+
+8. **mcp_cursor-ide-browser_browser_click**（要素をクリックする）
+   - スナップショットの `ref` を使って要素をクリックする
+   - シングルクリック、ダブルクリック、修飾キーとの組み合わせに対応する
+
+9. **mcp_cursor-ide-browser_browser_hover**（要素にポインターを重ねる）
+   - 要素をホバー状態にする
+   - ドロップダウンメニューやツールチップの表示に使える
+
+10. **mcp_cursor-ide-browser_browser_type**（テキストを入力する）
+    - 入力欄やテキストエリアに文字を入力する
+    - 一文字ずつ入力する方法と、一度に入力する方法がある
+    - 必要に応じて Enter キーで送信できる
+
+11. **mcp_cursor-ide-browser_browser_select_option**（選択肢を選ぶ）
+    - `<select>` 要素から 1 つ以上の選択肢を選ぶ
+    - 単一選択と複数選択の両方に対応する
+
+### デバッグと監視
+
+12. **mcp_cursor-ide-browser_browser_console_messages**（コンソールログを取得する）
+    - コンソールの全メッセージ（log、warn、error、info）を取得する
+    - エラーだけに絞り込める
+    - JavaScript の問題を調べるのに欠かせない
+
+13. **mcp_cursor-ide-browser_browser_network_requests**（ネットワーク通信を確認する）
+    - ページが送信したすべての HTTP/HTTPS リクエストを一覧にする
+    - URL、HTTP メソッド、ステータスコード、応答時間を表示する
+    - API のテストやパフォーマンス分析に使える

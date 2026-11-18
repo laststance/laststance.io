@@ -1,0 +1,88 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'CSS の position: fixed と sticky はどう違う？',
+  date: '2025-06-23',
+  description:
+    'スクロールできるデモで、fixed と sticky がそれぞれどこに固定されるかを比べます。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+デモを作ってくれた [Claude](https://claude.ai) に感謝します。
+
+<div className="rounded-lg border border-gray-200 bg-linear-to-br from-blue-50 to-indigo-50 p-8 text-center dark:border-gray-700 dark:from-gray-800 dark:to-gray-900">
+  <div className="mb-4">
+    <svg
+      className="mx-auto h-12 w-12 text-blue-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+      />
+    </svg>
+  </div>
+  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+    デモで比べる position: fixed と sticky
+  </h3>
+  <div className="mb-4 text-gray-600 dark:text-gray-300">
+    実際にスクロールして、2つの指定による 動きの違いを見てみましょう。
+  </div>
+  <a
+    href="https://claude.ai/public/artifacts/a123d862-ef0e-4454-b3b2-915f78349c57"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white transition-colors duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+  >
+    デモを開く
+    <svg className="-mr-1 ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+      <path
+        fillRule="evenodd"
+        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+        clipRule="evenodd"
+      />
+    </svg>
+  </a>
+</div>
+
+デモには3色のボックスがあります。
+
+- **赤いボックス**（fixed）は、スクロールしても画面の右上にとどまります。
+- 左側の**青緑のボックス**（sticky）は、最初は普通に流れ、スクロールが一定の位置まで進むと上端に張り付きます。
+- **灰色のボックス**では、通常のスクロールと比較できます。
+
+各ボックスの中とページ全体の両方をスクロールして、動きの違いを見てください。
+
+## position: fixed 📌
+
+- **画面上の同じ位置に固定されます。** 基準はビューポート（ブラウザーの表示領域）なので、いくらスクロールしても動きません。
+- **通常のレイアウトの流れから外れます。** 周囲の要素は、そこにボックスがないものとして配置されます。
+- ビューポート内の座標に置けば**常に表示**されます。
+- フローティングアクションボタン、チャットウィジェット、常に表示するナビゲーションバーなどに使います。
+
+## position: sticky 🍯
+
+- **途中で動きが変わります。** 初めは普通の要素と同じように流れ、指定した位置まで来ると張り付きます。
+- **レイアウト上の場所を確保します。** 他の要素の配置には通常通り影響します。
+- **固定される範囲は親コンテナの中です。** 親が画面外に流れると要素も一緒に移動します。
+- テーブルのヘッダー、セクションの見出し、スクロールに追従するサイドバーなどに使います。
+
+## 動きの早見表
+
+```
+FIXED:     常にビューポート内の同じ位置
+           ┌─────────────┐
+           │   Fixed     │ ← スクロールしても動かない
+           └─────────────┘
+
+STICKY:    通常の配置 → 指定位置で固定 → 親と一緒に移動
+           ┌─────────────┐
+           │   Sticky    │ ← 指定位置までは流れ、
+           └─────────────┘   その位置で固定される
+```

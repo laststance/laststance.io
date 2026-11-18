@@ -1,0 +1,406 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'TypeScript のリリース告知記事一覧',
+  date: '2026-02-16',
+  description: '新バージョンが出るたびに更新します。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+個人的には、公式ドキュメントより新バージョンを告知するブログ記事のほうが説明がわかりやすいことが多く、読むのが好きです。 <br/>
+そこで AI を使い、各バージョンの告知記事へのリンクと要約をまとめました。
+
+新しいバージョンが出るたびに更新する予定です。
+
+## TypeScript 6.0 Beta のリリース告知
+
+- 公開日 2026-02-11.
+- **概要**。TypeScript 6.0 Beta は、5.9 から TypeScript 7.0 のネイティブ実装（Go）への移行を見据えたリリースです。**現行の JavaScript コードベースを使う最後のメジャーバージョン**となる予定です。注目すべき新機能がいくつかあり、設定の変更や非推奨化も広範囲に及びます。
+  - **最大のテーマは TypeScript 7.0 への準備**。TS 6.0 では動作と既定値を揃え、`--stableTypeOrdering` などの移行支援も用意することで、ネイティブの TS 7.0 ツールチェーンへ移行するときの想定外の差を減らします。
+  - **主な変更点**
+    - **`this` を使わないメソッドの型推論を改善**。関数内で `this` を使わない場合、文脈への依存度が低いと見なされます。これにより、メソッド構文を使ったオブジェクトリテラルの型推論が改善します。
+    - **Node.js と package.json まわりの改善**。`#/` で始まるサブパスインポートに対応し、`--moduleResolution bundler` と `--module commonjs` を組み合わせやすくなりました。
+    - **ライブラリの型定義とターゲットを更新**。`target` と `lib` に `es2025` を指定できます。`Temporal` と、Map / WeakMap の新しい「なければ挿入する」メソッド（`getOrInsert*`）、`RegExp.escape` の組み込み型定義も追加されました。
+    - **DOM ライブラリの整理**。`lib.dom.iterable.d.ts` と `lib.dom.asynciterable.d.ts` にあった型定義は、すべて `lib.dom.d.ts` に含まれるようになりました。
+    - **破壊的変更と既定値の変更**。`strict` の既定値は `true` に、`module` は `esnext` に、`target` は当年分の ECMAScript（現在は `es2025`）になります。非推奨化や削除も多数あります。
+
+  - **目次の要約**
+    - **`this` を使わない関数の文脈依存を軽減**。`this` を使わないメソッド構文の型推論を改善します。
+    - **`#/` で始まるサブパスインポート**。新しいモジュール解決方式では、Node.js の `#/` 形式のサブパスインポートが使えます。
+    - **`--moduleResolution bundler` と `--module commonjs` の併用**。古い Node.js 向けのモジュール解決方式を使っているプロジェクトに、現実的な移行先ができました。
+    - **`--stableTypeOrdering` フラグ**。TS 6 と TS 7 で出力や型の並び順の差分を減らします。型チェックが目に見えて遅くなる場合があります。
+    - **`target` と `lib` に `es2025` を追加**。主に、組み込み API の型定義が増えます。
+    - **`Temporal` の型定義を追加**。日付と時刻を扱う Temporal API の組み込み型定義が `esnext`（または `temporal.esnext`）に加わります。
+    - **「なければ挿入する」メソッド（`getOrInsert*`）の型定義を追加**。Map / WeakMap の新しい取得・挿入 API の型定義が `esnext` に加わります。
+    - **`RegExp.escape`**。`es2025` に新しい標準メソッド `RegExp.escape` の型定義が加わります。
+    - **`dom` が `dom.iterable` と `dom.asynciterable` を含む**。DOM の反復・非同期反復の型宣言を `dom` にまとめます。
+    - **TypeScript 6.0 の破壊的変更と非推奨化**。今日の JavaScript エコシステムに合わせて設定を広く整理し、TS 7.0 への移行に備えます。
+      - **最初に見直す項目**。アップグレード後に多くのプロジェクトで必要となる修正です（`types`、`rootDir` など）。
+      - **既定値の変更**。`strict: true` や `module: esnext` が新しい既定値になり、`target` の既定値は更新されていきます（現在は `es2025`）。
+      - **`target: es5` の非推奨化**。ES5 への出力は非推奨となり、指定できる最も古いターゲットは ES2015 になりました。
+      - **`--downlevelIteration` の非推奨化**。ES5 向けの出力に結び付いているため非推奨になります。
+      - **`--moduleResolution node`（node10）の非推奨化**。`nodenext` または `bundler` へ移行します。
+      - **モジュールの出力形式 `amd`、`umd`、`systemjs` の非推奨化**。これらの形式はサポート対象外になります。
+      - **`--baseUrl` の非推奨化**。意図しない場所からモジュールを検索する事態を避けるため、明示的に `paths` を指定します。
+      - **`--moduleResolution classic` の非推奨化**。削除されるため、現在主流の解決方式へ移行します。
+      - **`--esModuleInterop false` と `--allowSyntheticDefaultImports false` の非推奨化**。モジュール間の相互運用で、より安全な挙動が常に有効になります。
+      - **`--alwaysStrict false` の非推奨化**。TypeScript は strict モードを前提とします。非 strict モードの挙動を前提としたコードは調整が必要になる場合があります。
+      - **`outFile` の非推奨化**。この設定は削除され、代わりにバンドラーを使います。
+      - **名前空間の旧 `module` 構文の非推奨化**。`module Foo {}` は明示的に非推奨となります。`namespace` を使います。
+      - **インポート時の `asserts` キーワードの非推奨化**。`with` を使うインポート属性に置き換わります。
+      - **`no-default-lib` ディレクティブの非推奨化**。`/// <reference no-default-lib="true"/>` はサポート対象外になります。
+      - **`tsconfig.json` がある状態で CLI にファイルを指定するとエラーになる**。設定を無視して実行する場合は `--ignoreConfig` を明示します。
+
+    - **TypeScript 7.0 への準備**。TS 7 へ円滑に移行できるよう、今のうちに非推奨項目へ対処する方法を案内しています。
+    - **今後の予定**。ベータの時点で機能は固まっています。正式リリースまでは不具合修正とフィードバックへの対応が中心です。
+
+- 告知記事 [Announcing TypeScript 6.0 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-6-0-beta/)
+
+## TypeScript 5.8 のリリース告知
+
+- 公開日 2025-02-28
+- **概要**。次のような機能追加と改善があります。
+  - **return 式の分岐を個別にチェック**。return 文の条件式をより細かく型チェックし、見つけにくい不具合を検出します。
+  - **`require()` で ECMAScript モジュールを読み込める**。Node.js 22 との互換性のため、`--module nodenext` を指定すると CommonJS モジュールから ESM を読み込めます。
+  - **新しい `--module node18` フラグ**。Node.js 18 を使い続ける場合に、`--module nodenext` の一部の新しい挙動を取り込まず、安定した基準にできます。
+  - **`--erasableSyntaxOnly` オプション**。TypeScript 固有の構文をそのまま取り除けるものに制限し、Node.js 23.6 の実験的な TypeScript 対応との互換性を高めます。
+  - **`--libReplacement` フラグ**。コンパイル時にライブラリの定義ファイルを置き換える挙動を細かく制御できます。
+  - **計算されたプロパティ名を保持**。宣言ファイルでの計算されたプロパティ名の扱いが改善され、出力を予測しやすくなります。
+  - **パフォーマンス改善**。プログラムの読み込みと更新が速くなり、とくに大規模プロジェクトでビルドやエディターの応答性が向上します。
+- 告知記事 [Announcing TypeScript 5.8](https://devblogs.microsoft.com/typescript/announcing-typescript-5-8/)
+
+## TypeScript 5.7 のリリース告知
+
+- 公開日 2024-11-22
+- **概要**。次のような改善が加わりました。
+- **初期化されていない変数の検出**。代入前に使った変数をエラーとして報告します。ネストした関数から参照した場合も検出できます。
+- **相対パスの書き換え**。新しいコンパイラーオプション `--rewriteRelativeImportExtensions` を使うと、TypeScript の拡張子で終わる相対インポートパスを、コンパイル時に対応する JavaScript の拡張子に書き換えます。
+- **`--target es2024` と `--lib es2024` に対応**。ECMAScript 2024 をターゲットにでき、`Object.groupBy`、`Map.groupBy`、`Promise.withResolvers` などの機能を使えます。
+- **所属プロジェクトを特定するために親ディレクトリの設定を探索**。言語サービスがディレクトリをさかのぼって `tsconfig.json` を探し続けるようになり、プロジェクト構成の自由度が上がりました。
+- 告知記事 [Announcing TypeScript 5.7](https://devblogs.microsoft.com/typescript/announcing-typescript-5-7/)
+
+## TypeScript 5.7 RC のリリース告知
+
+- 公開日 2024-11-08
+- **概要**。このリリース候補版では、初期化されていない変数のチェックが加わり、ネストした関数から参照する場合も検出できます。相対インポートパスの書き換えも追加され、ビルドせずに TypeScript をそのまま実行するツールとの互換性が向上します。
+- 告知記事 [Announcing TypeScript 5.7 RC](https://devblogs.microsoft.com/typescript/announcing-typescript-5-7-rc/)
+
+## TypeScript 5.6 Beta のリリース告知
+
+- 公開日 2024-07-26
+- **概要**。`infer` 型変数への `extends` 制約、分割・バンドルされた `lib.d.ts`、`strictBindCallApply` の破壊的変更、分離された宣言ファイルの既定での有効化、TypeScript 言語サービスの安定性改善、大規模プロジェクトでの `tsc` 初期化の改善などが含まれます。
+- 告知記事 [Announcing TypeScript 5.6 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-5-6-beta/)
+
+## TypeScript 5.5 のリリース告知
+
+- 公開日 2024-06-20
+- **概要**。型述語の推論、キーが不変のインデックスアクセスに対する制御フローによる絞り込み、JSDoc の `@import` タグ、正規表現の構文チェック、ECMAScript の新しい `Set` メソッドへの対応、分離された宣言の生成などが加わりました。
+- 告知記事 [Announcing TypeScript 5.5](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5/)
+
+## TypeScript 5.4 のリリース告知
+
+- 公開日 2024-03-06
+- **概要**。クロージャー内での型の絞り込みの維持、ユーティリティ型 `NoInfer`、`Object.groupBy` と `Map.groupBy`、`--moduleResolution bundler` と `--module preserve` での `require()` 対応、インポート属性とアサーションのチェックなどが加わりました。
+- 告知記事 [Announcing TypeScript 5.4](https://devblogs.microsoft.com/typescript/announcing-typescript-5-4/)
+
+## TypeScript 5.3 のリリース告知
+
+- 公開日 2023-11-20
+- **概要**。インポート属性、インポート型での `resolution-mode` の安定サポート、真偽値との比較による型の絞り込み、`Symbol.hasInstance` を介した `instanceof` による型の絞り込み、インスタンスフィールドに対する `super` 経由のプロパティアクセスのチェックなどが含まれます。
+- 告知記事 [Announcing TypeScript 5.3](https://devblogs.microsoft.com/typescript/announcing-typescript-5-3/)
+
+## TypeScript 5.2 のリリース告知
+
+- 公開日 2023-08-24
+- **概要**。`using` 宣言、デコレーターのメタデータ、名前付きと名前なしの要素を混在できるタプル、配列のユニオン型でのメソッド呼び出しの改善、元の配列を変更しない新しい配列メソッド、`WeakMap` と `WeakSet` のキーとしての `symbol`、型専用インポートでの TypeScript 実装ファイルの拡張子への対応などが加わりました。
+- 告知記事 [Announcing TypeScript 5.2](https://devblogs.microsoft.com/typescript/announcing-typescript-5-2/)
+
+## TypeScript 5.1 のリリース告知
+
+- 公開日 2023-06-01
+- **概要**。`undefined` を返す関数での暗黙の return の緩和、ゲッターとセッターで無関係な型を指定できるようになったこと、JSX 要素と JSX タグの型チェックの分離、名前空間付き JSX 属性、モジュール解決時の `typeRoots` の参照、JSX タグの連動編集などが含まれます。
+- 告知記事 [Announcing TypeScript 5.1](https://devblogs.microsoft.com/typescript/announcing-typescript-5-1/)
+
+## TypeScript 5.0 のリリース告知
+
+- 公開日 2023-03-16
+- **概要**。デコレーター、`const` 型パラメーター、`extends` での複数設定ファイルへの対応、すべての `enum` のユニオン型化、`--moduleResolution bundler`、モジュール解決を調整するフラグ、`--verbatimModuleSyntax`、`export type *`、JSDoc での `@satisfies` 対応などが加わりました。
+- 告知記事 [Announcing TypeScript 5.0](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/)
+
+## TypeScript 4.9 のリリース告知
+
+- 公開日 2022-11-15
+- **概要**。`satisfies` 演算子、`in` 演算子による未列挙プロパティの絞り込み、クラスの自動アクセサー、`NaN` との等価比較のチェック、ファイル監視の改善に加え、エディターに未使用の import の削除と import の並べ替えコマンドが加わりました。
+- 告知記事 [Announcing TypeScript 4.9](https://devblogs.microsoft.com/typescript/announcing-typescript-4-9/)
+
+## TypeScript 4.8 のリリース告知
+
+- 公開日 2022-08-25
+- **概要**。交差型の簡約、ユニオン型の互換性判定と型の絞り込み、テンプレートリテラル型での `infer` の推論が改善されました。`--build`、`--watch`、`--incremental` の高速化や、正確性に関わる修正と破壊的変更も含まれます。
+- 告知記事 [Announcing TypeScript 4.8](https://devblogs.microsoft.com/typescript/announcing-typescript-4-8/)
+
+## TypeScript 4.7 のリリース告知
+
+- 公開日 2022-05-24
+- **概要**。Node.js での ECMAScript モジュール対応、分割代入した判別可能なユニオン型の制御フロー解析、インスタンス化式、オブジェクト内の関数やメソッドの型推論の改善が加わりました。
+- 告知記事 [Announcing TypeScript 4.7](https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/)
+
+## TypeScript 4.6 のリリース告知
+
+- 公開日 2022-02-28
+- **概要**。分割代入した判別可能なユニオン型の制御フロー解析、再帰の深さのチェック、`in` 演算子による型の絞り込みなどが改善されました。
+- 告知記事 [Announcing TypeScript 4.6](https://devblogs.microsoft.com/typescript/announcing-typescript-4-6/)
+
+## TypeScript 4.5 のリリース告知
+
+- 公開日 2021-11-17
+- **概要**。`Awaited` 型、テンプレートリテラル型の改善、`import type` 構文への対応が含まれます。
+- 告知記事 [Announcing TypeScript 4.5](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5/)
+
+## TypeScript 4.4 のリリース告知
+
+- 公開日 2021-08-26
+- **概要**。分割代入した判別可能なユニオン型の制御フロー解析、再帰の深さのチェック、`in` 演算子による型の絞り込みが加わりました。
+- 告知記事 [Announcing TypeScript 4.4](https://devblogs.microsoft.com/typescript/announcing-typescript-4-4/)
+
+## TypeScript 4.3 のリリース告知
+
+- 公開日 2021-05-27
+- **概要**。プロパティの読み取り時と書き込み時で別々の型を指定できるようになり、テンプレートリテラル型が改善されました。`override` キーワードも加わりました。
+- 告知記事 [Announcing TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/)
+
+## TypeScript 4.2 のリリース告知
+
+- 公開日 2021-02-23
+- **概要**。型エイリアスを維持する処理が改善され、タプル型の先頭または途中に rest 要素を置けるようになりました。抽象コンストラクトシグネチャも加わりました。
+- 告知記事 [Announcing TypeScript 4.2](https://devblogs.microsoft.com/typescript/announcing-typescript-4-2/)
+
+## TypeScript 4.1 のリリース告知
+
+- 公開日 2020-11-20
+- **概要**。テンプレートリテラル型、マップ型でのキーの再マッピング、再帰的な条件型が加わりました。
+- 告知記事 [Announcing TypeScript 4.1](https://devblogs.microsoft.com/typescript/announcing-typescript-4-1/)
+
+## TypeScript 4.0 のリリース告知
+
+- 公開日 2020-08-20
+- **概要**。このメジャーリリースには、可変長タプル型、ラベル付きタプル要素、短絡代入演算子が含まれます。
+- 告知記事 [Announcing TypeScript 4.0](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/)
+
+## TypeScript 3.9 のリリース告知
+
+- 公開日 2020-05-12
+- **概要**。パフォーマンスと型推論が改善し、`import()` 構文への対応も向上しました。エディターでの使い勝手の改善と、各種不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 3.9](https://devblogs.microsoft.com/typescript/announcing-typescript-3-9/)
+
+## TypeScript 3.8 のリリース告知
+
+- 公開日 2020-02-20
+- **概要**。ECMAScript のプライベートフィールド、`export * as ns` 構文、トップレベルの `await`、JSDoc のプロパティ修飾子が加わりました。各種改善と不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 3.8](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8/)
+
+## TypeScript 3.7 のリリース告知
+
+- 公開日 2019-11-05
+- **概要**。オプショナルチェーン、null 合体演算子、アサーション関数に加え、`--declaration` と `--allowJs` の対応が改善されました。エディターでの使い勝手の改善と、各種不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 3.7](https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/)
+
+## TypeScript 3.6 のリリース告知
+
+- 公開日 2019-08-28
+- **概要**。ジェネレーターの型チェックが厳密になり、Promise の使い勝手と、配列のスプレッド構文の正確性が向上しました。各種改善と不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 3.6](https://devblogs.microsoft.com/typescript/announcing-typescript-3-6/)
+
+## TypeScript 3.5 のリリース告知
+
+- 公開日 2019-05-29
+- **概要**。型チェックのパフォーマンス改善と最適化を中心としたリリースです。`--incremental` フラグの改善と、各種不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 3.5](https://devblogs.microsoft.com/typescript/announcing-typescript-3-5/)
+
+## TypeScript 3.4 のリリース告知
+
+- 公開日 2019-03-28
+- **概要**。`as const` 式からの型推論、`--incremental` による 2 回目以降のビルドの高速化、各種改善と不具合の修正が含まれます。
+- 告知記事 [Announcing TypeScript 3.4](https://devblogs.microsoft.com/typescript/announcing-typescript-3-4/)
+
+## TypeScript 3.3 のリリース告知
+
+- 公開日 2019-01-30
+- **概要**。`--build` モードとエラーメッセージの改善、各種不具合の修正が含まれます。
+- 告知記事 [Announcing TypeScript 3.3](https://devblogs.microsoft.com/typescript/announcing-typescript-3-3/)
+
+## TypeScript 3.2 のリリース告知
+
+- 公開日 2018-11-29
+- **概要**。関数の `bind`、`call`、`apply` の型チェックが厳密になり、`readonly` タプルの扱いが改善されました。
+- 告知記事 [Announcing TypeScript 3.2](https://devblogs.microsoft.com/typescript/announcing-typescript-3-2/)
+
+## TypeScript 3.1 のリリース告知
+
+- 公開日 2018-09-24
+- **概要**。タプルと配列に対するマップ型への対応と、`--build` モードの改善が含まれます。
+- 告知記事 [Announcing TypeScript 3.1](https://devblogs.microsoft.com/typescript/announcing-typescript-3-1/)
+
+## TypeScript 3.0 のリリース告知
+
+- 公開日 2018-07-30
+- **概要**。このメジャーリリースでは、プロジェクト参照と `unknown` 型が加わり、タプル型も改善されました。
+- 告知記事 [Announcing TypeScript 3.0](https://devblogs.microsoft.com/typescript/announcing-typescript-3-0/)
+
+## TypeScript 2.9 のリリース告知
+
+- 公開日 2018-05-31
+- **概要**。`import.meta` に対応し、`Symbol` を使った型のサポートが改善されました。各種改善と不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 2.9](https://devblogs.microsoft.com/typescript/announcing-typescript-2-9-2/)
+
+## TypeScript 2.8 のリリース告知
+
+- 公開日 2018-03-27
+- **概要**。条件型が加わり、オブジェクトリテラルの型推論と JSX の名前空間の扱いが改善されました。
+- 告知記事 [Announcing TypeScript 2.8](https://devblogs.microsoft.com/typescript/announcing-typescript-2-8-2/)
+
+## TypeScript 2.7 のリリース告知
+
+- 公開日 2018-01-31
+- **概要**。確実な代入のアサーション、固定長のタプル、`--strict` フラグの改善が含まれます。
+- 告知記事 [Announcing TypeScript 2.7](https://devblogs.microsoft.com/typescript/announcing-typescript-2-7/)
+
+## TypeScript 2.6 のリリース告知
+
+- 公開日 2017-10-31
+- **概要**。`strictFunctionTypes` オプション、エラーメッセージの改善、`--resolveJsonModule` の対応が含まれます。
+- 告知記事 [Announcing TypeScript 2.6](https://devblogs.microsoft.com/typescript/announcing-typescript-2-6/)
+
+## TypeScript 2.5 のリリース告知
+
+- 公開日 2017-08-31
+- **概要**。`catch` の引数を省略できるようになり、`--preserveSymlinks` フラグが加わりました。`--strict` フラグも改善されました。
+- 告知記事 [Announcing TypeScript 2.5](https://devblogs.microsoft.com/typescript/announcing-typescript-2-5/)
+
+## TypeScript 2.4 のリリース告知
+
+- 公開日 2017-06-30
+- **概要**。動的 import 式、文字列の列挙型、ジェネリックの型推論の改善が含まれます。
+- 告知記事 [Announcing TypeScript 2.4](https://devblogs.microsoft.com/typescript/announcing-typescript-2-4/)
+
+## TypeScript 2.3 のリリース告知
+
+- 公開日 2017-04-27
+- **概要**。型引数の既定値、非同期イテレーター、`--downlevelIteration` フラグが加わりました。
+- 告知記事 [Announcing TypeScript 2.3](https://devblogs.microsoft.com/typescript/announcing-typescript-2-3/)
+
+## TypeScript 2.2 のリリース告知
+
+- 公開日 2017-02-23
+- **概要**。`object` 型に対応し、`this` の型推論が改善されました。各種不具合の修正も含まれます。
+- 告知記事 [Announcing TypeScript 2.2](https://devblogs.microsoft.com/typescript/announcing-typescript-2-2/)
+
+## TypeScript 2.1 のリリース告知
+
+- 公開日 2016-12-07
+- **概要**。低いターゲット向けの async/await の変換、オブジェクトのスプレッドと残余プロパティ、リテラル型の型推論の改善が含まれます。
+- 告知記事 [Announcing TypeScript 2.1](https://devblogs.microsoft.com/typescript/announcing-typescript-2-1/)
+
+## TypeScript 2.0 のリリース告知
+
+- 公開日 2016-09-22
+- **概要**。このメジャーリリースでは、null 非許容型、制御フローに基づく型解析、`readonly` 修飾子が加わりました。
+- 告知記事 [Announcing TypeScript 2.0](https://devblogs.microsoft.com/typescript/announcing-typescript-2-0/)
+
+各ブログ記事では、TypeScript のバージョンごとの新機能や改善点を詳しく解説し、新バージョンを使い始める方法も紹介しています。
+
+## TypeScript 1.8 のリリース告知
+
+- 公開日 2016-02-22
+- **概要**。文字列リテラル型、ES5 / ES3 をターゲットにした async/await、JSX 対応の改善が含まれます。
+- 告知記事 [Announcing TypeScript 1.8](https://devblogs.microsoft.com/typescript/announcing-typescript-1-8/)
+
+## TypeScript 1.7 のリリース告知
+
+- 公開日 2015-11-30
+- **概要**。ES6 をターゲットにした async/await、Node.js での ES6 モジュール構文への対応、各種不具合の修正が含まれます。
+- 告知記事 [Announcing TypeScript 1.7](https://devblogs.microsoft.com/typescript/announcing-typescript-1-7/)
+
+## TypeScript 1.6 のリリース告知
+
+- 公開日 2015-09-16
+- **概要**。JSX、クラス式、`--target ES6` フラグに対応しました。
+- 告知記事 [Announcing TypeScript 1.6](https://devblogs.microsoft.com/typescript/announcing-typescript-1-6/)
+
+## TypeScript 1.5 のリリース告知
+
+- 公開日 2015-07-20
+- **概要**。ES6 モジュール、分割代入、`let` と `const` キーワードに対応しました。
+- 告知記事 [Announcing TypeScript 1.5](https://devblogs.microsoft.com/typescript/announcing-typescript-1-5/)
+
+## TypeScript 1.4 のリリース告知
+
+- 公開日 2015-01-22
+- **概要**。ユニオン型、型ガード、テンプレート文字列が加わりました。
+- 告知記事 [Announcing TypeScript 1.4](https://devblogs.microsoft.com/typescript/announcing-typescript-1-4/)
+
+## TypeScript 1.3 のリリース告知
+
+- 公開日 2014-10-30
+- **概要**。タプル型とアクセス修飾子 `protected` が加わりました。
+- 告知記事 [Announcing TypeScript 1.3](https://devblogs.microsoft.com/typescript/announcing-typescript-1-3/)
+
+## TypeScript 1.2 のリリース告知
+
+- 公開日 2014-07-21
+- **概要**。ジェネリックへの対応と、各種不具合の修正が含まれます。
+- 告知記事 [Announcing TypeScript 1.2](https://devblogs.microsoft.com/typescript/announcing-typescript-1-2/)
+
+## TypeScript 1.1 のリリース告知
+
+- 公開日 2014-04-02
+- **概要**。パフォーマンスの改善と不具合の修正が中心のリリースです。
+- 告知記事 [Announcing TypeScript 1.1](https://devblogs.microsoft.com/typescript/announcing-typescript-1-1/)
+
+## TypeScript 1.0 のリリース告知
+
+- 公開日 2014-04-02
+- **概要**。TypeScript 初の安定版です。本番環境で使える段階に達しました。
+- 告知記事 [Announcing TypeScript 1.0](https://devblogs.microsoft.com/typescript/announcing-typescript-1-0/)
+
+## TypeScript 1.0RC のリリース告知
+
+- 公開日 2014-03-05
+- **概要**。1.0 に向けた最後の機能追加と改善を含む、リリース候補版です。
+- 告知記事 [Announcing TypeScript 1.0RC](https://devblogs.microsoft.com/typescript/announcing-typescript-1-0rc/)
+
+各ブログ記事では、TypeScript のバージョンごとの新機能や改善点を詳しく解説し、新バージョンを使い始める方法も紹介しています。
+
+## TypeScript 0.9 のリリース告知
+
+- 公開日 2013-06-18
+- **概要**。当時としては最大規模の TypeScript アップデートで、言語、コンパイラー、ツールに大きな変更が入りました。ジェネリック、新しいコンパイラー基盤、多数の不具合修正と改善が含まれます。
+- 告知記事 [Announcing TypeScript 0.9](https://devblogs.microsoft.com/typescript/announcing-typescript-0-9/)
+
+## TypeScript 0.8.3 のリリース告知
+
+- 公開日 2013-01-24
+- **概要**。TypeScript の言語とコンパイラーに細かな改良を加え、不具合を修正したリリースです。コミュニティのフィードバックを反映し、開発時の使い勝手を改善しています。
+- 告知記事 [Announcing TypeScript 0.8.3](https://devblogs.microsoft.com/typescript/walkthrough-interfaces/)
+
+## TypeScript 0.8.2 のリリース告知
+
+- 公開日 2012-12-10
+- **概要**。TypeScript の言語とコンパイラーの不具合修正と小規模な改善が中心のリリースです。コミュニティから報告された問題を解消し、言語の安定性を高めています。
+- 告知記事 [Announcing TypeScript 0.8.2](https://devblogs.microsoft.com/typescript/announcing-typescript-0-8-2/)
+
+## TypeScript 0.8.1 のリリース告知
+
+- 公開日 2012-10-22
+- **概要**。各種不具合の修正とパフォーマンスの改善が含まれます。TypeScript での開発をより安定させ、効率よく進められるようにすることが狙いです。
+- 告知記事 [Announcing TypeScript 0.8.1](https://devblogs.microsoft.com/typescript/announcing-typescript-0-8-1/)
+
+## TypeScript 0.8 のリリース告知
+
+- 公開日 2012-10-01
+- **概要**。TypeScript の初回リリースで、ここで初めて言語が公開されました。大規模な JavaScript アプリケーションを作りやすくするための、静的型付け、クラス、モジュールなどの機能を備えています。
+- 告知記事 [Announcing TypeScript 0.8](https://devblogs.microsoft.com/typescript/announcing-typescript-0-8/)
+
+各ブログ記事では、TypeScript のバージョンごとの新機能や改善点を詳しく解説し、新バージョンを使い始める方法も紹介しています。

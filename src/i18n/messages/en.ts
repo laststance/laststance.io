@@ -58,7 +58,26 @@ const en = {
     title: "What's New?",
     description: 'Latest updates and changes to the website',
     listLabel: "What's new updates list",
-    // Site notes only. Entries that are an article title stay English in WhatNew.tsx.
+    articles: {
+      discontinuingComplete:
+        'Discontinuing Complete: Per-App Coordinate Calculation',
+      decemberRecap: 'Laststance Recap: December 2025',
+      novemberRecap: 'Laststance Recap: November 2025',
+      cursorBrowserTools: 'Cursor built-in browser tool list',
+      cssFr: 'Understanding CSS fr by Reading the Original Spec',
+      eslintConfigRelease: '🎉 eslint-config-ts-prefixer v4.1.0 released!',
+      fixedAndSticky: 'Interactive Demo: Position Fixed vs Sticky',
+      shadcnRegistries: 'Major Libraries Available in shadcn/ui Registry',
+      fakerSeed: '"How to use faker.seed()"',
+      gitGptCommit: '"I\'ve just released git-gpt-commit v0.9.0! 🎉"',
+      reduxFrontPage: 'I created Redux Front Page',
+      reactHookForm: 'react-hook-form-offic-examples',
+      indieHacker: 'Wanna be indie hacker an ordinary person.',
+      list2024: 'Just 2024 list',
+      lessEnergy: 'Trying less energy coding',
+      eslintSortKeys:
+        'Dropped eslint-plugin-sort-keys-custom-order from eslint-config-ts-prefixer@v1.12.0',
+    },
     items: {
       addNewProjects: 'Add new projects to the Projects page',
       projectsRedesign:

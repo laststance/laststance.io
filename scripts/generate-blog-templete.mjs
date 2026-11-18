@@ -1,26 +1,28 @@
 import { promises as fs } from 'node:fs'
 
-import { intro, outro, spinner, text } from '@clack/prompts'
+import { intro, isCancel, outro, spinner, text } from '@clack/prompts'
 
-intro('generate post markdown templete.')
+intro('Create an English and Japanese blog post')
 
-const title = await text({
-  message: 'What is the Title?',
-  placeholder: 'I Got This',
-  initialValue: '',
-  validate(value) {
-    if (value.length === 0) return `Title is required!`
-  },
-})
+/**
+ * Collects one field for the two MDX editions. A cancellation ends the CLI
+ * before it creates the article directory or writes either edition.
+ * @example
+ * const title = await readField('English title')
+ */
+async function readField(label) {
+  const value = await text({
+    message: label,
+    validate: (input) => (input?.trim() ? undefined : `${label} is required`),
+  })
+  if (isCancel(value)) process.exit(0)
+  return value.trim()
+}
 
-const description = await text({
-  message: 'What is the description?',
-  placeholder: 'description',
-  initialValue: '',
-  validate(value) {
-    if (value.length === 0) return `snippet is required!`
-  },
-})
+const title = await readField('English title')
+const description = await readField('English description')
+const japaneseTitle = await readField('Japanese title')
+const japaneseDescription = await readField('Japanese description')
 
 const published_at = () => {
   const date = new Date()
@@ -30,32 +32,30 @@ const published_at = () => {
   return localISOTime.slice(0, 10)
 }
 
-const mdxTemplate = `
-import { ArticleLayout } from '@/components/ArticleLayout'
+const date = published_at()
+const mdxTemplate = (
+  editionTitle,
+  editionDescription,
+) => `import { ArticleLayout } from '@/components/ArticleLayout'
 
 export const article = {
   author: 'Ryota Murakami',
-  title: '${title}',
-  date: '${published_at()}',
-  description: '${description}',
+  title: ${JSON.stringify(editionTitle)},
+  date: '${date}',
+  description: ${JSON.stringify(editionDescription)},
 }
 
 export default (props) => <ArticleLayout article={article} {...props} />
 `
 
-const pageTsxTemplate = `import type { Metadata } from 'next'
-import Content, { article } from './content.mdx'
+const pageTsxTemplate = `import { createArticlePage } from '@/lib/createArticlePage'
 
-export const metadata: Metadata = {
-  title: article.title,
-  description: article.description,
-  openGraph: {
-    title: article.title,
-    images: [\\\`/api/og?title=\\\${article.title}\\\`],
-  },
-}
+import * as ja from './content.ja.mdx'
+import * as en from './content.mdx'
 
-export default Content
+const { ArticlePage, generateMetadata } = createArticlePage({ en, ja })
+
+export { ArticlePage as default, generateMetadata }
 `
 
 const wordList = title.split(' ')
@@ -67,7 +67,11 @@ const s = spinner()
 s.start('processing...')
 
 await fs.mkdir(folderPath)
-await fs.writeFile(`${folderPath}/content.mdx`, mdxTemplate)
+await fs.writeFile(`${folderPath}/content.mdx`, mdxTemplate(title, description))
+await fs.writeFile(
+  `${folderPath}/content.ja.mdx`,
+  mdxTemplate(japaneseTitle, japaneseDescription),
+)
 await fs.writeFile(`${folderPath}/page.tsx`, pageTsxTemplate)
 s.stop('processing...')
 

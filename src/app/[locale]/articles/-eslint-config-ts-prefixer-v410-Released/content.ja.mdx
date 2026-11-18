@@ -1,0 +1,44 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: '🎉 eslint-config-ts-prefixer v4.1.0 をリリースしました',
+  date: '2025-11-05',
+  description:
+    'Prettier のルールを削除し、設定に含まれる各ルールのドキュメントを公開しました。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+**[eslint-config-ts-prefixer v4.1.0](https://github.com/laststance/eslint-config-ts-prefixer)** をリリースしました！
+
+## 🧩 変更点
+
+大きな機能変更はありません。主な変更は **Prettier のルールを削除**したことです。
+最近は **Biome** などのフォーマッターがよく使われるようになったので、ESLint はコードの問題を検出する役割に絞りました。
+
+## 📘 ドキュメントサイト
+
+この設定で使っている各ルールを解説するドキュメントサイトも作りました。
+👉 [eslint-config-ts-prefixer のドキュメント](https://website-eslint-config-ts-prefixer.vercel.app/)
+
+すべてのルールに説明と補足があり、それぞれが何をするのかひと目でわかります。
+
+## 💡 このパッケージについて
+
+もともと**自分用**に作った設定です。自分のプロジェクトで使いたいルールを集めています。
+
+中でもおすすめは **no-cycle ルール**です。
+大きな TypeScript プロジェクトではいつの間にか入り込みやすい**循環依存**を防ぐのに役立ちます。
+
+## 🗒️ 細かな改善
+
+設定ファイル内の各ルールにも**短いコメント**を添えました。ファイルを開けば、ルールの意味を一行で確認できます。
+
+## 🙏 おわりに
+
+正直なところ、Lint の設定にあまり時間をかけたくありません 😅
+そこで、自分にとって便利なルールを使い回せるように、このパッケージを作りました。
+
+ESLint の専門家というわけではないので、間違いやもっと良いやり方があるかもしれません。
+気づいたことがあれば、GitHub での**フィードバックやプルリクエスト**をお待ちしています 💬

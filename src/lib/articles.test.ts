@@ -1,48 +1,54 @@
-import { describe, test, expect, vi } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
-// Mock the build-time manifest so the test asserts behavior of `getAllArticles`
-// against a known, hard-coded fixture (DAMP) rather than the real article list.
+import { getAllArticles } from './articles'
+
 vi.mock('./articles-manifest', () => ({
   articlesManifest: [
     {
-      slug: 'older-post',
-      title: 'Older Post',
+      slug: 'winter-release',
       author: 'Author A',
-      date: '2024-01-10',
-      description: 'An older entry',
-    },
-    {
-      slug: 'newer-post',
-      title: 'Newer Post',
-      author: 'Author B',
       date: '2024-02-20',
-      description: 'A newer entry',
+      editions: {
+        en: { title: 'Winter release', description: 'Desktop updates' },
+        ja: { title: '冬のリリース', description: 'デスクトップ版の更新' },
+      },
     },
   ],
 }))
 
-import { getAllArticles } from './articles'
+describe('article listings', () => {
+  test('the Japanese listing links the translated summary to the original URL', async () => {
+    // Arrange
+    const locale = 'ja'
 
-describe('getAllArticles', () => {
-  test('returns every entry from the build-time manifest', async () => {
-    const articles = await getAllArticles()
+    // Act
+    const articles = await getAllArticles(locale)
 
-    expect(articles).toHaveLength(2)
-    expect(articles.map((article) => article.slug)).toEqual(
-      expect.arrayContaining(['older-post', 'newer-post']),
-    )
+    // Assert
+    expect(articles).toEqual([
+      {
+        slug: 'winter-release',
+        author: 'Author A',
+        date: '2024-02-20',
+        title: '冬のリリース',
+        description: 'デスクトップ版の更新',
+      },
+    ])
   })
 
-  test('exposes each entry as ArticleWithSlug (slug + frontmatter)', async () => {
+  test('the default feed contains one English entry per article', async () => {
+    // Arrange, Act
     const articles = await getAllArticles()
-    const newer = articles.find((article) => article.slug === 'newer-post')
 
-    expect(newer).toEqual({
-      slug: 'newer-post',
-      title: 'Newer Post',
-      author: 'Author B',
-      date: '2024-02-20',
-      description: 'A newer entry',
-    })
+    // Assert
+    expect(articles).toEqual([
+      {
+        slug: 'winter-release',
+        author: 'Author A',
+        date: '2024-02-20',
+        title: 'Winter release',
+        description: 'Desktop updates',
+      },
+    ])
   })
 })

@@ -1,0 +1,52 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'CSS の font-family とは？',
+  date: '2023-08-19',
+  description: 'CSS の font-family プロパティを解説します。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+CSS の `font-family` プロパティを見ていきましょう。服を着替えるように、ページ上の文字の雰囲気を変えられます。🎨
+
+### `font-family` とは？
+
+`font-family` プロパティで、文字を表示するフォントを指定できます。個別のフォント名や総称フォントファミリー名をカンマで区切って並べます。
+
+#### 個別のフォント名
+
+- `"Times New Roman"` や `Arial` など。名前に空白が入る場合は引用符で囲みます。
+
+#### 総称フォントファミリー名
+
+- **`serif`** は文字の端にセリフと呼ばれる小さな飾りがある書体です。
+- **`sans-serif`** はセリフのない書体です。
+- **`monospace`** は文字の幅がそろった書体です。
+- **`cursive`** は手書き風の書体です。
+- **`fantasy`** は装飾的な書体です。
+
+### 書き方
+
+```css
+font-family: 'Times New Roman', Times, serif;
+```
+
+この例では、ブラウザーは最初に `"Times New Roman"` を試し、次に `Times` を試します。どちらも使えない場合は、総称フォントファミリーの `serif` を使います。
+
+### 指定したフォントがどれも使えないときは？
+
+指定したフォントが一つも使えない場合、ブラウザーや OS で設定された既定のフォントで表示されます。意図した書体がなくても、テキストは読めます。😊
+
+### 継承
+
+`font-family` の指定は、親要素から子要素に引き継がれます。
+
+### 指定するときのヒント
+
+- フォント名に空白が入る場合は引用符で囲みます。
+- 利用者の環境にフォントがなければ使えません。代わりに使うフォントも並べておくのが一般的です。
+- Web フォントを使う場合は、`@font-face` ルールで定義します。
+
+文章に合った服を選ぶように `font-family` を指定すると、サイトらしい雰囲気を出せます。🌟

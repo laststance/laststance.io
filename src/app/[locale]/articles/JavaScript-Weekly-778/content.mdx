@@ -5,167 +5,167 @@ export const article = {
   title: 'JavaScript Weekly #778 Digest',
   date: '2026-03-25',
   description:
-    'TypeScript 6.0リリース、Edge.js WASMサンドボックス、pnpm 11 Beta、Next.js 16.2の400%高速化など、今週のJavaScriptエコシステムの注目ニュースまとめ',
+    'This week in JavaScript: TypeScript 6.0, the Edge.js WebAssembly sandbox, pnpm 11 Beta, and faster startup in Next.js 16.2.',
 }
 
 export default (props) => <ArticleLayout article={article} {...props} />
 
 # JavaScript Weekly #778 Digest
 
-**発行日: 2026-03-24 | 編集: Peter Cooper (Cooperpress)**
-**[Web版](https://javascriptweekly.com/issues/778)**
+**Published March 24, 2026 | Edited by Peter Cooper (Cooperpress)**
+**[Read the issue online](https://javascriptweekly.com/issues/778)**
 
 ---
 
-## 🔶 メイン記事
+## 🔶 Top stories
 
-### TypeScript 6.0 正式リリース — JSベースコンパイラ最終版、Go移行への橋渡し
+### TypeScript 6.0 bridges the JavaScript compiler and its Go successor
 
 [devblogs.microsoft.com](https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/)
 
-TypeScript 6.0は**現行JavaScriptコードベースでの最後のメジャーリリース**。Go言語で書き直される7.0への移行を全面的に意識した"ブリッジリリース"として位置づけられている。
+TypeScript 6.0 is **the last major release built on the current JavaScript codebase**. Its changes prepare projects for the compiler rewrite in Go scheduled for 7.0.
 
-**主要な変更点:**
+**What changed**
 
-- **デフォルト値の大幅変更**: `strict: true`、`module: esnext`、`rootDir: .`、`types: []`（`node_modules/@types`を自動読込しない）がデフォルトに。特に`types: []`は多くのプロジェクトで`"types": ["node"]`の明示指定が必要になる
-- **非推奨化の波**: `target: es5`、AMD/UMD/SystemJSモジュール出力、`--baseUrl`、`--outFile`、旧`--moduleResolution node`が非推奨に。`import ... assert {}`構文も廃止
-- **`--stableTypeOrdering`フラグ**: 6.0の型順序を7.0に一致させ、推論の差異を事前診断可能に
-- **新機能**: Temporal API型、`RegExp.escape`サポート、`#/`サブパスインポート、thisレス関数のコンテキスト感度低減
+- The defaults now include `strict: true`, `module: esnext`, `rootDir: .` and `types: []`. The compiler no longer automatically loads `node_modules/@types`. With `types: []`, many Node.js projects will need to set `"types": ["node"]` explicitly.
+- Deprecations include `target: es5`, AMD/UMD/SystemJS module output, `--baseUrl`, `--outFile` and the old `--moduleResolution node`. The `import ... assert {}` syntax has also been removed.
+- The `--stableTypeOrdering` flag makes 6.0 order types like 7.0 so you can spot differences in inference before upgrading.
+- New features include Temporal API types, `RegExp.escape`, `#/` subpath imports and reduced context sensitivity for functions without a `this` parameter.
 
-**背景**: 7.0（旧コードネーム"Project Corsa"）はGoネイティブ化により**最大10倍の高速化**を見込む。MicrosoftはV8速度＋共有メモリマルチスレッドの恩恵を狙う。驚くべきことに「7.0は完成にかなり近い」と公式が明言しており、nightlyビルドが既にnpmとVS Code拡張で利用可能。
+The Go-native 7.0 compiler, previously codenamed Project Corsa, targets speedups of **up to 10×**. Microsoft is pursuing the benefits of native execution and shared-memory multithreading. The team says 7.0 is already close to completion. Nightly builds are available through npm and a VS Code extension.
 
 > **💡 Insight**
 >
-> - **`types: []`デフォルト化は最も注意が必要**。現在のtsconfig.jsonに`"types": ["node"]`がなければビルド破損する。`strict: true`は既に多くのプロジェクトで有効なので影響軽微
-> - **移行戦略**: 6.0→7.0は段階的。6.0で`ignoreDeprecations: "6.0"`を設定すれば非推奨オプションは動作継続するが、7.0で完全削除される。早期に`--stableTypeOrdering`で型推論の差異をテストすべき
-> - **エコシステム全体**: Go移行は「JSで書かれたツールをGoで書き直す」トレンド（esbuild, Turbopack等）の集大成。コンパイラ自身がこの流れに乗った歴史的転換点
+> - **Watch the new `types: []` default.** A Node.js build that relies on implicit types may fail until you add `"types": ["node"]` to tsconfig.json. Many projects already enable `strict: true`, so that default should be less disruptive.
+> - The migration has two steps. In 6.0, `ignoreDeprecations: "6.0"` keeps deprecated options working. They go away in 7.0. Try `--stableTypeOrdering` early to see where inference changes.
+> - The compiler itself is joining the wider shift toward native JavaScript tooling already seen with esbuild and Turbopack.
 
 ---
 
-### Edge.js: Node.jsアプリをWebAssemblyサンドボックスで実行 — Docker不要のセキュア実行環境
+### Edge.js runs Node.js apps in a WebAssembly sandbox without Docker
 
 [wasmer.io](https://wasmer.io/posts/edgejs-safe-nodejs-using-wasm-sandbox)
 
-Wasmerが発表した**アルファ版ランタイム**。既存のNode.jsアプリを**変更なし**でWASMサンドボックス内で実行可能。Deno/Cloudflare Workersとは根本的にアプローチが異なる。
+Wasmer announced an **alpha runtime** that runs **unmodified Node.js applications** in a WASM sandbox. Its approach differs from Deno and Cloudflare Workers.
 
-**アーキテクチャの核心:**
+**How the runtime works**
 
-- JSエンジン自体はネイティブ実行、**システムコール・ネイティブモジュールのみ**をWASIXでサンドボックス化。全体をWASM化するよりオーバーヘッドが大幅に小さい
-- **JSエンジン選択可能**: V8、JavaScriptCore、QuickJSをプラガブルに切替
-- Node.js v24互換を目標。libuv/simdutf/ada/llhttp/ncryptoなどNode同一の依存を使用
-- `edge --safe`で完全サンドボックスモード。`edge node myfile.js`や`edge pnpm run dev`で既存ワークフローをラップ
+- The JavaScript engine runs natively. WASIX sandboxes **system calls and native modules**, avoiding much of the overhead of compiling the entire runtime to WASM.
+- The engine is pluggable. Choose V8, JavaScriptCore or QuickJS.
+- Edge.js targets Node.js v24 compatibility, with the same underlying dependencies, including libuv, simdutf, ada, llhttp and ncrypto.
+- Use `edge --safe` for full sandbox mode. Commands such as `edge node myfile.js` and `edge pnpm run dev` wrap existing workflows.
 
-**性能**: サンドボックスモードでNode.jsネイティブ速度の**70-95%**を達成（改善継続中）
+Wasmer reports **70–95% of native Node.js performance** in sandbox mode and is still working on it.
 
-**ユースケース**: AIエージェント・MCPサーバーのセキュア実行、Edge Computing、コンテナ不要のサーバレスデプロイ
+Potential uses include isolating AI agents and MCP servers, edge computing, and serverless deployments without containers.
 
 > **💡 Insight**
 >
-> - **「安全でない部分だけサンドボックス化」**という発想が秀逸。JSは本質的にサンドボックスされているため、ファイルI/Oやネットワーク等のOS境界のみを隔離すれば十分という合理的設計
-> - AIエージェントが任意のNode.jsコードを実行する文脈（MCP、Claude Code等）で、Docker無しにセキュリティ境界を確保できる可能性は非常に大きい
+> - The design concentrates isolation where code reaches the OS, such as file I/O and networking. JavaScript execution itself can stay in the engine.
+> - That could give tools that run arbitrary Node.js code, including MCP servers and Claude Code workflows, a security boundary without requiring Docker.
 
 ---
 
-### pnpm 11 Beta 0: SQLiteストア・SBOM対応・設定刷新 — パッケージ管理の次世代
+### pnpm 11 Beta 0 introduces a SQLite store, SBOMs and new configuration
 
 [GitHub Release](https://github.com/pnpm/pnpm/releases/tag/v11.0.0-beta.0)
 
-**主要変更:**
+**What changed**
 
-- **SQLiteベースストア**: メタデータをJSONファイルからSQLiteに移行。msgpack形式の最適化されたインデックスファイルフォーマットと組み合わせ、小さなブロブ（&lt;100KiB）の読み書きが従来より高速に
-- **`pnpm sbom`コマンド**: CycloneDX 1.7/SPDX 2.3形式のSoftware Bill of Materials生成。EU Cyber Resilience Act対応を見据えた**ファーストパーティSBOM対応**。`--prod`/`--dev`/`--filter`オプション完備
-- **設定の大幅刷新**: `pnpm-workspace.yaml`でパッケージごとの設定(`packageConfigs`)、ビルドセキュリティの厳格化（`allowBuilds`で明示許可制に）
-- **4つの新コマンド追加**: sbom含む
+- Store metadata moves from JSON files to SQLite. With a msgpack index, reading and writing small blobs (&lt;100 KiB) gets faster.
+- `pnpm sbom` generates a software bill of materials in CycloneDX 1.7 or SPDX 2.3 format. This first-party support anticipates the EU Cyber Resilience Act and includes `--prod`, `--dev` and `--filter`.
+- `pnpm-workspace.yaml` gains per-package settings through `packageConfigs` and explicit approval for package builds through `allowBuilds`.
+- The beta adds four commands in total, including sbom.
 
-**背景**: OWASP CycloneDXプロジェクトCo-Leadがレビューに参加し、npmの`sbom`実装の問題点を指摘・修正。npmより正確なSBOM生成を実現。
+A co-lead of the OWASP CycloneDX project reviewed the implementation and pointed out issues in npm's `sbom` output that pnpm could avoid.
 
 > **💡 Insight**
 >
-> - pnpm 11のビルドセキュリティ厳格化（`allowBuilds`）は、`electron`等のネイティブビルドを含むプロジェクトで設定変更が必須になる。移行時の注意点
-> - SBOMコマンドはサプライチェーンセキュリティの文脈で急速に重要度が増している。CI/CDパイプラインへの組み込みを検討する価値あり
+> - Projects with native builds, including those using `electron`, should review their `allowBuilds` configuration when upgrading to pnpm 11.
+> - SBOMs are becoming more important for supply-chain security. This is a good opportunity to consider generating them in CI/CD.
 
 ---
 
-## 📋 短信 (IN BRIEF)
+## 📋 In brief
 
-- 🤖 **[Node.jsコアへのAI生成コード論争](https://github.com/indutny/no-slop-in-nodejs-core)** — io.jsフォーク創始者のindutnyがAI支援コントリビューションへの反対署名を開始。LLM生成コードのコア実装への関与を巡りコミュニティが二分
-- 😢 **[Deno社から大量離職](https://bsky.app/profile/marvinh.dev/post/3mhbtbl2ptk23)** — 多数のDeno従業員が退社を発表。社員のJosh Collinsworthは「Denoはなくならない。厳しい時期なだけだ」とコメント。Preact作者Marvin Hagemeyerも退社組
-- 📗 **[Chibivue](https://book.chibivue.land/)** — ミニマルなVue.js実装を自分で構築しながら学べるオンラインブック＋コードプロジェクト
+- 🤖 **[Debate over AI-generated contributions to Node.js core](https://github.com/indutny/no-slop-in-nodejs-core)**. The io.js fork's founder, indutny, started a petition opposing AI-assisted contributions. Core implementation work involving LLM-generated code has divided the community.
+- 😢 **[Departures from Deno](https://bsky.app/profile/marvinh.dev/post/3mhbtbl2ptk23)**. Several employees announced they were leaving, including Preact's Marvin Hagemeyer. Josh Collinsworth said Deno was going through a difficult period and would continue.
+- 📗 **[Chibivue](https://book.chibivue.land/)** is an online book and code project for learning Vue.js by building a minimal implementation yourself.
 
 ---
 
-## 📦 リリース情報
+## 📦 Releases
 
 ### Next.js 16.2
 
 [nextjs.org](https://nextjs.org/blog/next-16-2)
 
-- `next dev`起動が**~400%高速化**（16.1比87%改善）
-- RSCペイロードデシリアライゼーション最大350%高速化（`JSON.parse` reviver廃止→2段階処理に変更）
-- 実アプリでHTML描画**25-60%高速化**
-- Server Fast Refresh（サーバー側HMRの刷新、67-100%高速化）
-- `next start --inspect`、Hydration Diff Indicator、Server Function Logging追加
-- AIエージェント向け`AGENTS.md`・`next-browser`実験的DevTools
-- Turbopackで200+バグ修正
+- `next dev` starts **around 400% faster** (an 87% improvement over 16.1).
+- RSC payload deserialization is up to 350% faster. A two-step process replaces the `JSON.parse` reviver.
+- HTML rendering is **25–60% faster** in real applications.
+- Server Fast Refresh reworks server-side hot module replacement, with reported gains of 67–100%.
+- New tools include `next start --inspect`, a hydration diff indicator, and server function logging.
+- AI agent tooling includes `AGENTS.md` and the experimental `next-browser` DevTools.
+- Turbopack received over 200 bug fixes.
 
 > **💡 Insight**
 >
-> - **RSC高速化の技術的核心**: V8の`JSON.parse` reviverコールバックは**すべてのkey-valueペアでC++/JS境界をまたぐ**ため、no-opでも4倍遅い。Reactチームが`JSON.parse()` → 純JSの再帰ウォークに変更した成果がNext.js経由で全ユーザーに波及
+> - In V8, a `JSON.parse` reviver crosses the C++/JavaScript boundary for every key-value pair. Even a no-op callback can make parsing four times slower. React switched to `JSON.parse()` followed by a recursive walk in JavaScript. Next.js users now benefit from that change.
 
-### その他リリース
+### Other releases
 
-- **[Storybook 10.3.0](https://github.com/storybookjs/storybook/releases/tag/v10.3.0)** — Vite 8、Next.js 16.2、ESLint 10対応。React開発向けMCPサーバーのプレビュー追加
-- **⚠️ [Node.jsセキュリティリリース予定](https://nodejs.org/en/blog/vulnerability/march-2026-security-releases)** — 全メンテナンスバージョンで9件の脆弱性に対応するリリースを予定
-- **[Deno 2.7.6](https://github.com/denoland/deno/releases/tag/v2.7.6)** — `deno eval`がCJS/ESM自動検出、`--cpu-prof-flamegraph`でインタラクティブSVGフレームグラフ生成
-- [Bun 1.3.11](https://bun.com/blog/bun-v1.3.11)、[Valibot 1.3](https://valibot.dev/blog/valibot-v1.3-release-notes/)、[ESLint 10.1](https://eslint.org/blog/2026/03/eslint-v10.1.0-released/)
-
----
-
-## 📖 記事・動画
-
-- 📄 **[The Three Pillars of JavaScript Bloat](https://43081j.com/2026/03/three-pillars-of-javascript-bloat)** — James Garbutt（e18eプロジェクト主導者）がnpmの肥大化を3つの構造的原因に整理: ①ES3時代の後方互換パッケージ（`is-string`等）、②Sindre Sorhus的アトミックパッケージ哲学（`shebang-regex`は1行のコード）、③役目を終えたponyfill（`globalthis`は2019年にネイティブ化済みなのに週4900万DL）。[e18e CLI](https://e18e.dev/)やknipで依存の棚卸しを推奨
-- 📄 **[Rust+WASMパーサーをTypeScriptで書き直したら速くなった](https://www.openui.com/blog/rust-wasm-parser)** — WASM-JS境界のオーバーヘッドが深刻で、多くのユースケースでJS純実装の方が**2-4倍高速**という反直感的な結果。Edge.jsと同じ「境界コストの最小化」が鍵
-- 📊 **[React SSRフレームワーク性能比較](https://blog.platformatic.dev/react-ssr-framework-benchmark-tanstack-start-react-router-nextjs)** — TanStack Start vs React Router vs Next.jsを高負荷ベンチマーク。結果はTanStackとReact本体双方にパッチが還元された（Matteo Collina）
-- 💬 **[React開発者が嫌いだけど避けられない2つの設計判断](https://dev.to/playfulprogramming/two-react-design-choices-developers-dont-like-but-cant-avoid-d6g)** — 遅延state commit + 依存配列。Ryan Carniatoが「SignalベースのSolidは同期的だから回避できるだけ」と解説
-- 📄 [JavaScript Thinks Everything's a Date](https://futuresearch.ai/blog/javascript-thinks-everythings-a-date/) — Temporal APIの進展を祝う理由がここに
-- 📄 [Bookmarklets入門ガイド](https://css-tricks.com/a-complete-guide-to-bookmarklets/) — ブックマークに保存するJSスニペットの活用法（CSS-Tricks）
-- 📺 [How to Burn $30M on a JavaScript Framework](https://www.youtube.com/watch?v=ReAnFFqvCeA) — 2012年のfamo.usプロジェクトの5分間振り返り（Fireship）
-- 📄 [Node.js Worker Threadsは問題だらけだが我々には最適だった](https://www.inngest.com/blog/node-worker-threads) — Inngestの実践報告
+- **[Storybook 10.3.0](https://github.com/storybookjs/storybook/releases/tag/v10.3.0)** supports Vite 8, Next.js 16.2 and ESLint 10. It also previews an MCP server for React development.
+- **⚠️ [Upcoming Node.js security releases](https://nodejs.org/en/blog/vulnerability/march-2026-security-releases)** will address nine vulnerabilities across all maintained versions.
+- **[Deno 2.7.6](https://github.com/denoland/deno/releases/tag/v2.7.6)** adds automatic CJS/ESM detection for `deno eval` and interactive SVG flame graphs with `--cpu-prof-flamegraph`.
+- [Bun 1.3.11](https://bun.com/blog/bun-v1.3.11), [Valibot 1.3](https://valibot.dev/blog/valibot-v1.3-release-notes/), [ESLint 10.1](https://eslint.org/blog/2026/03/eslint-v10.1.0-released/)
 
 ---
 
-## 🛠 コード＆ツール
+## 📖 Articles and videos
 
-- **[ArrowJS 1.0](https://www.arrow-js.com/)** — ESモジュール・テンプレートリテラル・DOMを基盤とした高速リアクティブUIランタイム。WASMサンドボックス内でのコンポーネント分離も可能。FormKit作者が2022年に発表し、ついに1.0到達
-- **[Sugar High 1.0](https://sugar-high.vercel.app/)** — 軽量JSX構文ハイライター。React不要でどこでも使え、CSSでテーマ設定可能（[GitHub](https://github.com/huozhi/sugar-high)）
-- [htmlparser2 12.0](https://github.com/fb55/htmlparser2/releases/tag/v12.0.0) — 高速HTMLパーサー
-- [vue-audio-visual 3.1](https://github.com/staskobzar/vue-audio-visual) — Vue 3向けWeb Audio API可視化
-- [Svelte SEO 2.1](https://github.com/artiebits/svelte-seo) — Svelteアプリのメタタグ・OGP・JSON-LD最適化
-- [pnpm/action-setup 5.0](https://github.com/pnpm/action-setup) — pnpm用GitHub Action（Node.js v24対応）
-- [React Joyride 3.0](https://github.com/gilbarbara/react-joyride/releases/tag/v3.0.0) — Reactアプリ向けガイドツアー
-- [EventCalendar 5.5](https://github.com/vkurko/calendar)、[Maz UI 4.9](https://github.com/LouisMazel/maz-ui)、[Mediabunny 1.40](https://github.com/Vanilagy/mediabunny/releases/tag/v1.40.0)
-
----
-
-## 🌐 エコシステム情報
-
-- 🤖 **[VS CodeチームのAI活用事例](https://code.visualstudio.com/blogs/2026/03/13/how-VS-Code-Builds-with-AI)** — イシュー管理からリリースまでAI活用を公開。毎週リリースを可能にしている舞台裏
-- 🔒 **[Secretlint](https://github.com/secretlint/secretlint)** — リポジトリ内のシークレット漏洩を検出する専用リンター
-- 📜 **[Rob Pike's 5 Rules of Programming (1989)](https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html)** — Go言語・UTF-8共同開発者の1989年プログラミング5原則が今週バイラル化。2026年でも完全に有効
-- 🧠 **[Comprehension Debt](https://addyosmani.com/blog/comprehension-debt/)** — Addy Osmaniが「理解の負債」を提唱。AIエージェント時代の問いは「どうやってもっとコードを生成するか？」ではなく「**出荷するコードをどう理解するか？**」
+- 📄 **[The Three Pillars of JavaScript Bloat](https://43081j.com/2026/03/three-pillars-of-javascript-bloat)**. James Garbutt of e18e groups npm bloat into three categories: ES3-era compatibility packages like `is-string`, single-purpose packages in the style of Sindre Sorhus (such as the one-line `shebang-regex`), and obsolete ponyfills (such as `globalthis`, still downloaded 49 million times a week despite native support arriving in 2019). He suggests auditing dependencies with the [e18e CLI](https://e18e.dev/) or knip.
+- 📄 **[Rewriting a Rust and WASM parser in TypeScript made it faster](https://www.openui.com/blog/rust-wasm-parser)**. Crossings between WASM and JavaScript were so expensive that a pure JavaScript implementation ran **2–4× faster** in many cases. Boundary costs matter here just as they do in Edge.js.
+- 📊 **[Benchmarking React SSR frameworks](https://blog.platformatic.dev/react-ssr-framework-benchmark-tanstack-start-react-router-nextjs)**. Matteo Collina compared TanStack Start, React Router and Next.js under load. The results led to patches in both TanStack and React.
+- 💬 **[Two React design choices developers dislike but cannot avoid](https://dev.to/playfulprogramming/two-react-design-choices-developers-dont-like-but-cant-avoid-d6g)**. Deferred state commits and dependency arrays make more sense when you consider timing. Ryan Carniato explains how Solid's synchronous signals let it sidestep them.
+- 📄 [JavaScript Thinks Everything's a Date](https://futuresearch.ai/blog/javascript-thinks-everythings-a-date/). A reminder of why progress on Temporal is worth celebrating.
+- 📄 [A Complete Guide to Bookmarklets](https://css-tricks.com/a-complete-guide-to-bookmarklets/). CSS-Tricks looks at JavaScript snippets you can save as bookmarks.
+- 📺 [How to Burn $30M on a JavaScript Framework](https://www.youtube.com/watch?v=ReAnFFqvCeA). Fireship revisits the 2012 famo.us project in five minutes.
+- 📄 [Node.js worker threads have problems, but they were right for us](https://www.inngest.com/blog/node-worker-threads). Inngest shares its experience.
 
 ---
 
-## 今号の3大テーマ
+## 🛠 Code and tools
 
-**1. 「境界のコスト」が浮き彫りに**
+- **[ArrowJS 1.0](https://www.arrow-js.com/)** is a fast reactive UI runtime built on ES modules, template literals and the DOM. It can isolate components in a WASM sandbox. First introduced in 2022 by the creator of FormKit, it has now reached 1.0.
+- **[Sugar High 1.0](https://sugar-high.vercel.app/)** is a lightweight JSX syntax highlighter. It works without React and supports CSS themes. [GitHub](https://github.com/huozhi/sugar-high)
+- [htmlparser2 12.0](https://github.com/fb55/htmlparser2/releases/tag/v12.0.0) is a fast HTML parser.
+- [vue-audio-visual 3.1](https://github.com/staskobzar/vue-audio-visual) visualizes the Web Audio API in Vue 3.
+- [Svelte SEO 2.1](https://github.com/artiebits/svelte-seo) handles meta tags, Open Graph and JSON-LD for Svelte apps.
+- [pnpm/action-setup 5.0](https://github.com/pnpm/action-setup) is the pnpm GitHub Action, now supporting Node.js v24.
+- [React Joyride 3.0](https://github.com/gilbarbara/react-joyride/releases/tag/v3.0.0) adds guided tours to React apps.
+- [EventCalendar 5.5](https://github.com/vkurko/calendar), [Maz UI 4.9](https://github.com/LouisMazel/maz-ui), [Mediabunny 1.40](https://github.com/Vanilagy/mediabunny/releases/tag/v1.40.0)
 
-TypeScript 6.0→7.0はJS/Go境界、Edge.jsはJS/OS境界、WASM→TSパーサー記事はJS/WASM境界。いずれも「境界をまたぐコストをいかに最小化するか」が技術的核心。Next.js 16.2のRSC高速化も`JSON.parse` reviverのC++/JS境界コスト排除が本質。
+---
 
-**2. エコシステムの世代交代**
+## 🌐 Around the ecosystem
 
-Deno社の大量離職、Node.jsコアのAIコード論争、TypeScriptのJS→Go移行。JavaScript/TypeScriptエコシステム全体が次のフェーズに移行する過渡期にある。
+- 🤖 **[How VS Code builds with AI](https://code.visualstudio.com/blogs/2026/03/13/how-VS-Code-Builds-with-AI)**. The team shares how it uses AI throughout its weekly release cycle, from issue management to shipping.
+- 🔒 **[Secretlint](https://github.com/secretlint/secretlint)** is a dedicated linter for spotting secrets in a repository.
+- 📜 **[Rob Pike's 5 Rules of Programming (1989)](https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html)**. The Go and UTF-8 co-creator's rules went viral this week and still hold up in 2026.
+- 🧠 **[Comprehension Debt](https://addyosmani.com/blog/comprehension-debt/)**. Addy Osmani asks a different question about coding with AI agents: how well do we understand the code we ship?
 
-**3. 「理解」の重要性の再浮上**
+---
 
-Addy Osmaniの「comprehension debt」、JS Bloat記事の「なぜこのパッケージがあるか問え」、Rob Pikeの1989年原則。AIがコード生成を加速する中、**人間が何を理解し何を出荷するか**という問いが回帰している。
+## Three themes from this issue
+
+**1. Crossings have a cost**
+
+The TypeScript 6.0 to 7.0 transition involves the JS/Go boundary, Edge.js the JS/OS boundary, and the parser rewrite the JS/WASM boundary. Each raises the question of how often to cross it. Next.js 16.2 also gained speed by eliminating C++/JS crossings in the `JSON.parse` reviver.
+
+**2. The ecosystem is changing hands**
+
+Departures from Deno, the debate over AI code in Node.js core, and the TypeScript rewrite in Go all point to a transitional period for JavaScript and TypeScript.
+
+**3. Understanding what we ship**
+
+Addy Osmani's comprehension debt, Garbutt's question about why a dependency exists, and Pike's rules from 1989 share a concern: as AI accelerates code generation, what do the people shipping that code actually understand?

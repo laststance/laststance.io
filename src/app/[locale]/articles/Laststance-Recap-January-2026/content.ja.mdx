@@ -1,0 +1,213 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Laststance 開発月報 2026年1月',
+  date: '2026-02-05',
+  description:
+    '1月は42件をリリース。Electron アプリやテスト環境、Claude Code プラグイン管理ツールの変更を振り返ります。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# Laststance 開発月報 2026年1月
+
+2026年1月、Laststance では**10を超えるプロジェクト**が動き、**42件をリリース**しました。開発ツールを更新し、新しいデスクトップアプリにも取り組みました。特に力を入れたのは Electron アプリの開発、E2E テスト環境、各製品の UI と操作性の改善です。🚀
+
+プロジェクトごとに今月の変更を紹介します。
+
+---
+
+## corelive
+
+Web と Electron デスクトップの両方で使える、リアルタイムのタスク管理アプリです。
+
+**今月の変更**
+
+- [ドラッグ＆ドロップでタスクを並べ替え可能に](https://github.com/laststance/corelive/commit/7ec9193327595f1cc26b1503866d78e7ebe98f07)
+  - `@dnd-kit` を組み込みました。操作直後に表示順を更新し、サーバーと同期します。
+
+- [メインプロセスを TypeScript に移行し、Dock アイコンを隠す設定を追加](https://github.com/laststance/corelive/pull/14)
+  - Electron のメインプロセスをすべて TypeScript にしました。Dock にアイコンを表示するかも選べます。
+
+- [デザイントークンの利用をチェックする eslint-plugin-dslint を追加](https://github.com/laststance/corelive/commit/a24bb51ee104e14c80c398e39cb1aaab06efa345)
+  - Tailwind の設定を基準に、デザインシステムに沿ったスタイルかどうかを検査する ESLint プラグインを作りました。
+
+**リリース**　v0.1.0〜v0.1.8（9件）
+
+---
+
+## gitbox
+
+GitHub リポジトリをカンバン形式で整理するダッシュボードです。
+
+**今月の変更**
+
+- [E2E テストを MSW からローカルの Supabase データベースに移行](https://github.com/laststance/gitbox/pull/45)
+  - MSW のモックハンドラーをローカルの Supabase に置き換え、実際のデータベースでの挙動を検証できるようにしました。
+
+- [プロジェクトのソースを src ディレクトリに移動](https://github.com/laststance/gitbox/pull/40)
+  - Next.js の慣例に合わせてすべてのソースファイルを `src/` にまとめ、見通しを良くしました。
+
+- [forwardRef を React 19 の ref プロパティに移行](https://github.com/laststance/gitbox/commit/913ab2644ecfd8f18982f043bc6d489e9fcdcc12)
+  - すべての UI コンポーネントで ref を直接受け取る形にし、forwardRef のラッパーを取り除きました。
+
+**リリース**　v0.1.0、v0.2.0
+
+---
+
+## claude-plugin-dashboard
+
+ターミナルで Claude Code のプラグインとマーケットプレイスを管理する TUI です。
+
+**今月の変更**
+
+- [フォーカスモードでプラグイン構成要素の詳細を表示](https://github.com/laststance/claude-plugin-dashboard/pull/20)
+  - スキル、スラッシュコマンド、エージェント、MCP サーバーの詳細を、Emacs 風のキー操作でたどれます。
+
+- [マーケットプレイスの管理機能を追加](https://github.com/laststance/claude-plugin-dashboard/pull/15)
+  - `a` で追加、`d` で削除、`u` で更新できます。GitHub の省略記法、Git URL、ローカルパスに対応しました。
+
+- [詳細パネルにプラグインの構成要素名を表示](https://github.com/laststance/claude-plugin-dashboard/pull/18)
+  - 件数に加えて名前も表示し、どんな機能が含まれるかを確認できるようにしました。
+
+**リリース**　v0.1.1、v0.2.0、v0.2.1、v0.2.2、v0.2.3、v0.3.0（6件）
+
+---
+
+## skills-desktop
+
+Claude Code のスキルを管理する Electron デスクトップアプリです。
+
+**今月の変更**
+
+- [v0.1.0 を初公開](https://github.com/laststance/skills-desktop/releases/tag/v0.1.0)
+  - デスクトップアプリからスキルを管理できるようになりました。
+
+- [v0.1.1 で更新通知を追加](https://github.com/laststance/skills-desktop/releases/tag/v0.1.1)
+  - 新しいバージョンが利用できるとき、トーストで知らせます。
+
+**リリース**　v0.1.0、v0.1.1
+
+---
+
+## mac-mcp-server
+
+macOS 独自の機能を呼び出すための MCP（Model Context Protocol）サーバーです。
+
+**今月の変更**
+
+- [v0.1.0 を初公開](https://github.com/laststance/mac-mcp-server/releases/tag/v0.1.0)
+  - Claude から macOS 固有の機能や API を使えるようにしました。
+
+**リリース**　v0.1.0
+
+---
+
+## electron-mcp-server
+
+Electron アプリとの連携に使う MCP サーバーです。
+
+**今月の変更**
+
+- [v1.6.0 で複数ウィンドウに対応](https://github.com/laststance/electron-mcp-server/releases/tag/v1.6.0)
+  - 複数の Electron ウィンドウを管理できるようになり、より複雑なデスクトップアプリにも使えます。
+
+**リリース**　v1.6.0
+
+---
+
+## npm-publish-tool
+
+npm パッケージの公開手順を簡単にする CLI です。
+
+**今月の変更**
+
+- [v2.0.0](https://github.com/laststance/npm-publish-tool/releases/tag/v2.0.0)
+  - 公開手順を改善するため、互換性に影響する変更を含むメジャーバージョンをリリースしました。
+
+**リリース**　v2.0.0
+
+---
+
+## git-gpt-commit
+
+AI で Git のコミットメッセージを生成するツールです。
+
+**今月の変更**
+
+- [v0.10.5](https://github.com/laststance/git-gpt-commit/releases/tag/v0.10.5)
+  - メッセージ生成を改善し、不具合を修正しました。
+
+**リリース**　v0.10.3、v0.10.5
+
+---
+
+## eslint-config-ts-prefixer
+
+TypeScript プロジェクトで共有して使える ESLint 設定です。
+
+**今月の変更**
+
+- [v4.1.3](https://github.com/laststance/eslint-config-ts-prefixer/releases/tag/v4.1.3)
+  - TypeScript のルールを改善し、互換性の問題を修正しました。
+
+**リリース**　v4.1.1、4.1.2、v4.1.3
+
+---
+
+## react-next-eslint-plugin
+
+React と Next.js 向けのルールを提供する ESLint プラグインです。
+
+**今月の変更**
+
+- [v1.3.0](https://github.com/laststance/react-next-eslint-plugin/releases/tag/v1.3.0)
+  - React 19 の書き方や Next.js の推奨パターンを検査するルールを追加しました。
+
+**リリース**　1.2.2、1.2.3、1.3.0
+
+---
+
+## redux-strorage-middeware
+
+型安全に状態を永続化する Redux ミドルウェアです。
+
+**今月の変更**
+
+- [v0.2.0 を初公開](https://github.com/laststance/redux-strorage-middeware/releases/tag/v0.2.0)
+  - TypeScript に対応し、Redux の状態を localStorage に保存できます。
+
+- [tsup への移行で ESM のモジュール解決を修正](https://github.com/laststance/redux-strorage-middeware/pull/2)
+  - ビルドを tsc から tsup に変更し、新しい JavaScript 環境で import に失敗する問題を修正しました。
+
+**リリース**　v0.2.0、v0.2.1
+
+---
+
+## create-react-app-vite
+
+Create React App の代わりに使える、React・TypeScript・Vite のテンプレートです。
+
+**今月の変更**
+
+- [tsconfig.json から baseUrl を削除](https://github.com/laststance/create-react-app-vite/pull/1571)
+  - @sickhippie の貢献により、TypeScript 設定の互換性が改善されました。
+
+---
+
+## 1月を振り返って
+
+1月は**10の稼働リポジトリ**で**42件をリリース**しました。🎊 なかでも大きかったのは次の変更です。
+
+- **デスクトップアプリ**では corelive の Electron 対応を改善し、skills-desktop を公開。MCP サーバーも更新しました。
+- **開発環境**では ESLint プラグインを追加し、E2E テストの基盤を改善。React 19 への移行も進みました。
+- **Claude Code 関連**では claude-plugin-dashboard が v0.3.0 になり、幅広いプラグイン管理操作ができるようになりました。
+
+今月も協力してくださった皆さん、ありがとうございます。create-react-app-vite を改善してくれた @sickhippie にも改めて感謝します。
+
+開発に参加してみたい方は、各プロジェクトで `good first issue` ラベルの付いた Issue を探してみてください。初めての貢献も歓迎しています！ 💪
+
+---
+
+_オープンソースの活動は [github.com/laststance](https://github.com/laststance) で公開しています。_

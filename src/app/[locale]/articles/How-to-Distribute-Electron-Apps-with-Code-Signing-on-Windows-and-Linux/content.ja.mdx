@@ -1,0 +1,653 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'Windows と Linux にコード署名付きの Electron アプリを配布する方法',
+  date: '2026-02-17',
+  description:
+    'Electron アプリをコード署名して Windows と Linux に配布するためのガイド。従来の OV/EV 証明書、Azure Trusted Signing、Linux のパッケージ形式（AppImage、Snap、deb、rpm）、GitHub Actions による CI/CD の自動化を扱います。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+# Windows と Linux にコード署名付きの Electron アプリを配布する方法
+
+Electron アプリを配布するには、実行ファイルをビルドしたあとにもうひと手間かかります。コード署名がないと、OS が警告を出し、ユーザーには信頼できないアプリに見えてしまいます。この記事では、2026 年初頭時点のツールを使って **Windows** と **Linux** に署名付き Electron アプリを配布する手順を解説します。
+
+---
+
+## 目次
+
+1. [ビルドツールを選ぶ：electron-builder と Electron Forge](#choosing-a-build-tool)
+2. [Windows のコード署名](#windows-code-signing)
+3. [Azure Trusted Signing（推奨）](#azure-trusted-signing)
+4. [Linux での配布](#linux-distribution)
+5. [自動更新](#auto-update)
+6. [GitHub Actions での CI/CD](#cicd-with-github-actions)
+7. [まとめ](#summary)
+8. [2026 年の証明書有効期間の変更](#important-2026-certificate-validity-changes)
+9. [既知の問題と注意点](#known-issues-and-gotchas)
+
+---
+
+<h2 id="choosing-a-build-tool">ビルドツールを選ぶ</h2>
+
+署名の設定に入る前に、ビルドツールを選びます。Electron では **electron-builder** と **Electron Forge** が主な選択肢です。
+
+| 項目                   | electron-builder                          | Electron Forge                |
+| ---------------------- | ----------------------------------------- | ----------------------------- |
+| 設定形式               | YAML または JSON                          | TypeScript（forge.config.ts） |
+| Linux 向けの出力形式   | AppImage、deb、rpm、snap、pacman、flatpak | deb、rpm、flatpak、snap       |
+| Windows 向けの出力形式 | NSIS、MSI、ポータブル、AppX               | Squirrel、MSI、WiX            |
+| 自動更新               | 組み込みの electron-updater               | update-electron-app           |
+| 公開先                 | GitHub、S3、Spaces、汎用配信先            | GitHub、S3、GCS、Bitbucket    |
+| 利用実績・サポート     | 安定しており、広く使われている            | Electron チームが公式に推奨   |
+
+Linux 向けの形式を柔軟に選びたい場合、特に 1 回のビルドで AppImage、deb、rpm、snap をまとめて出力したいなら、**electron-builder** が向いています。公式サポートがあり、Electron エコシステムとの統合が深いツールチェーンを使いたいなら、**Electron Forge** を勧めます。
+
+この記事では、両方のツールの設定例を紹介します。
+
+---
+
+<h2 id="windows-code-signing">Windows のコード署名</h2>
+
+コード署名がないと、Windows は **SmartScreen の警告**（「Windows によって PC が保護されました」）を表示し、アプリの実行をブロックします。Windows で Electron アプリを配布するときの最大の障壁です。
+
+### OV 証明書と EV 証明書の違い
+
+| 種類                      | 費用                   | SmartScreen                      | ハードウェア                   | CI/CD                                             |
+| ------------------------- | ---------------------- | -------------------------------- | ------------------------------ | ------------------------------------------------- |
+| **OV**（組織認証）        | 年額約 200〜400 米ドル | 利用実績に応じて評価が蓄積される | HSM が必要（2023 年 6 月以降） | 設定に手間がかかる（クラウド HSM またはトークン） |
+| **EV**（拡張認証）        | 年額約 400〜700 米ドル | 初回から評価が付く               | HSM が必要                     | 設定が難しい（USB トークンまたはクラウド HSM）    |
+| **Azure Trusted Signing** | 月額 9.99 米ドル       | 初回から評価が付く               | 不要（クラウドベース）         | 標準で対応                                        |
+
+> **2023 年 6 月の重要な変更**。CA/Browser Forum は、新規発行される**すべての** OV コード署名証明書をハードウェアセキュリティモジュール（HSM）かハードウェアトークンに格納するよう求めています。以前は OV がファイル、EV がハードウェアという違いがありましたが、現在はどちらもハードウェアが必須です。その分、Azure Trusted Signing を選ぶ理由が増えました。
+
+主な証明書の発行元は DigiCert、Sectigo、SSL.com、GlobalSign です。
+
+### 従来の証明書（OV/EV）で署名する
+
+#### 1. 証明書を取得する
+
+[SSL.com](https://www.ssl.com/) や [DigiCert](https://www.digicert.com/) などの発行元から、OV または EV のコード署名証明書を購入します。`.pfx`（PKCS#12）ファイルとパスワードが発行されます。
+
+#### 2. electron-builder を設定する
+
+`electron-builder.yml`（または `package.json`）に以下を設定します。
+
+```yaml
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  signingHashAlgorithms:
+    - sha256
+  certificateSubjectName: 'Your Company Name'
+
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+```
+
+CI 用の環境変数を設定します。
+
+```bash
+# Base64-encode your certificate for safe storage in CI secrets
+# macOS/Linux:
+base64 -i certificate.pfx -o cert-base64.txt
+# Linux:
+base64 certificate.pfx > cert-base64.txt
+
+# Set environment variables
+export WIN_CSC_LINK="base64://$(cat cert-base64.txt)"
+export WIN_CSC_KEY_PASSWORD="your-certificate-password"
+```
+
+#### 3. Electron Forge を設定する
+
+`windowsSign.ts` を作成します。
+
+```typescript
+import type { WindowsSignOptions } from '@electron/packager'
+
+export const windowsSign: WindowsSignOptions = {
+  signWithParams: `/v /fd SHA256 /f "${process.env.WIN_CSC_LINK}" /p "${process.env.WIN_CSC_KEY_PASSWORD}" /tr "http://timestamp.digicert.com" /td SHA256`,
+  hashes: ['sha256'],
+}
+```
+
+次に `forge.config.ts` を設定します。
+
+```typescript
+import { windowsSign } from './windowsSign'
+
+const config: ForgeConfig = {
+  packagerConfig: {
+    windowsSign,
+  },
+  makers: [
+    new MakerSquirrel({
+      // @ts-expect-error - incorrect types exported by MakerSquirrel
+      windowsSign,
+    }),
+  ],
+}
+```
+
+### SmartScreen のレピュテーション
+
+OV 証明書で署名しても、SmartScreen は**レピュテーション**（信頼性の評価）に基づいて判定します。発行直後の証明書には評価が付いていないため、最初はユーザーに警告が表示されます。署名済みアプリをダウンロードし、問題なく実行するユーザーが増えるにつれて、評価が蓄積されます。
+
+**押さえておきたい点**
+
+- EV 証明書と Azure Trusted Signing は**初回から評価が付きます**。最初のダウンロードでも警告は出ません。
+- OV 証明書は評価の蓄積に時間がかかります。通常はダウンロードが始まってから数日〜数週間です。
+- OV 証明書を更新または交換すると、**評価がリセットされます**。
+- Microsoft は判定のしきい値を公表していません。
+
+---
+
+<h2 id="azure-trusted-signing">Azure Trusted Signing</h2>
+
+**Azure Trusted Signing** は、Microsoft が 2024 年に開始したクラウド型コード署名サービスで、現在は一般提供されています。従来の EV 証明書よりも費用を大きく抑えながら、初回から SmartScreen の評価が付くため、**新しいプロジェクトにはこの方法を勧めます**。
+
+### 料金
+
+署名アカウント 1 件につき **月額 9.99 米ドル**です。署名ごとの追加料金はありません。Azure が証明書を管理し、毎日自動で更新します。
+
+### 利用条件
+
+- **3 年以上の税務実績を確認できる**法人であること
+- 従量課金サブスクリプションのある Azure アカウント
+- Microsoft による法人とドメイン所有権の確認
+
+### セットアップ手順
+
+#### 1. リソースプロバイダーを登録する
+
+```bash
+az login
+az provider register --namespace Microsoft.CodeSigning
+az provider show --namespace Microsoft.CodeSigning --query "registrationState"
+```
+
+#### 2. Trusted Signing アカウントを作成する
+
+Azure Portal で Trusted Signing アカウントを作ります。希望するリージョン（米国西部 2 なら `wus2` など）を選びます。
+
+#### 3. ID 検証を完了する
+
+Azure Portal から法人の書類を提出します。Microsoft の確認には通常 1 時間〜数日かかります。SmartScreen の評価を得るには、「Public Trust」プロファイルが必要です。
+
+#### 4. 証明書プロファイルを作成する
+
+ID 検証が完了したら、Trusted Signing アカウント内に証明書プロファイルを作成します。
+
+#### 5. electron-builder を設定する
+
+`electron-builder.yml` に `azureSignOptions` を追加します。
+
+```yaml
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  azureSignOptions:
+    publisherName: 'Your Company Name' # Must match CN of certificate
+    endpoint: 'https://wus2.codesigning.azure.net'
+    certificateProfileName: 'YourProfileName'
+    codeSigningAccountName: 'YourSigningAccountName'
+```
+
+#### 6. Electron Forge を設定する
+
+Electron Forge を使う場合は、`windowsSign.ts` を作成します。
+
+```typescript
+import type { WindowsSignOptions } from '@electron/packager'
+import type { HASHES } from '@electron/windows-sign/dist/esm/types'
+
+export const windowsSign: WindowsSignOptions = {
+  ...(process.env.SIGNTOOL_PATH
+    ? { signToolPath: process.env.SIGNTOOL_PATH }
+    : {}),
+  signWithParams: `/v /debug /dlib ${process.env.AZURE_CODE_SIGNING_DLIB} /dmdf ${process.env.AZURE_METADATA_JSON}`,
+  timestampServer: 'http://timestamp.acs.microsoft.com',
+  hashes: ['sha256' as HASHES],
+}
+```
+
+必要な環境変数は以下のとおりです。
+
+```bash
+AZURE_CLIENT_ID='xxx'
+AZURE_CLIENT_SECRET='xxx'
+AZURE_TENANT_ID='xxx'
+AZURE_METADATA_JSON='C:\path\to\metadata.json'
+AZURE_CODE_SIGNING_DLIB='C:\path\to\bin\x64\Azure.CodeSigning.Dlib.dll'
+SIGNTOOL_PATH='C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe'
+```
+
+`metadata.json` は次のように設定します。
+
+```json
+{
+  "Endpoint": "https://wus2.codesigning.azure.net",
+  "CodeSigningAccountName": "YourSigningAccountName",
+  "CertificateProfileName": "YourProfileName"
+}
+```
+
+---
+
+<h2 id="linux-distribution">Linux での配布</h2>
+
+Linux には複数のパッケージ形式があり、それぞれ利点と制約があります。Windows や macOS と違い、Linux は OS として**コード署名を必須にしていません**。リポジトリの完全性を保つには、署名しておくのが望ましいです。
+
+### パッケージ形式の比較
+
+| 形式         | サンドボックス   | 自動更新               | ストア              | 依存関係                          |
+| ------------ | ---------------- | ---------------------- | ------------------- | --------------------------------- |
+| **AppImage** | なし             | AppImageUpdate 経由    | なし                | 同梱                              |
+| **Snap**     | あり（strict）   | Snap Store で自動更新  | Snap Store          | 形式側で管理                      |
+| **Flatpak**  | あり（ポータル） | Flathub で自動更新     | Flathub             | 形式側で管理                      |
+| **deb**      | なし             | apt リポジトリ経由     | なし（または PPA）  | OS のパッケージマネージャーで管理 |
+| **rpm**      | なし             | yum/dnf リポジトリ経由 | なし（または COPR） | OS のパッケージマネージャーで管理 |
+
+汎用ダウンロード用の **AppImage** に加え、Debian / Ubuntu 向けの **deb**、Fedora / RHEL 向けの **rpm** を出すのがおすすめです。Snap Store で配布したい場合は **Snap** も追加します。Flatpak はサンドボックスに優れていますが、セットアップに手間がかかります。
+
+### electron-builder の設定
+
+```yaml
+linux:
+  target:
+    - AppImage
+    - deb
+    - rpm
+    - snap
+  category: Utility
+  icon: build/icons
+  desktop:
+    StartupNotify: 'false'
+    MimeType: 'x-scheme-handler/myapp'
+
+appImage:
+  artifactName: '${productName}-${version}-${arch}.AppImage'
+
+deb:
+  priority: optional
+  depends:
+    - libnotify4
+    - libxtst6
+    - libnss3
+
+rpm:
+  fpm:
+    - '--rpm-rpmbuild-define'
+    - '_build_id_links none'
+
+snap:
+  confinement: strict
+  grade: stable
+  plugs:
+    - default
+    - removable-media
+```
+
+### Electron Forge の設定
+
+```typescript
+const config: ForgeConfig = {
+  makers: [
+    new MakerDeb({
+      options: {
+        maintainer: 'Your Name',
+        homepage: 'https://yourapp.com',
+        icon: './build/icon.png',
+        categories: ['Utility'],
+      },
+    }),
+    new MakerRpm({
+      options: {
+        homepage: 'https://yourapp.com',
+        icon: './build/icon.png',
+        categories: ['Utility'],
+      },
+    }),
+    new MakerFlatpak({
+      options: {
+        id: 'com.yourcompany.yourapp',
+        runtimeVersion: '24.08',
+      },
+    }),
+  ],
+}
+```
+
+### Linux パッケージに GPG で署名する
+
+OS レベルで強制されるわけではありませんが、リポジトリで配布する `.deb` や `.rpm` パッケージには GPG で署名するのが一般的です。
+
+#### deb パッケージに署名する
+
+```bash
+# Generate a GPG key
+gpg --full-generate-key
+
+# Export the public key
+gpg --armor --export your@email.com > public.key
+
+# Sign the package
+dpkg-sig -k your-key-id --sign builder your-app.deb
+
+# Verify the signature
+dpkg-sig --verify your-app.deb
+```
+
+#### rpm パッケージに署名する
+
+```bash
+# Configure RPM macros
+echo '%_gpg_name Your Name <your@email.com>' >> ~/.rpmmacros
+
+# Sign the package
+rpm --addsign your-app.rpm
+
+# Verify the signature
+rpm --checksig your-app.rpm
+```
+
+### Snap Store に公開する
+
+```bash
+# Install snapcraft
+sudo snap install snapcraft --classic
+
+# Login to Snap Store
+snapcraft login
+
+# Register your app name
+snapcraft register your-app-name
+
+# Upload and release
+snapcraft upload your-app.snap --release=stable
+```
+
+---
+
+<h2 id="auto-update">自動更新</h2>
+
+署名付きアプリに修正をスムーズに届けるには、自動更新が必要です。
+
+### electron-builder + electron-updater
+
+`electron-updater` をインストールします。
+
+```bash
+npm install electron-updater
+```
+
+メインプロセスに以下を書きます。
+
+```typescript
+import { autoUpdater } from 'electron-updater'
+import log from 'electron-log'
+
+autoUpdater.logger = log
+
+export function checkForUpdates() {
+  autoUpdater.checkForUpdatesAndNotify()
+}
+
+autoUpdater.on('update-available', (info) => {
+  log.info('Update available:', info.version)
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('Update downloaded. Will install on restart.')
+  // Optionally prompt user to restart
+  autoUpdater.quitAndInstall()
+})
+```
+
+`electron-builder.yml` で公開先を設定します。
+
+```yaml
+publish:
+  - provider: github
+    owner: your-username
+    repo: your-app
+    releaseType: release
+```
+
+### Electron Forge + update-electron-app
+
+```bash
+npm install update-electron-app
+```
+
+メインプロセスに以下を書きます。
+
+```javascript
+const { updateElectronApp } = require('update-electron-app')
+
+updateElectronApp({
+  updateInterval: '1 hour',
+  logger: require('electron-log'),
+})
+```
+
+公開リポジトリでは、`@electron-forge/publisher-github` と無料の [update.electronjs.org](https://update.electronjs.org) サービスを組み合わせて使えます。
+
+> **注意**。Linux の AppImage を自動更新するには、ユーザーの環境に `libappimage` があるか、独自の更新手段を用意する必要があります。Snap と Flatpak はそれぞれのストアで自動更新されます。
+
+---
+
+<h2 id="cicd-with-github-actions">GitHub Actions での CI/CD</h2>
+
+以下は、Windows と Linux 向けに Electron アプリをビルドして署名し、GitHub Releases に公開する GitHub Actions ワークフロー全体です。
+
+### electron-builder のワークフロー
+
+```yaml
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      # Option A: Traditional certificate signing
+      - name: Build Windows (OV Certificate)
+        if: ${{ !vars.USE_AZURE_SIGNING }}
+        run: npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WIN_CSC_LINK: ${{ secrets.WIN_CERTIFICATE }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CERTIFICATE_PASSWORD }}
+
+      # Option B: Azure Trusted Signing
+      - name: Azure Login
+        if: ${{ vars.USE_AZURE_SIGNING }}
+        uses: azure/login@v2
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Build Windows (Azure Trusted Signing)
+        if: ${{ vars.USE_AZURE_SIGNING }}
+        run: npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifacts
+          path: |
+            dist/*.exe
+            dist/*.msi
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - name: Build Linux
+        run: npm run build:linux
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-artifacts
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.rpm
+            dist/*.snap
+
+  publish:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
+```
+
+### シークレットを登録する
+
+GitHub リポジトリの設定画面（`Settings > Secrets and variables > Actions`）で以下のシークレットを追加します。
+
+| シークレット               | 用途                                              |
+| -------------------------- | ------------------------------------------------- |
+| `WIN_CERTIFICATE`          | Base64 エンコードした `.pfx` ファイル（OV/EV 用） |
+| `WIN_CERTIFICATE_PASSWORD` | 証明書のパスワード（OV/EV 用）                    |
+| `AZURE_CLIENT_ID`          | Azure のアプリ登録のクライアント ID               |
+| `AZURE_CLIENT_SECRET`      | Azure のアプリ登録のシークレット                  |
+| `AZURE_TENANT_ID`          | Azure のテナント ID                               |
+| `AZURE_SUBSCRIPTION_ID`    | Azure のサブスクリプション ID                     |
+
+> **セキュリティの注意点**。証明書やシークレットはリポジトリにコミットせず、GitHub Secrets やシークレット管理サービスに保管してください。
+
+---
+
+<h2 id="summary">まとめ</h2>
+
+| プラットフォーム | 署名             | 推奨する方法          | 費用                   |
+| ---------------- | ---------------- | --------------------- | ---------------------- |
+| **Windows**      | コード署名証明書 | Azure Trusted Signing | 月額 9.99 米ドル       |
+| **Windows**      | コード署名証明書 | OV 証明書（代替案）   | 年額約 200〜400 米ドル |
+| **Linux**        | GPG（任意）      | AppImage + deb + rpm  | 無料                   |
+| **Linux**        | ストアでの署名   | Snap Store            | 無料                   |
+
+### 条件に応じた選び方
+
+1. **3 年以上の実績がある法人** &rarr; **Azure Trusted Signing** を使う（月額 9.99 米ドル、SmartScreen の評価は初回から付く）
+2. **個人開発者か設立間もない法人** &rarr; SSL.com や Sectigo の **OV 証明書**を使う（年額約 200〜400 米ドル）。最初のうちは SmartScreen の警告が出る。
+3. **Linux 向けの配布** &rarr; **AppImage**（汎用）、**deb**（Ubuntu / Debian）、**rpm**（Fedora / RHEL）を公開する
+4. **ストアで配布したい場合** &rarr; **Snap Store** にも公開する
+5. **自動更新を入れたい場合** &rarr; GitHub Releases と **electron-updater**（electron-builder）または **update-electron-app**（Forge）を組み合わせる
+
+### 配布前に押さえておくこと
+
+- **Windows 向けビルドには必ず署名します。** 署名のないアプリには SmartScreen の警告が表示され、多くのユーザーが先に進めなくなります。
+- **法人には Azure Trusted Signing が有力です。** 月額 9.99 米ドルで初回から評価が付き、ハードウェアトークンも不要です。
+- **Linux では OS レベルでコード署名を強制しません。** リポジトリの完全性を保つため、パッケージには署名しておきます。
+- **GitHub Actions で自動化します。** 複数の OS 向けのビルドと署名は、手元のマシンで行わず CI で実行します。
+- **Linux では複数の形式で公開します。** 1 種類の形式だけで全ユーザーをカバーすることはできません。
+
+---
+
+<h2 id="important-2026-certificate-validity-changes">
+  2026 年の証明書有効期間の変更
+</h2>
+
+**2026 年 3 月 1 日**から、CA/Browser Forum はパブリックに信頼されるコード署名証明書の最長有効期間を、**39 か月から 460 日**（約 15 か月）に短縮しました。影響は次のとおりです。
+
+- 証明書の更新頻度が上がります（約 3 年に 1 度から約 15 か月に 1 度へ）。
+- DigiCert や GlobalSign などの主要な認証局は、2025 年 12 月時点ですでに複数年有効な証明書の発行を停止しました。
+- Azure Trusted Signing では証明書を毎日自動で更新するため、この変更の影響はありません。
+
+証明書管理の手間を減らしたいチームにとって、このルール変更で Azure Trusted Signing を選ぶ理由がさらに増えました。
+
+---
+
+<h2 id="known-issues-and-gotchas">既知の問題と注意点</h2>
+
+### electron-builder と Azure Trusted Signing の競合
+
+electron-builder が Azure Trusted Signing で複数ファイルを並行署名する場合に、既知の競合が発生します（[GitHub issue #9076](https://github.com/electron-userland/electron-builder/issues/9076)）。複数の署名処理が同時に Trusted Signing のツールチェーンをインストールしようとして、ファイルアクセスが競合します。この問題に遭遇したら、署名を 1 件ずつ処理することを検討してください。
+
+### Ubuntu 24.04 以降で Linux AppImage を使う
+
+Ubuntu 24.04 以降で AppImage を利用するには `libfuse2` が必要です。
+
+```bash
+sudo apt install libfuse2
+```
+
+また、Ubuntu 24.04 以降では AppArmor が非特権ユーザー名前空間を制限するため、Electron のサンドボックスが動作しない場合があります。ユーザー側で次の操作が必要になることがあります。
+
+```bash
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+```
+
+または `--no-sandbox` 付きで起動します（本番環境では非推奨）。
+
+### Electron Fuses によるセキュリティ強化
+
+署名付きアプリを配布する場合は、安全性を高めるため、パッケージ化の時点（署名前）で [Electron Fuses](https://www.electronjs.org/docs/latest/tutorial/fuses) を設定します。
+
+```javascript
+// forge.config.js
+const { FusesPlugin } = require('@electron-forge/plugin-fuses')
+const { FuseV1Options, FuseVersion } = require('@electron/fuses')
+
+module.exports = {
+  plugins: [
+    new FusesPlugin({
+      version: FuseVersion.V1,
+      [FuseV1Options.RunAsNode]: false,
+      [FuseV1Options.EnableCookieEncryption]: true,
+      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+      [FuseV1Options.EnableNodeCliInspectArguments]: false,
+      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+      [FuseV1Options.OnlyLoadAppFromAsar]: true,
+    }),
+  ],
+}
+```
+
+---
+
+_詳細は、[electron-builder のドキュメント](https://www.electron.build/)と [Electron Forge のガイド](https://www.electronforge.io/)を参照してください。_

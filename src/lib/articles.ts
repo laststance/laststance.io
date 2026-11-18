@@ -1,32 +1,40 @@
+import type { Locale } from 'next-intl'
+
 import { articlesManifest } from './articles-manifest'
 
-interface Article {
+export interface ArticleMetadata {
   title: string
   author: string
   date: string
   description: string
 }
 
-export interface ArticleWithSlug extends Article {
+export interface ArticleWithSlug extends ArticleMetadata {
   slug: string
 }
 
+export interface ArticleManifestEntry {
+  slug: string
+  author: string
+  date: string
+  editions: Record<Locale, Pick<ArticleMetadata, 'title' | 'description'>>
+}
+
 /**
- * Returns every article sorted newest-first.
+ * Reads newest-first article summaries from the bundled build-time manifest.
+ * The home page and archive pass the visitor's locale. RSS and sitemap callers
+ * default to English and use one canonical URL per article.
  *
- * Reads from `src/lib/articles-manifest.ts`, which is generated at build time
- * by `scripts/generate-articles-manifest.mjs` and statically bundled into the
- * serverless function. The previous implementation glob'd the filesystem at
- * request time and crashed on Vercel because the MDX source files aren't
- * shipped alongside the compiled function.
- *
- * Stays async so existing callers (`await getAllArticles()`) keep working
- * without a touch.
- * @returns Sorted array of articles (newest first).
  * @example
- *   const articles = await getAllArticles()
- *   // [{ slug: 'my-post', title: '...', date: '2026-01-01', ... }, ...]
+ * const articles = await getAllArticles('ja')
  */
-export async function getAllArticles(): Promise<ArticleWithSlug[]> {
-  return articlesManifest
+export async function getAllArticles(
+  locale: Locale = 'en',
+): Promise<ArticleWithSlug[]> {
+  return articlesManifest.map(({ slug, author, date, editions }) => ({
+    slug,
+    author,
+    date,
+    ...editions[locale],
+  }))
 }

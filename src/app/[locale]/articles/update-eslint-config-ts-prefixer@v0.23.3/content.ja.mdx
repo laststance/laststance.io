@@ -1,0 +1,139 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'eslint-config-ts-prefixer を v0.23.3 に更新',
+  date: '2023-08-17',
+  description: 'async、await、Promise に関するルールを追加しました。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+[eslint-config-ts-prefixer@v0.23.3](https://github.com/laststance/eslint-config-ts-prefixer) を公開しました。
+
+eslint-config-ts-prefixer は、Prettier を ESLint のルールとして組み込み、自動修正できるルールを中心に集めた設定です。
+
+- 📦 `extends` を使わず、[ルールを明示的に指定](https://github.com/laststance/eslint-config-ts-prefixer/blob/main/index.js)。
+- 💅 [Prettier](https://prettier.io/) を統合し、自動修正できる `import` 関連のルールを採用。
+- ✅ コードの動作に関わるルールを採用。
+
+今回の更新で次のルールを追加しました。\
+特に気に入っているのは `@typescript-eslint/promise-function-async` です。\
+`--fix` を使うと、該当箇所に `async` キーワードを自動で追加できます。
+
+### 1. [@typescript-eslint/no-misused-new](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-new.md)
+
+クラスやインターフェースで、コンストラクターの宣言に `new` を誤用するのを防ぎます。
+
+```typescript
+// Bad
+interface Foo {
+  new (): Foo
+}
+
+// Good
+class Foo {
+  constructor() {}
+}
+```
+
+### 2. [@typescript-eslint/no-misused-promises](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-promises.md)
+
+Promise を処理する想定のない箇所で Promise を使うのを防ぎます。
+
+```typescript
+// Bad
+addEventListener('click', async () => {
+  await doSomethingAsync()
+})
+
+// Good
+addEventListener('click', () => {
+  doSomethingAsync()
+})
+```
+
+### 3. [@typescript-eslint/promise-function-async](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/promise-function-async.md)
+
+Promise を返す関数やメソッドに `async` を付けることを求めます。
+
+```typescript
+// Bad
+function foo(): Promise<void> {
+  return Promise.resolve()
+}
+
+// Good
+async function foo(): Promise<void> {
+  return
+}
+```
+
+### 4. [no-await-in-loop](https://eslint.org/docs/rules/no-await-in-loop)
+
+ループの中での `await` を禁止します。
+
+```javascript
+// Bad
+for (let i = 0; i < 10; i++) {
+  await asyncFunction()
+}
+
+// Good
+const promises = []
+for (let i = 0; i < 10; i++) {
+  promises.push(asyncFunction())
+}
+await Promise.all(promises)
+```
+
+### 5. [no-return-await](https://eslint.org/docs/rules/no-return-await)
+
+不要な `return await` を禁止します。
+
+```javascript
+// Bad
+async function foo() {
+  return await bar()
+}
+
+// Good
+async function foo() {
+  return bar()
+}
+```
+
+### 6. [prefer-promise-reject-errors](https://eslint.org/docs/rules/prefer-promise-reject-errors)
+
+Promise を拒否する理由として `Error` オブジェクトを使うことを求めます。
+
+```javascript
+// Bad
+Promise.reject('something went wrong')
+
+// Good
+Promise.reject(new Error('something went wrong'))
+```
+
+### 7. [require-atomic-updates](https://eslint.org/docs/rules/require-atomic-updates)
+
+`await` や `yield` を挟んだ代入で、競合状態が起きるおそれのある書き方を禁止します。
+
+```javascript
+// Bad
+async function foo() {
+  c = a + b
+  await somethingAsync()
+  c = c + 1 // This might be an outdated value of c
+}
+
+// Good
+async function foo() {
+  const temp = a + b
+  await somethingAsync()
+  c = temp + 1
+}
+```
+
+使ってくださっている皆さん、ありがとうございます。\
+ESLint や TypeScript の設定について、改善案があればぜひお聞かせください！

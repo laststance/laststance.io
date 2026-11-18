@@ -3,15 +3,14 @@ import { useLocale } from 'next-intl'
 import { Container } from '@/components/Container'
 import { Prose } from '@/components/Prose'
 import { Text } from '@/components/ui/primitives'
-import { type ArticleWithSlug } from '@/lib/articles'
+import { type ArticleMetadata } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
 
 /**
  * Page shell for one article: title, date and the MDX body.
  *
- * Every article's `content.mdx` renders through it. Articles are written in
- * English in every locale, so the article is marked `lang="en"` for screen
- * readers on Japanese pages, while the date follows the visitor's locale.
+ * Both MDX editions render through this layout. The date and language tag
+ * follow the same locale that selected the article body.
  *
  * @example
  * ```tsx
@@ -22,7 +21,7 @@ export function ArticleLayout({
   article,
   children,
 }: {
-  article: ArticleWithSlug
+  article: ArticleMetadata
   children: React.ReactNode
 }) {
   const locale = useLocale()
@@ -30,13 +29,12 @@ export function ArticleLayout({
     <Container className="page-start">
       <div className="xl:relative">
         <div className="max-w-[72ch]">
-          <article lang="en">
+          <article lang={locale}>
             <header className="relative flex flex-col">
               <Text as="h1" variant="h1">
                 {article.title}
               </Text>
               <time
-                lang={locale}
                 dateTime={article.date}
                 className="absolute bottom-full mb-6 flex items-center text-sm text-zinc-500 dark:text-zinc-400"
               >
