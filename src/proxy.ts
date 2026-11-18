@@ -31,7 +31,8 @@ export default function proxy(request: NextRequest): NextResponse {
 export const config = {
   matcher: [
     // Skip /api, /_next, /_vercel (Analytics), /monitoring (Sentry tunnel) and dotted files.
-    '/((?!api|_next|_vercel|monitoring|.*\\..*).*)',
+    // Skip the exact /v path so Go can read the module metadata without a locale rewrite.
+    '/((?!api|_next|_vercel|monitoring|v$|.*\\..*).*)',
     // Two article slugs contain a dot and still need a locale, with or without the switch's prefix.
     '/articles/:path*',
     '/:locale(en|ja)/articles/:path*',

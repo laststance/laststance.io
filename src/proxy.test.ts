@@ -21,7 +21,14 @@ describe('proxy matcher', () => {
     })
   }
 
-  for (const url of ['/about', '/ja/about', '/articles/a@v1.2.3']) {
+  for (const url of [
+    '/about',
+    '/ja/about',
+    '/articles/a@v1.2.3',
+    '/v2',
+    '/v/docs',
+    '/ja/v',
+  ]) {
     test(`runs the proxy for the page ${url}, so it gets a language`, () => {
       // Act
       const matches = unstable_doesMiddlewareMatch({ config, url })
@@ -30,6 +37,17 @@ describe('proxy matcher', () => {
       expect(matches).toBe(true)
     })
   }
+
+  test.each(['/v', '/v?go-get=1'])(
+    'serves the Go module page at %s without a locale rewrite',
+    (url) => {
+      // Act
+      const matches = unstable_doesMiddlewareMatch({ config, url })
+
+      // Assert
+      expect(matches).toBe(false)
+    },
+  )
 
   for (const url of ['/_next/static/x.js', '/api/x', '/favicon.ico']) {
     test(`leaves ${url} alone, so assets and API routes are never rewritten into a locale`, () => {
