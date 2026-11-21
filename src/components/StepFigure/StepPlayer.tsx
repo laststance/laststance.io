@@ -1,6 +1,5 @@
 'use client'
 
-import { useReducedMotion } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import {
   type KeyboardEvent,
@@ -11,6 +10,8 @@ import {
   useRef,
   useState,
 } from 'react'
+
+import { usePrefersReducedMotion } from './usePrefersReducedMotion'
 
 /** Milliseconds each step stays on screen while "Play" is running. */
 const AUTOPLAY_INTERVAL_MS = 3600
@@ -65,7 +66,7 @@ export interface StepPlayerProps {
  */
 export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
   const t = useTranslations('StepFigure')
-  const reduceMotion = useReducedMotion() ?? false
+  const reduceMotion = usePrefersReducedMotion()
   const headingId = useId()
   const [step, setStep] = useState(0)
   const [playing, setPlaying] = useState(false)

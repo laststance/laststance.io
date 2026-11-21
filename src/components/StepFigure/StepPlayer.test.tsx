@@ -1,45 +1,56 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  type RenderResult,
-} from '@testing-library/react'
-import type * as MotionReact from 'motion/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
-import { afterEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { catalogs } from '@/i18n/catalogs'
 
 import { StepPlayer } from './StepPlayer'
 
-// The reader's reduced-motion preference, switchable per test
-const reducedMotion = vi.hoisted(() => ({ enabled: false }))
+/**
+ * Stands in for the browser's `(prefers-reduced-motion: reduce)` query, which jsdom lacks.
+ * Starts with reduced motion off.
+ *
+ * @returns `turnOn()` flips the preference and fires `change`, as the OS setting does.
+ */
+function stubReducedMotionQuery(): { turnOn: () => void } {
+  const listeners = new Set<() => void>()
+  const media = {
+    matches: false,
+    addEventListener: (_type: 'change', listener: () => void): void => {
+      listeners.add(listener)
+    },
+    removeEventListener: (_type: 'change', listener: () => void): void => {
+      listeners.delete(listener)
+    },
+  }
+  vi.stubGlobal('matchMedia', () => media)
+  return {
+    turnOn: (): void => {
+      media.matches = true
+      listeners.forEach((listener) => listener())
+    },
+  }
+}
 
-vi.mock('motion/react', async (importOriginal) => ({
-  ...(await importOriginal<typeof MotionReact>()),
-  useReducedMotion: (): boolean => reducedMotion.enabled,
-}))
-
-function PlayerTree({ locale }: { locale: 'en' | 'ja' }) {
-  return (
+function renderPlayer(locale: 'en' | 'ja' = 'en'): void {
+  render(
     <NextIntlClientProvider locale={locale} messages={catalogs[locale]}>
       <StepPlayer
         title="Demo"
         captions={['first sentence', 'second sentence', 'third sentence']}
         renderStage={(step) => <span>stage {step}</span>}
       />
-    </NextIntlClientProvider>
+    </NextIntlClientProvider>,
   )
 }
 
-function renderPlayer(locale: 'en' | 'ja' = 'en'): RenderResult {
-  return render(<PlayerTree locale={locale} />)
-}
+beforeEach(() => {
+  stubReducedMotionQuery()
+})
 
 afterEach(() => {
   vi.useRealTimers()
-  reducedMotion.enabled = false
+  vi.unstubAllGlobals()
 })
 
 describe('StepPlayer', () => {
@@ -106,12 +117,14 @@ describe('StepPlayer', () => {
   test('turning on reduced motion during Play stops autoplay, so the figure no longer moves on its own', () => {
     // Arrange
     vi.useFakeTimers()
-    const { rerender } = renderPlayer()
+    const reducedMotionQuery = stubReducedMotionQuery()
+    renderPlayer()
     fireEvent.click(screen.getByRole('button', { name: 'Play' }))
 
     // Act
-    reducedMotion.enabled = true
-    rerender(<PlayerTree locale="en" />)
+    act(() => {
+      reducedMotionQuery.turnOn()
+    })
     act(() => {
       vi.advanceTimersByTime(7200)
     })

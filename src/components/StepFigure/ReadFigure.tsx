@@ -15,11 +15,11 @@ const RUNS: CellRun[] = [
 const LINES = ['ok green bold', '$']
 
 const TEXT_CMD: CodePart[] = [
-  { t: 'herdr pane read w2:p1 --source visible ' },
+  { t: 'herdr --session blog-herdr-demo pane read w2:p1 --source visible ' },
   { t: '--format text', hl: true },
 ]
 const ANSI_CMD: CodePart[] = [
-  { t: 'herdr pane read w2:p1 --source visible ' },
+  { t: 'herdr --session blog-herdr-demo pane read w2:p1 --source visible ' },
   { t: '--format ansi', hl: true },
 ]
 

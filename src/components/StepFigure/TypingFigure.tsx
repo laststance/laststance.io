@@ -29,8 +29,8 @@ const EMPTY: Grid = { lines: [], cursor: { row: 1, col: 1 } }
 const HI: Grid = { lines: ['hi'], cursor: { row: 1, col: 3 } }
 const HI_HI: Grid = { lines: ['hi', 'hi'], cursor: { row: 3, col: 1 } }
 
-const TEXT_CMD = 'herdr pane send-text w1:p1 "hi"'
-const KEY_CMD = 'herdr pane send-keys w1:p1 enter'
+const TEXT_CMD = 'herdr --session blog-herdr-demo pane send-text w1:p1 "hi"'
+const KEY_CMD = 'herdr --session blog-herdr-demo pane send-keys w1:p1 enter'
 
 const SCENES: TypingScene[] = [
   {
