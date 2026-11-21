@@ -354,7 +354,7 @@ herdr --session blog-herdr-demo pane send-keys w2:p1 enter
 herdr --session blog-herdr-demo pane wait-output w2:p1 --match ready-42 --timeout 5000
 ```
 
-The first time I typed `echo ready-42` literally, and the wait returned instantly with `"matched_line":"$ sleep 1; echo ready-42"`, my own command line. With `$((6*7))` the command line reads `ready-$((6*7))`, only the output contains `ready-42`, and the call returns once it appears, with `"matched_line":"ready-42"`. Match on something that only the output can contain.
+The first time I typed `echo ready-42` literally, and the wait returned instantly with `"matched_line":"$ sleep 1; echo ready-42"`, my own command line. With `$((6*7))` the command line reads `ready-$((6*7))`, only the output contains `ready-42`, and the call returns once it appears, with `"matched_line":"ready-42"`. Match on something that only the output can contain. Output from an earlier run counts too: when I ran the same three commands a second time, the wait returned after 29 ms, on the `ready-42` the first run had left, before the new `sleep 1` was over. Use a marker that is new on every run.
 
 For coding agents herdr also has `agent prompt`, which the documentation says submits your text plus Enter as one ordered submission and honours the pane's bracketed-paste mode, optionally waiting until the agent settles. I did not try it, because there was no agent in my test session.
 
