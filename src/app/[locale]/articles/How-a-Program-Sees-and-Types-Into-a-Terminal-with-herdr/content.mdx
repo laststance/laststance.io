@@ -1,0 +1,408 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import {
+  ArchitectureFigure,
+  ControllerFigure,
+  FramesFigure,
+  ReadFigure,
+  ScreenGridFigure,
+  SessionsFigure,
+  SocketFigure,
+  TypingFigure,
+} from '@/components/StepFigure'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'How a Program Sees and Types Into a Terminal, with herdr',
+  date: '2026-11-22',
+  description:
+    "Starting from a grid of cells and a cursor, build up how herdr lets an outside program read a terminal's screen, watch it change, and type into it. Every mechanism comes with a small step-by-step animation and real output from my own runs.",
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+I wanted to understand this one concretely, from the bottom up, one small change at a time. So this article does not start with herdr. It starts with what a terminal screen is, and only then adds the pieces herdr puts around it. Each mechanism has a small figure: press **Next** (or the arrow keys) and exactly one thing changes per step.
+
+The reason I looked into it: I was building a desktop HUD that floats an agent's conversation over other apps, and I needed two things from the terminal the agent runs in. The picture on its screen, and a way to type into it. [herdr](https://herdr.dev), a terminal workspace manager for AI coding agents, offers both. The HUD will not depend on herdr after all, because a tool should not require one particular multiplexer. The mechanics are still worth writing down.
+
+Everything shown here was run on macOS with herdr 0.9.5 (socket protocol 22), in a throwaway session of its own. Where I only read something in herdr's documentation and did not run it, I say so.
+
+## What a terminal screen really is
+
+Forget herdr for a minute. A terminal screen is a grid of cells, and each cell holds at most one character. Besides the cells, the screen remembers one position: the cursor. That is all of it.
+
+<ScreenGridFigure
+  title="A screen is cells plus a cursor"
+  captions={[
+    'A terminal screen is a grid of cells. This one is 10 columns by 4 rows, and every cell is empty.',
+    'The screen also remembers one more thing: the cursor, the cell where the next character will go. It starts at row 1, column 1.',
+    'A program writes `h`. The character lands in the cell under the cursor.',
+    'The cursor steps one cell to the right: row 1, column 2.',
+    'The program writes `i`, and it lands under the cursor.',
+    'The cursor steps right again, to row 1, column 3. Row 1 now reads `hi`.',
+    'The program sends a newline. Nothing is drawn; the cursor jumps to row 2, column 1.',
+    'A wide character such as `日` fills two cells.',
+    'So the cursor moves two columns, to row 2, column 3. That is the whole screen: cells plus a cursor.',
+  ]}
+/>
+
+Colour and bold are not extra cells. They are attributes attached to the cells, which matters later when a screen is turned into text.
+
+Two consequences are worth keeping in your head. First, a program never "draws a picture"; it only writes characters at the cursor and moves the cursor. Second, to know what a screen looks like you need two things: the cells, and where the cursor is. A bridge that only gets one of them is blind in one eye.
+
+## Who owns the screen: a server
+
+A program such as `cat` does not talk to a screen directly. It runs inside a pseudo-terminal, a PTY: a pipe that lets the program believe it has a screen and a keyboard. Something has to sit on the other end of that pipe and keep the grid.
+
+<ArchitectureFigure
+  title="The server holds the grid; windows and scripts are clients"
+  captions={[
+    'Start with a program, here `cat`. It runs inside a pseudo-terminal (PTY), a pipe that lets a program believe it has a screen and a keyboard.',
+    'The program writes the bytes `h` and `i`. They travel into the PTY.',
+    "herdr's server reads the other end of the PTY and applies the bytes to a grid of its own. The server owns the screen.",
+    'The herdr window you normally look at is a client: it asks the server for the screen and draws it.',
+    'In every experiment below there is no window at all. `herdr server` runs headless and the screen still exists.',
+    'Your script is just another client. It reaches the same server through the same door: a socket.',
+  ]}
+/>
+
+In herdr that something is the server. `herdr status` reports the client and the server as separate things, and the server listens on a Unix socket. Inside a herdr pane the shell even gets environment variables (`HERDR_SOCKET_PATH`, `HERDR_PANE_ID`, and friends) so a process can find its own pane. Because the server owns the grid, anything that can reach the socket can look at it. That is the whole trick behind this article.
+
+## A safe place to experiment: a named session
+
+Before running a single command, give yourself a sandbox. herdr can run several independent servers side by side, each called a session. The one you normally use is `default`, and it may hold your live work. Everything below runs in a session I made up, `blog-herdr-demo`.
+
+<SessionsFigure
+  title="A named session is a second, independent server"
+  captions={[
+    'herdr can run several independent servers side by side. The default session hosts your real terminals. Never experiment there.',
+    '`herdr --session blog-herdr-demo server` starts a second, headless server. It has its own socket file under `sessions/`.',
+    'Put `--session blog-herdr-demo` on a command and it talks to that socket only. `status server` confirms it is running.',
+    '`workspace create` makes a pane inside it and answers with its id: `w1:p1`. `--no-focus` keeps it from stealing focus.',
+    'Now type, resize and take over as you like. The default server never hears about it.',
+    '`session stop` ends the server, `session delete` removes its files, and `session list` shows only `default` again.',
+  ]}
+/>
+
+The commands, with the output I got (home directory shortened to `~`):
+
+```bash
+# unset the HERDR_* variables a herdr pane exports, so that --session alone picks the server
+herdr --session blog-herdr-demo server &
+herdr --session blog-herdr-demo status server
+```
+
+```
+status: running
+version: 0.9.5
+endpoint_compatible: yes
+private_protocol: 22
+private_protocol_compatible: yes
+socket: ~/.config/herdr/sessions/blog-herdr-demo/herdr.sock
+```
+
+```bash
+herdr --session blog-herdr-demo workspace create --cwd /tmp --no-focus
+```
+
+The answer is one line of JSON; the part you need is the root pane's id, here `"pane_id":"w1:p1"`. Everything that follows addresses `w1:p1`. I ran this from a shell that was itself inside a herdr pane, so I unset the inherited `HERDR_*` variables for every command to be sure the session name was what chose the server. (In one check, `--session` also won with the variables still set, but I did not rely on that.)
+
+When you are done:
+
+```
+$ herdr session stop blog-herdr-demo
+stopped session blog-herdr-demo
+$ herdr session delete blog-herdr-demo
+deleted session blog-herdr-demo
+$ herdr session list
+name                 status   directory                                        socket
+default              running  ~/.config/herdr               ~/.config/herdr/herdr.sock
+```
+
+Rules I kept for the whole investigation: never send keys to, resize, split, close or attach to a pane of the default session, and never run a bare `herdr`, which launches the full-screen interface.
+
+## The socket: how a script talks to the server
+
+The server listens on a Unix socket, which is a file path you can connect to. The language spoken over it is simple: one JSON object per line. You send a request line, the server sends back one answer line.
+
+<SocketFigure
+  title="One line in, one line out"
+  captions={[
+    'The server listens on a Unix socket: a file path. Connecting to it is like opening a file that answers back.',
+    'The script connects. Nothing has been said yet.',
+    'The script writes one line of JSON: a method name (`pane.read`) and its parameters, ended by a newline.',
+    'The newline marks the end of the request, so the server knows one whole request has arrived.',
+    'The server writes one line back. The text of the screen is in `result.read.text`: `hi`, `hi`, `ok日`.',
+    'The `id` comes back unchanged, so you can match answers to requests. The `herdr pane …` commands are helpers that send lines like this one.',
+  ]}
+/>
+
+That is not a diagram of how it might work; it is the literal exchange. Six lines of Python reproduce it:
+
+```python
+import os, socket
+
+sock = socket.socket(socket.AF_UNIX)
+sock.connect(os.path.expanduser("~/.config/herdr/sessions/blog-herdr-demo/herdr.sock"))
+sock.sendall(b'{"id":"r1","method":"pane.read","params":{"pane_id":"w1:p1","source":"visible","format":"text"}}\n')
+print(sock.recv(65536).decode())
+```
+
+```
+{"id":"r1","result":{"type":"pane_read","read":{"pane_id":"w1:p1","workspace_id":"w1","tab_id":"w1:t1","source":"visible","format":"text","text":"hi\nhi\nok日\n","revision":0,"truncated":false}}}
+```
+
+`herdr api schema --json` prints the machine-readable description of every method. On my machine it is a 272 KB file that names `pane.read`, `pane.send_text`, `pane.send_keys`, `events.subscribe`, `agent.prompt` and many more. You rarely need the raw socket; the `herdr pane …` and `herdr terminal …` commands are thin helpers over it. But it is good to know there is nothing hidden under them.
+
+## Reading a screen: `pane read`
+
+The simplest way to see a screen is to ask for a snapshot. Here the second test pane shows the word `green` in green and `bold` in bold.
+
+<ReadFigure
+  title="pane read turns the grid into text"
+  captions={[
+    'A second test pane shows `ok green bold`. The word `green` is green and `bold` is bold. The cursor waits on row 2.',
+    '`pane read` asks the server to read the grid from top to bottom, as plain text.',
+    'Row 1 becomes the line `ok green bold`.',
+    'Row 2 holds only `$`; the empty cells after it are dropped.',
+    'That is the whole answer: text. The colour is gone, and so is the cursor.',
+    'With `--format ansi` the colour and the weight come back as escape codes. `ESC[38;5;2m` starts green, `ESC[1m` starts bold, `ESC[0m` resets. `ESC` stands for the invisible escape character.',
+    'Even then, nothing in the answer says where the cursor is. For that you need the live stream.',
+  ]}
+/>
+
+The same thing from a shell. `cat -v` makes the invisible escape character visible as `^[`:
+
+```
+$ herdr --session blog-herdr-demo pane read w2:p1 --source visible --format text
+ok green bold
+$
+
+$ herdr --session blog-herdr-demo pane read w2:p1 --source visible --format ansi | cat -v
+ok ^[[0m^[[38;5;2mgreen^[[0m ^[[0m^[[1mbold^[[0m^M
+$
+```
+
+`--source` chooses what to read. The CLI accepts `visible`, `recent`, `recent-unwrapped` and `detection`. I used `visible`, the rows currently on screen. According to the documentation, `recent` also reaches into recent scrollback and keeps soft-wrapped lines as they were, `recent-unwrapped` joins them back, and `detection` is plain text that herdr itself uses to tell what state an agent is in. I did not exercise those three.
+
+The result of a read has these fields: `pane_id`, `workspace_id`, `tab_id`, `source`, `format`, `text`, `revision`, `truncated`. There is no cursor in it. `pane get` has none either. If you only ever call `pane read`, you know what is on the screen but not where the next character will land.
+
+## Watching a screen live: `terminal session observe`
+
+Polling `pane read` works, but a screen can change many times between two polls. `terminal session observe` instead keeps a connection open and prints a JSON record each time the screen changes. Reading one of those records is the part that takes a minute to see, so here are three real ones, replayed onto a grid.
+
+<FramesFigure
+  title="Three recorded frames, applied one by one"
+  captions={[
+    'A record arrives, one JSON object per line. `seq` counts records, and `full: true` means: repaint everything.',
+    '`bytes` is base64. Decoded, it is 135 bytes of text full of escape codes (`ESC` is the invisible escape character, `·` is a space).',
+    'Read from the left. `ESC[2J` clears the screen.',
+    'Then `ESC[1;1H` plus ten spaces paints row 1, and the same for rows 2 to 4. A full frame paints every cell.',
+    "Near the end, `ESC[1;1H` moves the cursor to row 1, column 1 and `ESC[?25h` shows it. The cursor's position travels inside the stream.",
+    'Record 2 has `full: false`: a patch. It starts with `ESC[1;1H`, which means row 1, column 1.',
+    'Then the text `hi`. Only the cells that changed are sent.',
+    'It ends with `ESC[1;3H`: the cursor goes to row 1, column 3, where the next character will land.',
+    'Record 3 comes from pressing Enter in `cat`. It writes `hi` on row 2 (`ESC[2;1H`).',
+    'Then `ESC[3;1H` puts the cursor at row 3, column 1.',
+    'Sizes: the full frame cost 135 bytes, each patch 75. On an empty 120×40 pane the full frame was 5,188 bytes.',
+  ]}
+/>
+
+A few details of that stream that the figure skipped:
+
+- Each frame starts with `ESC[?2026h` and ends with `ESC[?2026l`. That pair is the terminal convention for a synchronized update: apply everything in between as one repaint, so a reader never sees half a frame.
+- `ESC[?25l` hides the cursor while the frame is being drawn, and `ESC[?25h` shows it again. The last `ESC[row;colH` before that is the real cursor position.
+- `ESC[0;39;49m` and `ESC[0m` are style changes (here: default colours); colour and bold use more of the same family. `ESC]8;;ESC\` is the end of a hyperlink (OSC 8). It appears at the start of every frame, in its empty form.
+- `--cols` and `--rows` ask for a frame of that size. I used `--cols 10 --rows 4` above to keep the strings short.
+- Wide characters occupy two columns in the stream, as on the grid in the first figure: when I sent `日本`, the frame wrote `日` at column 1, `本` at column 3, and the cursor ended at column 5.
+
+You do not need a real terminal emulator to follow this. The dialect is small enough to apply by hand. Here is a mirror in about 50 lines: it follows the stream and keeps its own grid, which is exactly what the server does.
+
+```python
+"""Mirror a herdr terminal: follow `terminal session observe` and keep our own grid."""
+import base64, json, re, subprocess, sys, unicodedata
+
+# One token of the frame dialect: a CSI sequence, an OSC sequence, or plain text.
+TOKEN = re.compile(r"\x1b\[([0-9;?]*)([A-Za-z])|\x1b\][^\x1b]*\x1b\\|([^\x1b]+)")
+
+class Screen:
+    def __init__(self, width, height):
+        self.w, self.h = width, height
+        self.cells = [[" "] * width for _ in range(height)]
+        self.row = self.col = 0          # the cursor, 0-based inside
+        self.cursor_visible = True
+
+    def put(self, ch):
+        wide = unicodedata.east_asian_width(ch) in "WF"
+        if self.row < self.h and self.col < self.w:
+            self.cells[self.row][self.col] = ch
+            if wide and self.col + 1 < self.w:
+                self.cells[self.row][self.col + 1] = ""   # second half of a wide char
+        self.col += 2 if wide else 1
+
+    def apply(self, data):
+        for m in TOKEN.finditer(data):
+            params, kind, text = m.groups()
+            if text:
+                for ch in text: self.put(ch)
+            elif kind == "H":                              # ESC[row;colH
+                r, c = (params.split(";") + ["1"])[:2]
+                self.row, self.col = int(r or 1) - 1, int(c or 1) - 1
+            elif kind == "J" and params == "2":            # ESC[2J
+                self.cells = [[" "] * self.w for _ in range(self.h)]
+            elif kind in ("h", "l") and params == "?25":   # show / hide cursor
+                self.cursor_visible = kind == "h"
+            # colours (m), synchronized updates (?2026) and OSC 8 links are ignored here
+
+    def render(self):
+        lines = ["".join(row).rstrip() for row in self.cells]
+        return "\n".join(lines) + f"\ncursor: row {self.row + 1}, col {self.col + 1}"
+
+cmd = ["herdr", "--session", sys.argv[1], "terminal", "session", "observe", sys.argv[2],
+       "--cols", "10", "--rows", "4"]
+screen = None
+for line in subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True).stdout:
+    frame = json.loads(line)
+    if frame["type"] != "terminal.frame":
+        break                                              # terminal.closed
+    if screen is None:
+        screen = Screen(frame["width"], frame["height"])
+    screen.apply(base64.b64decode(frame["bytes"]).decode())
+    print(f"--- seq {frame['seq']} ({'full' if frame['full'] else 'patch'})")
+    print(screen.render())
+```
+
+I ran it with `python3 -u mirror.py blog-herdr-demo w1:p1` while a second shell typed `hi`, Enter, `ok` and `日` into the pane. The output, one block per record:
+
+```
+--- seq 1 (full)
+
+
+
+
+cursor: row 1, col 1
+--- seq 2 (patch)
+hi
+
+
+
+cursor: row 1, col 3
+--- seq 3 (patch)
+hi
+hi
+
+
+cursor: row 3, col 1
+--- seq 4 (patch)
+hi
+hi
+ok
+
+cursor: row 3, col 3
+--- seq 5 (patch)
+hi
+hi
+ok日
+
+cursor: row 3, col 5
+```
+
+After the last record, `pane read` on the same pane returned `hi`, `hi`, `ok日`: the mirror and the server agree. And because the cursor travels inside the stream, the mirror knows something `pane read` cannot tell you: the cursor sits at row 3, column 5.
+
+Observers take no authority. Several can watch one terminal at once (documented), and in my runs an observer next to a controller received the same frames and kept running after the controller left.
+
+## Typing into a terminal: `pane send-text` and `pane send-keys`
+
+Now the other direction. `pane send-text` types text, `pane send-keys` presses keys by name. Follow one round trip, from the script, through the server and the program, back to an observer.
+
+<TypingFigure
+  title="A key goes in; a patch comes back"
+  captions={[
+    'A script wants to type `hi` into the pane where `cat` is waiting. It runs `herdr pane send-text`.',
+    "The command sends one request line to the server's socket, with method `pane.send_text`.",
+    'The server writes the bytes `h` and `i` into the PTY, as if someone had pressed those keys.',
+    'The PTY echoes the typed characters back; the server sees them come out and writes them into its grid, row 1.',
+    'The server sends its observer a patch: move to row 1, column 1, write `hi`, put the cursor at row 1, column 3.',
+    "The observer's mirror applies it. In my runs this took between 6 and 15 ms from the start of the command.",
+    'Now `herdr pane send-keys … enter`. Keys go by name, because Enter is a key, not text.',
+    '`cat` receives the finished line and prints it back: a second `hi`, on row 2. The cursor moves to row 3.',
+    'One more patch reaches the observer. Its mirror matches the server: two lines of `hi`, cursor at row 3, column 1.',
+  ]}
+/>
+
+I timed it: five single-character `pane send-text` calls while an observer was running, measuring from just before the command started to the arrival of the resulting frame. The frame arrived 5.9, 12.2, 12.7, 12.8 and 15.4 ms in, within a fraction of a millisecond of the command returning (the CLI call itself took 6.2 to 15.9 ms). The typed text is not queued somewhere slow: the echo is back before the command has finished exiting.
+
+```bash
+herdr --session blog-herdr-demo pane send-text w1:p1 "hi"
+herdr --session blog-herdr-demo pane send-keys w1:p1 enter
+```
+
+Two things to remember. Text and keys are different on purpose: `send-text "hi"` types two characters, while a key such as `enter` or `ctrl+c` has no text form, so you name it. And, according to the documentation, pane input addresses the terminal whatever happens to be running in it. In my session, `ctrl+c` sent to the `cat` pane stopped `cat` and handed the pane back to the shell. That is the point of the command and also its danger.
+
+To know when a command has finished, `pane wait-output` polls the screen for a string. It has a trap that I walked into: it checks text that is already on screen, including the command line you just typed.
+
+```bash
+herdr --session blog-herdr-demo pane send-text w2:p1 'sleep 1; echo ready-$((6*7))'
+herdr --session blog-herdr-demo pane send-keys w2:p1 enter
+herdr --session blog-herdr-demo pane wait-output w2:p1 --match ready-42 --timeout 5000
+```
+
+The first time I typed `echo ready-42` literally, and the wait returned instantly with `"matched_line":"$ sleep 1; echo ready-42"`, my own command line. With `$((6*7))` the command line reads `ready-$((6*7))`, only the output contains `ready-42`, and the call returns once it appears, with `"matched_line":"ready-42"`. Match on something that only the output can contain.
+
+For coding agents herdr also has `agent prompt`, which the documentation says submits your text plus Enter as one ordered submission and honours the pane's bracketed-paste mode, optionally waiting until the agent settles. I did not try it, because there was no agent in my test session.
+
+## The controller: when your bridge may type, and who else may
+
+`send-text` is a one-shot command. A bridge that wants a continuous, bidirectional connection (a remote control) can use `terminal session control`. It prints the same frame records as `observe` and also reads JSON commands on stdin. Only one controller owns input at a time, and that is the rule worth seeing.
+
+<ControllerFigure
+  title="One controller at a time; --takeover replaces it"
+  captions={[
+    '`terminal session control` is `observe` plus a keyboard: the same frame records come out, and JSON commands go in on stdin.',
+    'Client A connects and becomes the controller of the pane.',
+    'A sends `terminal.input` with the text `abc`, and the terminal shows `abc`.',
+    'Client B also asks to control the same terminal. Only one controller may own input at a time.',
+    'The server refuses with a `terminal.closed` record, and its reason says what to do. Nothing was typed.',
+    'B tries again with `--takeover` and becomes the controller.',
+    'A receives `terminal attach taken over` and its stream ends.',
+    "A's next write failed with a broken pipe in my test. A bridge must watch for `terminal.closed` and stop typing.",
+    'B types `Z`, and the terminal shows `abcZ`.',
+  ]}
+/>
+
+The three lines in the figure are not paraphrased. A sends `{"type":"terminal.input","text":"abc"}` on stdin. B's refusal is `{"reason":"terminal attach failed: terminal term_… already has an attached client; retry with --takeover","type":"terminal.closed"}` (I shortened the terminal id). And A's goodbye is `{"reason":"terminal attach taken over","type":"terminal.closed"}`. When a controller sends `{"type":"terminal.release"}` its stream ends with `{"reason":"detached","type":"terminal.closed"}`.
+
+Two details from my runs:
+
+- `--cols` and `--rows` on `control` size the viewport, and the size sticks. After my 20×6 controller was gone, `herdr pane get` still reported `viewport_rows: 6` for the pane. If you are not the only user of a pane, do not pass a size you would not want to keep.
+- The documentation says the controller also owns resizing, and lists more commands that a controller can send: `terminal.resize`, `terminal.scroll`, `terminal.mouse` (a click at a zero-based cell, dropped when the application has not asked for mouse reports) and `terminal.release`. I tried input and release only.
+
+## Putting it together: three small bridges
+
+Each of the three bridges the introduction mentioned is a few lines on top of what you have seen.
+
+**A mirror.** The script above. Point it at a pane and it keeps a grid and a cursor in your own program. Draw that grid in a floating window, a web page, or a phone and you have a mirror.
+
+**A remote control.** `pane send-text` and `pane send-keys` to type, `pane wait-output --match` to know when something appeared, `pane read` to look at the result. For a coding agent, `agent prompt` is the documented route.
+
+**A recorder.** Every observed record is one JSON line, so recording is saving lines with a timestamp. This one writes a log you can replay into the `Screen` class later:
+
+```python
+import json, subprocess, sys, time
+
+t0 = time.monotonic()
+cmd = ["herdr", "--session", sys.argv[1], "terminal", "session", "observe", sys.argv[2]]
+for line in subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True).stdout:
+    print(json.dumps({"at": round(time.monotonic() - t0, 3), **json.loads(line)}), flush=True)
+```
+
+## What I did not try
+
+Everything above ran in my own test session. These things I only read in herdr's documentation, so treat them as claims about the documentation, not about the program:
+
+- `agent prompt` and the agent states `idle`, `working`, `blocked` and `done`.
+- `terminal session control` commands other than input and release: resize, scroll and mouse.
+- Direct attach (`agent attach`, `terminal attach`) and remote machines.
+- Reading a full-screen agent's older transcript through `recent`; the documentation says herdr pages it through the agent's mouse-scroll interface when the agent is idle.
+- The `events.subscribe` method. The schema names it and a `pane_output_changed` event, but I used `observe` instead.
+
+The docs index for agents is at [herdr.dev/llms.txt](https://herdr.dev/llms.txt), and `herdr --skill` prints the CLI's own guide.

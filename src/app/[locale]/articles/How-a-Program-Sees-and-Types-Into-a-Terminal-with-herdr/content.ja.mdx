@@ -1,0 +1,408 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import {
+  ArchitectureFigure,
+  ControllerFigure,
+  FramesFigure,
+  ReadFigure,
+  ScreenGridFigure,
+  SessionsFigure,
+  SocketFigure,
+  TypingFigure,
+} from '@/components/StepFigure'
+
+export const article = {
+  author: 'Ryota Murakami',
+  title: 'herdr で見る、プログラムがターミナルの画面を読み、文字を打つしくみ',
+  date: '2026-11-22',
+  description:
+    '「マス目とカーソル」から出発して、herdr が外部のプログラムに画面を読ませ、変化を見張らせ、文字を打たせるしくみを下から順に組み立てます。各しくみに一歩ずつ進めるアニメーションを付け、出力は自分の環境で実行した実際の結果です。',
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+今回は、このしくみを具体的に、下から順に、小さな変化を一つずつ追って理解したいと思いました。だからこの記事は herdr の話から始めません。まずターミナルの画面とは何かを確かめ、そのあとで herdr が周りに足している部品を一つずつ足していきます。しくみごとに小さな図があります。**次へ**（または矢印キー）を押すと、一段階ごとに変わるのは一か所だけです。
+
+調べたきっかけは、エージェントの会話を他のアプリの上に浮かせて見せるデスクトップ HUD を作っていたことです。エージェントが動いているターミナルから欲しかったのは二つ、画面の絵と、そこへ文字を打つ手段でした。AI コーディングエージェント向けのターミナルワークスペース管理ツール [herdr](https://herdr.dev) は、この両方を備えています。結局 HUD は herdr に依存しないことにしました。ツールが特定のマルチプレクサを必須にするべきではないからです。それでも、しくみ自体は書き残す価値があります。
+
+ここに載せた結果はすべて、macOS 上の herdr 0.9.5（ソケットのプロトコルは 22）で、この記事のためだけに作った使い捨てのセッションで実行したものです。公式ドキュメントで読んだだけで実行していないことは、そのつど明記します。
+
+## ターミナルの画面とは何か
+
+いったん herdr のことは忘れてください。ターミナルの画面は、マス目（セル）が並んだ格子で、各セルには文字が高々一つ入ります。セルのほかに、画面が覚えている位置が一つあります。カーソルです。画面の中身はこれだけです。
+
+<ScreenGridFigure
+  title="画面はセルとカーソルでできている"
+  captions={[
+    'ターミナルの画面は、セルの格子です。これは 10 列 × 4 行で、どのセルも空です。',
+    '画面はもう一つ、カーソルを覚えています。次の文字が入るセルのことです。最初は 1 行 1 列にあります。',
+    'プログラムが `h` を書きます。文字はカーソルの下のセルに入ります。',
+    'カーソルが一つ右へ進みます。1 行 2 列です。',
+    'プログラムが `i` を書くと、カーソルの下のセルに入ります。',
+    'カーソルがまた右へ進み、1 行 3 列になります。1 行目は `hi` になりました。',
+    'プログラムが改行を送ります。何も描かれず、カーソルが 2 行 1 列へ移ります。',
+    '`日` のような全角文字は、セルを二つ使います。',
+    'そのためカーソルは二列進んで、2 行 3 列になります。これが画面のすべてです。セルとカーソルだけでできています。',
+  ]}
+/>
+
+色や太字は別のセルではなく、セルに付く属性です。あとで画面をテキストにするときに効いてきます。
+
+覚えておきたいことが二つあります。一つ目、プログラムは「絵を描く」わけではなく、カーソルの位置に文字を書き、カーソルを動かすだけです。二つ目、画面の様子を知るにはセルとカーソルの位置の両方が要ります。片方しか取れないブリッジは、片目が見えていません。
+
+## 画面を持っているのは誰か：サーバー
+
+`cat` のようなプログラムは、画面と直接話しているわけではありません。疑似端末（PTY）の中で動いています。PTY は、プログラムに「自分には画面とキーボードがある」と思わせる管のようなものです。その管の反対側で、格子を保持している何かが要ります。
+
+<ArchitectureFigure
+  title="格子を持つのはサーバー。画面もスクリプトもクライアント"
+  captions={[
+    'まずプログラム、ここでは `cat` です。疑似端末（PTY）の中で動いています。PTY は、プログラムに画面とキーボードがあると思わせる管です。',
+    'プログラムが `h` と `i` のバイトを書き、PTY に流れ込みます。',
+    'herdr のサーバーが PTY の反対側を読み、そのバイト列を自分の格子に反映します。画面を持っているのはサーバーです。',
+    'いつも見ている herdr のウィンドウはクライアントです。サーバーに画面を問い合わせて、描いているだけです。',
+    'これから先の実験にはウィンドウがありません。`herdr server` はウィンドウなしで動き、それでも画面は存在します。',
+    'あなたのスクリプトも、ただのクライアントです。同じサーバーに同じ入口、ソケットから入ります。',
+  ]}
+/>
+
+herdr でその役を担うのがサーバーです。`herdr status` はクライアントとサーバーを別のものとして報告し、サーバーは Unix ソケットで待ち受けています。herdr のペインの中では、シェルに環境変数（`HERDR_SOCKET_PATH`、`HERDR_PANE_ID` など）も渡されるので、プロセスは自分のペインを見つけられます。格子を持っているのがサーバーなので、ソケットに届くものなら誰でも画面を見られます。この記事の仕掛けは、ほぼこれだけです。
+
+## 安全な実験場：名前付きセッション
+
+コマンドを一つ実行する前に、砂場を用意しましょう。herdr は独立したサーバーを何台も並べて動かせます。それぞれをセッションと呼びます。普段使うのは `default` で、そこには作業中のものがあるかもしれません。以下はすべて、私が作った `blog-herdr-demo` というセッションの中で動かしています。
+
+<SessionsFigure
+  title="名前付きセッションは、独立した二台目のサーバー"
+  captions={[
+    'herdr は独立したサーバーを並べて動かせます。default セッションは本物のターミナルを持っています。ここでは絶対に実験しません。',
+    '`herdr --session blog-herdr-demo server` で、二台目のウィンドウなしサーバーが起動します。`sessions/` の下に専用のソケットファイルを持ちます。',
+    'コマンドに `--session blog-herdr-demo` を付けると、そのソケットとだけ話します。`status server` で動作を確認できます。',
+    '`workspace create` でその中にペインができ、ID `w1:p1` が返ります。`--no-focus` でフォーカスを奪いません。',
+    'あとは好きなだけ入力でき、リサイズも takeover もできます。default のサーバーには何も伝わりません。',
+    '`session stop` でサーバーが止まり、`session delete` でファイルが消えます。`session list` には `default` だけが残ります。',
+  ]}
+/>
+
+実行したコマンドと、得られた出力です（ホームディレクトリは `~` に置き換えました）。
+
+```bash
+# unset the HERDR_* variables a herdr pane exports, so that --session alone picks the server
+herdr --session blog-herdr-demo server &
+herdr --session blog-herdr-demo status server
+```
+
+```
+status: running
+version: 0.9.5
+endpoint_compatible: yes
+private_protocol: 22
+private_protocol_compatible: yes
+socket: ~/.config/herdr/sessions/blog-herdr-demo/herdr.sock
+```
+
+```bash
+herdr --session blog-herdr-demo workspace create --cwd /tmp --no-focus
+```
+
+返ってくるのは JSON 一行で、必要なのはルートペインの ID、ここでは `"pane_id":"w1:p1"` です。以降はすべて `w1:p1` を指定します。このコマンドは herdr のペインの中のシェルから実行したので、継承された `HERDR_*` 環境変数はコマンドごとに外し、サーバーを選ぶのがセッション名だけになるようにしました。（変数を残したままでも `--session` が優先される場面を一度確認しましたが、それには頼っていません。）
+
+終わったら、次のようにします。
+
+```
+$ herdr session stop blog-herdr-demo
+stopped session blog-herdr-demo
+$ herdr session delete blog-herdr-demo
+deleted session blog-herdr-demo
+$ herdr session list
+name                 status   directory                                        socket
+default              running  ~/.config/herdr               ~/.config/herdr/herdr.sock
+```
+
+調査の間ずっと守ったルールです。default セッションのペインには、キー送信、リサイズ、分割、閉じる操作、アタッチをしない。引数なしの `herdr` は全画面の UI が起動するので実行しない。
+
+## ソケット：スクリプトがサーバーと話す方法
+
+サーバーは Unix ソケット（つなげるファイルパス）で待ち受けています。使われる言葉は単純で、JSON オブジェクトが一行に一つ。リクエストを一行送ると、サーバーが答えを一行返します。
+
+<SocketFigure
+  title="一行送り、一行返る"
+  captions={[
+    'サーバーは Unix ソケット（ファイルのパス）で待っています。つなぐのは、返事をしてくれるファイルを開くようなものです。',
+    'スクリプトがつなぎます。まだ何も話していません。',
+    'スクリプトが JSON を一行書きます。メソッド名（`pane.read`）とパラメーター、最後に改行です。',
+    '改行がリクエストの終わりの印です。これでサーバーは、一件ぶんが届いたと分かります。',
+    'サーバーが一行で答えます。画面のテキストは `result.read.text` に入っています。`hi`、`hi`、`ok日` です。',
+    '`id` はそのまま返ってくるので、答えとリクエストを対応づけられます。`herdr pane …` のコマンドは、こうした行を送ってくれる補助です。',
+  ]}
+/>
+
+これは「こう動くはず」という図ではなく、実際のやりとりそのものです。Python 数行で再現できます。
+
+```python
+import os, socket
+
+sock = socket.socket(socket.AF_UNIX)
+sock.connect(os.path.expanduser("~/.config/herdr/sessions/blog-herdr-demo/herdr.sock"))
+sock.sendall(b'{"id":"r1","method":"pane.read","params":{"pane_id":"w1:p1","source":"visible","format":"text"}}\n')
+print(sock.recv(65536).decode())
+```
+
+```
+{"id":"r1","result":{"type":"pane_read","read":{"pane_id":"w1:p1","workspace_id":"w1","tab_id":"w1:t1","source":"visible","format":"text","text":"hi\nhi\nok日\n","revision":0,"truncated":false}}}
+```
+
+`herdr api schema --json` は、すべてのメソッドを機械可読な形で出力します。私の環境では 272 KB のファイルで、`pane.read`、`pane.send_text`、`pane.send_keys`、`events.subscribe`、`agent.prompt` などの名前が並んでいます。生のソケットを使うことは少なく、`herdr pane …` や `herdr terminal …` はその薄い補助です。ただ、その下に隠れたものはない、と知っておくのは大切です。
+
+## 画面を読む：`pane read`
+
+画面を見る最も簡単な方法は、スナップショットを頼むことです。ここでは二つ目のテスト用ペインを使います。`green` は緑、`bold` は太字で表示されています。
+
+<ReadFigure
+  title="pane read は格子をテキストにする"
+  captions={[
+    '二つ目のテスト用ペインには `ok green bold` が出ています。`green` は緑、`bold` は太字。カーソルは 2 行目で待っています。',
+    '`pane read` は、サーバーに格子を上から下へ、プレーンテキストで読むよう頼みます。',
+    '1 行目は `ok green bold` という行になります。',
+    '2 行目は `$` だけです。その後ろの空のセルは切り捨てられます。',
+    'これが答えのすべてです。テキストだけで、色もカーソルもありません。',
+    '`--format ansi` を付けると、色と太さがエスケープコードで返ります。`ESC[38;5;2m` で緑が始まり、`ESC[1m` で太字が始まり、`ESC[0m` でリセットです。`ESC` は見えないエスケープ文字を表します。',
+    'それでも、答えの中にカーソルの位置はありません。それを知るにはライブのストリームが必要です。',
+  ]}
+/>
+
+シェルから実行した結果です。`cat -v` は見えないエスケープ文字を `^[` として見えるようにします。
+
+```
+$ herdr --session blog-herdr-demo pane read w2:p1 --source visible --format text
+ok green bold
+$
+
+$ herdr --session blog-herdr-demo pane read w2:p1 --source visible --format ansi | cat -v
+ok ^[[0m^[[38;5;2mgreen^[[0m ^[[0m^[[1mbold^[[0m^M
+$
+```
+
+`--source` は何を読むかの指定です。CLI が受け付けるのは `visible`、`recent`、`recent-unwrapped`、`detection` で、私が使ったのは今画面に出ている行を読む `visible` です。ドキュメントによれば、`recent` は直近のスクロールバックまで含めて折り返しをそのまま保ち、`recent-unwrapped` は折り返しをつなぎ直し、`detection` はエージェントの状態判定に herdr 自身が使うプレーンテキストです。この三つは試していません。
+
+読み取り結果のフィールドは `pane_id`、`workspace_id`、`tab_id`、`source`、`format`、`text`、`revision`、`truncated` です。カーソルはありません。`pane get` にもありません。`pane read` だけを呼んでいると、画面に何があるかは分かっても、次の文字がどこに入るかは分かりません。
+
+## 画面をライブで見る：`terminal session observe`
+
+`pane read` を繰り返しても使えますが、二回の間に画面は何度も変わりえます。`terminal session observe` は接続をつないだままにし、画面が変わるたびに JSON のレコードを出力します。レコードの読み方は、見れば一分で分かります。そこで、実際に記録した三つを格子に当てはめていきます。
+
+<FramesFigure
+  title="記録した三つのフレームを一つずつ適用する"
+  captions={[
+    'レコードが届きます。一行に JSON が一つです。`seq` は番号で、`full: true` は「全部描き直す」という意味です。',
+    '`bytes` は base64 です。デコードすると、エスケープコードだらけの 135 バイトのテキストです（`ESC` は見えないエスケープ文字、`·` は空白）。',
+    '左から読みます。`ESC[2J` は画面を消します。',
+    '次に `ESC[1;1H` と空白 10 個で 1 行目を塗り、2〜4 行目も同じです。全体フレームはすべてのセルを塗ります。',
+    '終わり近くで、`ESC[1;1H` がカーソルを 1 行 1 列に動かし、`ESC[?25h` が表示します。カーソルの位置はストリームの中を流れます。',
+    '2 番目のレコードは `full: false`、つまり差分です。最初は `ESC[1;1H`、1 行 1 列を指します。',
+    '続いてテキスト `hi`。変わったセルだけが送られます。',
+    '最後に `ESC[1;3H`。カーソルが 1 行 3 列、次の文字が入る位置へ移ります。',
+    '3 番目のレコードは `cat` で Enter を押した結果です。2 行目（`ESC[2;1H`）に `hi` を書きます。',
+    '続く `ESC[3;1H` で、カーソルは 3 行 1 列に移ります。',
+    'サイズは、全体フレームが 135 バイト、差分は各 75 バイトでした。空の 120×40 のペインでは、全体フレームは 5,188 バイトでした。',
+  ]}
+/>
+
+図では省いた、このストリームの細部です。
+
+- フレームは `ESC[?2026h` で始まり、`ESC[?2026l` で終わります。この組は、間の内容を一度の描き直しとして適用してよい、という同期更新の端末慣習で、途中までのフレームが見えることがなくなります。
+- `ESC[?25l` は描画中にカーソルを隠し、`ESC[?25h` で再び表示します。その直前の最後の `ESC[行;列H` が、本当のカーソル位置です。
+- `ESC[0;39;49m` と `ESC[0m` はスタイルの変更です（ここでは既定の色）。色や太字は同じ系統の別のコードで表されます。`ESC]8;;ESC\` はハイパーリンクの終わり（OSC 8）で、毎回フレームの先頭に、空の形で現れます。
+- `--cols` と `--rows` で、その大きさのフレームを頼めます。文字列を短くするため、上では `--cols 10 --rows 4` を使いました。
+- ストリームでも、全角文字は二列を使います。`日本` を送ったとき、フレームは `日` を 1 列目、`本` を 3 列目に書き、カーソルは 5 列目で止まりました。
+
+本物のターミナルエミュレーターは要りません。この方言は小さいので、手で適用できます。次は約 50 行のミラーです。ストリームを追いかけて自前の格子を保ちます。サーバーがやっていることそのものです。
+
+```python
+"""Mirror a herdr terminal: follow `terminal session observe` and keep our own grid."""
+import base64, json, re, subprocess, sys, unicodedata
+
+# One token of the frame dialect: a CSI sequence, an OSC sequence, or plain text.
+TOKEN = re.compile(r"\x1b\[([0-9;?]*)([A-Za-z])|\x1b\][^\x1b]*\x1b\\|([^\x1b]+)")
+
+class Screen:
+    def __init__(self, width, height):
+        self.w, self.h = width, height
+        self.cells = [[" "] * width for _ in range(height)]
+        self.row = self.col = 0          # the cursor, 0-based inside
+        self.cursor_visible = True
+
+    def put(self, ch):
+        wide = unicodedata.east_asian_width(ch) in "WF"
+        if self.row < self.h and self.col < self.w:
+            self.cells[self.row][self.col] = ch
+            if wide and self.col + 1 < self.w:
+                self.cells[self.row][self.col + 1] = ""   # second half of a wide char
+        self.col += 2 if wide else 1
+
+    def apply(self, data):
+        for m in TOKEN.finditer(data):
+            params, kind, text = m.groups()
+            if text:
+                for ch in text: self.put(ch)
+            elif kind == "H":                              # ESC[row;colH
+                r, c = (params.split(";") + ["1"])[:2]
+                self.row, self.col = int(r or 1) - 1, int(c or 1) - 1
+            elif kind == "J" and params == "2":            # ESC[2J
+                self.cells = [[" "] * self.w for _ in range(self.h)]
+            elif kind in ("h", "l") and params == "?25":   # show / hide cursor
+                self.cursor_visible = kind == "h"
+            # colours (m), synchronized updates (?2026) and OSC 8 links are ignored here
+
+    def render(self):
+        lines = ["".join(row).rstrip() for row in self.cells]
+        return "\n".join(lines) + f"\ncursor: row {self.row + 1}, col {self.col + 1}"
+
+cmd = ["herdr", "--session", sys.argv[1], "terminal", "session", "observe", sys.argv[2],
+       "--cols", "10", "--rows", "4"]
+screen = None
+for line in subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True).stdout:
+    frame = json.loads(line)
+    if frame["type"] != "terminal.frame":
+        break                                              # terminal.closed
+    if screen is None:
+        screen = Screen(frame["width"], frame["height"])
+    screen.apply(base64.b64decode(frame["bytes"]).decode())
+    print(f"--- seq {frame['seq']} ({'full' if frame['full'] else 'patch'})")
+    print(screen.render())
+```
+
+別のシェルから `hi`、Enter、`ok`、`日` をペインに打ちながら、`python3 -u mirror.py blog-herdr-demo w1:p1` を実行しました。レコードごとの出力です。
+
+```
+--- seq 1 (full)
+
+
+
+
+cursor: row 1, col 1
+--- seq 2 (patch)
+hi
+
+
+
+cursor: row 1, col 3
+--- seq 3 (patch)
+hi
+hi
+
+
+cursor: row 3, col 1
+--- seq 4 (patch)
+hi
+hi
+ok
+
+cursor: row 3, col 3
+--- seq 5 (patch)
+hi
+hi
+ok日
+
+cursor: row 3, col 5
+```
+
+最後のレコードのあと、同じペインで `pane read` を実行すると `hi`、`hi`、`ok日` が返り、ミラーとサーバーの内容は一致しました。さらにカーソルがストリームの中を流れるので、ミラーは `pane read` では分からないことを知っています。カーソルは 3 行 5 列です。
+
+オブザーバーは権限を持ちません。一つのターミナルを同時に何人でも見られます（ドキュメントの記述）。私の実行でも、コントローラーと並べたオブザーバーは同じフレームを受け取り、コントローラーが去ったあとも動き続けました。
+
+## ターミナルに打ち込む：`pane send-text` と `pane send-keys`
+
+今度は逆方向です。`pane send-text` は文字列を打ち、`pane send-keys` は名前でキーを押します。スクリプトからサーバー、プログラム、そしてオブザーバーまでの一往復を追います。
+
+<TypingFigure
+  title="キーが入り、差分が返る"
+  captions={[
+    'スクリプトは、`cat` が待っているペインに `hi` と打ちたいので、`herdr pane send-text` を実行します。',
+    'コマンドは、サーバーのソケットにリクエストを一行送ります。メソッドは `pane.send_text` です。',
+    'サーバーは `h` と `i` のバイトを PTY に書き込みます。誰かがそのキーを押したのと同じ扱いです。',
+    'PTY が打った文字をエコーし、サーバーはそれが出てくるのを見て、自分の格子の 1 行目に書き込みます。',
+    'サーバーはオブザーバーに差分を送ります。1 行 1 列へ移動、`hi` を書く、カーソルを 1 行 3 列へ。',
+    'オブザーバーのミラーが反映します。私の実行では、コマンドの開始から 6〜15 ミリ秒でした。',
+    '続けて `herdr pane send-keys … enter`。Enter は文字ではなくキーなので、名前で送ります。',
+    '`cat` が完成した行を受け取り、そのまま出力します。2 行目に二つ目の `hi` が出て、カーソルは 3 行目へ移ります。',
+    'オブザーバーにもう一つ差分が届きます。ミラーはサーバーと一致します。`hi` が二行、カーソルは 3 行 1 列です。',
+  ]}
+/>
+
+測りました。オブザーバーを動かしたまま 1 文字の `pane send-text` を 5 回実行し、コマンド開始の直前から、結果のフレームが届くまでを計りました。届くまでの時間は 5.9、12.2、12.7、12.8、15.4 ミリ秒で、コマンドが終わるより一瞬前に届いています（CLI の呼び出し自体は 6.2〜15.9 ミリ秒）。打った文字がどこかで待たされることはなく、コマンドが終了を終える前にエコーは返ってきています。
+
+```bash
+herdr --session blog-herdr-demo pane send-text w1:p1 "hi"
+herdr --session blog-herdr-demo pane send-keys w1:p1 enter
+```
+
+覚えておきたいことが二つあります。テキストとキーは意図的に別物です。`send-text "hi"` は二文字を打ち、`enter` や `ctrl+c` のようなキーには文字の形がないので、名前で指定します。また、ドキュメントによればペインへの入力は、中で何が動いていても、そのターミナルに届きます。私のセッションでも、`cat` のペインに送った `ctrl+c` は `cat` を止め、ペインをシェルへ戻しました。それがこのコマンドの役目であり、危うさでもあります。
+
+コマンドが終わったことを知るには、`pane wait-output` が画面の中の文字列を待ちます。ただし罠があり、私も踏みました。すでに画面にある文字、入力したコマンド行も対象にしてしまいます。
+
+```bash
+herdr --session blog-herdr-demo pane send-text w2:p1 'sleep 1; echo ready-$((6*7))'
+herdr --session blog-herdr-demo pane send-keys w2:p1 enter
+herdr --session blog-herdr-demo pane wait-output w2:p1 --match ready-42 --timeout 5000
+```
+
+最初は `echo ready-42` と書いてしまい、待ちは即座に返って、`"matched_line":"$ sleep 1; echo ready-42"`、つまり自分のコマンド行を返しました。`$((6*7))` を使うとコマンド行は `ready-$((6*7))` で、`ready-42` を含むのは出力だけです。出力が現れるまで待ち、`"matched_line":"ready-42"` で返ります。出力にしか現れない文字列で待ってください。
+
+コーディングエージェントには `agent prompt` もあります。ドキュメントによれば、テキストと Enter を一つの順序づけられた送信として送り、ペインのブラケットペーストモードを守り、必要ならエージェントが落ち着くまで待ちます。テスト用セッションにエージェントがいなかったので、これは試していません。
+
+## コントローラー：ブリッジが打てるのはいつか、ほかの人はどうなるか
+
+`send-text` は一回きりのコマンドです。つなぎっぱなしの双方向接続（リモコンのようなもの）が欲しいなら、`terminal session control` を使います。`observe` と同じフレームのレコードを出力し、さらに標準入力から JSON のコマンドを読みます。同時に入力権を持てるコントローラーは一つだけで、このルールが見どころです。
+
+<ControllerFigure
+  title="コントローラーは同時に一つ。--takeover で入れ替える"
+  captions={[
+    '`terminal session control` は、`observe` にキーボードを足したものです。同じフレームのレコードが出て、JSON のコマンドを標準入力に送れます。',
+    'クライアント A がつなぎ、そのペインのコントローラーになります。',
+    'A が `terminal.input` でテキスト `abc` を送ると、ターミナルに `abc` が出ます。',
+    'クライアント B も同じターミナルを操作しようとします。入力権を持てるコントローラーは、同時に一つだけです。',
+    'サーバーは `terminal.closed` のレコードで断り、reason に対処法が書かれています。何も入力されませんでした。',
+    'B が `--takeover` を付けてやり直し、コントローラーになります。',
+    'A には `terminal attach taken over` が届き、ストリームは終わります。',
+    '私のテストでは、A の次の書き込みは broken pipe で失敗しました。ブリッジは `terminal.closed` を見て、入力をやめる必要があります。',
+    'B が `Z` を打つと、ターミナルは `abcZ` になります。',
+  ]}
+/>
+
+図の三行は言い換えではありません。A が標準入力に送るのは `{"type":"terminal.input","text":"abc"}`。B が断られたときの記録は `{"reason":"terminal attach failed: terminal term_… already has an attached client; retry with --takeover","type":"terminal.closed"}`（ターミナル ID は短くしました）。A への別れの記録は `{"reason":"terminal attach taken over","type":"terminal.closed"}` です。コントローラーが `{"type":"terminal.release"}` を送ると、ストリームは `{"reason":"detached","type":"terminal.closed"}` で終わります。
+
+実行で気づいた点が二つあります。
+
+- `control` の `--cols` と `--rows` は表示領域の大きさを決め、その大きさが残ります。20×6 のコントローラーが去ったあとも、`herdr pane get` はそのペインを `viewport_rows: 6` と報告しました。ペインを自分だけが使っているのでなければ、残ってほしくない大きさは渡さないでください。
+- ドキュメントによれば、リサイズもコントローラーが持ちます。コントローラーが送れるコマンドとして、ほかに `terminal.resize`、`terminal.scroll`、`terminal.mouse`（0 始まりのセルへのクリック。アプリがマウス報告を求めていなければ捨てられます）、`terminal.release` が挙げられています。私が試したのは入力と release だけです。
+
+## まとめ：三つの小さなブリッジ
+
+冒頭で挙げた三つのブリッジは、いずれもここまでの内容に数行足せば作れます。
+
+**ミラー。** 上のスクリプトです。ペインに向ければ、格子とカーソルが自分のプログラムの中に保たれます。その格子を浮かぶウィンドウやウェブページ、スマートフォンに描けば、ミラーになります。
+
+**リモコン。** 打つには `pane send-text` と `pane send-keys`、現れたかどうかは `pane wait-output --match`、結果を見るには `pane read`。コーディングエージェントには、ドキュメントにある経路として `agent prompt` があります。
+
+**レコーダー。** 観察したレコードは一行ごとに JSON なので、記録は時刻を付けて行を保存するだけです。次のスクリプトは、あとで `Screen` クラスに流し込んで再生できるログを書きます。
+
+```python
+import json, subprocess, sys, time
+
+t0 = time.monotonic()
+cmd = ["herdr", "--session", sys.argv[1], "terminal", "session", "observe", sys.argv[2]]
+for line in subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True).stdout:
+    print(json.dumps({"at": round(time.monotonic() - t0, 3), **json.loads(line)}), flush=True)
+```
+
+## 試していないこと
+
+ここまでは、すべて自分のテスト用セッションで動かしました。次のものは herdr のドキュメントで読んだだけなので、プログラムについてではなく、ドキュメントの記述として受け取ってください。
+
+- `agent prompt` と、エージェントの状態 `idle`、`working`、`blocked`、`done`。
+- `terminal session control` の、入力と release 以外のコマンド（リサイズ、スクロール、マウス）。
+- 直接アタッチ（`agent attach`、`terminal attach`）とリモートマシン。
+- `recent` による、全画面エージェントの古いトランスクリプトの読み取り。ドキュメントによれば、エージェントがアイドルのとき herdr がエージェントのマウススクロール機能を使ってページ送りします。
+- `events.subscribe` メソッド。スキーマには、この名前と `pane_output_changed` イベントがありますが、私は `observe` を使いました。
+
+エージェント向けのドキュメント索引は [herdr.dev/llms.txt](https://herdr.dev/llms.txt)、CLI 自身のガイドは `herdr --skill` で表示できます。

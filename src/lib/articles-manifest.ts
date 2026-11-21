@@ -6,6 +6,21 @@ import type { ArticleManifestEntry } from './articles'
 
 export const articlesManifest: ArticleManifestEntry[] = [
   {
+    "slug": "How-a-Program-Sees-and-Types-Into-a-Terminal-with-herdr",
+    "author": "Ryota Murakami",
+    "date": "2026-11-22",
+    "editions": {
+      "en": {
+        "title": "How a Program Sees and Types Into a Terminal, with herdr",
+        "description": "Starting from a grid of cells and a cursor, build up how herdr lets an outside program read a terminal's screen, watch it change, and type into it. Every mechanism comes with a small step-by-step animation and real output from my own runs."
+      },
+      "ja": {
+        "title": "herdr で見る、プログラムがターミナルの画面を読み、文字を打つしくみ",
+        "description": "「マス目とカーソル」から出発して、herdr が外部のプログラムに画面を読ませ、変化を見張らせ、文字を打たせるしくみを下から順に組み立てます。各しくみに一歩ずつ進めるアニメーションを付け、出力は自分の環境で実行した実際の結果です。"
+      }
+    }
+  },
+  {
     "slug": "Purging-Pythons-after-a-security-scan",
     "author": "Ryota Murakami",
     "date": "2026-11-01",
