@@ -102,9 +102,17 @@ socket: ~/.config/herdr/sessions/blog-herdr-demo/herdr.sock
 
 ```bash
 herdr --session blog-herdr-demo workspace create --cwd /tmp --no-focus
+herdr --session blog-herdr-demo workspace create --cwd /tmp --no-focus
 ```
 
-The answer is one line of JSON; the part you need is the root pane's id, here `"pane_id":"w1:p1"`. Everything that follows addresses `w1:p1`. I ran this from a shell that was itself inside a herdr pane, so I unset the inherited `HERDR_*` variables for every command to be sure the session name was what chose the server. (In one check, `--session` also won with the variables still set, but I did not rely on that.)
+Each answer is one line of JSON; the part you need is the root pane's id. The first answer contains `"pane_id":"w1:p1"`, the second `"pane_id":"w2:p1"`. If your answers name other ids, use yours in the commands below. Most of what follows addresses `w1:p1`, where `cat` runs. The read and wait examples use `w2:p1`, which keeps its shell. Start `cat` in the first pane (the two commands get their own section further down):
+
+```bash
+herdr --session blog-herdr-demo pane send-text w1:p1 cat
+herdr --session blog-herdr-demo pane send-keys w1:p1 enter
+```
+
+I ran these commands from a shell that was itself inside a herdr pane, so I unset the inherited `HERDR_*` variables for every command to be sure the session name was what chose the server. (In one check, `--session` also won with the variables still set, but I did not rely on that.)
 
 When you are done:
 
@@ -144,7 +152,7 @@ import os, socket
 sock = socket.socket(socket.AF_UNIX)
 sock.connect(os.path.expanduser("~/.config/herdr/sessions/blog-herdr-demo/herdr.sock"))
 sock.sendall(b'{"id":"r1","method":"pane.read","params":{"pane_id":"w1:p1","source":"visible","format":"text"}}\n')
-print(sock.recv(65536).decode())
+print(sock.makefile("rb").readline().decode())  # read through the newline
 ```
 
 ```

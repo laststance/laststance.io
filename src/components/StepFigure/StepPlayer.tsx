@@ -5,8 +5,10 @@ import { useTranslations } from 'next-intl'
 import {
   type KeyboardEvent,
   type ReactNode,
+  useCallback,
   useEffect,
   useId,
+  useRef,
   useState,
 } from 'react'
 
@@ -68,11 +70,12 @@ export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
   const [step, setStep] = useState(0)
   const [playing, setPlaying] = useState(false)
   const last = captions.length - 1
+  const stepButtonRef = useRef<HTMLButtonElement>(null)
 
-  // Autoplay: advance on a timer, stop on the last step
+  // Autoplay: advance on a timer; stop on the last step, or as soon as the reader turns on reduced motion
   useEffect(() => {
     if (!playing) return
-    if (step >= last) {
+    if (reduceMotion || step >= last) {
       setPlaying(false)
       return
     }
@@ -81,7 +84,17 @@ export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
       AUTOPLAY_INTERVAL_MS,
     )
     return (): void => window.clearTimeout(timer)
-  }, [playing, step, last])
+  }, [playing, reduceMotion, step, last])
+
+  // Play leaves the DOM on the last step and under reduced motion. If it had focus,
+  // hand focus to Next / Restart so the arrow keys still reach the toolbar.
+  // Stable identity: the cleanup must run only when the button unmounts, not on every render.
+  const playButtonRef = useCallback((playButton: HTMLButtonElement | null) => {
+    if (!playButton) return
+    return (): void => {
+      if (document.activeElement === playButton) stepButtonRef.current?.focus()
+    }
+  }, [])
 
   function go(next: number): void {
     setStep(Math.min(last, Math.max(0, next)))
@@ -107,7 +120,7 @@ export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
   }
 
   const buttonClass =
-    'rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800'
+    'min-h-11 min-w-11 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800'
 
   return (
     <figure
@@ -169,6 +182,7 @@ export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
         </button>
         {step < last ? (
           <button
+            ref={stepButtonRef}
             type="button"
             className={`${buttonClass} border-teal-600! bg-teal-600! text-white! hover:bg-teal-700! dark:border-teal-500! dark:bg-teal-600!`}
             onClick={() => {
@@ -180,6 +194,7 @@ export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
           </button>
         ) : (
           <button
+            ref={stepButtonRef}
             type="button"
             className={buttonClass}
             onClick={() => {
@@ -192,6 +207,7 @@ export function StepPlayer({ title, captions, renderStage }: StepPlayerProps) {
         )}
         {!reduceMotion && step < last ? (
           <button
+            ref={playButtonRef}
             type="button"
             className={buttonClass}
             aria-pressed={playing}

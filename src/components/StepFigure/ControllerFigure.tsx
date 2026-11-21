@@ -56,7 +56,8 @@ const SCENES: ControllerScene[] = [
     screen: 'abc',
     message: { who: 'B', dir: 'out', parts: REFUSED },
   },
-  { a: 'controller', b: 'controller', screen: 'abc' },
+  // Takeover: B owns input from here, so A loses its controller badge before its stream closes
+  { a: 'idle', b: 'controller', screen: 'abc' },
   {
     a: 'closed',
     b: 'controller',

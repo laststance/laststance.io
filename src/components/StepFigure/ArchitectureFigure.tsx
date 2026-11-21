@@ -88,7 +88,8 @@ export function ArchitectureFigure({ title, captions }: FigureProps) {
                 stdout → {t('ptyLabel')}
               </p>
             </FlowBox>
-            {scene.travelling && scene.active !== 'script' ? (
+            {/* Program traffic flows between the program and the server */}
+            {scene.travelling && scene.active === 'program' ? (
               <Travelling {...scene.travelling} reduceMotion={reduceMotion} />
             ) : (
               <Gap />
@@ -108,7 +109,8 @@ export function ArchitectureFigure({ title, captions }: FigureProps) {
                 }
               />
             </FlowBox>
-            {scene.travelling && scene.active === 'script' ? (
+            {/* Client traffic (window and script) flows between the server and the clients */}
+            {scene.travelling && scene.active !== 'program' ? (
               <Travelling {...scene.travelling} reduceMotion={reduceMotion} />
             ) : (
               <Gap />

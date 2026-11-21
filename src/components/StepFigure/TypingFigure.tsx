@@ -10,6 +10,9 @@ type Who = 'script' | 'server' | 'program' | 'observer'
 
 type Grid = Pick<CellGridProps, 'lines' | 'cursor'>
 
+/** `StepFigure` message keys for what the program box says, so each edition shows its own language. */
+type ProgramNoteKey = 'catWaiting' | 'ptyReceives' | 'ptyEchoes' | 'catPrints'
+
 interface TypingScene {
   active: Who
   scriptCommand: string
@@ -19,7 +22,7 @@ interface TypingScene {
   bottom?: { side: 'program' | 'observer'; text: string }
   server: Grid
   observer: Grid
-  programNote: string
+  programNote: ProgramNoteKey
 }
 
 const EMPTY: Grid = { lines: [], cursor: { row: 1, col: 1 } }
@@ -28,7 +31,6 @@ const HI_HI: Grid = { lines: ['hi', 'hi'], cursor: { row: 3, col: 1 } }
 
 const TEXT_CMD = 'herdr pane send-text w1:p1 "hi"'
 const KEY_CMD = 'herdr pane send-keys w1:p1 enter'
-const WAITING = 'cat (waiting for a line)'
 
 const SCENES: TypingScene[] = [
   {
@@ -36,7 +38,7 @@ const SCENES: TypingScene[] = [
     scriptCommand: TEXT_CMD,
     server: EMPTY,
     observer: EMPTY,
-    programNote: WAITING,
+    programNote: 'catWaiting',
   },
   {
     active: 'server',
@@ -44,7 +46,7 @@ const SCENES: TypingScene[] = [
     top: '"method":"pane.send_text" ⏎',
     server: EMPTY,
     observer: EMPTY,
-    programNote: WAITING,
+    programNote: 'catWaiting',
   },
   {
     active: 'program',
@@ -52,14 +54,14 @@ const SCENES: TypingScene[] = [
     bottom: { side: 'program', text: 'h i' },
     server: EMPTY,
     observer: EMPTY,
-    programNote: 'PTY ← h i',
+    programNote: 'ptyReceives',
   },
   {
     active: 'server',
     scriptCommand: TEXT_CMD,
     server: HI,
     observer: EMPTY,
-    programNote: 'PTY echoes h i',
+    programNote: 'ptyEchoes',
   },
   {
     active: 'observer',
@@ -67,28 +69,28 @@ const SCENES: TypingScene[] = [
     bottom: { side: 'observer', text: 'ESC[1;1H hi ESC[1;3H' },
     server: HI,
     observer: EMPTY,
-    programNote: 'PTY echoes h i',
+    programNote: 'ptyEchoes',
   },
   {
     active: 'observer',
     scriptCommand: TEXT_CMD,
     server: HI,
     observer: HI,
-    programNote: 'PTY echoes h i',
+    programNote: 'ptyEchoes',
   },
   {
     active: 'script',
     scriptCommand: KEY_CMD,
     server: HI,
     observer: HI,
-    programNote: 'PTY echoes h i',
+    programNote: 'ptyEchoes',
   },
   {
     active: 'program',
     scriptCommand: KEY_CMD,
     server: HI_HI,
     observer: HI,
-    programNote: 'cat prints: hi',
+    programNote: 'catPrints',
   },
   {
     active: 'observer',
@@ -96,7 +98,7 @@ const SCENES: TypingScene[] = [
     bottom: { side: 'observer', text: 'ESC[2;1H hi ESC[3;1H' },
     server: HI_HI,
     observer: HI_HI,
-    programNote: 'cat prints: hi',
+    programNote: 'catPrints',
   },
 ]
 
@@ -172,7 +174,7 @@ export function TypingFigure({ title, captions }: FigureProps) {
                 active={s.active === 'program'}
               >
                 <p className="font-mono text-[0.72rem] text-zinc-700 sm:text-xs dark:text-zinc-200">
-                  {s.programNote}
+                  {t(s.programNote)}
                 </p>
               </FlowBox>
               <FlowBox

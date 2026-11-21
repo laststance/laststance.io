@@ -102,9 +102,17 @@ socket: ~/.config/herdr/sessions/blog-herdr-demo/herdr.sock
 
 ```bash
 herdr --session blog-herdr-demo workspace create --cwd /tmp --no-focus
+herdr --session blog-herdr-demo workspace create --cwd /tmp --no-focus
 ```
 
-返ってくるのは JSON 一行で、必要なのはルートペインの ID、ここでは `"pane_id":"w1:p1"` です。以降はすべて `w1:p1` を指定します。このコマンドは herdr のペインの中のシェルから実行したので、継承された `HERDR_*` 環境変数はコマンドごとに外し、サーバーを選ぶのがセッション名だけになるようにしました。（変数を残したままでも `--session` が優先される場面を一度確認しましたが、それには頼っていません。）
+どちらも返ってくるのは JSON 一行で、必要なのはルートペインの ID です。一つ目の答えには `"pane_id":"w1:p1"`、二つ目には `"pane_id":"w2:p1"` が入っています。違う ID が返ってきたら、以下のコマンドでは自分の ID を使ってください。以降の大半は `cat` を動かす `w1:p1` を指定します。読み取りと待機の例では、シェルのままの `w2:p1` を使います。一つ目のペインで `cat` を起動します（この二つのコマンドは後の節で詳しく扱います）。
+
+```bash
+herdr --session blog-herdr-demo pane send-text w1:p1 cat
+herdr --session blog-herdr-demo pane send-keys w1:p1 enter
+```
+
+これらのコマンドは herdr のペインの中のシェルから実行したので、継承された `HERDR_*` 環境変数はコマンドごとに外し、サーバーを選ぶのがセッション名だけになるようにしました。（変数を残したままでも `--session` が優先される場面を一度確認しましたが、それには頼っていません。）
 
 終わったら、次のようにします。
 
@@ -144,7 +152,7 @@ import os, socket
 sock = socket.socket(socket.AF_UNIX)
 sock.connect(os.path.expanduser("~/.config/herdr/sessions/blog-herdr-demo/herdr.sock"))
 sock.sendall(b'{"id":"r1","method":"pane.read","params":{"pane_id":"w1:p1","source":"visible","format":"text"}}\n')
-print(sock.recv(65536).decode())
+print(sock.makefile("rb").readline().decode())  # read through the newline
 ```
 
 ```
