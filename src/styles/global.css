@@ -97,6 +97,13 @@
   html {
     scrollbar-gutter: stable;
   }
+
+  @supports (scrollbar-gutter: stable) {
+    /* The root keeps its gutter while Radix locks scrolling. Its extra body margin would reserve the same width twice. */
+    body[data-scroll-locked] {
+      margin-right: 0 !important;
+    }
+  }
 }
 
 @layer base {
