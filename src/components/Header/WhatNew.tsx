@@ -1,8 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import type { ReactNode } from 'react'
-import React from 'react'
+import type { FC, ReactNode } from 'react'
 
 import Link from '../Link'
 import { Button } from '../ui/button'
@@ -21,7 +20,7 @@ interface Props {
   date: DateString
   li: ReactNode[]
 }
-const List: React.FC<Props> = ({ date, li }) => (
+const List: FC<Props> = ({ date, li }) => (
   <div className="mt-4">
     <Separator className="mb-4" />
     <h3 className="text-lg font-bold">{date}</h3>
@@ -38,7 +37,7 @@ const List: React.FC<Props> = ({ date, li }) => (
   </div>
 )
 
-const WhatNew: React.FC = () => {
+const WhatNew: FC = () => {
   const t = useTranslations('WhatsNew')
   return (
     <Dialog>
