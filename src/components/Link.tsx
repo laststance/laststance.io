@@ -1,8 +1,8 @@
 import NextLink from 'next/link'
-import type { ComponentProps, ReactNode } from 'react'
-import React, { memo } from 'react'
+import type { ComponentProps, FC, ReactNode } from 'react'
+import { memo } from 'react'
 
-const Link: React.FC<
+const Link: FC<
   ComponentProps<typeof NextLink> & { children: ReactNode }
 > = memo(({ children, ...rest }) => {
   return (

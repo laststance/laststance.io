@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
-import React from 'react'
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 
 import { catalogs } from '@/i18n/catalogs'
