@@ -57,7 +57,7 @@ reviews:
         - Image alt text for accessibility.
 
   auto_review:
-    enabled: true
+    enabled: false
     drafts: false
     ignore_title_keywords:
       - 'WIP'
